@@ -23,6 +23,8 @@ jobs:
         run: cargo clippy --all-targets -- -D warnings
       - name: Clippy (wasm feature)
         run: cargo clippy --all-targets --features wasm -- -D warnings
+      - name: Clippy (python feature)
+        run: cargo clippy --lib --features python -- -D warnings
       - name: Tests (unit + fuzz)
         run: cargo test
 

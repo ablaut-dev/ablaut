@@ -79,6 +79,21 @@ guards against false decompositions (*bereiten* ≠ be+reiten). The remaining
 gap is a long tail: dual-prefix senses, denominal weak verbs shadowed by
 strong bases, and archaic gold lemmas.
 
+### Python
+
+```sh
+pip install ablaut  # abi3 wheels, no Rust toolchain needed
+```
+
+```python
+import ablaut
+t = ablaut.conjugation_table("aufstehen")
+t["present"][0]     # "stehe auf"
+t["perfect"][0]     # "bin aufgestanden"
+t["auxiliary"]      # "sein"
+t["imperative"]     # [None, None] for modals
+```
+
 ### WebAssembly
 
 The whole engine — rules, exception lexicon, analytic layer — compiles to a
