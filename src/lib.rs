@@ -179,7 +179,7 @@ impl Verb {
             infinitive: infinitive.to_string(),
             stem: stem.to_string(),
             schwa_stem,
-            ieren: infinitive.ends_with("ieren"),
+            ieren: latinate_ieren(infinitive),
             class: Class::Weak,
             prefix: None,
             base: None,
@@ -419,6 +419,19 @@ impl Verb {
     }
 }
 
+/// Latinate -ieren verbs (studieren, probieren) take no ge- in the past
+/// participle. Native verbs that merely end in -ieren (schmieren, zieren)
+/// do: their stem has no vowel before the -ier- (schm-, z-), while Latinate
+/// stems always do (stud-, prob-).
+fn latinate_ieren(infinitive: &str) -> bool {
+    infinitive
+        .strip_suffix("ieren")
+        .is_some_and(|pre| {
+            pre.chars()
+                .any(|c| matches!(c, 'a' | 'e' | 'i' | 'o' | 'u' | 'ä' | 'ö' | 'ü' | 'y'))
+        })
+}
+
 /// Is this remainder of a prefix split a plausible verb on its own? Lexicon
 /// and suppletive hits always qualify; otherwise require a weak-parsable
 /// infinitive whose stem has a vowel and at least three characters — this
@@ -434,7 +447,15 @@ fn plausible_base(base: &str) -> bool {
     Verb::weak(base).is_ok_and(|v| {
         // -ieren bases need a substantial stem (ein+studieren, not
         // da+tieren); schwa bases likewise (aus+wandern, not rum+peln).
-        let min = if v.ieren {
+        // Latinate -ieren remainders are never trusted (stand+ardisieren,
+        // an+odisieren — full of prefix-lookalikes); real separable compounds
+        // (einstudieren) get explicit x rulings in the lexicon. Native -ieren
+        // remainders (an+schmieren) are fine but need a substantial stem
+        // (da+tieren is not a split).
+        if v.ieren {
+            return false;
+        }
+        let min = if v.infinitive.ends_with("ieren") {
             5
         } else if v.schwa_stem {
             4

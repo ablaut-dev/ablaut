@@ -53,14 +53,17 @@ auxiliary, which the harness scores too). Current baseline:
 
 | oracle | overall | lexicon-grounded | weak fallback |
 |---|---|---|---|
-| UniMorph deu | 96.3% | 96.66% | 96.24% |
-| kaikki.org | 96.1% | 95.97% | 96.12% |
+| UniMorph deu | 97.5% | 96.91% | 97.62% |
+| kaikki.org | 97.1% | 96.33% | 97.35% |
 
 `scripts/cross_oracle.py` cross-examines the oracles: they agree on 98.9%
 of their 195k shared slots; the 2,137 disagreements are data-quality
 findings in their own right. Triaging our mismatches against oracle
-agreement separates real bug candidates (both oracles against us) from
-adjudication cases (the oracles split).
+agreement separates real bug candidates (both oracles against us — down to
+~1,500, dominated by archaic-orthography lemmas and rare dual-prefix
+senses) from adjudication cases (the oracles split). One caveat both
+oracles share: they are extracted from the same upstream (Wiktionary), so
+"both agree" is strong but not fully independent evidence.
 
 Every disagreement with the gold data is ruled on in
 [`docs/adjudications.tsv`](docs/adjudications.tsv) with a reference —

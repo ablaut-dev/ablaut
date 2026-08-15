@@ -9,6 +9,8 @@ pub(crate) fn needs_epenthesis(stem: &str) -> bool {
     let mut chars = stem.chars().rev();
     let (last, before, before2) = (chars.next(), chars.next(), chars.next());
     match (before, last) {
+        // Archaic orthography (rath-, heirath-) behaves like a dental stem.
+        (Some('t'), Some('h')) => true,
         (_, Some('d' | 't')) => true,
         // Silent lengthening h (wohn-) blocks epenthesis, but the digraph
         // "ch" (rechn-) is an obstruent and licenses it.
