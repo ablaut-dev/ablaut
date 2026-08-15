@@ -15,11 +15,48 @@ pub(crate) fn needs_epenthesis(stem: &str) -> bool {
         // Silent lengthening h (wohn-) blocks epenthesis, but the digraph
         // "ch" (rechn-) is an obstruent and licenses it.
         (Some('h'), Some('m' | 'n')) => before2 == Some('c'),
+        // -mn clusters (willkommn-) take epenthesis: bewillkommnest.
+        (Some('m'), Some('n')) => true,
         // Stems in consonant + w (verwitw-) take epenthesis: verwitwet.
-        (Some(b), Some('w')) => !matches!(b, 'a' | 'e' | 'i' | 'o' | 'u' | 'ä' | 'ö' | 'ü'),
+        (Some(b), Some('w')) => !matches!(
+            b,
+            'a' | 'e'
+                | 'i'
+                | 'o'
+                | 'u'
+                | 'ä'
+                | 'ö'
+                | 'ü'
+                | 'à'
+                | 'â'
+                | 'è'
+                | 'é'
+                | 'ê'
+                | 'î'
+                | 'ô'
+                | 'û'
+        ),
         (Some(b), Some('m' | 'n')) => !matches!(
             b,
-            'l' | 'r' | 'm' | 'n' | 'a' | 'e' | 'i' | 'o' | 'u' | 'ä' | 'ö' | 'ü'
+            'l' | 'r'
+                | 'm'
+                | 'n'
+                | 'a'
+                | 'e'
+                | 'i'
+                | 'o'
+                | 'u'
+                | 'ä'
+                | 'ö'
+                | 'ü'
+                | 'à'
+                | 'â'
+                | 'è'
+                | 'é'
+                | 'ê'
+                | 'î'
+                | 'ô'
+                | 'û'
         ),
         _ => false,
     }

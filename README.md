@@ -56,8 +56,8 @@ Current baseline:
 
 | oracle | overall | auxiliary | analytic tenses |
 |---|---|---|---|
-| UniMorph deu (194k synthetic forms) | 97.5% | — | — |
-| kaikki.org (794k forms) | 96.5% | 99.2–99.99% | 94.5–97.3% |
+| UniMorph deu (194k synthetic forms) | 98.6% | — | — |
+| kaikki.org (794k forms) | 97.5% | 99.2–99.99% | 95.6–97.9% |
 
 `scripts/cross_oracle.py` cross-examines the oracles: they agree on 98.9%
 of their 195k shared slots; the 2,137 disagreements are data-quality

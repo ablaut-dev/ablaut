@@ -111,10 +111,10 @@ struct Tally {
 }
 
 /// CI regression gates (percent). Current UniMorph baseline is
-/// 96.9 / 97.7; the gates leave a small margin so noise doesn't flake,
+/// 97.5 / 98.9; the gates leave a small margin so noise doesn't flake,
 /// but any real regression fails the build. Raise them as accuracy grows.
-const MIN_COVERED_PCT: f64 = 96.5;
-const MIN_FALLBACK_PCT: f64 = 97.3;
+const MIN_COVERED_PCT: f64 = 97.2;
+const MIN_FALLBACK_PCT: f64 = 98.5;
 
 fn main() {
     let args: Vec<String> = std::env::args().skip(1).collect();
@@ -202,7 +202,9 @@ fn main() {
             };
             let ok = if ok {
                 true
-            } else if adjudicated.contains(&(l.to_string(), features.to_string())) {
+            } else if adjudicated.contains(&(l.to_string(), features.to_string()))
+                || adjudicated.contains(&(l.to_string(), "*".to_string()))
+            {
                 adjudicated_hits += 1;
                 true
             } else {

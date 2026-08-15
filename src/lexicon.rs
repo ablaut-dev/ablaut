@@ -88,17 +88,21 @@ fn parse(tsv: &'static str) -> Lexicon {
                 lex.aux.insert(f[0], aux);
                 continue;
             }
-            "i" | "x" | "iw" | "xw" => {
-                let sep = if f[1].starts_with('i') {
-                    Separability::Inseparable
-                } else {
-                    Separability::Separable
+            "i" | "x" | "iw" | "xw" | "f" => {
+                let sep = match f[1] {
+                    "f" => Separability::Fused,
+                    s if s.starts_with('i') => Separability::Inseparable,
+                    _ => Separability::Separable,
                 };
+                // "-" means an empty prefix: the whole word is the base.
+                // With class iw this expresses "weak but no ge- participle"
+                // (malochen, maledeien).
+                let prefix = if f[2] == "-" { "" } else { f[2] };
                 assert!(
-                    f[0].starts_with(f[2]),
+                    f[0].starts_with(prefix),
                     "dual override prefix mismatch: {line}"
                 );
-                lex.dual.insert(f[0], (f[2], sep, f[1].ends_with('w')));
+                lex.dual.insert(f[0], (prefix, sep, f[1].ends_with('w')));
                 continue;
             }
             c => panic!("unknown class {c} in lexicon line: {line}"),

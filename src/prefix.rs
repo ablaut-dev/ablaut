@@ -20,6 +20,10 @@ pub(crate) enum Separability {
     /// finite forms (fahre Rad) but stays a free word everywhere
     /// (Rad gefahren, Rad zu fahren).
     Phrasal,
+    /// Pseudo-separable compounds that never actually split (lobsingen,
+    /// obsiegen): fused finite forms (lobsang) but separable-style ge- and
+    /// zu-infixes (lobgesungen, lobzusingen).
+    Fused,
 }
 
 /// Longest-first so compounds win (herausfinden ≠ her+ausfinden).
@@ -82,9 +86,34 @@ const SEPARABLE: &[&str] = &[
     "übrig",
     "brach",
     "näher",
-    "nacht",
     "lahm",
-    "lob",
+    "vonstatten",
+    "stecken",
+    "liegen",
+    "stramm",
+    "blank",
+    "krank",
+    "satt",
+    "inne",
+    "gern",
+    "feil",
+    "leer",
+    "kahl",
+    "hier",
+    "rund",
+    "bey",
+    "auß",
+    "mal",
+    "wichtig",
+    "recht",
+    "selig",
+    "übel",
+    "quer",
+    "tief",
+    "weis",
+    "schlecht",
+    "schlapp",
+    "stark",
     "bekannt",
     "schwarz",
     "gerade",
