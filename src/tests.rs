@@ -479,3 +479,48 @@ fn konjunktiv_i_keeps_full_endings_on_schwa_stems() {
     assert_eq!(v.conjugate(Present, KonjunktivI, Second, Singular), "sammelest");
     assert_eq!(v.conjugate(Present, KonjunktivI, Second, Plural), "sammelet");
 }
+
+#[test]
+fn dual_prefix_overrides() {
+    // umarmen is inseparable despite um- defaulting separable…
+    let u = v("umarmen");
+    assert_eq!(u.conjugate(Present, Indicative, First, Singular), "umarme");
+    assert_eq!(u.past_participle(), "umarmt");
+    // …umgeben inherits geben's ablaut through the frozen prefix…
+    assert_eq!(v("umgeben").conjugate(Preterite, Indicative, Third, Singular), "umgab");
+    // …and untertauchen is separable despite unter- defaulting inseparable.
+    let t = v("untertauchen");
+    assert_eq!(t.conjugate(Preterite, Indicative, Third, Singular), "tauchte unter");
+    assert_eq!(t.past_participle(), "untergetaucht");
+}
+
+#[test]
+fn forced_weak_whole_words() {
+    // bereiten is not be+reiten, veranlassen is not veran+lassen.
+    assert_eq!(v("bereiten").conjugate(Preterite, Indicative, Third, Singular), "bereitete");
+    assert_eq!(v("veranlassen").conjugate(Preterite, Indicative, Third, Singular), "veranlasste");
+    assert_eq!(v("wetteifern").past_participle(), "gewetteifert");
+}
+
+#[test]
+fn ieren_and_schwa_base_guards() {
+    // datieren is not da+tieren; rumpeln is not rum+peln.
+    assert_eq!(v("datieren").conjugate(Present, Indicative, First, Singular), "datiere");
+    assert_eq!(v("rumpeln").conjugate(Present, Indicative, First, Singular), "rumple");
+    // …but real derivatives still split.
+    assert_eq!(v("einstudieren").past_participle(), "einstudiert");
+    assert_eq!(v("auswandern").past_participle(), "ausgewandert");
+}
+
+#[test]
+fn mined_strong_verbs() {
+    assert_eq!(v("schieben").conjugate(Preterite, Indicative, First, Singular), "schob");
+    assert_eq!(v("treten").conjugate(Present, Indicative, Third, Singular), "tritt");
+    assert_eq!(v("fressen").conjugate(Present, Indicative, Second, Singular), "frisst");
+    assert_eq!(v("kriechen").past_participle(), "gekrochen");
+    assert_eq!(v("treiben").past_participle(), "getrieben");
+    assert_eq!(v("gelingen").auxiliary(), Auxiliary::Sein);
+    // derivatives come free
+    assert_eq!(v("anschleichen").conjugate(Preterite, Indicative, Second, Singular), "schlichst an");
+    assert_eq!(v("verzeihen").past_participle(), "verziehen");
+}

@@ -5,6 +5,7 @@
 //! unit the golden-test harness will grow against. It is embedded at compile
 //! time and parsed once on first lookup; no I/O at runtime.
 
+use crate::prefix::Separability;
 use crate::Auxiliary;
 use std::collections::HashMap;
 use std::sync::OnceLock;
@@ -50,6 +51,10 @@ struct Lexicon {
     /// Class "w": whole-word weak verbs that must never be decomposed into
     /// prefix + base (abonnieren is not ab+onnieren).
     forced_weak: std::collections::HashSet<&'static str>,
+    /// Classes "i"/"x": per-lexeme dual-prefix rulings overriding the
+    /// prefix's default behavior (umarmen is inseparable, untertauchen is
+    /// separable). Maps lemma → (prefix, behavior).
+    dual: HashMap<&'static str, (&'static str, Separability)>,
 }
 
 fn parse(tsv: &'static str) -> Lexicon {
@@ -66,6 +71,19 @@ fn parse(tsv: &'static str) -> Lexicon {
             "p" => LexClass::PreteritePresent,
             "w" => {
                 lex.forced_weak.insert(f[0]);
+                continue;
+            }
+            "i" | "x" => {
+                let sep = if f[1] == "i" {
+                    Separability::Inseparable
+                } else {
+                    Separability::Separable
+                };
+                assert!(
+                    f[0].starts_with(f[2]),
+                    "dual override prefix mismatch: {line}"
+                );
+                lex.dual.insert(f[0], (f[2], sep));
                 continue;
             }
             c => panic!("unknown class {c} in lexicon line: {line}"),
@@ -102,4 +120,8 @@ pub(crate) fn lookup(infinitive: &str) -> Option<&'static LexEntry> {
 
 pub(crate) fn is_forced_weak(infinitive: &str) -> bool {
     lexicon().forced_weak.contains(infinitive)
+}
+
+pub(crate) fn dual_override(infinitive: &str) -> Option<(&'static str, Separability)> {
+    lexicon().dual.get(infinitive).copied()
 }
