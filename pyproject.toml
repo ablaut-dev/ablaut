@@ -6,7 +6,7 @@ build-backend = "maturin"
 name = "ablaut"
 description = "A fast, correct German verb conjugator: rules plus a compiled-in exception lexicon"
 readme = "README.md"
-license = { text = "MIT" }
+license = { text = "MIT OR Apache-2.0" }
 requires-python = ">=3.9"
 keywords = ["german", "conjugation", "morphology", "nlp", "linguistics"]
 classifiers = [
