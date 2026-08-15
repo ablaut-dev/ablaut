@@ -51,22 +51,24 @@ The golden harness (`scripts/fetch_unimorph.sh`, then
 
 | slice | accuracy |
 |---|---|
-| lexicon-grounded lemmas (879, incl. prefixed derivatives) | 96.19% |
-| weak-fallback lemmas (5,742) | 91.77% |
+| lexicon-grounded lemmas (1,301, incl. prefixed derivatives) | 96.34% |
+| weak-fallback lemmas (5,320) | 95.44% |
 
 Every disagreement with the gold data is ruled on in
 [`docs/adjudications.tsv`](docs/adjudications.tsv) with a reference —
 including genuine UniMorph errors found so far (*nennte* given as *nannte*;
 *wisse!* marked nonexistent; corrupt paradigms auto-excluded when gold's own
-infinitive contradicts its lemma). The remaining gap is dominated by strong
-lemmas not yet in the seed lexicon (preterite/Konjunktiv II rows) — every
-lemma added also fixes all its prefixed derivatives.
+infinitive contradicts its lemma). The lexicon now holds ~180 strong/mixed lemmas
+(mined from the gold data itself and curated), plus per-lexeme dual-prefix
+rulings (*umarmen* inseparable, *untertauchen* separable) and whole-word
+guards against false decompositions (*bereiten* ≠ be+reiten). The remaining
+gap is a long tail: dual-prefix senses, denominal weak verbs shadowed by
+strong bases, and archaic gold lemmas.
 
 Next, in order:
 
-- [ ] Grow the lexicon toward the full ~200 strong lemmas from the
-      fallback diff; add kaikki.org as a second oracle
-- [ ] Per-lexeme dual-prefix flags (übersetzen/umringen inseparable senses)
+- [ ] Add kaikki.org as a second oracle; adjudicate the remaining tail
+- [ ] Per-verb auxiliary flags for prefixed derivatives (aufstehen: sein)
 - [ ] Compositional layer: analytic tenses (Perfekt, Futur, passives)
 - [ ] WASM + Python (PyO3) bindings
 

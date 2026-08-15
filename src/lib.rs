@@ -117,7 +117,12 @@ impl Verb {
         }
         // Prefixed verbs are derived: aufstehen inherits stehen's paradigm.
         if !lexicon::is_forced_weak(infinitive) {
-            if let Some((p, sep, base)) = prefix::split(infinitive, plausible_base) {
+            // Per-lexeme dual-prefix rulings (umarmen: um- inseparable)
+            // outrank the prefix's default behavior.
+            let split = lexicon::dual_override(infinitive)
+                .map(|(p, sep)| (p, sep, &infinitive[p.len()..]))
+                .or_else(|| prefix::split(infinitive, plausible_base));
+            if let Some((p, sep, base)) = split {
                 let base = Self::from_infinitive(base)?;
                 // Multi-part particles fuse into one unit (vor+aus·setzen →
                 // voraus·setzen: setzte voraus, not *setzte aus vor); an
@@ -417,7 +422,16 @@ fn plausible_base(base: &str) -> bool {
         return true;
     }
     Verb::weak(base).is_ok_and(|v| {
-        v.stem.chars().count() >= 3
+        // -ieren bases need a substantial stem (ein+studieren, not
+        // da+tieren); schwa bases likewise (aus+wandern, not rum+peln).
+        let min = if v.ieren {
+            5
+        } else if v.schwa_stem {
+            4
+        } else {
+            3
+        };
+        v.stem.chars().count() >= min
             && v.stem
                 .chars()
                 .any(|c| matches!(c, 'a' | 'e' | 'i' | 'o' | 'u' | 'ä' | 'ö' | 'ü' | 'y'))
