@@ -632,3 +632,21 @@ fn passives() {
     assert_eq!(kaufen.passive(Preterite, Indicative, Third, Singular), "wurde gekauft");
     assert_eq!(kaufen.statal_passive(Present, Indicative, Third, Singular), "ist gekauft");
 }
+
+#[test]
+fn perfect_infinitive() {
+    assert_eq!(v("kaufen").perfect_infinitive(), "gekauft haben");
+    assert_eq!(v("aufstehen").perfect_infinitive(), "aufgestanden sein");
+    assert_eq!(v("Rad fahren").perfect_infinitive(), "Rad gefahren sein");
+}
+
+#[test]
+fn adhortative_and_polite_imperatives() {
+    assert_eq!(v("kaufen").imperative_first_plural(), "kaufen wir");
+    assert_eq!(v("aufstehen").imperative_first_plural(), "stehen wir auf");
+    assert_eq!(v("aufstehen").imperative_polite(), "stehen Sie auf");
+    // sein takes its Konjunktiv I here: seien wir, seien Sie.
+    assert_eq!(v("sein").imperative_first_plural(), "seien wir");
+    assert_eq!(v("sein").imperative_polite(), "seien Sie");
+    assert_eq!(v("Rad fahren").imperative_polite(), "fahren Sie Rad");
+}

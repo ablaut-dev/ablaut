@@ -12,11 +12,14 @@ use wasm_bindgen::prelude::*;
 pub struct Table {
     pub infinitive: String,
     pub zu_infinitive: String,
+    pub perfect_infinitive: String,
     pub auxiliary: String,
     pub present_participle: String,
     pub past_participle: String,
     /// [2sg, 2pl]; null for verbs without an imperative (modals).
     pub imperative: [Option<String>; 2],
+    /// Adhortative and polite imperatives: [wir, Sie].
+    pub imperative_extended: [String; 2],
     /// Each row is [1sg, 2sg, 3sg, 1pl, 2pl, 3pl].
     pub present: [String; 6],
     pub preterite: [String; 6],
@@ -28,6 +31,10 @@ pub struct Table {
     pub future2: [String; 6],
     /// würde-form (Futur I in Konjunktiv II).
     pub wuerde: [String; 6],
+    pub konj1_perfect: [String; 6],
+    pub konj1_future: [String; 6],
+    pub konj2_pluperfect: [String; 6],
+    pub konj2_future2: [String; 6],
 }
 
 const SLOTS: [(Person, Number); 6] = [
@@ -50,6 +57,7 @@ pub fn conjugation_table(infinitive: &str) -> Result<JsValue, JsError> {
     let table = Table {
         infinitive: v.infinitive().to_string(),
         zu_infinitive: v.zu_infinitive(),
+        perfect_infinitive: v.perfect_infinitive(),
         auxiliary: match v.auxiliary() {
             crate::Auxiliary::Haben => "haben".to_string(),
             crate::Auxiliary::Sein => "sein".to_string(),
@@ -60,6 +68,7 @@ pub fn conjugation_table(infinitive: &str) -> Result<JsValue, JsError> {
             v.imperative(Number::Singular),
             v.imperative(Number::Plural),
         ],
+        imperative_extended: [v.imperative_first_plural(), v.imperative_polite()],
         present: row(|p, n| v.conjugate(Tense::Present, Mood::Indicative, p, n)),
         preterite: row(|p, n| v.conjugate(Tense::Preterite, Mood::Indicative, p, n)),
         konjunktiv1: row(|p, n| v.conjugate(Tense::Present, Mood::KonjunktivI, p, n)),
@@ -69,6 +78,12 @@ pub fn conjugation_table(infinitive: &str) -> Result<JsValue, JsError> {
         future1: row(|p, n| v.analytic(AnalyticTense::FutureI, Mood::Indicative, p, n)),
         future2: row(|p, n| v.analytic(AnalyticTense::FutureII, Mood::Indicative, p, n)),
         wuerde: row(|p, n| v.analytic(AnalyticTense::FutureI, Mood::KonjunktivII, p, n)),
+        konj1_perfect: row(|p, n| v.analytic(AnalyticTense::Perfect, Mood::KonjunktivI, p, n)),
+        konj1_future: row(|p, n| v.analytic(AnalyticTense::FutureI, Mood::KonjunktivI, p, n)),
+        konj2_pluperfect: row(|p, n| {
+            v.analytic(AnalyticTense::Pluperfect, Mood::KonjunktivII, p, n)
+        }),
+        konj2_future2: row(|p, n| v.analytic(AnalyticTense::FutureII, Mood::KonjunktivII, p, n)),
     };
     Ok(serde_wasm_bindgen::to_value(&table)?)
 }
