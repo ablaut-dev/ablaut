@@ -1,6 +1,6 @@
 [package]
 name = "ablaut"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "A fast, correct German verb conjugator grounded in the linguistics of German inflection"
 license = "MIT OR Apache-2.0"
