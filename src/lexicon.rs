@@ -1,4 +1,4 @@
-//! The exception lexicon (Layer A of `docs/ontology.md`): the finite list of
+//! The exception lexicon (Layer A of `docs/design.md`): the finite list of
 //! verbs whose forms are not fully predictable from the infinitive.
 //!
 //! The data lives in `data/verbs.tsv` — human-readable, diffable, and the

@@ -137,7 +137,7 @@ The architecture is a productive default rule plus a finite table of stored
 exceptions, which is precisely the dual-mechanism model of inflection
 (Marcus, Pinker et al., 1995) for which German morphology is the canonical
 test case. Features follow the [UniMorph schema](https://unimorph.github.io/).
-[`docs/ontology.md`](docs/ontology.md) maps the whole domain in four layers
+[`docs/design.md`](docs/design.md) maps the whole domain in four layers
 and doubles as the design spec.
 
 ## License

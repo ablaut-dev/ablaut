@@ -1,5 +1,5 @@
 //! Morphophonological and orthographic surface rules (Layer D of
-//! `docs/ontology.md`), applied when an ending attaches to a stem.
+//! `docs/design.md`), applied when an ending attaches to a stem.
 
 /// True if the stem requires *e*-epenthesis before endings in `-st`/`-t`:
 /// stems in *d/t* (`arbeit-` → *du arbeitest*) and stems in *m/n* preceded by
