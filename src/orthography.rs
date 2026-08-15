@@ -17,7 +17,10 @@ pub(crate) fn needs_epenthesis(stem: &str) -> bool {
         (Some('h'), Some('m' | 'n')) => before2 == Some('c'),
         // Stems in consonant + w (verwitw-) take epenthesis: verwitwet.
         (Some(b), Some('w')) => !matches!(b, 'a' | 'e' | 'i' | 'o' | 'u' | 'ä' | 'ö' | 'ü'),
-        (Some(b), Some('m' | 'n')) => !matches!(b, 'l' | 'r' | 'm' | 'n' | 'a' | 'e' | 'i' | 'o' | 'u' | 'ä' | 'ö' | 'ü'),
+        (Some(b), Some('m' | 'n')) => !matches!(
+            b,
+            'l' | 'r' | 'm' | 'n' | 'a' | 'e' | 'i' | 'o' | 'u' | 'ä' | 'ö' | 'ü'
+        ),
         _ => false,
     }
 }

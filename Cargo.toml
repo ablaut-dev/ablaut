@@ -18,3 +18,6 @@ serde-wasm-bindgen = { version = "0.6", optional = true }
 
 [features]
 wasm = ["dep:wasm-bindgen", "dep:serde", "dep:serde-wasm-bindgen"]
+
+[dev-dependencies]
+proptest = "1"

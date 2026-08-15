@@ -64,10 +64,7 @@ pub fn conjugation_table(infinitive: &str) -> Result<JsValue, JsError> {
         },
         present_participle: v.present_participle(),
         past_participle: v.past_participle(),
-        imperative: [
-            v.imperative(Number::Singular),
-            v.imperative(Number::Plural),
-        ],
+        imperative: [v.imperative(Number::Singular), v.imperative(Number::Plural)],
         imperative_extended: [v.imperative_first_plural(), v.imperative_polite()],
         present: row(|p, n| v.conjugate(Tense::Present, Mood::Indicative, p, n)),
         preterite: row(|p, n| v.conjugate(Tense::Preterite, Mood::Indicative, p, n)),

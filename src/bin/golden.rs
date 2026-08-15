@@ -110,9 +110,19 @@ struct Tally {
     matched: usize,
 }
 
+/// CI regression gates (percent). Current UniMorph baseline is
+/// 96.9 / 97.7; the gates leave a small margin so noise doesn't flake,
+/// but any real regression fails the build. Raise them as accuracy grows.
+const MIN_COVERED_PCT: f64 = 96.5;
+const MIN_FALLBACK_PCT: f64 = 97.3;
+
 fn main() {
-    let path = std::env::args()
-        .nth(1)
+    let args: Vec<String> = std::env::args().skip(1).collect();
+    let check = args.iter().any(|a| a == "--check");
+    let path = args
+        .iter()
+        .find(|a| !a.starts_with("--"))
+        .cloned()
         .unwrap_or_else(|| "data/unimorph/deu".to_string());
     let data = fs::read_to_string(&path)
         .unwrap_or_else(|e| panic!("cannot read {path}: {e}. Run scripts/fetch_unimorph.sh first"));
@@ -181,7 +191,9 @@ fn main() {
                 skipped_bundles.insert(features);
                 continue;
             };
-            let tally = by_category.entry((category(features), covered)).or_default();
+            let tally = by_category
+                .entry((category(features), covered))
+                .or_default();
             tally.total += 1;
             let ok = match &prediction {
                 Some(p) => variants.contains(p.as_str()),
@@ -235,9 +247,16 @@ fn main() {
     };
 
     println!("== ablaut vs gold: {path} ==");
-    println!("lemmas: {} total, {} lexicon-covered", lemmas.len(), covered_lemmas);
+    println!(
+        "lemmas: {} total, {} lexicon-covered",
+        lemmas.len(),
+        covered_lemmas
+    );
     println!("adjudicated forms counted as correct: {adjudicated_hits}");
-    println!("corrupt-gold lemmas excluded (NFIN ≠ lemma): {}", corrupt.len());
+    println!(
+        "corrupt-gold lemmas excluded (NFIN ≠ lemma): {}",
+        corrupt.len()
+    );
     println!();
     println!(
         "lexicon-covered forms: {cov_matched}/{cov_total} ({:.2}%)",
@@ -261,8 +280,12 @@ fn main() {
         "perfect",
         "future",
     ] {
-        let c = by_category.get(&(cat, true)).map_or((0, 0), |t| (t.matched, t.total));
-        let f = by_category.get(&(cat, false)).map_or((0, 0), |t| (t.matched, t.total));
+        let c = by_category
+            .get(&(cat, true))
+            .map_or((0, 0), |t| (t.matched, t.total));
+        let f = by_category
+            .get(&(cat, false))
+            .map_or((0, 0), |t| (t.matched, t.total));
         println!(
             "{cat:<14}{:>15}/{:<3}{:>6.2}%{:>13}/{:<6}{:>6.2}%",
             c.0,
@@ -291,4 +314,20 @@ fn main() {
         "\n{} mismatching forms written to target/golden_mismatches.tsv",
         mismatches.lines().count()
     );
+
+    if check {
+        let covered_pct = pct(cov_matched, cov_total);
+        let fallback_pct = pct(fb_matched, fb_total);
+        if covered_pct < MIN_COVERED_PCT || fallback_pct < MIN_FALLBACK_PCT {
+            eprintln!(
+                "REGRESSION: covered {covered_pct:.2}% (min {MIN_COVERED_PCT}) / \
+                 fallback {fallback_pct:.2}% (min {MIN_FALLBACK_PCT})"
+            );
+            std::process::exit(1);
+        }
+        println!(
+            "check passed: covered {covered_pct:.2}% >= {MIN_COVERED_PCT}, \
+             fallback {fallback_pct:.2}% >= {MIN_FALLBACK_PCT}"
+        );
+    }
 }
