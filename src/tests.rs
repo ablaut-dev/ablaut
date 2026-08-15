@@ -590,3 +590,45 @@ fn haengen_intransitive_strong() {
     assert_eq!(v("hängen").conjugate(Preterite, Indicative, Third, Singular), "hing");
     assert_eq!(v("zusammenhängen").past_participle(), "zusammengehangen");
 }
+
+// ---------- analytic tenses (Layer C) ----------
+
+#[test]
+fn analytic_tenses() {
+    use AnalyticTense::*;
+    let kaufen = v("kaufen");
+    assert_eq!(kaufen.analytic(Perfect, Indicative, First, Singular), "habe gekauft");
+    assert_eq!(kaufen.analytic(Pluperfect, Indicative, Third, Singular), "hatte gekauft");
+    assert_eq!(kaufen.analytic(Perfect, KonjunktivII, First, Singular), "hätte gekauft");
+    assert_eq!(kaufen.analytic(FutureI, Indicative, First, Singular), "werde kaufen");
+    // The würde-form is FutureI in Konjunktiv II.
+    assert_eq!(kaufen.analytic(FutureI, KonjunktivII, Third, Singular), "würde kaufen");
+    assert_eq!(kaufen.analytic(FutureII, Indicative, Third, Singular), "wird gekauft haben");
+}
+
+#[test]
+fn analytic_sein_verbs() {
+    use AnalyticTense::*;
+    let kommen = v("kommen");
+    assert_eq!(kommen.analytic(Perfect, Indicative, First, Singular), "bin gekommen");
+    assert_eq!(kommen.analytic(Pluperfect, Indicative, Third, Plural), "waren gekommen");
+    assert_eq!(kommen.analytic(FutureII, Indicative, Third, Singular), "wird gekommen sein");
+    // Separable verbs fuse in the participle: bin aufgestanden.
+    assert_eq!(v("aufstehen").analytic(Perfect, Indicative, First, Singular), "bin aufgestanden");
+}
+
+#[test]
+fn aux_overrides_mined() {
+    // Change-of-state derivations flip the base's auxiliary.
+    assert_eq!(v("aufwachen").auxiliary(), Auxiliary::Sein);
+    assert_eq!(v("erkalten").auxiliary(), Auxiliary::Sein);
+    assert_eq!(v("wachen").auxiliary(), Auxiliary::Haben);
+}
+
+#[test]
+fn passives() {
+    let kaufen = v("kaufen");
+    assert_eq!(kaufen.passive(Present, Indicative, Third, Singular), "wird gekauft");
+    assert_eq!(kaufen.passive(Preterite, Indicative, Third, Singular), "wurde gekauft");
+    assert_eq!(kaufen.statal_passive(Present, Indicative, Third, Singular), "ist gekauft");
+}

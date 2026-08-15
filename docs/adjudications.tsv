@@ -24,3 +24,4 @@ nennen	V;SBJV;PL;2;PST	ours	See nennen SBJV;SG;1;PST
 nennen	V;SBJV;PL;3;PST	ours	See nennen SBJV;SG;1;PST
 wissen	V;IMP;SG;2	ours	wisse! exists (Duden: wisse, dass...); UniMorph marks the imperative nonexistent
 wissen	V;IMP;PL;2	ours	wisst! exists; UniMorph marks the imperative nonexistent
+wachen	V;AUX	ours	wachen takes haben (ich habe gewacht, Duden); kaikki/Wiktionary lists sein

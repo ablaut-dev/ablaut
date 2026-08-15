@@ -57,6 +57,10 @@ struct Lexicon {
     /// denominal from Ring, not strong ringen). Maps lemma →
     /// (prefix, behavior, force_weak_base).
     dual: HashMap<&'static str, (&'static str, Separability, bool)>,
+    /// Class "a": per-lexeme perfect-auxiliary overrides. Prefixed verbs
+    /// inherit their base's auxiliary by default, which change-of-state
+    /// derivations flip (wachen: haben → aufwachen: sein).
+    aux: HashMap<&'static str, Auxiliary>,
 }
 
 fn parse(tsv: &'static str) -> Lexicon {
@@ -73,6 +77,15 @@ fn parse(tsv: &'static str) -> Lexicon {
             "p" => LexClass::PreteritePresent,
             "w" => {
                 lex.forced_weak.insert(f[0]);
+                continue;
+            }
+            "a" => {
+                let aux = if f[7] == "s" {
+                    Auxiliary::Sein
+                } else {
+                    Auxiliary::Haben
+                };
+                lex.aux.insert(f[0], aux);
                 continue;
             }
             "i" | "x" | "iw" | "xw" => {
@@ -126,4 +139,8 @@ pub(crate) fn is_forced_weak(infinitive: &str) -> bool {
 
 pub(crate) fn dual_override(infinitive: &str) -> Option<(&'static str, Separability, bool)> {
     lexicon().dual.get(infinitive).copied()
+}
+
+pub(crate) fn aux_override(infinitive: &str) -> Option<Auxiliary> {
+    lexicon().aux.get(infinitive).copied()
 }

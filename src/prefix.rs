@@ -94,6 +94,7 @@ const SEPARABLE: &[&str] = &[
     "platt",
     "blau",
     "dank",
+    "fehl",
     "frei",
     "kalt",
     "kund",
