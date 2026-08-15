@@ -80,11 +80,11 @@ wasm-pack build --target web -- --features wasm
 ```
 
 ```js
-import init, { conjugation_table } from "./pkg/ablaut.js";
+import init, { conjugate } from "./pkg/ablaut.js";
 await init();
-const t = conjugation_table("aufstehen");
-t.present[0];       // "stehe auf"
-t.zuInfinitive;     // "aufzustehen"
+const c = conjugate("aufstehen");
+c.present[0];       // "stehe auf"
+c.zuInfinitive;     // "aufzustehen"
 ```
 
 ## Coverage
