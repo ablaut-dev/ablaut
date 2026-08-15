@@ -1,10 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
   <title>ablaut</title>
-  <text x="64" y="98"
-        text-anchor="middle"
+  <rect x="8" y="8" width="112" height="112" rx="26" fill="#e8590c"/>
+  <text x="64" y="96" text-anchor="middle"
         font-family="Iowan Old Style, Palatino Linotype, Palatino, Georgia, serif"
-        font-style="italic"
-        font-weight="600"
-        font-size="118"
-        fill="#e8590c">a</text>
+        font-style="italic" font-weight="600" font-size="92" fill="#ffffff">a</text>
 </svg>
