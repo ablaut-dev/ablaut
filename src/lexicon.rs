@@ -44,8 +44,16 @@ fn opt(field: &str) -> Option<String> {
     (field != "-").then(|| field.to_string())
 }
 
-fn parse(tsv: &'static str) -> HashMap<&'static str, LexEntry> {
-    let mut map = HashMap::new();
+#[derive(Default)]
+struct Lexicon {
+    entries: HashMap<&'static str, LexEntry>,
+    /// Class "w": whole-word weak verbs that must never be decomposed into
+    /// prefix + base (abonnieren is not ab+onnieren).
+    forced_weak: std::collections::HashSet<&'static str>,
+}
+
+fn parse(tsv: &'static str) -> Lexicon {
+    let mut lex = Lexicon::default();
     for line in tsv.lines() {
         if line.is_empty() || line.starts_with('#') {
             continue;
@@ -56,6 +64,10 @@ fn parse(tsv: &'static str) -> HashMap<&'static str, LexEntry> {
             "s" => LexClass::Strong,
             "m" => LexClass::Mixed,
             "p" => LexClass::PreteritePresent,
+            "w" => {
+                lex.forced_weak.insert(f[0]);
+                continue;
+            }
             c => panic!("unknown class {c} in lexicon line: {line}"),
         };
         let aux = match f[7] {
@@ -63,7 +75,7 @@ fn parse(tsv: &'static str) -> HashMap<&'static str, LexEntry> {
             "s" => Auxiliary::Sein,
             a => panic!("unknown auxiliary {a} in lexicon line: {line}"),
         };
-        map.insert(
+        lex.entries.insert(
             f[0],
             LexEntry {
                 class,
@@ -76,10 +88,18 @@ fn parse(tsv: &'static str) -> HashMap<&'static str, LexEntry> {
             },
         );
     }
-    map
+    lex
+}
+
+fn lexicon() -> &'static Lexicon {
+    static LEX: OnceLock<Lexicon> = OnceLock::new();
+    LEX.get_or_init(|| parse(TSV))
 }
 
 pub(crate) fn lookup(infinitive: &str) -> Option<&'static LexEntry> {
-    static MAP: OnceLock<HashMap<&'static str, LexEntry>> = OnceLock::new();
-    MAP.get_or_init(|| parse(TSV)).get(infinitive)
+    lexicon().entries.get(infinitive)
+}
+
+pub(crate) fn is_forced_weak(infinitive: &str) -> bool {
+    lexicon().forced_weak.contains(infinitive)
 }

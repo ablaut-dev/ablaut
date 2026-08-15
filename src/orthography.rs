@@ -33,14 +33,10 @@ fn coalesces_s(stem: &str) -> bool {
 /// stem — `spiel-` also ends in "el" but never elides.
 pub(crate) fn attach(stem: &str, ending: &str, schwa_stem: bool) -> String {
     // 1sg-style bare `-e` on an -eln stem: the stem's schwa elides (sammle).
+    // Fuller e-initial endings keep their e (Konjunktiv I du sammelest);
+    // dropping it would collapse Konjunktiv I into the indicative.
     if schwa_stem && ending == "e" && stem.ends_with("el") {
         return format!("{}le", &stem[..stem.len() - 2]);
-    }
-    // Schwa stems drop the e of e-initial endings: KonjI du sammelst, ihr wandert.
-    if schwa_stem && ending.len() > 1 {
-        if let Some(rest) = ending.strip_prefix('e') {
-            return format!("{stem}{rest}");
-        }
     }
     // s-coalescence: 2sg present -st loses its s (du tanzt).
     if ending == "st" && coalesces_s(stem) {

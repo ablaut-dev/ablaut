@@ -37,6 +37,7 @@ fn generate(verb: &Verb, features: &str) -> Option<Option<String>> {
     let f: Vec<&str> = features.split(';').collect();
     match f.as_slice() {
         ["V", "NFIN"] => Some(Some(verb.infinitive().to_string())),
+        ["V", "NFIN", "LGSPEC01"] => Some(Some(verb.zu_infinitive())),
         ["V.PTCP", "PRS"] => Some(Some(verb.present_participle())),
         ["V.PTCP", "PST"] => Some(Some(verb.past_participle())),
         ["V", "IMP", n, "2"] => Some(verb.imperative(number(n)?)),
@@ -60,7 +61,7 @@ fn category(features: &str) -> &'static str {
         "participle"
     } else if features.starts_with("V;IMP") {
         "imperative"
-    } else if features == "V;NFIN" {
+    } else if features.starts_with("V;NFIN") {
         "infinitive"
     } else if features.starts_with("V;IND") && features.ends_with("PRS") {
         "present"
@@ -116,7 +117,20 @@ fn main() {
         })
         .collect();
 
-    let lemmas: HashSet<&str> = gold.keys().map(|(l, _)| *l).collect();
+    // Corrupt gold entries: if the dataset's own V;NFIN form disagrees with
+    // the lemma (einknicken → "knicken"), the whole paradigm is untrustworthy.
+    let corrupt: HashSet<&str> = gold
+        .iter()
+        .filter(|((_, feat), forms)| *feat == "V;NFIN" && !forms.is_empty())
+        .filter(|((lemma, _), forms)| !forms.contains(lemma))
+        .map(|((lemma, _), _)| *lemma)
+        .collect();
+
+    let lemmas: HashSet<&str> = gold
+        .keys()
+        .map(|(l, _)| *l)
+        .filter(|l| !corrupt.contains(l))
+        .collect();
     let mut by_category: BTreeMap<(&str, bool), Tally> = BTreeMap::new();
     let mut lemma_errors: HashMap<&str, usize> = HashMap::new();
     let mut mismatches = String::new();
@@ -193,6 +207,7 @@ fn main() {
     println!("== ablaut vs UniMorph deu ==");
     println!("lemmas: {} total, {} lexicon-covered", lemmas.len(), covered_lemmas);
     println!("adjudicated forms counted as correct: {adjudicated_hits}");
+    println!("corrupt-gold lemmas excluded (NFIN ≠ lemma): {}", corrupt.len());
     println!();
     println!(
         "lexicon-covered forms: {cov_matched}/{cov_total} ({:.2}%)",
