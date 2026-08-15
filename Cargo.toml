@@ -2,7 +2,7 @@
 name = "ablaut"
 version = "0.1.1"
 edition = "2021"
-description = "A fast, correct German verb conjugator grounded in the linguistics of German inflection"
+description = "A fast, correct German verb conjugator"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/v4nn4/ablaut"
 keywords = ["german", "conjugation", "morphology", "nlp", "linguistics"]
