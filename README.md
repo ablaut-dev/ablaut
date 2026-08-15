@@ -63,11 +63,12 @@ pip install ablaut
 ```python
 import ablaut
 
-t = ablaut.conjugation_table("aufstehen")
-t["present"][0]     # "stehe auf"
-t["perfect"][0]     # "bin aufgestanden"
-t["auxiliary"]      # "sein"
-t["imperative"]     # [None, None] for modals
+c = ablaut.conjugate("aufstehen")
+c.present[0]        # "stehe auf"
+c.perfect[0]        # "bin aufgestanden"
+c.auxiliary         # "sein"
+c.zu_infinitive     # "aufzustehen"
+c.imperative        # [None, None] for modals
 ```
 
 Wheels are abi3 (Python 3.9+); no Rust toolchain needed.
