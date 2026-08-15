@@ -25,3 +25,6 @@ nennen	V;SBJV;PL;3;PST	ours	See nennen SBJV;SG;1;PST
 wissen	V;IMP;SG;2	ours	wisse! exists (Duden: wisse, dass...); UniMorph marks the imperative nonexistent
 wissen	V;IMP;PL;2	ours	wisst! exists; UniMorph marks the imperative nonexistent
 wachen	V;AUX	ours	wachen takes haben (ich habe gewacht, Duden); kaikki/Wiktionary lists sein
+entgelten	*	ours	entgelten is strong (entgalt, entgolten, Duden); gold gives weak entgeltete forms
+reinwaschen	*	ours	Strong waschen base (wusch rein, reingewaschen); gold lists weak waschte forms only
+wegbegeben	*	ours	Conjugates like geben (begibst weg, wegbegeben); gold lists weak begebst/wegbegebt forms

@@ -155,6 +155,7 @@ impl Verb {
                 // inseparable inner stays nested (an+vertrauen: vertraute an).
                 let (p, base) = match (sep, &base.prefix) {
                     (Separability::Separable, Some((inner, Separability::Separable)))
+                    | (Separability::Fused, Some((inner, Separability::Separable)))
                     | (Separability::Inseparable, Some((inner, _))) => {
                         let fused = format!("{p}{inner}");
                         let inner_base = (**base.base.as_ref().expect("prefixed")).clone();
@@ -182,7 +183,10 @@ impl Verb {
         let schwa_stem = infinitive.ends_with("eln") || infinitive.ends_with("ern");
         // knien-type verbs (consonant + -ien) keep the e in their stem:
         // ich knie, du kniest, gekniet. -eien verbs (schreien) do not.
-        let ien_stem = infinitive.ends_with("ien") && !infinitive.ends_with("eien");
+        let ien_stem = infinitive
+            .strip_suffix("ien")
+            .and_then(|pre| pre.chars().last())
+            .is_some_and(|c| !is_vowel(c));
         let stem = if schwa_stem || ien_stem {
             infinitive.strip_suffix('n')
         } else {
@@ -236,7 +240,7 @@ impl Verb {
     /// otherwise it is the particle zu plus the infinitive (zu kaufen).
     pub fn zu_infinitive(&self) -> String {
         match &self.prefix {
-            Some((p, Separability::Separable)) => {
+            Some((p, Separability::Separable | Separability::Fused)) => {
                 format!("{p}zu{}", self.base().infinitive())
             }
             // Rad zu fahren: the particle stays free, zu stays a particle.
@@ -356,7 +360,7 @@ impl Verb {
             let f = self.base().conjugate(tense, mood, person, number);
             return match sep {
                 Separability::Separable | Separability::Phrasal => format!("{f} {prefix}"),
-                Separability::Inseparable => format!("{prefix}{f}"),
+                Separability::Inseparable | Separability::Fused => format!("{prefix}{f}"),
             };
         }
         let i = person.index(number);
@@ -398,7 +402,7 @@ impl Verb {
                     // Changed-stem 3sg: stems already ending in a dental take
                     // no further -t (er hält, er rät).
                     (LexClass::Strong | LexClass::Mixed, 2) => {
-                        return if pres.ends_with('t') || pres.ends_with('d') {
+                        return if pres.ends_with('t') || pres.ends_with("th") {
                             pres.clone()
                         } else {
                             format!("{pres}t")
@@ -446,7 +450,7 @@ impl Verb {
             let imp = self.base().imperative(number)?;
             return Some(match sep {
                 Separability::Separable | Separability::Phrasal => format!("{imp} {prefix}"),
-                Separability::Inseparable => format!("{prefix}{imp}"),
+                Separability::Inseparable | Separability::Fused => format!("{prefix}{imp}"),
             });
         }
         match (&self.class, number) {
@@ -502,8 +506,9 @@ impl Verb {
         if let Some((prefix, sep)) = &self.prefix {
             let base = self.base().past_participle();
             return match sep {
-                // Separable prefixes infix ge- (auf·ge·standen).
-                Separability::Separable => format!("{prefix}{base}"),
+                // Separable and fused prefixes infix ge- (auf·ge·standen,
+                // lob·ge·sungen).
+                Separability::Separable | Separability::Fused => format!("{prefix}{base}"),
                 // Inseparable prefixes suppress it (verstanden).
                 Separability::Inseparable => {
                     format!("{prefix}{}", base.strip_prefix("ge").unwrap_or(&base))
@@ -540,10 +545,34 @@ impl Verb {
 /// do: their stem has no vowel before the -ier- (schm-, z-), while Latinate
 /// stems always do (stud-, prob-).
 fn latinate_ieren(infinitive: &str) -> bool {
-    infinitive.strip_suffix("ieren").is_some_and(|pre| {
-        pre.chars()
-            .any(|c| matches!(c, 'a' | 'e' | 'i' | 'o' | 'u' | 'ä' | 'ö' | 'ü' | 'y'))
-    })
+    infinitive
+        .strip_suffix("ieren")
+        .or_else(|| infinitive.strip_suffix("iren"))
+        .is_some_and(|pre| pre.chars().any(is_vowel))
+}
+
+/// Vowels for plausibility checks, including accented loan-word vowels
+/// (crèmen must not look vowel-less).
+fn is_vowel(c: char) -> bool {
+    matches!(
+        c,
+        'a' | 'e'
+            | 'i'
+            | 'o'
+            | 'u'
+            | 'ä'
+            | 'ö'
+            | 'ü'
+            | 'y'
+            | 'à'
+            | 'â'
+            | 'è'
+            | 'é'
+            | 'ê'
+            | 'î'
+            | 'ô'
+            | 'û'
+    )
 }
 
 /// Is this remainder of a prefix split a plausible verb on its own? Lexicon
@@ -576,7 +605,6 @@ fn plausible_base(base: &str) -> bool {
         } else {
             3
         };
-        let is_vowel = |c: char| matches!(c, 'a' | 'e' | 'i' | 'o' | 'u' | 'ä' | 'ö' | 'ü' | 'y');
         let stem: Vec<char> = v.stem.chars().collect();
         // Schwa stems must have a vowel before their -el/-er syllable, or the
         // "vowel" is just the schwa itself (ge+ndern, da+ckeln are not verbs).
