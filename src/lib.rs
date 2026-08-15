@@ -313,6 +313,37 @@ impl Verb {
         )
     }
 
+    /// The perfect infinitive (Infinitiv II): *gekauft haben*,
+    /// *aufgestanden sein*.
+    pub fn perfect_infinitive(&self) -> String {
+        let aux = match self.auxiliary() {
+            Auxiliary::Haben => "haben",
+            Auxiliary::Sein => "sein",
+        };
+        format!("{} {aux}", self.past_participle())
+    }
+
+    /// The adhortative (1pl) imperative: *stehen wir auf!*, *seien wir!*.
+    /// Built on Konjunktiv I, which is why *sein* comes out right.
+    pub fn imperative_first_plural(&self) -> String {
+        self.imperative_with_pronoun("wir", Person::First)
+    }
+
+    /// The polite (Sie) imperative: *stehen Sie auf!*, *seien Sie!*.
+    pub fn imperative_polite(&self) -> String {
+        self.imperative_with_pronoun("Sie", Person::Third)
+    }
+
+    /// Verb-first Konjunktiv I plural with the pronoun inserted after the
+    /// finite verb (before any separable particle: *stehen wir auf*).
+    fn imperative_with_pronoun(&self, pronoun: &str, person: Person) -> String {
+        let form = self.conjugate(Tense::Present, Mood::KonjunktivI, person, Number::Plural);
+        match form.split_once(' ') {
+            Some((finite, rest)) => format!("{finite} {pronoun} {rest}"),
+            None => format!("{form} {pronoun}"),
+        }
+    }
+
     fn base(&self) -> &Verb {
         self.base.as_ref().expect("prefixed verb has a base")
     }
