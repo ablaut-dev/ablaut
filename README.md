@@ -71,7 +71,7 @@ c.zu_infinitive     # "aufzustehen"
 c.imperative        # [None, None] for modals
 ```
 
-Wheels are abi3 (Python 3.10+); no Rust toolchain needed.
+Wheels are abi3 (Python 3.11+); no Rust toolchain needed.
 
 ### WebAssembly
 
