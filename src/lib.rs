@@ -15,7 +15,10 @@ mod features;
 mod lexicon;
 mod orthography;
 mod prefix;
+#[cfg(feature = "python")]
+mod python;
 mod suppletive;
+pub mod table;
 #[cfg(feature = "wasm")]
 mod wasm;
 
