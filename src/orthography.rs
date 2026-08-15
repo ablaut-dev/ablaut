@@ -75,7 +75,7 @@ fn coalesces_s(stem: &str) -> bool {
 /// (*ich sammle*, *du sammelst* rather than \**sammelest* in Konjunktiv I).
 /// It must be a lexical/infinitive-derived flag, not a surface check on the
 /// stem — `spiel-` also ends in "el" but never elides.
-pub(crate) fn attach(stem: &str, ending: &str, schwa_stem: bool) -> String {
+pub(crate) fn attach(stem: &str, ending: &str, schwa_stem: bool, merge_e: bool) -> String {
     // 1sg-style bare `-e` on an -eln stem: the stem's schwa elides (sammle).
     // Fuller e-initial endings keep their e (Konjunktiv I du sammelest);
     // dropping it would collapse Konjunktiv I into the indicative.
@@ -83,8 +83,9 @@ pub(crate) fn attach(stem: &str, ending: &str, schwa_stem: bool) -> String {
         return format!("{}le", &stem[..stem.len() - 2]);
     }
     // Stem-final e merges with an e-initial ending (knie+e → knie,
-    // knie+est → kniest).
-    if stem.ends_with('e') {
+    // knie+est → kniest) — unless the verb's paradigm keeps both e's
+    // (archaic knieen: ich kniee).
+    if merge_e && stem.ends_with('e') {
         if let Some(rest) = ending.strip_prefix('e') {
             return format!("{stem}{rest}");
         }
@@ -117,8 +118,8 @@ mod tests {
 
     #[test]
     fn coalescence() {
-        assert_eq!(attach("tanz", "st", false), "tanzt");
-        assert_eq!(attach("heiß", "st", false), "heißt");
-        assert_eq!(attach("kauf", "st", false), "kaufst");
+        assert_eq!(attach("tanz", "st", false, true), "tanzt");
+        assert_eq!(attach("heiß", "st", false, true), "heißt");
+        assert_eq!(attach("kauf", "st", false, true), "kaufst");
     }
 }
