@@ -560,3 +560,33 @@ fn adverbial_particles() {
     );
     assert_eq!(v("aufrechterhalten").conjugate(Present, Indicative, Third, Singular), "erhält aufrecht");
 }
+
+#[test]
+fn native_vs_latinate_ieren() {
+    // Native -ieren (Germanic stem): ge- participle, splittable.
+    assert_eq!(v("schmieren").past_participle(), "geschmiert");
+    assert_eq!(v("anschmieren").past_participle(), "angeschmiert");
+    // Latinate -ieren: no ge-, never split by guesswork…
+    assert_eq!(v("standardisieren").past_participle(), "standardisiert");
+    assert_eq!(v("antworten").past_participle(), "geantwortet");
+    // …but mined x rulings recover the real separable compounds.
+    assert_eq!(v("abkommandieren").past_participle(), "abkommandiert");
+    assert_eq!(
+        v("abkommandieren").conjugate(Present, Indicative, First, Singular),
+        "kommandiere ab"
+    );
+}
+
+#[test]
+fn beinhalten_beauftragen_frozen_weak() {
+    assert_eq!(v("beinhalten").conjugate(Present, Indicative, Third, Singular), "beinhaltet");
+    assert_eq!(v("beinhalten").past_participle(), "beinhaltet");
+    assert_eq!(v("beauftragen").conjugate(Preterite, Indicative, Third, Singular), "beauftragte");
+    assert_eq!(v("beauftragen").past_participle(), "beauftragt");
+}
+
+#[test]
+fn haengen_intransitive_strong() {
+    assert_eq!(v("hängen").conjugate(Preterite, Indicative, Third, Singular), "hing");
+    assert_eq!(v("zusammenhängen").past_participle(), "zusammengehangen");
+}
