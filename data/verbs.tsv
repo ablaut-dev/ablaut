@@ -1,0 +1,74 @@
+# Exception lexicon: strong (s), mixed (m), and preterite-present (p) verbs.
+# Columns: infinitive, class, pres (2/3sg stem for s/m; full-singular stem for p),
+#          pret (preterite stem), konj2 (Konjunktiv II stem), part2 (full participle),
+#          imp (2sg imperative override), aux (h=haben, s=sein).
+# "-" means: not applicable / derive by rule.
+#
+# infinitive	class	pres	pret	konj2	part2	imp	aux
+beginnen	s	-	begann	begänn	begonnen	-	h
+bieten	s	-	bot	böt	geboten	-	h
+bitten	s	-	bat	bät	gebeten	-	h
+bleiben	s	-	blieb	blieb	geblieben	-	s
+brechen	s	brich	brach	bräch	gebrochen	brich	h
+essen	s	iss	aß	äß	gegessen	iss	h
+fahren	s	fähr	fuhr	führ	gefahren	-	s
+fallen	s	fäll	fiel	fiel	gefallen	-	s
+fangen	s	fäng	fing	fing	gefangen	-	h
+finden	s	-	fand	fänd	gefunden	-	h
+fliegen	s	-	flog	flög	geflogen	-	s
+fließen	s	-	floss	flöss	geflossen	-	s
+geben	s	gib	gab	gäb	gegeben	gib	h
+gehen	s	-	ging	ging	gegangen	-	s
+gewinnen	s	-	gewann	gewänn	gewonnen	-	h
+greifen	s	-	griff	griff	gegriffen	-	h
+halten	s	hält	hielt	hielt	gehalten	-	h
+heißen	s	-	hieß	hieß	geheißen	-	h
+helfen	s	hilf	half	hülf	geholfen	hilf	h
+kommen	s	-	kam	käm	gekommen	-	s
+lassen	s	läss	ließ	ließ	gelassen	-	h
+laufen	s	läuf	lief	lief	gelaufen	-	s
+lesen	s	lies	las	läs	gelesen	lies	h
+liegen	s	-	lag	läg	gelegen	-	h
+nehmen	s	nimm	nahm	nähm	genommen	nimm	h
+raten	s	rät	riet	riet	geraten	-	h
+rufen	s	-	rief	rief	gerufen	-	h
+schlafen	s	schläf	schlief	schlief	geschlafen	-	h
+schlagen	s	schläg	schlug	schlüg	geschlagen	-	h
+schließen	s	-	schloss	schlöss	geschlossen	-	h
+schneiden	s	-	schnitt	schnitt	geschnitten	-	h
+schreiben	s	-	schrieb	schrieb	geschrieben	-	h
+schwimmen	s	-	schwamm	schwämm	geschwommen	-	s
+sehen	s	sieh	sah	säh	gesehen	sieh	h
+singen	s	-	sang	säng	gesungen	-	h
+sitzen	s	-	saß	säß	gesessen	-	h
+sprechen	s	sprich	sprach	spräch	gesprochen	sprich	h
+springen	s	-	sprang	spräng	gesprungen	-	s
+stehen	s	-	stand	stünd	gestanden	-	h
+steigen	s	-	stieg	stieg	gestiegen	-	s
+sterben	s	stirb	starb	stürb	gestorben	stirb	s
+stoßen	s	stöß	stieß	stieß	gestoßen	-	h
+tragen	s	träg	trug	trüg	getragen	-	h
+treffen	s	triff	traf	träf	getroffen	triff	h
+trinken	s	-	trank	tränk	getrunken	-	h
+vergessen	s	vergiss	vergaß	vergäß	vergessen	vergiss	h
+verlieren	s	-	verlor	verlör	verloren	-	h
+wachsen	s	wächs	wuchs	wüchs	gewachsen	-	s
+waschen	s	wäsch	wusch	wüsch	gewaschen	-	h
+werfen	s	wirf	warf	würf	geworfen	wirf	h
+ziehen	s	-	zog	zög	gezogen	-	h
+brennen	m	-	brannt	brennt	gebrannt	-	h
+bringen	m	-	bracht	brächt	gebracht	-	h
+denken	m	-	dacht	dächt	gedacht	-	h
+haben	m	ha	hatt	hätt	gehabt	-	h
+kennen	m	-	kannt	kennt	gekannt	-	h
+nennen	m	-	nannt	nennt	genannt	-	h
+rennen	m	-	rannt	rennt	gerannt	-	s
+senden	m	-	sandt	sendet	gesandt	-	h
+wenden	m	-	wandt	wendet	gewandt	-	h
+dürfen	p	darf	durft	dürft	gedurft	-	h
+können	p	kann	konnt	könnt	gekonnt	-	h
+mögen	p	mag	mocht	möcht	gemocht	-	h
+müssen	p	muss	musst	müsst	gemusst	-	h
+sollen	p	soll	sollt	sollt	gesollt	-	h
+wissen	p	weiß	wusst	wüsst	gewusst	wisse	h
+wollen	p	will	wollt	wollt	gewollt	-	h

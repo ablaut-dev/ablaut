@@ -25,15 +25,27 @@ domain that doubles as the design spec.
 
 ## Status
 
-Early. Current coverage: the weak (regular) paradigm — Präsens, Präteritum,
-Konjunktiv I/II, imperative, both participles — with the full set of
-orthographic surface rules (*e*-epenthesis, *s*-coalescence, *-eln/-ern*
-schwa elision, *-ieren* participles).
+Early. Current coverage — all synthetic forms (Präsens, Präteritum,
+Konjunktiv I/II, imperative, both participles) for all five inflection
+classes:
+
+- **weak** (the productive default) with the full orthographic rule set
+  (*e*-epenthesis, *s*-coalescence, *-eln/-ern* schwa elision, *-ieren*
+  participles)
+- **strong** (ablaut) with 2/3sg stem alternation (*sprichst*, *fährt*,
+  *hältst* without epenthesis)
+- **mixed** (*dachte*, *sandte*)
+- **preterite-present** — the *Präteritopräsentia*: modals + *wissen*
+  (*ich kann*, no imperative)
+- **suppletive** (*sein*, *werden*, *tun*), stored outright
+
+The exception lexicon lives in [`data/verbs.tsv`](data/verbs.tsv)
+(~70 seed verbs), human-readable and compiled into the binary.
 
 Next, in order:
 
-- [ ] Strong/mixed/suppletive verbs as a compiled-in exception lexicon
-- [ ] Golden-test harness against UniMorph `deu` (6,810 verbs) and kaikki.org
+- [ ] Golden-test harness against UniMorph `deu` (6,810 verbs) and kaikki.org;
+      grow the lexicon to the full ~200 strong lemmas from its diff
 - [ ] Prefix system (separable / inseparable / dual)
 - [ ] Compositional layer: analytic tenses (Perfekt, Futur, passives)
 - [ ] WASM + Python (PyO3) bindings
