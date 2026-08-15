@@ -51,21 +51,22 @@ The golden harness (`scripts/fetch_unimorph.sh`, then
 
 | slice | accuracy |
 |---|---|
-| lexicon-covered lemmas (68) | **1968/1968 = 100.00%** |
-| weak-fallback lemmas (6,593) | 62.45% |
+| lexicon-grounded lemmas (879, incl. prefixed derivatives) | 96.19% |
+| weak-fallback lemmas (5,742) | 91.77% |
 
 Every disagreement with the gold data is ruled on in
 [`docs/adjudications.tsv`](docs/adjudications.tsv) with a reference —
 including genuine UniMorph errors found so far (*nennte* given as *nannte*;
-*wisse!* marked nonexistent). The fallback number is expected debt: its
-errors are overwhelmingly separable-prefix verbs (gold: *knickte ein*) and
-strong lemmas not yet in the lexicon.
+*wisse!* marked nonexistent; corrupt paradigms auto-excluded when gold's own
+infinitive contradicts its lemma). The remaining gap is dominated by strong
+lemmas not yet in the seed lexicon (preterite/Konjunktiv II rows) — every
+lemma added also fixes all its prefixed derivatives.
 
 Next, in order:
 
 - [ ] Grow the lexicon toward the full ~200 strong lemmas from the
       fallback diff; add kaikki.org as a second oracle
-- [ ] Prefix system (separable / inseparable / dual)
+- [ ] Per-lexeme dual-prefix flags (übersetzen/umringen inseparable senses)
 - [ ] Compositional layer: analytic tenses (Perfekt, Futur, passives)
 - [ ] WASM + Python (PyO3) bindings
 

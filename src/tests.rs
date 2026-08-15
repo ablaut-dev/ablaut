@@ -360,3 +360,122 @@ fn tun_full() {
     assert_eq!(v.conjugate(Present, KonjunktivII, First, Singular), "täte");
     assert_eq!(v.past_participle(), "getan");
 }
+
+// ---------- prefixed verbs ----------
+
+#[test]
+fn aufstehen_separable() {
+    let v = v("aufstehen");
+    assert_eq!(v.conjugate(Present, Indicative, First, Singular), "stehe auf");
+    assert_eq!(v.conjugate(Present, Indicative, First, Plural), "stehen auf");
+    assert_eq!(v.conjugate(Preterite, Indicative, Third, Singular), "stand auf");
+    assert_eq!(v.conjugate(Present, KonjunktivII, First, Singular), "stünde auf");
+    assert_eq!(v.past_participle(), "aufgestanden");
+    assert_eq!(v.zu_infinitive(), "aufzustehen");
+    assert_eq!(v.imperative(Singular).unwrap(), "steh auf");
+    assert_eq!(v.present_participle(), "aufstehend");
+    assert!(v.is_lexical());
+}
+
+#[test]
+fn verstehen_inseparable() {
+    let v = v("verstehen");
+    assert_eq!(v.conjugate(Present, Indicative, First, Singular), "verstehe");
+    assert_eq!(v.conjugate(Preterite, Indicative, Third, Singular), "verstand");
+    assert_eq!(v.past_participle(), "verstanden");
+    assert_eq!(v.zu_infinitive(), "zu verstehen");
+}
+
+#[test]
+fn ansehen_inherits_stem_alternation() {
+    let v = v("ansehen");
+    assert_eq!(v.conjugate(Present, Indicative, Second, Singular), "siehst an");
+    assert_eq!(v.imperative(Singular).unwrap(), "sieh an");
+}
+
+#[test]
+fn abholen_separable_weak_base() {
+    let v = v("abholen");
+    assert_eq!(v.conjugate(Preterite, Indicative, Third, Singular), "holte ab");
+    assert_eq!(v.past_participle(), "abgeholt");
+    assert!(!v.is_lexical());
+}
+
+#[test]
+fn erklaeren_inseparable_weak_base() {
+    let v = v("erklären");
+    assert_eq!(v.conjugate(Present, Indicative, Third, Singular), "erklärt");
+    assert_eq!(v.past_participle(), "erklärt");
+}
+
+#[test]
+fn anvertrauen_nested_prefixes() {
+    let v = v("anvertrauen");
+    assert_eq!(v.conjugate(Present, Indicative, First, Singular), "vertraue an");
+    assert_eq!(v.past_participle(), "anvertraut");
+    assert_eq!(v.zu_infinitive(), "anzuvertrauen");
+}
+
+#[test]
+fn einstudieren_separable_ieren() {
+    let v = v("einstudieren");
+    assert_eq!(v.past_participle(), "einstudiert");
+}
+
+#[test]
+fn false_splits_rejected() {
+    // beten is not be+ten, zucken not zu+cken, festigen not fest+igen.
+    assert_eq!(v("beten").past_participle(), "gebetet");
+    assert_eq!(v("zucken").past_participle(), "gezuckt");
+    assert_eq!(v("festigen").past_participle(), "gefestigt");
+    // abonnieren is lexically forced weak, not ab+onnieren.
+    let ab = v("abonnieren");
+    assert_eq!(ab.conjugate(Present, Indicative, First, Singular), "abonniere");
+    assert_eq!(ab.past_participle(), "abonniert");
+}
+
+#[test]
+fn voraussetzen_fused_particle() {
+    let v = v("voraussetzen");
+    assert_eq!(v.conjugate(Preterite, Indicative, Second, Plural), "setztet voraus");
+    assert_eq!(v.past_participle(), "vorausgesetzt");
+    assert_eq!(v.zu_infinitive(), "vorauszusetzen");
+}
+
+#[test]
+fn beanspruchen_frozen_inner_prefix() {
+    let v = v("beanspruchen");
+    assert_eq!(v.conjugate(Present, Indicative, First, Singular), "beanspruche");
+    assert_eq!(v.past_participle(), "beansprucht");
+}
+
+#[test]
+fn verhindern_not_ver_hin_dern() {
+    let v = v("verhindern");
+    assert_eq!(v.conjugate(Preterite, Indicative, Second, Plural), "verhindertet");
+    assert_eq!(v.past_participle(), "verhindert");
+}
+
+#[test]
+fn heranwachsen_collapsed_compound() {
+    let v = v("heranwachsen");
+    assert_eq!(v.conjugate(Present, Indicative, Third, Singular), "wächst heran");
+    assert_eq!(v.past_participle(), "herangewachsen");
+}
+
+#[test]
+fn rad_fahren_phrasal() {
+    let v = v("Rad fahren");
+    assert_eq!(v.conjugate(Present, Indicative, First, Singular), "fahre Rad");
+    assert_eq!(v.past_participle(), "Rad gefahren");
+    assert_eq!(v.present_participle(), "Rad fahrend");
+    assert_eq!(v.zu_infinitive(), "Rad zu fahren");
+    assert!(v.is_lexical());
+}
+
+#[test]
+fn konjunktiv_i_keeps_full_endings_on_schwa_stems() {
+    let v = v("sammeln");
+    assert_eq!(v.conjugate(Present, KonjunktivI, Second, Singular), "sammelest");
+    assert_eq!(v.conjugate(Present, KonjunktivI, Second, Plural), "sammelet");
+}

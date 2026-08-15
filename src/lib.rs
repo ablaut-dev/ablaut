@@ -14,11 +14,13 @@
 mod features;
 mod lexicon;
 mod orthography;
+mod prefix;
 mod suppletive;
 
 pub use features::{Mood, Number, Person, Tense};
 use lexicon::{LexClass, LexEntry};
 use orthography::attach;
+use prefix::Separability;
 use suppletive::Suppletive;
 
 /// Six-slot ending rows (1sg, 2sg, 3sg, 1pl, 2pl, 3pl).
@@ -55,6 +57,10 @@ pub struct Verb {
     /// -ieren verbs take no ge- in the past participle.
     ieren: bool,
     class: Class,
+    /// Derived prefixed verb (aufstehen): the prefix and its behavior…
+    prefix: Option<(String, Separability)>,
+    /// …and the base verb whose paradigm it inherits (stehen).
+    base: Option<Box<Verb>>,
 }
 
 /// Errors raised when constructing a [`Verb`].
@@ -79,6 +85,20 @@ impl Verb {
     /// and falling back to the productive weak paradigm. This is the main
     /// entry point.
     pub fn from_infinitive(infinitive: &str) -> Result<Self, Error> {
+        // Multiword lemmas (Rad fahren, Bescheid wissen): the last word
+        // conjugates; the rest is a phrasal particle.
+        if let Some((particle, verb)) = infinitive.rsplit_once(' ') {
+            let base = Self::from_infinitive(verb)?;
+            return Ok(Verb {
+                infinitive: infinitive.to_string(),
+                stem: String::new(),
+                schwa_stem: false,
+                ieren: false,
+                class: Class::Weak,
+                prefix: Some((particle.to_string(), Separability::Phrasal)),
+                base: Some(Box::new(base)),
+            });
+        }
         if let Some(s) = suppletive::lookup(infinitive) {
             return Ok(Verb {
                 infinitive: infinitive.to_string(),
@@ -86,13 +106,45 @@ impl Verb {
                 schwa_stem: false,
                 ieren: false,
                 class: Class::Suppletive(s),
+                prefix: None,
+                base: None,
             });
         }
-        let mut v = Self::weak(infinitive)?;
         if let Some(entry) = lexicon::lookup(infinitive) {
+            let mut v = Self::weak(infinitive)?;
             v.class = Class::Lexical(entry);
+            return Ok(v);
         }
-        Ok(v)
+        // Prefixed verbs are derived: aufstehen inherits stehen's paradigm.
+        if !lexicon::is_forced_weak(infinitive) {
+            if let Some((p, sep, base)) = prefix::split(infinitive, plausible_base) {
+                let base = Self::from_infinitive(base)?;
+                // Multi-part particles fuse into one unit (vor+aus·setzen →
+                // voraus·setzen: setzte voraus, not *setzte aus vor); an
+                // inseparable outer freezes any inner prefix (be+an·spruchen
+                // → bean·spruchen: beanspruchte). A separable outer over an
+                // inseparable inner stays nested (an+vertrauen: vertraute an).
+                let (p, base) = match (sep, &base.prefix) {
+                    (Separability::Separable, Some((inner, Separability::Separable)))
+                    | (Separability::Inseparable, Some((inner, _))) => {
+                        let fused = format!("{p}{inner}");
+                        let inner_base = (**base.base.as_ref().expect("prefixed")).clone();
+                        (fused, inner_base)
+                    }
+                    _ => (p.to_string(), base),
+                };
+                return Ok(Verb {
+                    infinitive: infinitive.to_string(),
+                    stem: String::new(),
+                    schwa_stem: false,
+                    ieren: false,
+                    class: Class::Weak,
+                    prefix: Some((p, sep)),
+                    base: Some(Box::new(base)),
+                });
+            }
+        }
+        Self::weak(infinitive)
     }
 
     /// Build a verb forced into the weak (regular) paradigm, bypassing the
@@ -114,6 +166,8 @@ impl Verb {
             schwa_stem,
             ieren: infinitive.ends_with("ieren"),
             class: Class::Weak,
+            prefix: None,
+            base: None,
         })
     }
 
@@ -121,23 +175,59 @@ impl Verb {
         &self.infinitive
     }
 
-    /// True if this verb has an exception-lexicon entry or a suppletive
-    /// paradigm, i.e. is not conjugated by the productive weak fallback.
+    /// True if this verb's paradigm is grounded in the exception lexicon or
+    /// a suppletive entry (directly, or through its base for prefixed verbs),
+    /// i.e. not conjugated by the productive weak fallback.
     pub fn is_lexical(&self) -> bool {
-        !matches!(self.class, Class::Weak)
-    }
-
-    /// The perfect auxiliary (*haben* or *sein*).
-    pub fn auxiliary(&self) -> Auxiliary {
-        match &self.class {
-            Class::Weak => Auxiliary::Haben,
-            Class::Lexical(e) => e.aux,
-            Class::Suppletive(s) => s.aux,
+        match &self.base {
+            Some(base) => base.is_lexical(),
+            None => !matches!(self.class, Class::Weak),
         }
     }
 
-    /// A finite synthetic form.
+    /// The perfect auxiliary (*haben* or *sein*). Prefixed verbs currently
+    /// inherit their base's auxiliary — wrong for cases like aufstehen
+    /// (sein) vs stehen (haben); per-lexeme auxiliary flags are future
+    /// lexicon work.
+    pub fn auxiliary(&self) -> Auxiliary {
+        match (&self.base, &self.class) {
+            (Some(base), _) => base.auxiliary(),
+            (None, Class::Weak) => Auxiliary::Haben,
+            (None, Class::Lexical(e)) => e.aux,
+            (None, Class::Suppletive(s)) => s.aux,
+        }
+    }
+
+    /// The zu-infinitive: separable prefixes infix zu (aufzustehen);
+    /// otherwise it is the particle zu plus the infinitive (zu kaufen).
+    pub fn zu_infinitive(&self) -> String {
+        match &self.prefix {
+            Some((p, Separability::Separable)) => {
+                format!("{p}zu{}", self.base().infinitive())
+            }
+            // Rad zu fahren: the particle stays free, zu stays a particle.
+            Some((p, Separability::Phrasal)) => {
+                format!("{p} zu {}", self.base().infinitive())
+            }
+            _ => format!("zu {}", self.infinitive),
+        }
+    }
+
+    fn base(&self) -> &Verb {
+        self.base.as_ref().expect("prefixed verb has a base")
+    }
+
+    /// A finite synthetic form. Separable prefixes split off, verb-second
+    /// style (*stehe auf*); the syntax of where each word lands is out of
+    /// scope (see docs/ontology.md).
     pub fn conjugate(&self, tense: Tense, mood: Mood, person: Person, number: Number) -> String {
+        if let Some((prefix, sep)) = &self.prefix {
+            let f = self.base().conjugate(tense, mood, person, number);
+            return match sep {
+                Separability::Separable | Separability::Phrasal => format!("{f} {prefix}"),
+                Separability::Inseparable => format!("{prefix}{f}"),
+            };
+        }
         let i = person.index(number);
         if let Class::Suppletive(s) = &self.class {
             return match (tense, mood) {
@@ -221,6 +311,13 @@ impl Verb {
     /// Imperative — exists only in the 2nd person. Returns `None` for verbs
     /// without one (the modals).
     pub fn imperative(&self, number: Number) -> Option<String> {
+        if let Some((prefix, sep)) = &self.prefix {
+            let imp = self.base().imperative(number)?;
+            return Some(match sep {
+                Separability::Separable | Separability::Phrasal => format!("{imp} {prefix}"),
+                Separability::Inseparable => format!("{prefix}{imp}"),
+            });
+        }
         match (&self.class, number) {
             (Class::Suppletive(s), Number::Singular) => Some(s.imp_sg.to_string()),
             (Class::Suppletive(s), Number::Plural) => Some(s.imp_pl.to_string()),
@@ -269,8 +366,21 @@ impl Verb {
         }
     }
 
-    /// Partizip II (gekauft, gesungen, studiert, vergessen).
+    /// Partizip II (gekauft, gesungen, studiert, vergessen, aufgestanden).
     pub fn past_participle(&self) -> String {
+        if let Some((prefix, sep)) = &self.prefix {
+            let base = self.base().past_participle();
+            return match sep {
+                // Separable prefixes infix ge- (auf·ge·standen).
+                Separability::Separable => format!("{prefix}{base}"),
+                // Inseparable prefixes suppress it (verstanden).
+                Separability::Inseparable => {
+                    format!("{prefix}{}", base.strip_prefix("ge").unwrap_or(&base))
+                }
+                // Phrasal particles stay free words (Rad gefahren).
+                Separability::Phrasal => format!("{prefix} {base}"),
+            };
+        }
         match &self.class {
             Class::Weak => {
                 let base = attach(&self.stem, "t", self.schwa_stem);
@@ -292,6 +402,26 @@ impl Verb {
             _ => format!("{}d", self.infinitive),
         }
     }
+}
+
+/// Is this remainder of a prefix split a plausible verb on its own? Lexicon
+/// and suppletive hits always qualify; otherwise require a weak-parsable
+/// infinitive whose stem has a vowel and at least three characters — this
+/// rejects false splits like be+ten, zu+cken, ge+igen, fest+igen, while
+/// keeping auf+räumen and mit+teilen.
+fn plausible_base(base: &str) -> bool {
+    if suppletive::lookup(base).is_some()
+        || lexicon::lookup(base).is_some()
+        || lexicon::is_forced_weak(base)
+    {
+        return true;
+    }
+    Verb::weak(base).is_ok_and(|v| {
+        v.stem.chars().count() >= 3
+            && v.stem
+                .chars()
+                .any(|c| matches!(c, 'a' | 'e' | 'i' | 'o' | 'u' | 'ä' | 'ö' | 'ü' | 'y'))
+    })
 }
 
 /// 2sg present on a changed stem: raw attachment with s-coalescence only
