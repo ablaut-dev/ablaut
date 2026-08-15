@@ -524,3 +524,39 @@ fn mined_strong_verbs() {
     assert_eq!(v("anschleichen").conjugate(Preterite, Indicative, Second, Singular), "schlichst an");
     assert_eq!(v("verzeihen").past_participle(), "verziehen");
 }
+
+#[test]
+fn knien_stem_keeps_e() {
+    let k = v("knien");
+    assert_eq!(
+        row(&k, Present, Indicative),
+        ["knie", "kniest", "kniet", "knien", "kniet", "knien"]
+    );
+    assert_eq!(k.conjugate(Preterite, Indicative, First, Singular), "kniete");
+    assert_eq!(k.past_participle(), "gekniet");
+}
+
+#[test]
+fn umringen_denominal_weak_base() {
+    // umringen comes from the noun Ring, not strong ringen.
+    let u = v("umringen");
+    assert_eq!(u.conjugate(Preterite, Indicative, Third, Singular), "umringte");
+    assert_eq!(u.past_participle(), "umringt");
+}
+
+#[test]
+fn schwa_core_guard() {
+    // gendern is not ge+ndern, dackeln is not da+ckeln.
+    assert_eq!(v("gendern").past_participle(), "gegendert");
+    assert_eq!(v("dackeln").conjugate(Present, Indicative, Third, Singular), "dackelt");
+}
+
+#[test]
+fn adverbial_particles() {
+    assert_eq!(v("zufriedenstellen").past_participle(), "zufriedengestellt");
+    assert_eq!(
+        v("stehenbleiben").conjugate(Preterite, Indicative, Second, Singular),
+        "bliebst stehen"
+    );
+    assert_eq!(v("aufrechterhalten").conjugate(Present, Indicative, Third, Singular), "erhält aufrecht");
+}

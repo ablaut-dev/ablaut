@@ -10,7 +10,7 @@
 //! separately for lexicon-covered lemmas (where we claim correctness) and
 //! weak-fallback lemmas (where unlisted strong verbs are expected failures).
 
-use ablaut::{Mood, Number, Person, Tense, Verb};
+use ablaut::{Auxiliary, Mood, Number, Person, Tense, Verb};
 use std::collections::{BTreeMap, HashMap, HashSet};
 use std::fmt::Write as _;
 use std::fs;
@@ -38,6 +38,13 @@ fn generate(verb: &Verb, features: &str) -> Option<Option<String>> {
     match f.as_slice() {
         ["V", "NFIN"] => Some(Some(verb.infinitive().to_string())),
         ["V", "NFIN", "LGSPEC01"] => Some(Some(verb.zu_infinitive())),
+        ["V", "AUX"] => Some(Some(
+            match verb.auxiliary() {
+                Auxiliary::Haben => "haben",
+                Auxiliary::Sein => "sein",
+            }
+            .to_string(),
+        )),
         ["V.PTCP", "PRS"] => Some(Some(verb.present_participle())),
         ["V.PTCP", "PST"] => Some(Some(verb.past_participle())),
         ["V", "IMP", n, "2"] => Some(verb.imperative(number(n)?)),
@@ -63,6 +70,8 @@ fn category(features: &str) -> &'static str {
         "imperative"
     } else if features.starts_with("V;NFIN") {
         "infinitive"
+    } else if features == "V;AUX" {
+        "auxiliary"
     } else if features.starts_with("V;IND") && features.ends_with("PRS") {
         "present"
     } else if features.starts_with("V;IND") && features.ends_with("PST") {
@@ -204,7 +213,7 @@ fn main() {
         }
     };
 
-    println!("== ablaut vs UniMorph deu ==");
+    println!("== ablaut vs gold: {path} ==");
     println!("lemmas: {} total, {} lexicon-covered", lemmas.len(), covered_lemmas);
     println!("adjudicated forms counted as correct: {adjudicated_hits}");
     println!("corrupt-gold lemmas excluded (NFIN ≠ lemma): {}", corrupt.len());
@@ -221,6 +230,7 @@ fn main() {
     println!("{:<14}{:>24}{:>24}", "category", "covered", "fallback");
     for cat in [
         "infinitive",
+        "auxiliary",
         "present",
         "preterite",
         "konjunktiv1",
