@@ -1,3 +1,5 @@
+<img src="assets/logo.svg" align="right" width="90" alt="">
+
 # ablaut
 
 A fast, correct German verb conjugator.
