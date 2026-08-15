@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+      - uses: Swatinem/rust-cache@v2
+      - name: Format
+        run: cargo fmt --check
+      - name: Clippy
+        run: cargo clippy --all-targets -- -D warnings
+      - name: Clippy (wasm feature)
+        run: cargo clippy --all-targets --features wasm -- -D warnings
+      - name: Tests (unit + fuzz)
+        run: cargo test
+
+  golden:
+    name: golden accuracy gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Cache UniMorph deu
+        id: unimorph
+        uses: actions/cache@v4
+        with:
+          path: data/unimorph
+          key: unimorph-deu-v1
+      - name: Fetch UniMorph deu
+        if: steps.unimorph.outputs.cache-hit != 'true'
+        run: ./scripts/fetch_unimorph.sh
+      - name: Golden harness with regression gate
+        run: cargo run --release --bin golden -- --check

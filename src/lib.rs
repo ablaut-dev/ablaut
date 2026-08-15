@@ -540,12 +540,10 @@ impl Verb {
 /// do: their stem has no vowel before the -ier- (schm-, z-), while Latinate
 /// stems always do (stud-, prob-).
 fn latinate_ieren(infinitive: &str) -> bool {
-    infinitive
-        .strip_suffix("ieren")
-        .is_some_and(|pre| {
-            pre.chars()
-                .any(|c| matches!(c, 'a' | 'e' | 'i' | 'o' | 'u' | 'ä' | 'ö' | 'ü' | 'y'))
-        })
+    infinitive.strip_suffix("ieren").is_some_and(|pre| {
+        pre.chars()
+            .any(|c| matches!(c, 'a' | 'e' | 'i' | 'o' | 'u' | 'ä' | 'ö' | 'ü' | 'y'))
+    })
 }
 
 /// Is this remainder of a prefix split a plausible verb on its own? Lexicon
