@@ -2,7 +2,7 @@
 //!
 //! A fast, correct German verb conjugator.
 //!
-//! The design follows `docs/ontology.md`: a small morphological core
+//! The design follows `docs/design.md`: a small morphological core
 //! generates the synthetic forms (Präsens, Präteritum, Konjunktiv I/II,
 //! imperative, participles); analytic tenses are composed on top of it.
 //!
@@ -44,7 +44,7 @@ pub enum Auxiliary {
     Sein,
 }
 
-/// Analytic (periphrastic) tenses — Layer C of the ontology. Composed from
+/// Analytic (periphrastic) tenses (Layer C of `docs/design.md`). Composed from
 /// an auxiliary conjugated by the same synthetic core plus a participle or
 /// infinitive; the morphological heavy lifting is already done.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -67,7 +67,7 @@ enum Class {
 }
 
 /// A German verb, carrying the lexical facts conjugation needs (Layer A of
-/// the ontology).
+/// `docs/design.md`).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Verb {
     infinitive: String,
@@ -371,7 +371,7 @@ impl Verb {
 
     /// A finite synthetic form. Separable prefixes split off, verb-second
     /// style (*stehe auf*); the syntax of where each word lands is out of
-    /// scope (see docs/ontology.md).
+    /// scope (see docs/design.md).
     pub fn conjugate(&self, tense: Tense, mood: Mood, person: Person, number: Number) -> String {
         if let Some((prefix, sep)) = &self.prefix {
             let f = self.base().conjugate(tense, mood, person, number);

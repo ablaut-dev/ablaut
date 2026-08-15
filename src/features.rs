@@ -1,4 +1,4 @@
-//! The feature space of German conjugation (Layer B of `docs/ontology.md`).
+//! The feature space of German conjugation (Layer B of `docs/design.md`).
 //!
 //! Feature bundles are plain Rust enums so that impossible requests are
 //! unrepresentable: the imperative, for instance, is a separate method on

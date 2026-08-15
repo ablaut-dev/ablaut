@@ -1,4 +1,4 @@
-//! Verb prefixes (Layer A of `docs/ontology.md`): prefixed verbs are derived,
+//! Verb prefixes (Layer A of `docs/design.md`): prefixed verbs are derived,
 //! not stored. *aufstehen* conjugates exactly like *stehen*; only the
 //! prefix's behavior is lexical.
 //!
