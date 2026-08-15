@@ -11,6 +11,11 @@ use std::collections::HashMap;
 use std::sync::OnceLock;
 
 /// Inflection class of a lexicon entry.
+/// A per-lexeme prefix ruling: prefix, behavior, forced-weak base, and an
+/// optional participle override for hybrids like obliegen (fused finite,
+/// zu-infix, but inseparable participle: oblegen).
+pub(crate) type DualRuling = (&'static str, Separability, bool, Option<&'static str>);
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) enum LexClass {
     /// Ablaut verbs: strong preterite endings (ich sang, zero ending).
@@ -56,7 +61,7 @@ struct Lexicon {
     /// (umarmen is inseparable; umringen is inseparable over a *weak* base —
     /// denominal from Ring, not strong ringen). Maps lemma →
     /// (prefix, behavior, force_weak_base).
-    dual: HashMap<&'static str, (&'static str, Separability, bool)>,
+    dual: HashMap<&'static str, DualRuling>,
     /// Class "a": per-lexeme perfect-auxiliary overrides. Prefixed verbs
     /// inherit their base's auxiliary by default, which change-of-state
     /// derivations flip (wachen: haben → aufwachen: sein).
@@ -102,7 +107,9 @@ fn parse(tsv: &'static str) -> Lexicon {
                     f[0].starts_with(prefix),
                     "dual override prefix mismatch: {line}"
                 );
-                lex.dual.insert(f[0], (prefix, sep, f[1].ends_with('w')));
+                let part2 = (f[5] != "-").then_some(f[5]);
+                lex.dual
+                    .insert(f[0], (prefix, sep, f[1].ends_with('w'), part2));
                 continue;
             }
             c => panic!("unknown class {c} in lexicon line: {line}"),
@@ -141,7 +148,7 @@ pub(crate) fn is_forced_weak(infinitive: &str) -> bool {
     lexicon().forced_weak.contains(infinitive)
 }
 
-pub(crate) fn dual_override(infinitive: &str) -> Option<(&'static str, Separability, bool)> {
+pub(crate) fn dual_override(infinitive: &str) -> Option<DualRuling> {
     lexicon().dual.get(infinitive).copied()
 }
 

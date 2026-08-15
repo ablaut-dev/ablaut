@@ -56,15 +56,15 @@ Current baseline:
 
 | oracle | overall | auxiliary | analytic tenses |
 |---|---|---|---|
-| UniMorph deu (194k synthetic forms) | 98.6% | — | — |
-| kaikki.org (794k forms) | 97.5% | 99.2–99.99% | 95.6–97.9% |
+| UniMorph deu (194k synthetic forms) | 99.2% | — | — |
+| kaikki.org (794k forms) | 98.0% | 99.2–99.99% | 96.5–98.3% |
 
 `scripts/cross_oracle.py` cross-examines the oracles: they agree on 98.9%
 of their 195k shared slots; the 2,137 disagreements are data-quality
 findings in their own right. Triaging our mismatches against oracle
-agreement separates real bug candidates (both oracles against us — down to
-~1,500, dominated by archaic-orthography lemmas and rare dual-prefix
-senses) from adjudication cases (the oracles split). One caveat both
+agreement separates real bug candidates (both oracles against us — now
+**zero**: every remaining disagreement is either an oracle split or a
+documented adjudication) from adjudication cases. One caveat both
 oracles share: they are extracted from the same upstream (Wiktionary), so
 "both agree" is strong but not fully independent evidence.
 

@@ -111,10 +111,10 @@ struct Tally {
 }
 
 /// CI regression gates (percent). Current UniMorph baseline is
-/// 97.5 / 98.9; the gates leave a small margin so noise doesn't flake,
+/// 97.7 / 99.55; the gates leave a small margin so noise doesn't flake,
 /// but any real regression fails the build. Raise them as accuracy grows.
-const MIN_COVERED_PCT: f64 = 97.2;
-const MIN_FALLBACK_PCT: f64 = 98.5;
+const MIN_COVERED_PCT: f64 = 97.4;
+const MIN_FALLBACK_PCT: f64 = 99.3;
 
 fn main() {
     let args: Vec<String> = std::env::args().skip(1).collect();

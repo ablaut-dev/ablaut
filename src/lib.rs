@@ -20,7 +20,7 @@ mod suppletive;
 mod wasm;
 
 pub use features::{Mood, Number, Person, Tense};
-use lexicon::{LexClass, LexEntry};
+use lexicon::{DualRuling, LexClass, LexEntry};
 use orthography::attach;
 use prefix::Separability;
 use suppletive::Suppletive;
@@ -73,9 +73,15 @@ pub struct Verb {
     schwa_stem: bool,
     /// -ieren verbs take no ge- in the past participle.
     ieren: bool,
+    /// Stem-final e merges with e-initial endings (knien: ich knie). False
+    /// for archaic -een lemmas whose paradigm keeps both e's (knieen:
+    /// ich kniee, du knieest).
+    e_merge: bool,
     class: Class,
     /// Derived prefixed verb (aufstehen): the prefix and its behavior…
     prefix: Option<(String, Separability)>,
+    /// Lexical participle override (obliegen → oblegen).
+    part2_override: Option<&'static str>,
     /// …and the base verb whose paradigm it inherits (stehen).
     base: Option<Box<Verb>>,
 }
@@ -111,8 +117,10 @@ impl Verb {
                 stem: String::new(),
                 schwa_stem: false,
                 ieren: false,
+                e_merge: false,
                 class: Class::Weak,
                 prefix: Some((particle.to_string(), Separability::Phrasal)),
+                part2_override: None,
                 base: Some(Box::new(base)),
             });
         }
@@ -122,8 +130,10 @@ impl Verb {
                 stem: infinitive.trim_end_matches('n').to_string(),
                 schwa_stem: false,
                 ieren: false,
+                e_merge: false,
                 class: Class::Suppletive(s),
                 prefix: None,
+                part2_override: None,
                 base: None,
             });
         }
@@ -136,14 +146,14 @@ impl Verb {
         if !lexicon::is_forced_weak(infinitive) {
             // Per-lexeme dual-prefix rulings (umarmen: um- inseparable)
             // outrank the prefix's default behavior.
-            let ruling = lexicon::dual_override(infinitive);
+            let ruling: Option<DualRuling> = lexicon::dual_override(infinitive);
             let split = ruling
-                .map(|(p, sep, _)| (p, sep, &infinitive[p.len()..]))
+                .map(|(p, sep, _, _)| (p, sep, &infinitive[p.len()..]))
                 .or_else(|| prefix::split(infinitive, plausible_base));
             if let Some((p, sep, base)) = split {
                 // A forced-weak base (umringen: denominal from Ring) must not
                 // inherit the strong homograph (ringen).
-                let base = if ruling.is_some_and(|(_, _, w)| w) {
+                let base = if ruling.is_some_and(|(_, _, w, _)| w) {
                     Self::weak(base)?
                 } else {
                     Self::from_infinitive(base)?
@@ -168,8 +178,10 @@ impl Verb {
                     stem: String::new(),
                     schwa_stem: false,
                     ieren: false,
+                    e_merge: false,
                     class: Class::Weak,
                     prefix: Some((p, sep)),
+                    part2_override: ruling.and_then(|(_, _, _, p2)| p2),
                     base: Some(Box::new(base)),
                 });
             }
@@ -201,8 +213,10 @@ impl Verb {
             stem: stem.to_string(),
             schwa_stem,
             ieren: latinate_ieren(infinitive),
+            e_merge: ien_stem,
             class: Class::Weak,
             prefix: None,
+            part2_override: None,
             base: None,
         })
     }
@@ -380,10 +394,12 @@ impl Verb {
             // lexical Konjunktiv II stem (weak: = preterite). Both are
             // tense-independent, so `tense` is ignored.
             (_, Mood::KonjunktivI) if i == 3 || i == 5 => self.infinitive.clone(),
-            (_, Mood::KonjunktivI) => attach(&self.stem, E_ENDINGS[i], self.schwa_stem),
+            (_, Mood::KonjunktivI) => {
+                attach(&self.stem, E_ENDINGS[i], self.schwa_stem, self.e_merge)
+            }
             (_, Mood::KonjunktivII) => match &self.class {
                 Class::Weak => self.preterite_indicative(i),
-                Class::Lexical(e) => attach(&e.konj2, E_ENDINGS[i], false),
+                Class::Lexical(e) => attach(&e.konj2, E_ENDINGS[i], false, true),
                 Class::Suppletive(_) => unreachable!(),
             },
         }
@@ -416,13 +432,13 @@ impl Verb {
         if i == 3 || i == 5 {
             self.infinitive.clone()
         } else {
-            attach(&self.stem, PRESENT[i], self.schwa_stem)
+            attach(&self.stem, PRESENT[i], self.schwa_stem, self.e_merge)
         }
     }
 
     fn preterite_indicative(&self, i: usize) -> String {
         match &self.class {
-            Class::Weak => attach(&self.stem, PRETERITE_WEAK[i], self.schwa_stem),
+            Class::Weak => attach(&self.stem, PRETERITE_WEAK[i], self.schwa_stem, self.e_merge),
             Class::Lexical(e) => match e.class {
                 LexClass::Strong => {
                     // Sibilant stems take -est in 2sg (du saßest, du lasest);
@@ -430,13 +446,13 @@ impl Verb {
                     if i == 1 && matches!(e.pret.chars().last(), Some('s' | 'ß' | 'x' | 'z')) {
                         format!("{}est", e.pret)
                     } else {
-                        attach(&e.pret, PRETERITE_STRONG[i], false)
+                        attach(&e.pret, PRETERITE_STRONG[i], false, true)
                     }
                 }
                 // Mixed and preterite-present stems carry their dental
                 // (dacht-, hatt-, konnt-), so plain e-endings complete them.
                 LexClass::Mixed | LexClass::PreteritePresent => {
-                    attach(&e.pret, E_ENDINGS[i], false)
+                    attach(&e.pret, E_ENDINGS[i], false, true)
                 }
             },
             Class::Suppletive(_) => unreachable!(),
@@ -495,7 +511,7 @@ impl Verb {
             || self.infinitive.ends_with("igen")
             || orthography::needs_epenthesis(&self.stem);
         if mandatory_e {
-            attach(&self.stem, "e", self.schwa_stem)
+            attach(&self.stem, "e", self.schwa_stem, self.e_merge)
         } else {
             self.stem.clone()
         }
@@ -503,6 +519,9 @@ impl Verb {
 
     /// Partizip II (gekauft, gesungen, studiert, vergessen, aufgestanden).
     pub fn past_participle(&self) -> String {
+        if let Some(p2) = self.part2_override {
+            return p2.to_string();
+        }
         if let Some((prefix, sep)) = &self.prefix {
             let base = self.base().past_participle();
             return match sep {
@@ -519,7 +538,7 @@ impl Verb {
         }
         match &self.class {
             Class::Weak => {
-                let base = attach(&self.stem, "t", self.schwa_stem);
+                let base = attach(&self.stem, "t", self.schwa_stem, self.e_merge);
                 if self.ieren {
                     base
                 } else {

@@ -28,3 +28,8 @@ wachen	V;AUX	ours	wachen takes haben (ich habe gewacht, Duden); kaikki/Wiktionar
 entgelten	*	ours	entgelten is strong (entgalt, entgolten, Duden); gold gives weak entgeltete forms
 reinwaschen	*	ours	Strong waschen base (wusch rein, reingewaschen); gold lists weak waschte forms only
 wegbegeben	*	ours	Conjugates like geben (begibst weg, wegbegeben); gold lists weak begebst/wegbegebt forms
+umfassen	V;NFIN;LGSPEC01	both	zu umfassen is correct for the inseparable sense; gold lists only umzufassen
+übergehen	V;NFIN;LGSPEC01	both	zu übergehen is correct for the inseparable sense (skip); gold lists only überzugehen
+liegenlassen	V.PTCP;PST	both	liegengelassen and liegenlassen (Ersatzinfinitiv-style) are both standard; gold lists only the short form
+kahlscheren	*	ours	kahlscheren builds on scheren (schert kahl, kahlgeschoren); gold derives it from a verb schieren
+gegenchecken	V;IMP;SG;2	ours	Imperative gegencheck! follows the fused paradigm; gold splits only here, inconsistently with its own finite forms
