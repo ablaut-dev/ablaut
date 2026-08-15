@@ -1,48 +1,91 @@
 //! Python bindings (feature `python`, built with maturin):
-//! `pip install ablaut` → `ablaut.conjugation_table("aufstehen")`.
+//! `pip install ablaut` → `ablaut.conjugate("aufstehen").present`.
 
 use crate::table::Table;
 use crate::Verb;
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
-use pyo3::types::PyDict;
 
-fn table_to_dict<'py>(py: Python<'py>, t: &Table) -> PyResult<Bound<'py, PyDict>> {
-    let d = PyDict::new(py);
-    d.set_item("infinitive", &t.infinitive)?;
-    d.set_item("zu_infinitive", &t.zu_infinitive)?;
-    d.set_item("perfect_infinitive", &t.perfect_infinitive)?;
-    d.set_item("auxiliary", &t.auxiliary)?;
-    d.set_item("present_participle", &t.present_participle)?;
-    d.set_item("past_participle", &t.past_participle)?;
-    d.set_item("imperative", &t.imperative)?;
-    d.set_item("imperative_extended", &t.imperative_extended)?;
-    d.set_item("present", &t.present)?;
-    d.set_item("preterite", &t.preterite)?;
-    d.set_item("konjunktiv1", &t.konjunktiv1)?;
-    d.set_item("konjunktiv2", &t.konjunktiv2)?;
-    d.set_item("perfect", &t.perfect)?;
-    d.set_item("pluperfect", &t.pluperfect)?;
-    d.set_item("future1", &t.future1)?;
-    d.set_item("future2", &t.future2)?;
-    d.set_item("wuerde", &t.wuerde)?;
-    d.set_item("konj1_perfect", &t.konj1_perfect)?;
-    d.set_item("konj1_future", &t.konj1_future)?;
-    d.set_item("konj2_pluperfect", &t.konj2_pluperfect)?;
-    d.set_item("konj2_future2", &t.konj2_future2)?;
-    Ok(d)
+/// The full conjugation table of one verb. Rows are
+/// [ich, du, er/sie/es, wir, ihr, sie]; imperative entries are None for
+/// verbs without one (the modals).
+#[pyclass(get_all, frozen)]
+struct Conjugation {
+    infinitive: String,
+    zu_infinitive: String,
+    perfect_infinitive: String,
+    auxiliary: String,
+    present_participle: String,
+    past_participle: String,
+    /// [2sg, 2pl]
+    imperative: Vec<Option<String>>,
+    /// [wir, Sie]
+    imperative_extended: Vec<String>,
+    present: Vec<String>,
+    preterite: Vec<String>,
+    konjunktiv1: Vec<String>,
+    konjunktiv2: Vec<String>,
+    perfect: Vec<String>,
+    pluperfect: Vec<String>,
+    future1: Vec<String>,
+    future2: Vec<String>,
+    wuerde: Vec<String>,
+    konj1_perfect: Vec<String>,
+    konj1_future: Vec<String>,
+    konj2_pluperfect: Vec<String>,
+    konj2_future2: Vec<String>,
 }
 
-/// The full conjugation table for an infinitive, as a dict. Rows are
-/// [ich, du, er/sie/es, wir, ihr, sie]; imperatives are None for modals.
+#[pymethods]
+impl Conjugation {
+    fn __repr__(&self) -> String {
+        format!(
+            "Conjugation({:?}, auxiliary={:?})",
+            self.infinitive, self.auxiliary
+        )
+    }
+}
+
+impl From<Table> for Conjugation {
+    fn from(t: Table) -> Self {
+        Conjugation {
+            infinitive: t.infinitive,
+            zu_infinitive: t.zu_infinitive,
+            perfect_infinitive: t.perfect_infinitive,
+            auxiliary: t.auxiliary,
+            present_participle: t.present_participle,
+            past_participle: t.past_participle,
+            imperative: t.imperative.into(),
+            imperative_extended: t.imperative_extended.into(),
+            present: t.present.into(),
+            preterite: t.preterite.into(),
+            konjunktiv1: t.konjunktiv1.into(),
+            konjunktiv2: t.konjunktiv2.into(),
+            perfect: t.perfect.into(),
+            pluperfect: t.pluperfect.into(),
+            future1: t.future1.into(),
+            future2: t.future2.into(),
+            wuerde: t.wuerde.into(),
+            konj1_perfect: t.konj1_perfect.into(),
+            konj1_future: t.konj1_future.into(),
+            konj2_pluperfect: t.konj2_pluperfect.into(),
+            konj2_future2: t.konj2_future2.into(),
+        }
+    }
+}
+
+/// Conjugate an infinitive: `ablaut.conjugate("aufstehen").present[0]`
+/// → "stehe auf". Raises ValueError for strings that are not German
+/// infinitives.
 #[pyfunction]
-fn conjugation_table<'py>(py: Python<'py>, infinitive: &str) -> PyResult<Bound<'py, PyDict>> {
+fn conjugate(infinitive: &str) -> PyResult<Conjugation> {
     let v = Verb::from_infinitive(infinitive).map_err(|e| PyValueError::new_err(e.to_string()))?;
-    table_to_dict(py, &Table::build(&v))
+    Ok(Table::build(&v).into())
 }
 
 #[pymodule]
 fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
-    m.add_function(wrap_pyfunction!(conjugation_table, m)?)?;
+    m.add_class::<Conjugation>()?;
+    m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())
 }
