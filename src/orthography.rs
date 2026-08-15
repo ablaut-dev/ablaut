@@ -38,6 +38,13 @@ pub(crate) fn attach(stem: &str, ending: &str, schwa_stem: bool) -> String {
     if schwa_stem && ending == "e" && stem.ends_with("el") {
         return format!("{}le", &stem[..stem.len() - 2]);
     }
+    // Stem-final e merges with an e-initial ending (knie+e → knie,
+    // knie+est → kniest).
+    if stem.ends_with('e') {
+        if let Some(rest) = ending.strip_prefix('e') {
+            return format!("{stem}{rest}");
+        }
+    }
     // s-coalescence: 2sg present -st loses its s (du tanzt).
     if ending == "st" && coalesces_s(stem) {
         return format!("{stem}t");

@@ -51,10 +51,12 @@ struct Lexicon {
     /// Class "w": whole-word weak verbs that must never be decomposed into
     /// prefix + base (abonnieren is not ab+onnieren).
     forced_weak: std::collections::HashSet<&'static str>,
-    /// Classes "i"/"x": per-lexeme dual-prefix rulings overriding the
-    /// prefix's default behavior (umarmen is inseparable, untertauchen is
-    /// separable). Maps lemma → (prefix, behavior).
-    dual: HashMap<&'static str, (&'static str, Separability)>,
+    /// Classes "i"/"x" (+ "iw"/"xw" for a forced-weak base): per-lexeme
+    /// dual-prefix rulings overriding the prefix's default behavior
+    /// (umarmen is inseparable; umringen is inseparable over a *weak* base —
+    /// denominal from Ring, not strong ringen). Maps lemma →
+    /// (prefix, behavior, force_weak_base).
+    dual: HashMap<&'static str, (&'static str, Separability, bool)>,
 }
 
 fn parse(tsv: &'static str) -> Lexicon {
@@ -73,8 +75,8 @@ fn parse(tsv: &'static str) -> Lexicon {
                 lex.forced_weak.insert(f[0]);
                 continue;
             }
-            "i" | "x" => {
-                let sep = if f[1] == "i" {
+            "i" | "x" | "iw" | "xw" => {
+                let sep = if f[1].starts_with('i') {
                     Separability::Inseparable
                 } else {
                     Separability::Separable
@@ -83,7 +85,7 @@ fn parse(tsv: &'static str) -> Lexicon {
                     f[0].starts_with(f[2]),
                     "dual override prefix mismatch: {line}"
                 );
-                lex.dual.insert(f[0], (f[2], sep));
+                lex.dual.insert(f[0], (f[2], sep, f[1].ends_with('w')));
                 continue;
             }
             c => panic!("unknown class {c} in lexicon line: {line}"),
@@ -122,6 +124,6 @@ pub(crate) fn is_forced_weak(infinitive: &str) -> bool {
     lexicon().forced_weak.contains(infinitive)
 }
 
-pub(crate) fn dual_override(infinitive: &str) -> Option<(&'static str, Separability)> {
+pub(crate) fn dual_override(infinitive: &str) -> Option<(&'static str, Separability, bool)> {
     lexicon().dual.get(infinitive).copied()
 }

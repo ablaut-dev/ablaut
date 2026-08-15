@@ -117,7 +117,6 @@ heissen	s	-	hiess	hiess	geheissen	heiss	h
 kiesen	s	-	kor	kör	gekoren	kies	h
 klingen	s	-	klang	kläng	geklungen	kling	h
 kneifen	s	-	kniff	kniff	gekniffen	kneif	h
-knien	m	knie	kniet	kniet	gekniet	knie	h
 krauchen	s	-	kroch	kröch	gekrochen	krauch	s
 kriechen	s	-	kroch	kröch	gekrochen	-	s
 laden	s	läd	lud	lüd	geladen	lad	h
@@ -189,7 +188,7 @@ veranlassen	w	-	-	-	-	-	h
 bereiten	w	-	-	-	-	-	h
 wetteifern	w	-	-	-	-	-	h
 umarmen	i	um	-	-	-	-	h
-umringen	i	um	-	-	-	-	h
+umringen	iw	um	-	-	-	-	h
 umschließen	i	um	-	-	-	-	h
 umgeben	i	um	-	-	-	-	h
 umfassen	i	um	-	-	-	-	h
@@ -198,3 +197,5 @@ untertauchen	x	unter	-	-	-	-	s
 untergehen	x	unter	-	-	-	-	s
 untersinken	x	unter	-	-	-	-	s
 unterkommen	x	unter	-	-	-	-	s
+anonymisieren	w	-	-	-	-	-	h
+drangsalieren	w	-	-	-	-	-	h

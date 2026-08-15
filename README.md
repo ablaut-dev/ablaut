@@ -44,15 +44,23 @@ The exception lexicon lives in [`data/verbs.tsv`](data/verbs.tsv)
 
 ### Correctness, measured
 
-The golden harness (`scripts/fetch_unimorph.sh`, then
-`cargo run --release --bin golden`) diffs every generated form against
-[UniMorph deu](https://github.com/unimorph/deu) (6,661 verb lemmas,
-193k forms). Current baseline:
+The golden harness diffs every generated form against **two independent
+oracles**: [UniMorph deu](https://github.com/unimorph/deu)
+(`scripts/fetch_unimorph.sh`; 6.6k lemmas, 194k forms) and the
+[kaikki.org Wiktextract extraction](https://kaikki.org/dictionary/German/)
+(`scripts/fetch_kaikki.sh`; 10.2k lemmas, 308k forms — including the perfect
+auxiliary, which the harness scores too). Current baseline:
 
-| slice | accuracy |
-|---|---|
-| lexicon-grounded lemmas (1,301, incl. prefixed derivatives) | 96.34% |
-| weak-fallback lemmas (5,320) | 95.44% |
+| oracle | overall | lexicon-grounded | weak fallback |
+|---|---|---|---|
+| UniMorph deu | 96.3% | 96.66% | 96.24% |
+| kaikki.org | 96.1% | 95.97% | 96.12% |
+
+`scripts/cross_oracle.py` cross-examines the oracles: they agree on 98.9%
+of their 195k shared slots; the 2,137 disagreements are data-quality
+findings in their own right. Triaging our mismatches against oracle
+agreement separates real bug candidates (both oracles against us) from
+adjudication cases (the oracles split).
 
 Every disagreement with the gold data is ruled on in
 [`docs/adjudications.tsv`](docs/adjudications.tsv) with a reference —
@@ -67,7 +75,7 @@ strong bases, and archaic gold lemmas.
 
 Next, in order:
 
-- [ ] Add kaikki.org as a second oracle; adjudicate the remaining tail
+- [ ] Work the bug-candidate list toward zero; adjudicate the oracle splits
 - [ ] Per-verb auxiliary flags for prefixed derivatives (aufstehen: sein)
 - [ ] Compositional layer: analytic tenses (Perfekt, Futur, passives)
 - [ ] WASM + Python (PyO3) bindings

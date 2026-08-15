@@ -119,11 +119,18 @@ impl Verb {
         if !lexicon::is_forced_weak(infinitive) {
             // Per-lexeme dual-prefix rulings (umarmen: um- inseparable)
             // outrank the prefix's default behavior.
-            let split = lexicon::dual_override(infinitive)
-                .map(|(p, sep)| (p, sep, &infinitive[p.len()..]))
+            let ruling = lexicon::dual_override(infinitive);
+            let split = ruling
+                .map(|(p, sep, _)| (p, sep, &infinitive[p.len()..]))
                 .or_else(|| prefix::split(infinitive, plausible_base));
             if let Some((p, sep, base)) = split {
-                let base = Self::from_infinitive(base)?;
+                // A forced-weak base (umringen: denominal from Ring) must not
+                // inherit the strong homograph (ringen).
+                let base = if ruling.is_some_and(|(_, _, w)| w) {
+                    Self::weak(base)?
+                } else {
+                    Self::from_infinitive(base)?
+                };
                 // Multi-part particles fuse into one unit (vor+aus·setzen →
                 // voraus·setzen: setzte voraus, not *setzte aus vor); an
                 // inseparable outer freezes any inner prefix (be+an·spruchen
@@ -156,7 +163,10 @@ impl Verb {
     /// lexicon. Useful for novel coinages; wrong for strong verbs.
     pub fn weak(infinitive: &str) -> Result<Self, Error> {
         let schwa_stem = infinitive.ends_with("eln") || infinitive.ends_with("ern");
-        let stem = if schwa_stem {
+        // knien-type verbs (consonant + -ien) keep the e in their stem:
+        // ich knie, du kniest, gekniet. -eien verbs (schreien) do not.
+        let ien_stem = infinitive.ends_with("ien") && !infinitive.ends_with("eien");
+        let stem = if schwa_stem || ien_stem {
             infinitive.strip_suffix('n')
         } else {
             infinitive.strip_suffix("en")
@@ -431,10 +441,16 @@ fn plausible_base(base: &str) -> bool {
         } else {
             3
         };
-        v.stem.chars().count() >= min
-            && v.stem
-                .chars()
-                .any(|c| matches!(c, 'a' | 'e' | 'i' | 'o' | 'u' | 'ä' | 'ö' | 'ü' | 'y'))
+        let is_vowel = |c: char| matches!(c, 'a' | 'e' | 'i' | 'o' | 'u' | 'ä' | 'ö' | 'ü' | 'y');
+        let stem: Vec<char> = v.stem.chars().collect();
+        // Schwa stems must have a vowel before their -el/-er syllable, or the
+        // "vowel" is just the schwa itself (ge+ndern, da+ckeln are not verbs).
+        let core = if v.schwa_stem {
+            &stem[..stem.len().saturating_sub(2)]
+        } else {
+            &stem[..]
+        };
+        stem.len() >= min && core.iter().copied().any(is_vowel)
     })
 }
 
