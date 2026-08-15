@@ -136,4 +136,12 @@ assert_eq!(v.past_participle(), "gesammelt");
 
 ## License
 
-MIT OR Apache-2.0
+MIT OR Apache-2.0.
+
+**Data provenance**: the exception lexicon (`data/verbs.tsv`) is
+independently curated factual data about standard German (principal parts,
+prefix behavior, auxiliaries), hand-verified row by row. UniMorph
+(CC BY-SA 3.0) and Wiktextract/kaikki.org (CC BY-SA) are used as **test
+oracles only** — fetched at development time, never shipped — and every
+disagreement with them is documented in
+[`docs/adjudications.tsv`](docs/adjudications.tsv).
