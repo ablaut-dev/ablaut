@@ -157,7 +157,7 @@ fn fahren_umlaut_alternation() {
         ["fahre", "fährst", "fährt", "fahren", "fahrt", "fahren"]
     );
     // Umlaut verbs revert to the base stem in the imperative.
-    assert_eq!(v.imperative(Singular).unwrap(), "fahre");
+    assert_eq!(v.imperative(Singular).unwrap(), "fahr");
     assert_eq!(v.auxiliary(), Auxiliary::Sein);
     assert_eq!(v.past_participle(), "gefahren");
 }
@@ -178,7 +178,7 @@ fn lassen_coalescence_on_changed_stem() {
     let v = v("lassen");
     assert_eq!(v.conjugate(Present, Indicative, Second, Singular), "lässt");
     assert_eq!(v.conjugate(Present, Indicative, Third, Singular), "lässt");
-    assert_eq!(v.imperative(Singular).unwrap(), "lasse");
+    assert_eq!(v.imperative(Singular).unwrap(), "lass");
 }
 
 #[test]
@@ -268,7 +268,7 @@ fn haben_full() {
         ["hätte", "hättest", "hätte", "hätten", "hättet", "hätten"]
     );
     assert_eq!(v.past_participle(), "gehabt");
-    assert_eq!(v.imperative(Singular).unwrap(), "habe");
+    assert_eq!(v.imperative(Singular).unwrap(), "hab");
     assert_eq!(v.imperative(Plural).unwrap(), "habt");
 }
 

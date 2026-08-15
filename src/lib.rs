@@ -121,6 +121,12 @@ impl Verb {
         &self.infinitive
     }
 
+    /// True if this verb has an exception-lexicon entry or a suppletive
+    /// paradigm, i.e. is not conjugated by the productive weak fallback.
+    pub fn is_lexical(&self) -> bool {
+        !matches!(self.class, Class::Weak)
+    }
+
     /// The perfect auxiliary (*haben* or *sein*).
     pub fn auxiliary(&self) -> Auxiliary {
         match &self.class {
@@ -223,8 +229,7 @@ impl Verb {
                 // (sprich!); modals have none.
                 (Some(imp), _) => Some(imp.clone()),
                 (None, LexClass::PreteritePresent) => None,
-                // Canonical 2sg with -e (fahre!, halte!, denke!).
-                (None, _) => Some(attach(&self.stem, "e", self.schwa_stem)),
+                (None, _) => Some(self.imperative_sg_default()),
             },
             (Class::Lexical(e), Number::Plural) => {
                 if e.class == LexClass::PreteritePresent && e.imp.is_none() {
@@ -238,13 +243,29 @@ impl Verb {
                     ))
                 }
             }
-            (Class::Weak, Number::Singular) => Some(attach(&self.stem, "e", self.schwa_stem)),
+            (Class::Weak, Number::Singular) => Some(self.imperative_sg_default()),
             (Class::Weak, Number::Plural) => Some(self.conjugate(
                 Tense::Present,
                 Mood::Indicative,
                 Person::Second,
                 Number::Plural,
             )),
+        }
+    }
+
+    /// Default 2sg imperative: the bare stem (fahr!, kauf!, lass!) — the
+    /// modern canonical form per Duden — with -e where it is mandatory:
+    /// epenthesis stems (arbeite!, atme!), schwa stems (sammle!), and
+    /// -ieren/-igen verbs (studiere!, entschuldige!).
+    fn imperative_sg_default(&self) -> String {
+        let mandatory_e = self.schwa_stem
+            || self.ieren
+            || self.infinitive.ends_with("igen")
+            || orthography::needs_epenthesis(&self.stem);
+        if mandatory_e {
+            attach(&self.stem, "e", self.schwa_stem)
+        } else {
+            self.stem.clone()
         }
     }
 
