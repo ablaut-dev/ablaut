@@ -5,7 +5,7 @@
 /// stems in *d/t* (`arbeit-` → *du arbeitest*) and stems in *m/n* preceded by
 /// an obstruent (`atm-` → *du atmest*, `rechn-` → *du rechnest*, but
 /// `lern-` → *du lernst*, `wohn-` → *du wohnst*).
-fn needs_epenthesis(stem: &str) -> bool {
+pub(crate) fn needs_epenthesis(stem: &str) -> bool {
     let mut chars = stem.chars().rev();
     let (last, before, before2) = (chars.next(), chars.next(), chars.next());
     match (before, last) {

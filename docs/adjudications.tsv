@@ -1,0 +1,26 @@
+# Adjudication log: every disagreement between ablaut and a gold source is
+# ruled on here, with a reference. The golden harness treats a mismatch with
+# ruling "ours" or "both" as adjudicated-correct and reports it separately.
+#
+# Rulings: ours = gold is wrong, ablaut's form is the standard one.
+#          both = both forms are standard; gold lists only a variant.
+#
+# lemma	features	ruling	note
+essen	V;IND;SG;2;PST	both	Sibilant-stem preterite 2sg takes -est (du aßest, Duden); UniMorph lists only aßt
+fließen	V;IND;SG;2;PST	both	du flossest / du flosst both standard; UniMorph lists only flosst
+heißen	V;IND;SG;2;PST	both	du hießest / du hießt both standard; UniMorph lists only hießt
+lassen	V;IND;SG;2;PST	both	du ließest / du ließt both standard; UniMorph lists only ließt
+lesen	V;IND;SG;2;PST	both	du lasest is the canonical form (Duden); UniMorph lists only last
+sitzen	V;IND;SG;2;PST	both	du saßest / du saßt both standard; UniMorph lists only saßt
+stoßen	V;IND;SG;2;PST	both	du stießest / du stießt both standard; UniMorph lists only stießt
+vergessen	V;IND;SG;2;PST	both	du vergaßest / du vergaßt both standard; UniMorph lists only vergaßt
+schließen	V;IND;SG;2;PST	both	du schlossest is standard alongside schlosset/schlosst; UniMorph set lacks it
+wachsen	V;IND;SG;2;PST	both	Strong wachsen: du wuchsest / du wuchst; UniMorph merges the weak homograph (wachstest, to wax)
+nennen	V;SBJV;SG;1;PST	ours	Konjunktiv II of nennen is nennte (Duden; cf. kennte, brennte); UniMorph repeats the indicative nannte
+nennen	V;SBJV;SG;2;PST	ours	See nennen SBJV;SG;1;PST
+nennen	V;SBJV;SG;3;PST	ours	See nennen SBJV;SG;1;PST
+nennen	V;SBJV;PL;1;PST	ours	See nennen SBJV;SG;1;PST
+nennen	V;SBJV;PL;2;PST	ours	See nennen SBJV;SG;1;PST
+nennen	V;SBJV;PL;3;PST	ours	See nennen SBJV;SG;1;PST
+wissen	V;IMP;SG;2	ours	wisse! exists (Duden: wisse, dass...); UniMorph marks the imperative nonexistent
+wissen	V;IMP;PL;2	ours	wisst! exists; UniMorph marks the imperative nonexistent

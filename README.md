@@ -42,10 +42,29 @@ classes:
 The exception lexicon lives in [`data/verbs.tsv`](data/verbs.tsv)
 (~70 seed verbs), human-readable and compiled into the binary.
 
+### Correctness, measured
+
+The golden harness (`scripts/fetch_unimorph.sh`, then
+`cargo run --release --bin golden`) diffs every generated form against
+[UniMorph deu](https://github.com/unimorph/deu) (6,661 verb lemmas,
+193k forms). Current baseline:
+
+| slice | accuracy |
+|---|---|
+| lexicon-covered lemmas (68) | **1968/1968 = 100.00%** |
+| weak-fallback lemmas (6,593) | 62.45% |
+
+Every disagreement with the gold data is ruled on in
+[`docs/adjudications.tsv`](docs/adjudications.tsv) with a reference —
+including genuine UniMorph errors found so far (*nennte* given as *nannte*;
+*wisse!* marked nonexistent). The fallback number is expected debt: its
+errors are overwhelmingly separable-prefix verbs (gold: *knickte ein*) and
+strong lemmas not yet in the lexicon.
+
 Next, in order:
 
-- [ ] Golden-test harness against UniMorph `deu` (6,810 verbs) and kaikki.org;
-      grow the lexicon to the full ~200 strong lemmas from its diff
+- [ ] Grow the lexicon toward the full ~200 strong lemmas from the
+      fallback diff; add kaikki.org as a second oracle
 - [ ] Prefix system (separable / inseparable / dual)
 - [ ] Compositional layer: analytic tenses (Perfekt, Futur, passives)
 - [ ] WASM + Python (PyO3) bindings
