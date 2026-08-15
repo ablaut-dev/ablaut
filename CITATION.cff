@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use ablaut in your research, please cite it as below."
+title: "ablaut: a fast, correct German verb conjugator"
+authors:
+  - family-names: "Florentz"
+    given-names: "Romain"
+repository-code: "https://github.com/v4nn4/ablaut"
+url: "https://ablaut-demo.vercel.app"
+license: "MIT OR Apache-2.0"
+keywords:
+  - German
+  - morphology
+  - conjugation
+  - computational linguistics

@@ -18,6 +18,8 @@
   <img src="https://img.shields.io/crates/l/ablaut" alt="license">
 </p>
 
+<p align="center"><a href="https://ablaut-demo.vercel.app"><b>Try it in the browser</b></a></p>
+
 <br>
 
 The name is the German term for the vowel gradation in *singen, sang,
