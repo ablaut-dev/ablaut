@@ -6,23 +6,46 @@
 //! generates the synthetic forms (Präsens, Präteritum, Konjunktiv I/II,
 //! imperative, participles); analytic tenses are composed on top of it.
 //!
-//! Version 0.1 covers the weak (regular) paradigm with the full set of
-//! orthographic surface rules. Strong, mixed and suppletive verbs land next,
-//! as a compiled-in exception lexicon.
+//! Inflection classes: weak (the productive default), strong (ablaut),
+//! mixed (changed stem + weak endings), preterite-present (modals and
+//! *wissen*), and three stored suppletives (*sein*, *werden*, *tun*).
+//! Everything irregular lives in `data/verbs.tsv`, compiled in.
 
 mod features;
+mod lexicon;
 mod orthography;
+mod suppletive;
 
 pub use features::{Mood, Number, Person, Tense};
+use lexicon::{LexClass, LexEntry};
 use orthography::attach;
+use suppletive::Suppletive;
 
 /// Six-slot ending rows (1sg, 2sg, 3sg, 1pl, 2pl, 3pl).
 const PRESENT: [&str; 6] = ["e", "st", "t", "en", "t", "en"];
 const PRETERITE_WEAK: [&str; 6] = ["te", "test", "te", "ten", "tet", "ten"];
-const KONJUNKTIV_I: [&str; 6] = ["e", "est", "e", "en", "et", "en"];
+/// Strong preterite: zero ending in 1/3sg (ich sang).
+const PRETERITE_STRONG: [&str; 6] = ["", "st", "", "en", "t", "en"];
+/// Konjunktiv endings; also the row for dental-carrying preterite stems
+/// (hatt-e, dacht-est) and all Konjunktiv II stems (käm-e, hätt-e).
+const E_ENDINGS: [&str; 6] = ["e", "est", "e", "en", "et", "en"];
+
+/// Perfect auxiliary (Layer A lexical fact; drives the analytic tenses).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Auxiliary {
+    Haben,
+    Sein,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+enum Class {
+    Weak,
+    Lexical(&'static LexEntry),
+    Suppletive(&'static Suppletive),
+}
 
 /// A German verb, carrying the lexical facts conjugation needs (Layer A of
-/// the ontology). For weak verbs everything derives from the infinitive.
+/// the ontology).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Verb {
     infinitive: String,
@@ -31,6 +54,7 @@ pub struct Verb {
     schwa_stem: bool,
     /// -ieren verbs take no ge- in the past participle.
     ieren: bool,
+    class: Class,
 }
 
 /// Errors raised when constructing a [`Verb`].
@@ -51,7 +75,28 @@ impl std::fmt::Display for Error {
 impl std::error::Error for Error {}
 
 impl Verb {
-    /// Build a weak (regular) verb from its infinitive.
+    /// Build a verb from its infinitive, consulting the exception lexicon
+    /// and falling back to the productive weak paradigm. This is the main
+    /// entry point.
+    pub fn from_infinitive(infinitive: &str) -> Result<Self, Error> {
+        if let Some(s) = suppletive::lookup(infinitive) {
+            return Ok(Verb {
+                infinitive: infinitive.to_string(),
+                stem: infinitive.trim_end_matches('n').to_string(),
+                schwa_stem: false,
+                ieren: false,
+                class: Class::Suppletive(s),
+            });
+        }
+        let mut v = Self::weak(infinitive)?;
+        if let Some(entry) = lexicon::lookup(infinitive) {
+            v.class = Class::Lexical(entry);
+        }
+        Ok(v)
+    }
+
+    /// Build a verb forced into the weak (regular) paradigm, bypassing the
+    /// lexicon. Useful for novel coinages; wrong for strong verbs.
     pub fn weak(infinitive: &str) -> Result<Self, Error> {
         let schwa_stem = infinitive.ends_with("eln") || infinitive.ends_with("ern");
         let stem = if schwa_stem {
@@ -68,6 +113,7 @@ impl Verb {
             stem: stem.to_string(),
             schwa_stem,
             ieren: infinitive.ends_with("ieren"),
+            class: Class::Weak,
         })
     }
 
@@ -75,188 +121,167 @@ impl Verb {
         &self.infinitive
     }
 
-    /// A finite synthetic form.
-    pub fn conjugate(&self, tense: Tense, mood: Mood, person: Person, number: Number) -> String {
-        let i = person.index(number);
-        match (tense, mood) {
-            // Präsens indicative: 1pl/3pl are identical to the infinitive
-            // (wir sammeln, wir kaufen).
-            (Tense::Present, Mood::Indicative) if i == 3 || i == 5 => self.infinitive.clone(),
-            (Tense::Present, Mood::Indicative) => attach(&self.stem, PRESENT[i], self.schwa_stem),
-            // Konjunktiv I is present-stem + e-endings; weak Konjunktiv II is
-            // identical to the preterite indicative. Both are tense-independent
-            // in the weak paradigm, so `tense` is ignored for them.
-            (_, Mood::KonjunktivI) if i == 3 || i == 5 => self.infinitive.clone(),
-            (_, Mood::KonjunktivI) => attach(&self.stem, KONJUNKTIV_I[i], self.schwa_stem),
-            (Tense::Preterite, Mood::Indicative) | (_, Mood::KonjunktivII) => {
-                attach(&self.stem, PRETERITE_WEAK[i], self.schwa_stem)
-            }
+    /// The perfect auxiliary (*haben* or *sein*).
+    pub fn auxiliary(&self) -> Auxiliary {
+        match &self.class {
+            Class::Weak => Auxiliary::Haben,
+            Class::Lexical(e) => e.aux,
+            Class::Suppletive(s) => s.aux,
         }
     }
 
-    /// Imperative — exists only in the 2nd person, so it takes only a number.
-    pub fn imperative(&self, number: Number) -> String {
-        match number {
-            // Canonical 2sg with -e (kaufe!); mandatory for epenthesis and
-            // schwa stems (arbeite!, sammle!).
-            Number::Singular => attach(&self.stem, "e", self.schwa_stem),
-            Number::Plural => self.conjugate(
+    /// A finite synthetic form.
+    pub fn conjugate(&self, tense: Tense, mood: Mood, person: Person, number: Number) -> String {
+        let i = person.index(number);
+        if let Class::Suppletive(s) = &self.class {
+            return match (tense, mood) {
+                (Tense::Present, Mood::Indicative) => s.present[i],
+                (Tense::Preterite, Mood::Indicative) => s.preterite[i],
+                (_, Mood::KonjunktivI) => s.konjunktiv1[i],
+                (_, Mood::KonjunktivII) => s.konjunktiv2[i],
+            }
+            .to_string();
+        }
+        match (tense, mood) {
+            (Tense::Present, Mood::Indicative) => self.present_indicative(i),
+            (Tense::Preterite, Mood::Indicative) => self.preterite_indicative(i),
+            // Konjunktiv I is built on the present stem; Konjunktiv II on the
+            // lexical Konjunktiv II stem (weak: = preterite). Both are
+            // tense-independent, so `tense` is ignored.
+            (_, Mood::KonjunktivI) if i == 3 || i == 5 => self.infinitive.clone(),
+            (_, Mood::KonjunktivI) => attach(&self.stem, E_ENDINGS[i], self.schwa_stem),
+            (_, Mood::KonjunktivII) => match &self.class {
+                Class::Weak => self.preterite_indicative(i),
+                Class::Lexical(e) => attach(&e.konj2, E_ENDINGS[i], false),
+                Class::Suppletive(_) => unreachable!(),
+            },
+        }
+    }
+
+    fn present_indicative(&self, i: usize) -> String {
+        if let Class::Lexical(e) = &self.class {
+            if let Some(pres) = &e.pres {
+                match (e.class, i) {
+                    // Präteritopräsentia: zero ending in 1sg and 3sg
+                    // (ich kann, er weiß).
+                    (LexClass::PreteritePresent, 0 | 2) => return pres.clone(),
+                    // Changed-stem 2sg: raw attachment — no epenthesis
+                    // (du hältst, du rätst), only s-coalescence (du lässt).
+                    (_, 1) => return second_sg_changed(pres),
+                    // Changed-stem 3sg: stems already ending in a dental take
+                    // no further -t (er hält, er rät).
+                    (LexClass::Strong | LexClass::Mixed, 2) => {
+                        return if pres.ends_with('t') || pres.ends_with('d') {
+                            pres.clone()
+                        } else {
+                            format!("{pres}t")
+                        };
+                    }
+                    _ => {}
+                }
+            }
+        }
+        // Regular path: 1pl/3pl are the infinitive (wir sammeln, wir kaufen).
+        if i == 3 || i == 5 {
+            self.infinitive.clone()
+        } else {
+            attach(&self.stem, PRESENT[i], self.schwa_stem)
+        }
+    }
+
+    fn preterite_indicative(&self, i: usize) -> String {
+        match &self.class {
+            Class::Weak => attach(&self.stem, PRETERITE_WEAK[i], self.schwa_stem),
+            Class::Lexical(e) => match e.class {
+                LexClass::Strong => {
+                    // Sibilant stems take -est in 2sg (du saßest, du lasest);
+                    // s-coalescence is a present-tense rule only.
+                    if i == 1 && matches!(e.pret.chars().last(), Some('s' | 'ß' | 'x' | 'z')) {
+                        format!("{}est", e.pret)
+                    } else {
+                        attach(&e.pret, PRETERITE_STRONG[i], false)
+                    }
+                }
+                // Mixed and preterite-present stems carry their dental
+                // (dacht-, hatt-, konnt-), so plain e-endings complete them.
+                LexClass::Mixed | LexClass::PreteritePresent => {
+                    attach(&e.pret, E_ENDINGS[i], false)
+                }
+            },
+            Class::Suppletive(_) => unreachable!(),
+        }
+    }
+
+    /// Imperative — exists only in the 2nd person. Returns `None` for verbs
+    /// without one (the modals).
+    pub fn imperative(&self, number: Number) -> Option<String> {
+        match (&self.class, number) {
+            (Class::Suppletive(s), Number::Singular) => Some(s.imp_sg.to_string()),
+            (Class::Suppletive(s), Number::Plural) => Some(s.imp_pl.to_string()),
+            (Class::Lexical(e), Number::Singular) => match (&e.imp, e.class) {
+                // e/i-alternating verbs store their bare-stem imperative
+                // (sprich!); modals have none.
+                (Some(imp), _) => Some(imp.clone()),
+                (None, LexClass::PreteritePresent) => None,
+                // Canonical 2sg with -e (fahre!, halte!, denke!).
+                (None, _) => Some(attach(&self.stem, "e", self.schwa_stem)),
+            },
+            (Class::Lexical(e), Number::Plural) => {
+                if e.class == LexClass::PreteritePresent && e.imp.is_none() {
+                    None
+                } else {
+                    Some(self.conjugate(
+                        Tense::Present,
+                        Mood::Indicative,
+                        Person::Second,
+                        Number::Plural,
+                    ))
+                }
+            }
+            (Class::Weak, Number::Singular) => Some(attach(&self.stem, "e", self.schwa_stem)),
+            (Class::Weak, Number::Plural) => Some(self.conjugate(
                 Tense::Present,
                 Mood::Indicative,
                 Person::Second,
                 Number::Plural,
-            ),
+            )),
         }
     }
 
-    /// Partizip II (gekauft, gearbeitet, studiert).
+    /// Partizip II (gekauft, gesungen, studiert, vergessen).
     pub fn past_participle(&self) -> String {
-        let base = attach(&self.stem, "t", self.schwa_stem);
-        if self.ieren {
-            base
-        } else {
-            format!("ge{base}")
+        match &self.class {
+            Class::Weak => {
+                let base = attach(&self.stem, "t", self.schwa_stem);
+                if self.ieren {
+                    base
+                } else {
+                    format!("ge{base}")
+                }
+            }
+            Class::Lexical(e) => e.part2.clone(),
+            Class::Suppletive(s) => s.part2.to_string(),
         }
     }
 
-    /// Partizip I (kaufend).
+    /// Partizip I (kaufend, seiend).
     pub fn present_participle(&self) -> String {
-        format!("{}d", self.infinitive)
+        match &self.class {
+            Class::Suppletive(s) => s.part1.to_string(),
+            _ => format!("{}d", self.infinitive),
+        }
+    }
+}
+
+/// 2sg present on a changed stem: raw attachment with s-coalescence only
+/// (du sprichst, du lässt, du weißt, du hältst).
+fn second_sg_changed(stem: &str) -> String {
+    if matches!(stem.chars().last(), Some('s' | 'ß' | 'x' | 'z')) {
+        format!("{stem}t")
+    } else {
+        format!("{stem}st")
     }
 }
 
 #[cfg(test)]
-mod tests {
-    use super::*;
-    use Mood::*;
-    use Number::*;
-    use Person::*;
-    use Tense::*;
-
-    fn row(v: &Verb, tense: Tense, mood: Mood) -> [String; 6] {
-        [
-            v.conjugate(tense, mood, First, Singular),
-            v.conjugate(tense, mood, Second, Singular),
-            v.conjugate(tense, mood, Third, Singular),
-            v.conjugate(tense, mood, First, Plural),
-            v.conjugate(tense, mood, Second, Plural),
-            v.conjugate(tense, mood, Third, Plural),
-        ]
-    }
-
-    #[test]
-    fn kaufen_plain_weak() {
-        let v = Verb::weak("kaufen").unwrap();
-        assert_eq!(
-            row(&v, Present, Indicative),
-            ["kaufe", "kaufst", "kauft", "kaufen", "kauft", "kaufen"]
-        );
-        assert_eq!(
-            row(&v, Preterite, Indicative),
-            ["kaufte", "kauftest", "kaufte", "kauften", "kauftet", "kauften"]
-        );
-        assert_eq!(v.past_participle(), "gekauft");
-        assert_eq!(v.present_participle(), "kaufend");
-    }
-
-    #[test]
-    fn arbeiten_epenthesis() {
-        let v = Verb::weak("arbeiten").unwrap();
-        assert_eq!(
-            row(&v, Present, Indicative),
-            ["arbeite", "arbeitest", "arbeitet", "arbeiten", "arbeitet", "arbeiten"]
-        );
-        assert_eq!(
-            row(&v, Preterite, Indicative),
-            ["arbeitete", "arbeitetest", "arbeitete", "arbeiteten", "arbeitetet", "arbeiteten"]
-        );
-        assert_eq!(v.past_participle(), "gearbeitet");
-        assert_eq!(v.imperative(Singular), "arbeite");
-    }
-
-    #[test]
-    fn atmen_rechnen_epenthesis_after_obstruent() {
-        let atmen = Verb::weak("atmen").unwrap();
-        assert_eq!(atmen.conjugate(Present, Indicative, Second, Singular), "atmest");
-        assert_eq!(atmen.conjugate(Present, Indicative, Third, Singular), "atmet");
-        let rechnen = Verb::weak("rechnen").unwrap();
-        assert_eq!(rechnen.conjugate(Present, Indicative, Second, Singular), "rechnest");
-        assert_eq!(rechnen.past_participle(), "gerechnet");
-    }
-
-    #[test]
-    fn lernen_wohnen_no_epenthesis() {
-        let lernen = Verb::weak("lernen").unwrap();
-        assert_eq!(lernen.conjugate(Present, Indicative, Second, Singular), "lernst");
-        let wohnen = Verb::weak("wohnen").unwrap();
-        assert_eq!(wohnen.conjugate(Present, Indicative, Second, Singular), "wohnst");
-        assert_eq!(wohnen.past_participle(), "gewohnt");
-    }
-
-    #[test]
-    fn tanzen_s_coalescence() {
-        let v = Verb::weak("tanzen").unwrap();
-        assert_eq!(v.conjugate(Present, Indicative, Second, Singular), "tanzt");
-        assert_eq!(v.conjugate(Preterite, Indicative, Second, Singular), "tanztest");
-    }
-
-    #[test]
-    fn sammeln_schwa_elision() {
-        let v = Verb::weak("sammeln").unwrap();
-        assert_eq!(
-            row(&v, Present, Indicative),
-            ["sammle", "sammelst", "sammelt", "sammeln", "sammelt", "sammeln"]
-        );
-        assert_eq!(v.past_participle(), "gesammelt");
-        assert_eq!(v.imperative(Singular), "sammle");
-        assert_eq!(v.present_participle(), "sammelnd");
-    }
-
-    #[test]
-    fn wandern_schwa_stem() {
-        let v = Verb::weak("wandern").unwrap();
-        assert_eq!(
-            row(&v, Present, Indicative),
-            ["wandere", "wanderst", "wandert", "wandern", "wandert", "wandern"]
-        );
-        assert_eq!(v.past_participle(), "gewandert");
-        assert_eq!(
-            row(&v, Preterite, Indicative),
-            ["wanderte", "wandertest", "wanderte", "wanderten", "wandertet", "wanderten"]
-        );
-    }
-
-    #[test]
-    fn spielen_is_not_a_schwa_stem() {
-        // stem ends in "el" on the surface but the infinitive is -en:
-        // no elision may fire.
-        let v = Verb::weak("spielen").unwrap();
-        assert_eq!(v.conjugate(Present, Indicative, First, Singular), "spiele");
-    }
-
-    #[test]
-    fn studieren_no_ge_participle() {
-        let v = Verb::weak("studieren").unwrap();
-        assert_eq!(v.past_participle(), "studiert");
-        assert_eq!(v.conjugate(Preterite, Indicative, Third, Singular), "studierte");
-    }
-
-    #[test]
-    fn konjunktiv_weak() {
-        let v = Verb::weak("kaufen").unwrap();
-        assert_eq!(
-            row(&v, Present, KonjunktivI),
-            ["kaufe", "kaufest", "kaufe", "kaufen", "kaufet", "kaufen"]
-        );
-        // Weak Konjunktiv II is identical to the preterite indicative.
-        assert_eq!(row(&v, Present, KonjunktivII), row(&v, Preterite, Indicative));
-        let s = Verb::weak("sammeln").unwrap();
-        assert_eq!(s.conjugate(Present, KonjunktivI, Second, Singular), "sammelst");
-    }
-
-    #[test]
-    fn invalid_infinitive() {
-        assert!(Verb::weak("kauf").is_err());
-        assert!(Verb::weak("n").is_err());
-    }
-}
+mod tests;
