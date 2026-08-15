@@ -16,6 +16,8 @@ mod lexicon;
 mod orthography;
 mod prefix;
 mod suppletive;
+#[cfg(feature = "wasm")]
+mod wasm;
 
 pub use features::{Mood, Number, Person, Tense};
 use lexicon::{LexClass, LexEntry};

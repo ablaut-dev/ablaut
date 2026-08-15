@@ -8,4 +8,13 @@ repository = "https://github.com/v4nn4/ablaut"
 keywords = ["german", "conjugation", "morphology", "nlp", "linguistics"]
 categories = ["text-processing"]
 
+[lib]
+crate-type = ["cdylib", "rlib"]
+
 [dependencies]
+wasm-bindgen = { version = "0.2", optional = true }
+serde = { version = "1", features = ["derive"], optional = true }
+serde-wasm-bindgen = { version = "0.6", optional = true }
+
+[features]
+wasm = ["dep:wasm-bindgen", "dep:serde", "dep:serde-wasm-bindgen"]

@@ -79,10 +79,31 @@ guards against false decompositions (*bereiten* ≠ be+reiten). The remaining
 gap is a long tail: dual-prefix senses, denominal weak verbs shadowed by
 strong bases, and archaic gold lemmas.
 
+### WebAssembly
+
+The whole engine — rules, exception lexicon, analytic layer — compiles to a
+**106 KB** wasm binary (≈45 KB gzipped) and produces a full 66-form
+conjugation table in ~12 µs:
+
+```sh
+wasm-pack build --target web -- --features wasm
+```
+
+```js
+import init, { conjugation_table } from "./pkg/ablaut.js";
+await init();
+const t = conjugation_table("aufstehen");
+t.present[0];        // "stehe auf"
+t.perfect[0];        // "bin aufgestanden"
+t.zuInfinitive;      // "aufzustehen"
+t.imperative;        // ["steh auf", "steht auf"] (undefined for modals)
+```
+
 Next, in order:
 
+- [ ] Demo web app (separate repo: ablaut-demo) consuming the wasm package
 - [ ] Work the bug-candidate list toward zero; adjudicate the oracle splits
-- [ ] WASM + Python (PyO3) bindings
+- [ ] Python (PyO3) bindings for the linguistics audience
 - [ ] Lemmatization (form → lemma) by inverting the paradigm tables
 
 ## Example
