@@ -10,7 +10,7 @@
 //! separately for lexicon-covered lemmas (where we claim correctness) and
 //! weak-fallback lemmas (where unlisted strong verbs are expected failures).
 
-use ablaut::{Auxiliary, Mood, Number, Person, Tense, Verb};
+use ablaut::{AnalyticTense, Auxiliary, Mood, Number, Person, Tense, Verb};
 use std::collections::{BTreeMap, HashMap, HashSet};
 use std::fmt::Write as _;
 use std::fs;
@@ -48,6 +48,23 @@ fn generate(verb: &Verb, features: &str) -> Option<Option<String>> {
         ["V.PTCP", "PRS"] => Some(Some(verb.present_participle())),
         ["V.PTCP", "PST"] => Some(Some(verb.past_participle())),
         ["V", "IMP", n, "2"] => Some(verb.imperative(number(n)?)),
+        ["V", t @ ("PRF" | "PLPRF" | "FUT1" | "FUT2"), m, n, p] => {
+            let tense = match *t {
+                "PRF" => AnalyticTense::Perfect,
+                "PLPRF" => AnalyticTense::Pluperfect,
+                "FUT1" => AnalyticTense::FutureI,
+                _ => AnalyticTense::FutureII,
+            };
+            // Subjunctive analytic forms: kaikki uses KonjI auxiliaries for
+            // Perfekt/Futur (habe gekauft, werde kaufen) and KonjII for
+            // Plusquamperfekt (hätte gekauft).
+            let mood = match (*m, *t) {
+                ("IND", _) => Mood::Indicative,
+                (_, "PLPRF") => Mood::KonjunktivII,
+                _ => Mood::KonjunktivI,
+            };
+            Some(Some(verb.analytic(tense, mood, person(p)?, number(n)?)))
+        }
         ["V", mood @ ("IND" | "SBJV"), n, p, tense @ ("PRS" | "PST")] => {
             let (t, m) = match (*mood, *tense) {
                 ("IND", "PRS") => (Tense::Present, Mood::Indicative),
@@ -72,6 +89,10 @@ fn category(features: &str) -> &'static str {
         "infinitive"
     } else if features == "V;AUX" {
         "auxiliary"
+    } else if features.starts_with("V;PRF") || features.starts_with("V;PLPRF") {
+        "perfect"
+    } else if features.starts_with("V;FUT") {
+        "future"
     } else if features.starts_with("V;IND") && features.ends_with("PRS") {
         "present"
     } else if features.starts_with("V;IND") && features.ends_with("PST") {
@@ -237,6 +258,8 @@ fn main() {
         "konjunktiv2",
         "imperative",
         "participle",
+        "perfect",
+        "future",
     ] {
         let c = by_category.get(&(cat, true)).map_or((0, 0), |t| (t.matched, t.total));
         let f = by_category.get(&(cat, false)).map_or((0, 0), |t| (t.matched, t.total));

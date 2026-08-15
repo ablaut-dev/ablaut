@@ -39,6 +39,21 @@ pub enum Auxiliary {
     Sein,
 }
 
+/// Analytic (periphrastic) tenses — Layer C of the ontology. Composed from
+/// an auxiliary conjugated by the same synthetic core plus a participle or
+/// infinitive; the morphological heavy lifting is already done.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum AnalyticTense {
+    /// habe gekauft / bin gekommen
+    Perfect,
+    /// hatte gekauft / war gekommen
+    Pluperfect,
+    /// werde kaufen (with [`Mood::KonjunktivII`]: würde kaufen)
+    FutureI,
+    /// werde gekauft haben / werde gekommen sein
+    FutureII,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 enum Class {
     Weak,
@@ -200,11 +215,13 @@ impl Verb {
         }
     }
 
-    /// The perfect auxiliary (*haben* or *sein*). Prefixed verbs currently
-    /// inherit their base's auxiliary — wrong for cases like aufstehen
-    /// (sein) vs stehen (haben); per-lexeme auxiliary flags are future
-    /// lexicon work.
+    /// The perfect auxiliary (*haben* or *sein*): per-lexeme class-"a"
+    /// override if present, else inherited from the base for prefixed verbs,
+    /// else the lexicon entry, defaulting to *haben*.
     pub fn auxiliary(&self) -> Auxiliary {
+        if let Some(aux) = lexicon::aux_override(&self.infinitive) {
+            return aux;
+        }
         match (&self.base, &self.class) {
             (Some(base), _) => base.auxiliary(),
             (None, Class::Weak) => Auxiliary::Haben,
@@ -226,6 +243,72 @@ impl Verb {
             }
             _ => format!("zu {}", self.infinitive),
         }
+    }
+
+    /// An analytic tense form. The mood conjugates the auxiliary: Perfekt
+    /// Konjunktiv is *habe gekauft* (KonjI) or *hätte gekauft* (KonjII);
+    /// FutureI + KonjunktivII is the *würde*-form.
+    pub fn analytic(
+        &self,
+        tense: AnalyticTense,
+        mood: Mood,
+        person: Person,
+        number: Number,
+    ) -> String {
+        let aux = |name: &str| Verb::from_infinitive(name).expect("auxiliary");
+        let own_aux = match self.auxiliary() {
+            Auxiliary::Haben => "haben",
+            Auxiliary::Sein => "sein",
+        };
+        match tense {
+            AnalyticTense::Perfect => format!(
+                "{} {}",
+                aux(own_aux).conjugate(Tense::Present, mood, person, number),
+                self.past_participle()
+            ),
+            AnalyticTense::Pluperfect => format!(
+                "{} {}",
+                aux(own_aux).conjugate(Tense::Preterite, mood, person, number),
+                self.past_participle()
+            ),
+            AnalyticTense::FutureI => format!(
+                "{} {}",
+                aux("werden").conjugate(Tense::Present, mood, person, number),
+                self.infinitive
+            ),
+            AnalyticTense::FutureII => format!(
+                "{} {} {}",
+                aux("werden").conjugate(Tense::Present, mood, person, number),
+                self.past_participle(),
+                own_aux
+            ),
+        }
+    }
+
+    /// Processual passive (Vorgangspassiv): *wird gekauft*, *wurde gekauft*.
+    pub fn passive(&self, tense: Tense, mood: Mood, person: Person, number: Number) -> String {
+        let werden = Verb::from_infinitive("werden").expect("werden");
+        format!(
+            "{} {}",
+            werden.conjugate(tense, mood, person, number),
+            self.past_participle()
+        )
+    }
+
+    /// Statal passive (Zustandspassiv): *ist gekauft*, *war gekauft*.
+    pub fn statal_passive(
+        &self,
+        tense: Tense,
+        mood: Mood,
+        person: Person,
+        number: Number,
+    ) -> String {
+        let sein = Verb::from_infinitive("sein").expect("sein");
+        format!(
+            "{} {}",
+            sein.conjugate(tense, mood, person, number),
+            self.past_participle()
+        )
     }
 
     fn base(&self) -> &Verb {

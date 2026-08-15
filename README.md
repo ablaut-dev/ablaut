@@ -25,9 +25,11 @@ domain that doubles as the design spec.
 
 ## Status
 
-Early. Current coverage — all synthetic forms (Präsens, Präteritum,
+Current coverage — all synthetic forms (Präsens, Präteritum,
 Konjunktiv I/II, imperative, both participles) for all five inflection
-classes:
+classes, plus the full compositional layer of analytic tenses (Perfekt,
+Plusquamperfekt, Futur I/II, the *würde*-form as Futur I Konjunktiv II,
+and both passives) with per-lexeme perfect auxiliaries:
 
 - **weak** (the productive default) with the full orthographic rule set
   (*e*-epenthesis, *s*-coalescence, *-eln/-ern* schwa elision, *-ieren*
@@ -48,13 +50,14 @@ The golden harness diffs every generated form against **two independent
 oracles**: [UniMorph deu](https://github.com/unimorph/deu)
 (`scripts/fetch_unimorph.sh`; 6.6k lemmas, 194k forms) and the
 [kaikki.org Wiktextract extraction](https://kaikki.org/dictionary/German/)
-(`scripts/fetch_kaikki.sh`; 10.2k lemmas, 308k forms — including the perfect
-auxiliary, which the harness scores too). Current baseline:
+(`scripts/fetch_kaikki.sh`; 10.2k lemmas, **794k forms** — including the
+perfect auxiliary and all analytic tenses, which the harness scores too).
+Current baseline:
 
-| oracle | overall | lexicon-grounded | weak fallback |
+| oracle | overall | auxiliary | analytic tenses |
 |---|---|---|---|
-| UniMorph deu | 97.5% | 96.91% | 97.62% |
-| kaikki.org | 97.1% | 96.33% | 97.35% |
+| UniMorph deu (194k synthetic forms) | 97.5% | — | — |
+| kaikki.org (794k forms) | 96.5% | 99.2–99.99% | 94.5–97.3% |
 
 `scripts/cross_oracle.py` cross-examines the oracles: they agree on 98.9%
 of their 195k shared slots; the 2,137 disagreements are data-quality
@@ -79,9 +82,8 @@ strong bases, and archaic gold lemmas.
 Next, in order:
 
 - [ ] Work the bug-candidate list toward zero; adjudicate the oracle splits
-- [ ] Per-verb auxiliary flags for prefixed derivatives (aufstehen: sein)
-- [ ] Compositional layer: analytic tenses (Perfekt, Futur, passives)
 - [ ] WASM + Python (PyO3) bindings
+- [ ] Lemmatization (form → lemma) by inverting the paradigm tables
 
 ## Example
 

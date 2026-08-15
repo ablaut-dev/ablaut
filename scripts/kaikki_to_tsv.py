@@ -14,16 +14,11 @@ import sys
 PERSON = {"first-person": "1", "second-person": "2", "third-person": "3"}
 NUMBER = {"singular": "SG", "plural": "PL"}
 SKIP = {
-    "multiword-construction",
-    "perfect",
-    "pluperfect",
-    "future",
-    "future-i",
-    "future-ii",
     "table-tags",
     "inflection-template",
     "class",
 }
+ANALYTIC = {"perfect": "PRF", "pluperfect": "PLPRF", "future-i": "FUT1", "future-ii": "FUT2"}
 
 
 def features(tags):
@@ -32,6 +27,15 @@ def features(tags):
         return None
     p = next((PERSON[t] for t in tags if t in PERSON), None)
     n = next((NUMBER[t] for t in tags if t in NUMBER), None)
+    # Analytic tenses (Layer C): tagged multiword-construction in kaikki.
+    analytic = next((ANALYTIC[t] for t in tags if t in ANALYTIC), None)
+    if analytic:
+        if not (p and n):
+            return None
+        mood = "SBJV" if "subjunctive" in tags else "IND"
+        return f"V;{analytic};{mood};{n};{p}"
+    if "multiword-construction" in tags:
+        return None
     if "infinitive-zu" in tags:
         return "V;NFIN;LGSPEC01"
     if "infinitive" in tags:
