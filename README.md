@@ -136,7 +136,7 @@ assert_eq!(v.past_participle(), "gesammelt");
 
 ## License
 
-MIT OR Apache-2.0.
+MIT.
 
 **Data provenance**: the exception lexicon (`data/verbs.tsv`) is
 independently curated factual data about standard German (principal parts,
