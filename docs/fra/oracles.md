@@ -21,14 +21,14 @@ by an independent lineage.
    extraction, CC BY-SA / GFDL. The `fr-conj-auto` conjugation templates
    expand cleanly (spot-checked; 80+ tagged forms per verb, no failures).
    After conversion: **364,820 simple-tense forms / 7,328 verb lemmas**
-   (`scripts/fetch_kaikki_fra.sh` → `data/kaikki/fra.tsv`).
+   (`scripts/fra/fetch_kaikki.sh` → `data/fra/kaikki.tsv`).
 2. **Lefff 3.4** (Lexique des Formes Fléchies du Français, INRIA/Alexina,
    Sagot) — **LGPL-LR**, hand-curated academic lexicon, **not
    Wiktionary-derived**. Canonical source:
    [gitlab.inria.fr/almanach/alexina/lefff](https://gitlab.inria.fr/almanach/alexina/lefff)
    (intensional); we fetch the compiled extensional `.mlex`. After
    conversion: **397,371 verb form rows / 7,819 verb lemmas**
-   (`scripts/fetch_lefff.sh` → `data/lefff/fra.tsv`).
+   (`scripts/fra/fetch_lefff.sh` → `data/fra/lefff.tsv`).
 
 Third-oracle candidates for adjudication tie-breaks (in preference order):
 
@@ -64,7 +64,7 @@ Lefff (same policy as German reflexives).
 
 ## Baseline cross-oracle agreement (2026-08-16)
 
-`python3 scripts/cross_oracle.py data/lefff/fra.tsv data/kaikki/fra.tsv …`
+`python3 scripts/cross_oracle.py data/fra/lefff.tsv data/fra/kaikki.tsv …`
 
 - shared (lemma, feature) slots: **277,379**
 - oracles agree: **277,037 (99.88%)**

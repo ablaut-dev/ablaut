@@ -138,4 +138,4 @@ et al., "German Inflection: The Exception That Proves the Rule", Cognitive
 Psychology 1995), and German weak versus strong morphology is the case that
 literature is largely about. How the correctness of the implementation is
 measured, and the errors found in the gold data along the way, are covered
-in the [README](../README.md) and [`adjudications-deu.tsv`](adjudications-deu.tsv).
+in the [README](../README.md) and [`deu/adjudications.tsv`](deu/adjudications.tsv).

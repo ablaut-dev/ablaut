@@ -2,11 +2,11 @@
 """Convert the kaikki.org (Wiktextract) French verb JSONL into the
 lemma<TAB>form<TAB>features TSV that the French golden harness reads.
 
-Usage: python3 scripts/kaikki_fra_to_tsv.py data/kaikki/verbs-fra.jsonl > data/kaikki/fra.tsv
+Usage: python3 scripts/fra/kaikki_to_tsv.py data/fra/kaikki-verbs.jsonl > data/fra/kaikki.tsv
 
 Only synthetic conjugation-table forms are kept; compound tenses
 (multiword-construction) are the compositional layer's business, as in German.
-The feature schema matches scripts/lefff_to_tsv.py so cross_oracle.py can
+The feature schema matches scripts/fra/lefff_to_tsv.py so cross_oracle.py can
 compare the two directly.
 """
 import json

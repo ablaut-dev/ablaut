@@ -4,7 +4,7 @@ An exhaustive register of the problems found in the two gold datasets while
 validating ablaut against them, with a disposition for each. Nothing here
 has been reported upstream yet; the **Disposition** column records the
 intended channel. Individual per-form rulings live in
-[adjudications-deu.tsv](adjudications-deu.tsv); this document groups them into
+[adjudications.tsv](adjudications.tsv); this document groups them into
 findings and adds the systematic patterns visible in the
 oracle-disagreement corpus (2,137 slots where the two datasets contradict
 each other, out of 195,204 shared).

@@ -9,7 +9,7 @@
 //! Inflection classes: weak (the productive default), strong (ablaut),
 //! mixed (changed stem + weak endings), preterite-present (modals and
 //! *wissen*), and three stored suppletives (*sein*, *werden*, *tun*).
-//! Everything irregular lives in `data/verbs-deu.tsv`, compiled in.
+//! Everything irregular lives in `data/deu/verbs.tsv`, compiled in.
 
 mod features;
 mod lexicon;

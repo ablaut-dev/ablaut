@@ -1,7 +1,6 @@
 /target
 Cargo.lock
-/data/unimorph/
-/data/kaikki/
 /pkg
 /pkg-node
-/data/lefff/
+/data/*/*
+!/data/*/verbs.tsv

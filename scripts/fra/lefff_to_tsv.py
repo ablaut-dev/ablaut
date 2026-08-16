@@ -2,7 +2,7 @@
 """Convert the Lefff 3.4 extensional lexicon (.mlex) into the
 lemma<TAB>form<TAB>features TSV that the French golden harness reads.
 
-Usage: python3 scripts/lefff_to_tsv.py data/lefff/lefff-3.4.mlex > data/lefff/fra.tsv
+Usage: python3 scripts/fra/lefff_to_tsv.py data/fra/lefff-3.4.mlex > data/fra/lefff.tsv
 
 The .mlex format is form<TAB>pos<TAB>lemma<TAB>morphtag, where a verb morphtag
 is a compact code: tense letters, then persons, then number, e.g. "PS13s" =
