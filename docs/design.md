@@ -97,6 +97,21 @@ This inventory grew out of testing against gold data; several rules
 (the *-mn* cluster, the Latinate distinction, the *lädt*/*hält* asymmetry
 in stem-changing 3sg forms) were found that way rather than planned.
 
+## Input handling
+
+`Verb::from_infinitive` normalizes common messy input before parsing:
+surrounding and repeated whitespace is trimmed and collapsed, a leading
+capital or stray casing is lowercased (German infinitives are entirely
+lowercase), and a leading *zu* particle is stripped (*zu gehen*). Multiword
+lemmas keep their noun's capital (*Rad fahren*).
+
+Two input kinds are deliberately *not* guessed, because doing so is
+ambiguous: umlaut transcriptions typed without a German keyboard
+(*ueben* for *üben*, *schoen* for *schön*) and conjugated forms given
+instead of the infinitive (*ging*, *gegangen*). The first would need a
+dictionary to disambiguate from legitimate letter sequences (*neu*,
+*Steuer*); the second is lemmatization, a separate direction.
+
 ## Scope: morphology, not syntax
 
 Separable prefixes split in verb-second clauses (*ich stehe auf*). Where
