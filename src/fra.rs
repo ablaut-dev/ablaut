@@ -1,7 +1,7 @@
-//! French conjugation: the first-group (-er) engine.
+//! French conjugation: the first- and second-group engine.
 //!
-//! This is the seed of the French core. It covers regular first-group verbs
-//! plus their orthographic alternations, which is ~90% of French verb lemmas:
+//! This is the seed of the French core. The first group (-er) comes with
+//! its orthographic alternations:
 //!
 //! - softening before a/o endings: *commencer → commençons*, *manger → mangeons*
 //! - `-yer` verbs: *y → i* before a mute ending (*payer → paie*, *employer →
@@ -13,9 +13,15 @@
 //! - `é + consonant + er`: *é → è* before a mute ending (*céder → cède*) but
 //!   not in the future/conditional (*céderai*, classical orthography)
 //!
-//! Second- and third-group verbs, and the irregular first-group verbs *aller*
-//! and the *envoyer* family (irregular future *enverr-*), return
-//! [`Error::Unsupported`] until the lexicon lands.
+//! The second group (-ir with the -iss- infix: *finir → finissons*) is the
+//! productive default for -ir infinitives; the closed class of third-group
+//! -ir bases ([`THIRD_GROUP_IR`]) is excluded by suffix, with
+//! [`SECOND_GROUP_ANYWAY`] overriding false collisions (*asservir*,
+//! *assortir*, *répartir*).
+//!
+//! Third-group verbs (-oir, -re, the -ir bases), and the irregular
+//! first-group verbs *aller* and the *envoyer* family (irregular future
+//! *enverr-*), return [`Error::Unsupported`] until the lexicon lands.
 
 /// Grammatical person.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -88,6 +94,27 @@ const GRAVE_PREFIXES: [&str; 7] = ["", "dé", "con", "décon", "sur", "r", "em"]
 /// *aller* and its derivative *raller*.
 const IRREGULAR_ER: [&str; 2] = ["aller", "raller"];
 
+/// Third-group `-ir` bases (no *-iss-* infix): a closed class, matched by
+/// suffix so prefixed derivatives (*repartir*, *accueillir*, *soutenir*)
+/// are caught too. *haïr* is here for its diaeresis alternation (*hais*).
+const THIRD_GROUP_IR: [&str; 27] = [
+    "partir", "sortir", "dormir", "servir", "mentir", "sentir", "repentir", "tenir", "venir",
+    "courir", "mourir", "ouvrir", "couvrir", "offrir", "souffrir", "cueillir", "saillir",
+    "faillir", "bouillir", "fuir", "vêtir", "quérir", "gésir", "ouïr", "férir", "haïr", "issir",
+];
+
+/// Second-group verbs that would falsely match a [`THIRD_GROUP_IR`] suffix:
+/// *asservir* is not *servir*, *assortir* not *sortir*, *répartir* not
+/// *partir*.
+const SECOND_GROUP_ANYWAY: [&str; 6] = [
+    "asservir",
+    "assortir",
+    "rassortir",
+    "réassortir",
+    "répartir",
+    "impartir",
+];
+
 const PRESENT: [&str; 6] = ["e", "es", "e", "ons", "ez", "ent"];
 const IMPERFECT: [&str; 6] = ["ais", "ais", "ait", "ions", "iez", "aient"];
 const PAST_HISTORIC: [&str; 6] = ["ai", "as", "a", "âmes", "âtes", "èrent"];
@@ -96,12 +123,30 @@ const CONDITIONAL: [&str; 6] = ["ais", "ais", "ait", "ions", "iez", "aient"];
 const SUBJ_PRESENT: [&str; 6] = ["e", "es", "e", "ions", "iez", "ent"];
 const SUBJ_IMPERFECT: [&str; 6] = ["asse", "asses", "ât", "assions", "assiez", "assent"];
 
+const PRESENT_IR: [&str; 6] = ["is", "is", "it", "issons", "issez", "issent"];
+const IMPERFECT_IR: [&str; 6] = [
+    "issais", "issais", "issait", "issions", "issiez", "issaient",
+];
+const PAST_HISTORIC_IR: [&str; 6] = ["is", "is", "it", "îmes", "îtes", "irent"];
+const SUBJ_PRESENT_IR: [&str; 6] = ["isse", "isses", "isse", "issions", "issiez", "issent"];
+const SUBJ_IMPERFECT_IR: [&str; 6] = ["isse", "isses", "ît", "issions", "issiez", "issent"];
+
+/// Inflection class.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum Group {
+    /// First group: -er.
+    Er,
+    /// Second group: -ir with the -iss- infix.
+    Ir,
+}
+
 /// A conjugatable French verb.
 #[derive(Debug, Clone)]
 pub struct Verb {
     infinitive: String,
-    /// Infinitive minus `-er`.
+    /// Infinitive minus the group ending.
     stem: String,
+    group: Group,
 }
 
 impl Person {
@@ -125,26 +170,42 @@ fn is_mute(ending: &str) -> bool {
 }
 
 impl Verb {
-    /// Build a verb from its infinitive. Only regular first-group (-er)
-    /// verbs are accepted for now.
+    /// Build a verb from its infinitive. Regular first-group (-er) and
+    /// second-group (-ir/-iss-) verbs are accepted.
     pub fn from_infinitive(infinitive: &str) -> Result<Self, Error> {
         let inf = infinitive.trim();
         if inf.is_empty() || inf.contains(char::is_whitespace) {
             return Err(Error::NotAVerb);
         }
-        let Some(stem) = inf.strip_suffix("er") else {
+        let (stem, group) = if let Some(stem) = inf.strip_suffix("er") {
+            if IRREGULAR_ER.contains(&inf) || inf.ends_with("envoyer") {
+                return Err(Error::Unsupported);
+            }
+            (stem, Group::Er)
+        } else if let Some(stem) = inf.strip_suffix("ir") {
+            // -oir verbs (voir, devoir, …) are third group wholesale, and
+            // so are the THIRD_GROUP_IR bases — unless the match is a
+            // false suffix collision (asservir vs servir).
+            if inf.ends_with("oir") {
+                return Err(Error::Unsupported);
+            }
+            if !SECOND_GROUP_ANYWAY.contains(&inf)
+                && THIRD_GROUP_IR.iter().any(|base| inf.ends_with(base))
+            {
+                return Err(Error::Unsupported);
+            }
+            (stem, Group::Ir)
+        } else {
             return Err(Error::Unsupported);
         };
-        // A bare "er" or a stem without a vowel ("cler"?) is not a verb.
+        // A bare ending or a stem without a vowel is not a verb.
         if stem.is_empty() || !stem.chars().any(|c| "aeiouyàâéèêëîïôûü".contains(c)) {
             return Err(Error::NotAVerb);
-        }
-        if IRREGULAR_ER.contains(&inf) || inf.ends_with("envoyer") {
-            return Err(Error::Unsupported);
         }
         Ok(Self {
             infinitive: inf.to_string(),
             stem: stem.to_string(),
+            group,
         })
     }
 
@@ -259,6 +320,21 @@ impl Verb {
     /// A finite form.
     pub fn conjugate(&self, tense: SimpleTense, person: Person, number: Number) -> String {
         let i = person.index(number);
+        if self.group == Group::Ir {
+            // The second group is agglutinative: bare stem + ending, the
+            // future/conditional on the whole infinitive. No orthographic
+            // adjustments apply.
+            let (endings, base): (&[&str; 6], &str) = match tense {
+                SimpleTense::Present => (&PRESENT_IR, &self.stem),
+                SimpleTense::Imperfect => (&IMPERFECT_IR, &self.stem),
+                SimpleTense::PastHistoric => (&PAST_HISTORIC_IR, &self.stem),
+                SimpleTense::Future => (&FUTURE, &self.infinitive),
+                SimpleTense::Conditional => (&CONDITIONAL, &self.infinitive),
+                SimpleTense::SubjunctivePresent => (&SUBJ_PRESENT_IR, &self.stem),
+                SimpleTense::SubjunctiveImperfect => (&SUBJ_IMPERFECT_IR, &self.stem),
+            };
+            return format!("{base}{}", endings[i]);
+        }
         let (endings, base): (&[&str; 6], String) = match tense {
             SimpleTense::Present => (&PRESENT, self.stem.clone()),
             SimpleTense::Imperfect => (&IMPERFECT, self.stem.clone()),
@@ -281,9 +357,18 @@ impl Verb {
         Self::attach(&stem, ending)
     }
 
-    /// The imperative: 2sg (*parle*), 1pl (*parlons*), 2pl (*parlez*).
-    /// Other bundles have no imperative.
+    /// The imperative: 2sg (*parle*, *finis*), 1pl (*parlons*,
+    /// *finissons*), 2pl (*parlez*, *finissez*). Other bundles have no
+    /// imperative.
     pub fn imperative(&self, person: Person, number: Number) -> Option<String> {
+        if self.group == Group::Ir {
+            return match (person, number) {
+                (Person::Second, Number::Singular) => Some(format!("{}is", self.stem)),
+                (Person::First, Number::Plural) => Some(format!("{}issons", self.stem)),
+                (Person::Second, Number::Plural) => Some(format!("{}issez", self.stem)),
+                _ => None,
+            };
+        }
         match (person, number) {
             (Person::Second, Number::Singular) => Some(Self::attach(&self.mute_stem(false), "e")),
             (Person::First, Number::Plural) => Some(Self::attach(&self.stem, "ons")),
@@ -292,14 +377,20 @@ impl Verb {
         }
     }
 
-    /// Present participle: *parlant*, *commençant*, *mangeant*.
+    /// Present participle: *parlant*, *commençant*, *finissant*.
     pub fn present_participle(&self) -> String {
-        Self::attach(&self.stem, "ant")
+        match self.group {
+            Group::Er => Self::attach(&self.stem, "ant"),
+            Group::Ir => format!("{}issant", self.stem),
+        }
     }
 
-    /// Past participle, masculine singular: *parlé*.
+    /// Past participle, masculine singular: *parlé*, *fini*.
     pub fn past_participle(&self) -> String {
-        format!("{}é", self.stem)
+        match self.group {
+            Group::Er => format!("{}é", self.stem),
+            Group::Ir => format!("{}i", self.stem),
+        }
     }
 }
 
@@ -396,6 +487,74 @@ mod tests {
     }
 
     #[test]
+    fn second_group_paradigm() {
+        let f = v("finir");
+        assert_eq!(f.conjugate(Present, P1, SG), "finis");
+        assert_eq!(f.conjugate(Present, P3, SG), "finit");
+        assert_eq!(f.conjugate(Present, P1, PL), "finissons");
+        assert_eq!(f.conjugate(Present, P3, PL), "finissent");
+        assert_eq!(f.conjugate(Imperfect, P1, SG), "finissais");
+        assert_eq!(f.conjugate(PastHistoric, P1, PL), "finîmes");
+        assert_eq!(f.conjugate(PastHistoric, P3, PL), "finirent");
+        assert_eq!(f.conjugate(Future, P1, SG), "finirai");
+        assert_eq!(f.conjugate(Conditional, P3, PL), "finiraient");
+        assert_eq!(f.conjugate(SubjunctivePresent, P1, SG), "finisse");
+        assert_eq!(f.conjugate(SubjunctiveImperfect, P3, SG), "finît");
+        assert_eq!(f.imperative(P2, SG).unwrap(), "finis");
+        assert_eq!(f.imperative(P1, PL).unwrap(), "finissons");
+        assert_eq!(f.present_participle(), "finissant");
+        assert_eq!(f.past_participle(), "fini");
+    }
+
+    #[test]
+    fn second_group_classification() {
+        // Productive second group, including collision-prone lemmas.
+        for ok in [
+            "atterrir",
+            "jouir",
+            "nourrir",
+            "jaillir",
+            "asservir",
+            "assortir",
+            "répartir",
+        ] {
+            assert!(Verb::from_infinitive(ok).is_ok(), "{ok}");
+        }
+        // Third group: base verbs and prefixed derivatives.
+        for bad in [
+            "partir",
+            "repartir",
+            "dormir",
+            "endormir",
+            "tenir",
+            "soutenir",
+            "venir",
+            "devenir",
+            "courir",
+            "secourir",
+            "ouvrir",
+            "découvrir",
+            "cueillir",
+            "accueillir",
+            "fuir",
+            "vêtir",
+            "revêtir",
+            "acquérir",
+            "bouillir",
+            "haïr",
+            "voir",
+            "devoir",
+            "pouvoir",
+        ] {
+            assert_eq!(
+                Verb::from_infinitive(bad).unwrap_err(),
+                Error::Unsupported,
+                "{bad}"
+            );
+        }
+    }
+
+    #[test]
     fn unsupported() {
         assert_eq!(
             Verb::from_infinitive("aller").unwrap_err(),
@@ -406,7 +565,7 @@ mod tests {
             Error::Unsupported
         );
         assert_eq!(
-            Verb::from_infinitive("finir").unwrap_err(),
+            Verb::from_infinitive("vendre").unwrap_err(),
             Error::Unsupported
         );
         assert_eq!(

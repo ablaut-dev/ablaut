@@ -21,13 +21,14 @@ use std::fmt::Write as _;
 use std::fs;
 
 /// CI regression gates (percent), measured against Lefff alone (99.92 /
-/// 90.86 at PR time; the margin absorbs Lefff updates, not regressions).
+/// 94.81 with the second group; the margin absorbs Lefff updates, not
+/// regressions).
 /// Against the two-oracle agreement gold the engine scores 100.00% — the
 /// Lefff-alone shortfall is the 1990-rectification `-eler`/`-eter` doublets
 /// where Lefff lists only the reformed spelling and kaikki only the
 /// classical one; variant-set output will resolve it.
 const MIN_FORM_PCT: f64 = 99.8;
-const MIN_LEMMA_COVERAGE_PCT: f64 = 90.0;
+const MIN_LEMMA_COVERAGE_PCT: f64 = 94.0;
 
 const CATEGORIES: [&str; 10] = [
     "infinitive",
