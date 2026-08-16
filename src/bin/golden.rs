@@ -396,8 +396,9 @@ fn main() {
         .find(|a| !a.starts_with("--"))
         .cloned()
         .unwrap_or_else(|| "data/deu/unimorph".to_string());
-    let data = fs::read_to_string(&path)
-        .unwrap_or_else(|e| panic!("cannot read {path}: {e}. Run scripts/deu/fetch_unimorph.sh first"));
+    let data = fs::read_to_string(&path).unwrap_or_else(|e| {
+        panic!("cannot read {path}: {e}. Run scripts/deu/fetch_unimorph.sh first")
+    });
 
     let gold = parse_gold(&data);
     let adjudicated = load_adjudications();
