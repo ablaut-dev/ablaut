@@ -6,7 +6,10 @@
 # they exist so whole families resolve by prefix.
 #
 # Columns (tab-separated); trailing optional columns may be omitted,
-# and "-" means "derive":
+# and "-" means "derive". An em dash "—" in a cell means the form does
+# not exist (defective slot): a "—" present cell masks that person in
+# every tense (the impersonals), and "—" in ps/fut/pp masks the tenses
+# built on them.
 #   lemma  pres1s pres2s pres3s pres1p pres2p pres3p  subj_sg subj_pl
 #   ps1  fut_stem  pp  [impf_stem  prsp  subj6(comma)  imp3(comma)]
 #
@@ -96,15 +99,15 @@ prévaloir	prévaux	prévaux	prévaut	prévalons	prévalez	prévalent	préval	pr
 mouvoir	meus	meus	meut	mouvons	mouvez	meuvent	meuv	mouv	mus	mouvr	mû
 émouvoir	émeus	émeus	émeut	émouvons	émouvez	émeuvent	émeuv	émouv	émus	émouvr	ému
 promouvoir	promeus	promeus	promeut	promouvons	promouvez	promeuvent	promeuv	promouv	promus	promouvr	promu
-falloir	faux	faux	faut	fallons	fallez	fallent	faill	faill	fallus	faudr	fallu
-pleuvoir	pleus	pleus	pleut	pleuvons	pleuvez	pleuvent	pleuv	pleuv	plus	pleuvr	plu
-gésir	gis	gis	gît	gisons	gisez	gisent	gis	gis	gis	gésir	gi
-traire	trais	trais	trait	trayons	trayez	traient	trai	tray	trayis	trair	trait
-braire	brais	brais	brait	brayons	brayez	braient	brai	bray	brayis	brair	brait
+falloir	—	—	faut	—	—	—	faill	faill	fallus	faudr	fallu	fall
+pleuvoir	—	—	pleut	—	—	pleuvent	pleuv	pleuv	plus	pleuvr	plu	pleuv
+gésir	gis	gis	gît	gisons	gisez	gisent	gis	gis	—	—	—
+traire	trais	trais	trait	trayons	trayez	traient	trai	tray	—	trair	trait
+braire	brais	brais	brait	brayons	brayez	braient	brai	bray	—	brair	brait
 bruire	bruis	bruis	bruit	bruissons	bruissez	bruissent	bruiss	bruiss	bruis	bruir	bruit
-paître	pais	pais	paît	paissons	paissez	paissent	paiss	paiss	paissis	paîtr	pu
+paître	pais	pais	paît	paissons	paissez	paissent	paiss	paiss	—	paîtr	—
 repaître	repais	repais	repaît	repaissons	repaissez	repaissent	repaiss	repaiss	repus	repaîtr	repu
-clore	clos	clos	clôt	closons	closez	closent	clos	clos	closis	clor	clos
+clore	clos	clos	clôt	closons	closez	closent	clos	clos	—	clor	clos
 suffire	suffis	suffis	suffit	suffisons	suffisez	suffisent	suffis	suffis	suffis	suffir	suffi
 confire	confis	confis	confit	confisons	confisez	confisent	confis	confis	confis	confir	confit
 circoncire	circoncis	circoncis	circoncit	circoncisons	circoncisez	circoncisent	circoncis	circoncis	circoncis	circoncir	circoncis
