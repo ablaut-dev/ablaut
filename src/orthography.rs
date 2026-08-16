@@ -5,9 +5,12 @@
 /// stems in *d/t* (`arbeit-` → *du arbeitest*) and stems in *m/n* preceded by
 /// an obstruent (`atm-` → *du atmest*, `rechn-` → *du rechnest*, but
 /// `lern-` → *du lernst*, `wohn-` → *du wohnst*).
-pub(crate) fn needs_epenthesis(stem: &str) -> bool {
+pub fn needs_epenthesis(stem: &str) -> bool {
     let mut chars = stem.chars().rev();
     let (last, before, before2) = (chars.next(), chars.next(), chars.next());
+    // Arms with identical bodies stay separate deliberately: each is a
+    // distinct linguistic rule with its own comment.
+    #[allow(clippy::match_same_arms)]
     match (before, last) {
         // Archaic orthography (rath-, heirath-) behaves like a dental stem.
         (Some('t'), Some('h')) => true,
@@ -75,7 +78,7 @@ fn coalesces_s(stem: &str) -> bool {
 /// (*ich sammle*, *du sammelst* rather than \**sammelest* in Konjunktiv I).
 /// It must be a lexical/infinitive-derived flag, not a surface check on the
 /// stem — `spiel-` also ends in "el" but never elides.
-pub(crate) fn attach(stem: &str, ending: &str, schwa_stem: bool, merge_e: bool) -> String {
+pub fn attach(stem: &str, ending: &str, schwa_stem: bool, merge_e: bool) -> String {
     // 1sg-style bare `-e` on an -eln stem: the stem's schwa elides (sammle).
     // Fuller e-initial endings keep their e (Konjunktiv I du sammelest);
     // dropping it would collapse Konjunktiv I into the indicative.

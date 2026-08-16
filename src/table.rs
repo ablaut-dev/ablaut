@@ -47,8 +47,9 @@ fn row(f: impl Fn(Person, Number) -> String) -> [String; 6] {
 }
 
 impl Table {
-    pub fn build(v: &Verb) -> Table {
-        Table {
+    #[must_use]
+    pub fn build(v: &Verb) -> Self {
+        Self {
             infinitive: v.infinitive().to_string(),
             zu_infinitive: v.zu_infinitive(),
             perfect_infinitive: v.perfect_infinitive(),
