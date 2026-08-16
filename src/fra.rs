@@ -382,11 +382,59 @@ fn is_mute(ending: &str) -> bool {
     matches!(ending.as_bytes().first(), Some(b'e')) && !ending.starts_with("ez")
 }
 
+/// Fold input to the engine's expected shape: trim, compose the French
+/// combining-accent sequences (NFD input from macOS and some IMEs), and
+/// lower a leading capital when the rest is lowercase (Parler → parler,
+/// as the German engine does).
+fn normalize(input: &str) -> String {
+    let mut out = String::with_capacity(input.len());
+    for c in input.trim().chars() {
+        if let Some(prev) = out.pop() {
+            match compose(prev, c) {
+                Some(p) => out.push(p),
+                None => {
+                    out.push(prev);
+                    out.push(c);
+                }
+            }
+        } else {
+            out.push(c);
+        }
+    }
+    let mut chars = out.chars();
+    match (chars.next(), chars.clone().all(char::is_lowercase)) {
+        (Some(first), true) if first.is_uppercase() => first.to_lowercase().chain(chars).collect(),
+        _ => out,
+    }
+}
+
+/// Compose a base letter with a following combining mark into the
+/// precomposed characters French uses; None leaves the pair alone.
+fn compose(base: char, mark: char) -> Option<char> {
+    match (base, mark) {
+        ('a', '\u{300}') => Some('\u{e0}'),
+        ('e', '\u{300}') => Some('\u{e8}'),
+        ('u', '\u{300}') => Some('\u{f9}'),
+        ('e', '\u{301}') => Some('\u{e9}'),
+        ('a', '\u{302}') => Some('\u{e2}'),
+        ('e', '\u{302}') => Some('\u{ea}'),
+        ('i', '\u{302}') => Some('\u{ee}'),
+        ('o', '\u{302}') => Some('\u{f4}'),
+        ('u', '\u{302}') => Some('\u{fb}'),
+        ('e', '\u{308}') => Some('\u{eb}'),
+        ('i', '\u{308}') => Some('\u{ef}'),
+        ('u', '\u{308}') => Some('\u{fc}'),
+        ('c', '\u{327}') => Some('\u{e7}'),
+        _ => None,
+    }
+}
+
 impl Verb {
     /// Build a verb from its infinitive. Regular first-group (-er) and
     /// second-group (-ir/-iss-) verbs are accepted.
     pub fn from_infinitive(infinitive: &str) -> Result<Self, Error> {
-        let mut inf = infinitive.trim();
+        let normalized = normalize(infinitive);
+        let mut inf = normalized.as_str();
         let mut reflexive = false;
         for marker in ["s'", "s\u{2019}", "se ", "s\u{2019} "] {
             if let Some(rest) = inf.strip_prefix(marker) {
@@ -395,7 +443,7 @@ impl Verb {
                 break;
             }
         }
-        if inf.is_empty() || inf.contains(char::is_whitespace) {
+        if inf.is_empty() || inf.contains(char::is_whitespace) || inf.contains(['\'', '\u{2019}']) {
             return Err(Error::NotAVerb);
         }
         let (stem, prefix, group) = if let Some(stem) = inf.strip_suffix("er") {
@@ -468,7 +516,7 @@ impl Verb {
     /// Prepend the reflexive clitic to a finite form (me lève, m'assieds,
     /// s'assied, nous asseyons).
     fn cliticize(&self, form: String, person: Person, number: Number) -> String {
-        if !self.reflexive {
+        if !self.reflexive || form == "\u{2014}" {
             return form;
         }
         let full = match (person, number) {
@@ -643,6 +691,20 @@ impl Verb {
             .impf
             .as_deref()
             .unwrap_or_else(|| e.pres[3].strip_suffix("ons").unwrap_or(&e.pres[3]));
+        // An em dash marks a defective slot: impersonal verbs mask a
+        // person everywhere; a missing past historic, future stem, or
+        // participle masks the tenses built on it.
+        if e.pres[i] == "\u{2014}" {
+            return "\u{2014}".to_string();
+        }
+        let missing = match tense {
+            SimpleTense::PastHistoric | SimpleTense::SubjunctiveImperfect => e.ps == "\u{2014}",
+            SimpleTense::Future | SimpleTense::Conditional => e.fut == "\u{2014}",
+            _ => false,
+        };
+        if missing {
+            return "\u{2014}".to_string();
+        }
         let form = match tense {
             SimpleTense::Present => e.pres[i].clone(),
             SimpleTense::Imperfect => format!("{impf}{}", IMPERFECT[i]),
@@ -795,6 +857,9 @@ impl Verb {
                 (Person::Second, Number::Singular) => {
                     // The -s drops after a mute -es (offre!) and in va!.
                     let p2 = &e.pres[1];
+                    if p2 == "\u{2014}" {
+                        return None;
+                    }
                     p2.strip_suffix('s')
                         .filter(|f| f.ends_with('e') || *f == "va")
                         .unwrap_or(p2)
@@ -804,6 +869,9 @@ impl Verb {
                 (Person::Second, Number::Plural) => e.pres[4].clone(),
                 _ => return None,
             };
+            if form == "\u{2014}" {
+                return None;
+            }
             return Some(format!("{}{form}", self.prefix));
         }
         if matches!(self.group, Group::Ir) {
@@ -890,6 +958,9 @@ impl Verb {
             AnalyticTense::SubjonctifPlusQueParfait => SimpleTense::SubjunctiveImperfect,
         };
         let mut pp = self.past_participle();
+        if pp == "\u{2014}" || self.conjugate(SimpleTense::Present, person, number) == "\u{2014}" {
+            return "\u{2014}".to_string();
+        }
         if self.auxiliary() == Auxiliary::Etre && number == Number::Plural && !pp.ends_with('s') {
             pp.push('s');
         }
@@ -903,7 +974,12 @@ impl Verb {
             Group::Er => format!("{}é", self.stem),
             Group::Ir => format!("{}i", self.stem),
             Group::Re => format!("{}u", self.stem),
-            Group::Lex(entries) => format!("{}{}", self.prefix, entries[0].pp),
+            Group::Lex(entries) => {
+                if entries[0].pp == "\u{2014}" {
+                    return "\u{2014}".to_string();
+                }
+                format!("{}{}", self.prefix, entries[0].pp)
+            }
         }
     }
 
@@ -1346,6 +1422,47 @@ mod tests {
         let bare = v("asseoir");
         assert_eq!(bare.auxiliary(), Auxiliary::Avoir);
         assert_eq!(bare.analytic(PasseCompose, P1, SG), "ai assis");
+    }
+
+    #[test]
+    fn input_normalization() {
+        // NFD input (macOS-style decomposed accents) composes correctly.
+        let nfd = "cre\u{301}er";
+        assert_eq!(v(nfd).conjugate(Present, P3, SG), "crée");
+        assert_eq!(v("ge\u{302}ner").infinitive(), "gêner");
+        // A leading capital is folded; apostrophes outside the reflexive
+        // marker are rejected.
+        assert_eq!(v("Parler").conjugate(Present, P1, SG), "parle");
+        assert_eq!(
+            Verb::from_infinitive("l'aller").unwrap_err(),
+            Error::NotAVerb
+        );
+    }
+
+    #[test]
+    fn defective_masks() {
+        use AnalyticTense::PasseCompose;
+        let f = v("falloir");
+        assert_eq!(f.conjugate(Present, P3, SG), "faut");
+        assert_eq!(f.conjugate(Present, P1, SG), "\u{2014}");
+        assert_eq!(f.conjugate(Imperfect, P3, SG), "fallait");
+        assert_eq!(f.conjugate(Imperfect, P1, SG), "\u{2014}");
+        assert_eq!(f.conjugate(Future, P3, SG), "faudra");
+        assert_eq!(f.analytic(PasseCompose, P3, SG), "a fallu");
+        assert_eq!(f.analytic(PasseCompose, P1, SG), "\u{2014}");
+        let p = v("pleuvoir");
+        assert_eq!(p.conjugate(Present, P3, PL), "pleuvent");
+        assert_eq!(p.conjugate(Present, P2, SG), "\u{2014}");
+        assert_eq!(p.present_participle(), "pleuvant");
+        let t = v("traire");
+        assert_eq!(t.conjugate(PastHistoric, P1, SG), "\u{2014}");
+        assert_eq!(t.conjugate(SubjunctiveImperfect, P3, SG), "\u{2014}");
+        assert_eq!(t.conjugate(Present, P1, PL), "trayons");
+        let g = v("gésir");
+        assert_eq!(g.conjugate(Future, P1, SG), "\u{2014}");
+        assert_eq!(g.past_participle(), "\u{2014}");
+        assert_eq!(g.analytic(PasseCompose, P3, SG), "\u{2014}");
+        assert_eq!(v("paître").past_participle(), "\u{2014}");
     }
 
     #[test]
