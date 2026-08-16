@@ -1,7 +1,6 @@
-//! French conjugation: the first- and second-group engine.
+//! French conjugation: all three groups.
 //!
-//! This is the seed of the French core. The first group (-er) comes with
-//! its orthographic alternations:
+//! The first group (-er) comes with its orthographic alternations:
 //!
 //! - softening before a/o endings: *commencer → commençons*, *manger → mangeons*
 //! - `-yer` verbs: *y → i* before a mute ending (*payer → paie*, *employer →
@@ -19,9 +18,13 @@
 //! [`SECOND_GROUP_ANYWAY`] overriding false collisions (*asservir*,
 //! *assortir*, *répartir*).
 //!
-//! Third-group verbs (-oir, -re, the -ir bases), and the irregular
-//! first-group verbs *aller* and the *envoyer* family (irregular future
-//! *enverr-*), return [`Error::Unsupported`] until the lexicon lands.
+//! The third group splits three ways: the regular -dre class (*vendre*)
+//! is a rule; everything else irregular lives in the compiled-in lexicon
+//! (`data/fra/verbs.tsv`) as base paradigms, with prefixed derivatives
+//! (*soutenir*, *apprendre*, *reconnaître*) resolved by longest-base
+//! suffix match; and the defective bases (*gésir*, *faillir*, *pleuvoir*,
+//! *falloir*, *bruire*, *frire*, …) return [`Error::Unsupported`] until
+//! the schema grows defective slots.
 
 /// Grammatical person.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -123,6 +126,8 @@ const CONDITIONAL: [&str; 6] = ["ais", "ais", "ait", "ions", "iez", "aient"];
 const SUBJ_PRESENT: [&str; 6] = ["e", "es", "e", "ions", "iez", "ent"];
 const SUBJ_IMPERFECT: [&str; 6] = ["asse", "asses", "ât", "assions", "assiez", "assent"];
 
+const PRESENT_RE: [&str; 6] = ["s", "s", "", "ons", "ez", "ent"];
+
 const PRESENT_IR: [&str; 6] = ["is", "is", "it", "issons", "issez", "issent"];
 const IMPERFECT_IR: [&str; 6] = [
     "issais", "issais", "issait", "issions", "issiez", "issaient",
@@ -145,7 +150,17 @@ struct LexEntry {
     ps: String,
     fut: String,
     pp: String,
+    /// Overrides for être/avoir-class irregularity; None means derive.
+    impf: Option<String>,
+    prsp: Option<String>,
+    subj6: Option<[String; 6]>,
+    imp3: Option<[String; 3]>,
 }
+
+/// Verbs a lexicon base would falsely capture: *bruire* is not *b + uire*,
+/// *frire* not *f + rire*, *pleuvoir* not *pleu + voir*. All are
+/// defective and stay unsupported.
+const LEXICAL_EXCLUDE: [&str; 3] = ["bruire", "frire", "pleuvoir"];
 
 /// Look up `inf` in the lexicon: exact base match, or base matched by
 /// suffix with the leading prefix returned (*soutenir* → ("sou", tenir)).
@@ -163,7 +178,17 @@ fn lexical(inf: &str) -> Option<(String, LexEntry)> {
         }
     }
     let (lemma, cols) = best?;
+    if LEXICAL_EXCLUDE.contains(&inf) {
+        return None;
+    }
     let prefix = inf[..inf.len() - lemma.len()].to_string();
+    let opt = |i: usize| cols.get(i).filter(|c| **c != "-").map(|c| (*c).to_string());
+    fn split<const N: usize>(s: Option<String>) -> Option<[String; N]> {
+        s.map(|s| {
+            let v: Vec<String> = s.split(',').map(str::to_string).collect();
+            v.try_into().expect("wrong count in comma column")
+        })
+    }
     Some((
         prefix,
         LexEntry {
@@ -173,6 +198,10 @@ fn lexical(inf: &str) -> Option<(String, LexEntry)> {
             ps: cols[9].to_string(),
             fut: cols[10].to_string(),
             pp: cols[11].to_string(),
+            impf: opt(12),
+            prsp: opt(13),
+            subj6: split(opt(14)),
+            imp3: split(opt(15)),
         },
     ))
 }
@@ -203,6 +232,8 @@ enum Group {
     Er,
     /// Second group: -ir with the -iss- infix.
     Ir,
+    /// Regular third-group -dre (vendre, répondre, perdre, mordre).
+    Re,
     /// Irregular, from the lexicon.
     Lex(Box<LexEntry>),
 }
@@ -261,12 +292,10 @@ impl Verb {
             // false suffix collision (asservir vs servir). Third-group
             // bases with a stored paradigm come from the lexicon; the
             // defective archaic ones (gésir, férir, …) stay unsupported.
-            if inf.ends_with("oir") {
-                return Err(Error::Unsupported);
-            }
-            if !SECOND_GROUP_ANYWAY.iter().any(|s| inf.ends_with(s))
-                && THIRD_GROUP_IR.iter().any(|base| inf.ends_with(base))
-            {
+            let third = inf.ends_with("oir")
+                || (!SECOND_GROUP_ANYWAY.iter().any(|s| inf.ends_with(s))
+                    && THIRD_GROUP_IR.iter().any(|base| inf.ends_with(base)));
+            if third {
                 match lexical(inf) {
                     Some((prefix, e)) => ("", prefix, Group::Lex(Box::new(e))),
                     None => return Err(Error::Unsupported),
@@ -275,15 +304,22 @@ impl Verb {
                 (stem, String::new(), Group::Ir)
             }
         } else {
-            // Everything else (-re, -oir, -ïr) is lexicon-or-nothing;
-            // haïr lands here because its infinitive ends in -ïr, not -ir.
+            // Everything else is lexicon-first; haïr lands here because
+            // its infinitive ends in -ïr, not -ir. What the lexicon does
+            // not know but ends in -dre (and is not one of the lexical
+            // -oudre/-indre families) is the regular vendre class.
             match lexical(inf) {
                 Some((prefix, e)) => ("", prefix, Group::Lex(Box::new(e))),
-                None => return Err(Error::Unsupported),
+                None => match inf.strip_suffix("re") {
+                    Some(stem) if stem.ends_with('d') && !inf.ends_with("oudre") => {
+                        (stem, String::new(), Group::Re)
+                    }
+                    _ => return Err(Error::Unsupported),
+                },
             }
         };
         // A bare ending or a stem without a vowel is not a verb.
-        if matches!(group, Group::Er | Group::Ir)
+        if matches!(group, Group::Er | Group::Ir | Group::Re)
             && (stem.is_empty() || !stem.chars().any(|c| "aeiouyàâéèêëîïôûü".contains(c)))
         {
             return Err(Error::NotAVerb);
@@ -406,21 +442,28 @@ impl Verb {
 
     /// A stored-paradigm finite form (with the derivative prefix attached).
     fn conjugate_lex(&self, e: &LexEntry, tense: SimpleTense, i: usize) -> String {
-        // The imperfect stem is pres1p minus -ons; it also carries the
-        // present participle.
-        let impf = e.pres[3].strip_suffix("ons").unwrap_or(&e.pres[3]);
+        // The imperfect stem is pres1p minus -ons (overridable: étais);
+        // it also carries the present participle.
+        let impf = e
+            .impf
+            .as_deref()
+            .unwrap_or_else(|| e.pres[3].strip_suffix("ons").unwrap_or(&e.pres[3]));
         let form = match tense {
             SimpleTense::Present => e.pres[i].clone(),
             SimpleTense::Imperfect => format!("{impf}{}", IMPERFECT[i]),
             SimpleTense::Future => format!("{}{}", e.fut, FUTURE[i]),
             SimpleTense::Conditional => format!("{}{}", e.fut, CONDITIONAL[i]),
             SimpleTense::SubjunctivePresent => {
-                let stem = if i == 3 || i == 4 {
-                    &e.subj_pl
+                if let Some(subj) = &e.subj6 {
+                    subj[i].clone()
                 } else {
-                    &e.subj_sg
-                };
-                format!("{stem}{}", SUBJ_PRESENT[i])
+                    let stem = if i == 3 || i == 4 {
+                        &e.subj_pl
+                    } else {
+                        &e.subj_sg
+                    };
+                    format!("{stem}{}", SUBJ_PRESENT[i])
+                }
             }
             SimpleTense::PastHistoric | SimpleTense::SubjunctiveImperfect => {
                 let past = matches!(tense, SimpleTense::PastHistoric);
@@ -481,6 +524,21 @@ impl Verb {
             };
             return format!("{base}{}", endings[i]);
         }
+        if matches!(self.group, Group::Re) {
+            // Regular -dre: bare stem (vend) for the present, the
+            // infinitive minus -e (vendr) for the future/conditional.
+            let fut = &self.infinitive[..self.infinitive.len() - 1];
+            let (endings, base): (&[&str; 6], &str) = match tense {
+                SimpleTense::Present => (&PRESENT_RE, &self.stem),
+                SimpleTense::Imperfect => (&IMPERFECT, &self.stem),
+                SimpleTense::PastHistoric => (&PAST_HISTORIC_IR, &self.stem),
+                SimpleTense::Future => (&FUTURE, fut),
+                SimpleTense::Conditional => (&CONDITIONAL, fut),
+                SimpleTense::SubjunctivePresent => (&SUBJ_PRESENT, &self.stem),
+                SimpleTense::SubjunctiveImperfect => (&SUBJ_IMPERFECT_IR, &self.stem),
+            };
+            return format!("{base}{}", endings[i]);
+        }
         let (endings, base): (&[&str; 6], String) = match tense {
             SimpleTense::Present => (&PRESENT, self.stem.clone()),
             SimpleTense::Imperfect => (&IMPERFECT, self.stem.clone()),
@@ -508,6 +566,15 @@ impl Verb {
     /// imperative.
     pub fn imperative(&self, person: Person, number: Number) -> Option<String> {
         if let Group::Lex(e) = &self.group {
+            if let Some(imp) = &e.imp3 {
+                let form = match (person, number) {
+                    (Person::Second, Number::Singular) => &imp[0],
+                    (Person::First, Number::Plural) => &imp[1],
+                    (Person::Second, Number::Plural) => &imp[2],
+                    _ => return None,
+                };
+                return Some(format!("{}{form}", self.prefix));
+            }
             let form = match (person, number) {
                 (Person::Second, Number::Singular) => {
                     // The -s drops after a mute -es (offre!) and in va!.
@@ -531,6 +598,14 @@ impl Verb {
                 _ => None,
             };
         }
+        if matches!(self.group, Group::Re) {
+            return match (person, number) {
+                (Person::Second, Number::Singular) => Some(format!("{}s", self.stem)),
+                (Person::First, Number::Plural) => Some(format!("{}ons", self.stem)),
+                (Person::Second, Number::Plural) => Some(format!("{}ez", self.stem)),
+                _ => None,
+            };
+        }
         match (person, number) {
             (Person::Second, Number::Singular) => Some(Self::attach(&self.mute_stem(false), "e")),
             (Person::First, Number::Plural) => Some(Self::attach(&self.stem, "ons")),
@@ -544,8 +619,15 @@ impl Verb {
         match &self.group {
             Group::Er => Self::attach(&self.stem, "ant"),
             Group::Ir => format!("{}issant", self.stem),
+            Group::Re => format!("{}ant", self.stem),
             Group::Lex(e) => {
-                let impf = e.pres[3].strip_suffix("ons").unwrap_or(&e.pres[3]);
+                if let Some(prsp) = &e.prsp {
+                    return format!("{}{prsp}", self.prefix);
+                }
+                let impf = e
+                    .impf
+                    .as_deref()
+                    .unwrap_or_else(|| e.pres[3].strip_suffix("ons").unwrap_or(&e.pres[3]));
                 format!("{}{impf}ant", self.prefix)
             }
         }
@@ -556,6 +638,7 @@ impl Verb {
         match &self.group {
             Group::Er => format!("{}é", self.stem),
             Group::Ir => format!("{}i", self.stem),
+            Group::Re => format!("{}u", self.stem),
             Group::Lex(e) => format!("{}{}", self.prefix, e.pp),
         }
     }
@@ -696,8 +779,8 @@ mod tests {
                 "{lex}"
             );
         }
-        // Still out: -oir wholesale and the defective archaic -ir bases.
-        for bad in ["voir", "devoir", "pouvoir", "gésir", "faillir", "issir"] {
+        // Still out: the defective bases.
+        for bad in ["gésir", "faillir", "issir", "pleuvoir", "bruire", "frire"] {
             assert_eq!(
                 Verb::from_infinitive(bad).unwrap_err(),
                 Error::Unsupported,
@@ -770,12 +853,62 @@ mod tests {
     #[test]
     fn unsupported() {
         assert_eq!(
-            Verb::from_infinitive("vendre").unwrap_err(),
+            Verb::from_infinitive("falloir").unwrap_err(),
             Error::Unsupported
         );
         assert_eq!(
             Verb::from_infinitive("xyz").unwrap_err(),
             Error::Unsupported
         );
+    }
+
+    #[test]
+    fn third_group_re_and_oir() {
+        let v_ = v("vendre");
+        assert_eq!(v_.conjugate(Present, P3, SG), "vend");
+        assert_eq!(v_.conjugate(Present, P1, PL), "vendons");
+        assert_eq!(v_.conjugate(PastHistoric, P1, PL), "vendîmes");
+        assert_eq!(v_.conjugate(Future, P1, SG), "vendrai");
+        assert_eq!(v_.past_participle(), "vendu");
+        let e = v("être");
+        assert_eq!(e.conjugate(Present, P1, SG), "suis");
+        assert_eq!(e.conjugate(Imperfect, P1, SG), "étais");
+        assert_eq!(e.conjugate(Future, P1, SG), "serai");
+        assert_eq!(e.conjugate(PastHistoric, P3, SG), "fut");
+        assert_eq!(e.conjugate(SubjunctivePresent, P3, SG), "soit");
+        assert_eq!(e.conjugate(SubjunctiveImperfect, P3, SG), "fût");
+        assert_eq!(e.imperative(P2, SG).unwrap(), "sois");
+        assert_eq!(e.present_participle(), "étant");
+        let a = v("avoir");
+        assert_eq!(a.conjugate(Present, P3, PL), "ont");
+        assert_eq!(a.conjugate(SubjunctivePresent, P3, SG), "ait");
+        assert_eq!(a.present_participle(), "ayant");
+        assert_eq!(a.imperative(P2, SG).unwrap(), "aie");
+        let p = v("prendre");
+        assert_eq!(p.conjugate(Present, P3, PL), "prennent");
+        assert_eq!(p.conjugate(PastHistoric, P1, SG), "pris");
+        let ap = v("apprendre");
+        assert_eq!(ap.conjugate(Future, P3, SG), "apprendra");
+        let r = v("recevoir");
+        assert_eq!(r.conjugate(Present, P1, SG), "reçois");
+        assert_eq!(r.conjugate(Present, P1, PL), "recevons");
+        assert_eq!(r.past_participle(), "reçu");
+        let pe = v("peindre");
+        assert_eq!(pe.conjugate(Present, P1, PL), "peignons");
+        assert_eq!(pe.past_participle(), "peint");
+        let s = v("savoir");
+        assert_eq!(s.present_participle(), "sachant");
+        assert_eq!(s.imperative(P2, SG).unwrap(), "sache");
+        assert_eq!(s.conjugate(SubjunctivePresent, P1, PL), "sachions");
+        let vo = v("vouloir");
+        assert_eq!(vo.imperative(P2, PL).unwrap(), "veuillez");
+        assert_eq!(vo.conjugate(SubjunctivePresent, P3, SG), "veuille");
+        let d = v("décrire");
+        assert_eq!(d.conjugate(Present, P1, PL), "décrivons");
+        let c = v("conduire");
+        assert_eq!(c.past_participle(), "conduit");
+        let dev = v("devoir");
+        assert_eq!(dev.past_participle(), "dû");
+        assert_eq!(dev.conjugate(Future, P1, SG), "devrai");
     }
 }
