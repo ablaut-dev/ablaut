@@ -15,7 +15,7 @@
 //! the *envoyer* family) are skipped and reported as lemma coverage.
 //! Mismatches go to `target/golden_fra_mismatches.tsv`.
 
-use ablaut::fra::{Error, Number, Person, SimpleTense, Verb};
+use ablaut::fra::{Auxiliary, Error, Number, Person, SimpleTense, Verb};
 use std::collections::{BTreeMap, HashMap, HashSet};
 use std::fmt::Write as _;
 use std::fs;
@@ -27,8 +27,9 @@ use std::fs;
 const MIN_FORM_PCT: f64 = 99.95;
 const MIN_LEMMA_COVERAGE_PCT: f64 = 99.5;
 
-const CATEGORIES: [&str; 10] = [
+const CATEGORIES: [&str; 11] = [
     "infinitive",
+    "auxiliary",
     "present",
     "imperfect",
     "past-historic",
@@ -70,6 +71,10 @@ fn generate(verb: &Verb, features: &str) -> Option<Vec<String>> {
     };
     match f.as_slice() {
         ["V", "NFIN"] => Some(vec![verb.infinitive().to_string()]),
+        ["V", "AUX"] => Some(vec![match verb.auxiliary() {
+            Auxiliary::Avoir => "avoir".to_string(),
+            Auxiliary::Etre => "être".to_string(),
+        }]),
         ["V.PTCP", "PRS"] => Some(verb.present_participle_variants()),
         ["V.PTCP", "PST", "MASC", "SG"] => Some(vec![verb.past_participle()]),
         ["V", "IMP", n, p] => match (person(p), number(n)) {
@@ -89,7 +94,9 @@ fn generate(verb: &Verb, features: &str) -> Option<Vec<String>> {
 
 /// Coarse category for the per-slot breakdown.
 fn category(features: &str) -> &'static str {
-    if features.starts_with("V.PTCP") {
+    if features == "V;AUX" {
+        "auxiliary"
+    } else if features.starts_with("V.PTCP") {
         "participle"
     } else if features.starts_with("V;IMP") {
         "imperative"
@@ -148,9 +155,18 @@ fn parse_gold(data: &str) -> Gold {
 /// Intersect two oracles into agreement gold: slots both cover with
 /// overlapping variant sets, unioned so either oracle's spelling counts.
 /// Disjoint slots (the adjudication corpus) are dropped and counted.
+/// V;AUX slots exist only in kaikki (Lefff has no auxiliary column) and
+/// pass through from that side alone.
 fn agree(a: Gold, b: &Gold) -> (Gold, usize) {
     let mut dropped = 0;
     let mut out: Gold = HashMap::new();
+    for (lemma, feats) in b {
+        if let Some(aux) = feats.get("V;AUX") {
+            out.entry(lemma.clone())
+                .or_default()
+                .insert("V;AUX".to_string(), aux.clone());
+        }
+    }
     for (lemma, feats) in a {
         let Some(bfeats) = b.get(&lemma) else {
             continue;

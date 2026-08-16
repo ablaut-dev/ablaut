@@ -75,6 +75,18 @@ def main(path):
         forms = [f for f in entry.get("forms", []) if f.get("source") == "conjugation"]
         if not lemma or not forms:
             continue
+        # The compound-tense rows are unexpanded templates ("présent de
+        # être + participe passé"), but the infinitive one still names the
+        # auxiliary — emit it as a V;AUX slot, like the German harness.
+        for f in forms:
+            tags = set(f.get("tags", []))
+            if "multiword-construction" in tags and "infinitive" in tags:
+                aux = f.get("form", "").split(" ")[0]
+                if aux in ("avoir", "être"):
+                    row = (lemma, aux, "V;AUX")
+                    if row not in seen:
+                        seen.add(row)
+                        sys.stdout.write(f"{lemma}\t{aux}\tV;AUX\n")
         for f in forms:
             form = f.get("form", "").strip()
             if not form or form == "-" or form.startswith("—"):

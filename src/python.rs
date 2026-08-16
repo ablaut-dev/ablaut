@@ -79,6 +79,7 @@ impl From<Table> for Conjugation {
 #[pyclass(get_all, frozen)]
 struct FrenchConjugation {
     infinitive: String,
+    auxiliary: String,
     present_participle: String,
     past_participle: String,
     /// [tu, nous, vous]
@@ -90,6 +91,13 @@ struct FrenchConjugation {
     conditional: Vec<String>,
     subjunctive_present: Vec<String>,
     subjunctive_imperfect: Vec<String>,
+    passe_compose: Vec<String>,
+    plus_que_parfait: Vec<String>,
+    passe_anterieur: Vec<String>,
+    futur_anterieur: Vec<String>,
+    conditionnel_passe: Vec<String>,
+    subjonctif_passe: Vec<String>,
+    subjonctif_plus_que_parfait: Vec<String>,
 }
 
 #[pymethods]
@@ -103,6 +111,7 @@ impl From<crate::fra::Table> for FrenchConjugation {
     fn from(t: crate::fra::Table) -> Self {
         FrenchConjugation {
             infinitive: t.infinitive,
+            auxiliary: t.auxiliary,
             present_participle: t.present_participle,
             past_participle: t.past_participle,
             imperative: t.imperative.into(),
@@ -113,6 +122,13 @@ impl From<crate::fra::Table> for FrenchConjugation {
             conditional: t.conditional.into(),
             subjunctive_present: t.subjunctive_present.into(),
             subjunctive_imperfect: t.subjunctive_imperfect.into(),
+            passe_compose: t.passe_compose.into(),
+            plus_que_parfait: t.plus_que_parfait.into(),
+            passe_anterieur: t.passe_anterieur.into(),
+            futur_anterieur: t.futur_anterieur.into(),
+            conditionnel_passe: t.conditionnel_passe.into(),
+            subjonctif_passe: t.subjonctif_passe.into(),
+            subjonctif_plus_que_parfait: t.subjonctif_plus_que_parfait.into(),
         }
     }
 }
