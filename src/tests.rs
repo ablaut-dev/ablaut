@@ -878,3 +878,23 @@ fn adhortative_and_polite_imperatives() {
     assert_eq!(v("sein").imperative_polite(), "seien Sie");
     assert_eq!(v("Rad fahren").imperative_polite(), "fahren Sie Rad");
 }
+
+#[test]
+fn leading_capital_is_normalized() {
+    // Users type "Abbrechen"; German infinitives are lowercase.
+    let a = v("Abbrechen");
+    assert_eq!(a.past_participle(), "abgebrochen");
+    assert_eq!(
+        a.conjugate(Preterite, Indicative, Third, Singular),
+        "brach ab"
+    );
+    assert_eq!(v("Gehen").past_participle(), "gegangen");
+    assert_eq!(
+        v("Sprechen").conjugate(Present, Indicative, Second, Singular),
+        "sprichst"
+    );
+    // Multiword: the noun keeps its capital, the verb still conjugates.
+    let r = v("Rad fahren");
+    assert_eq!(r.past_participle(), "Rad gefahren");
+    assert_eq!(v("Rad Fahren").past_participle(), "Rad gefahren");
+}
