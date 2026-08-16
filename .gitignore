@@ -4,3 +4,4 @@ Cargo.lock
 /pkg-node
 /data/*/*
 !/data/*/verbs.tsv
+!/data/*/classes.tsv

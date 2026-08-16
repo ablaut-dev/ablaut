@@ -42,8 +42,9 @@ forms, clitic combined forms (háblame), negative imperatives
 
 - 339,923 shared (lemma, feature) slots
 - 99.79% agreement; 723 disjoint slots (0.21%)
-- Dominant disagreement classes, pending adjudication during engine
-  work: diphthongization disputes (FreeLing conjugates *aberrar* as
-  *abierro*, kaikki as regular *aberro* — RAE sides with kaikki),
-  pronominal-only lemmas (*ufanar*, *acuclillar*), and defectives
-  (*preterir*, *inserir*).
+- Dominant disagreement classes, ruled during engine work:
+  diphthongization disputes (FreeLing conjugates *aberrar* as
+  *abierro*; kaikki and the RAE keep it regular — adjudicated),
+  dual-conjugation verbs where kaikki carries both variants (*acostar*
+  acuesta/acosta — classed with the diphthong canonical), and
+  pronominal-only or defective lemmas.
