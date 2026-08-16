@@ -306,7 +306,7 @@ impl Verb {
             Some(StemClass::Ie | StemClass::IeNoRaise) => replace_last(s, &['e', 'i'], "ie"),
             Some(StemClass::Ue) => {
                 // ue after g is written üe: avergüenzo, degüella.
-                match s.rfind(|c| c == 'o' || c == 'u') {
+                match s.rfind(['o', 'u']) {
                     Some(i) => {
                         let head = &s[..i];
                         let tail = &s[i + 1..];
