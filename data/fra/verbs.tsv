@@ -1,0 +1,37 @@
+# French irregular lexicon: third-group -ir bases and the two irregular
+# first-group verbs. One row per base verb; prefixed derivatives
+# (soutenir, accueillir, renvoyer) are derived in src/fra.rs by prefix.
+#
+# Columns (tab-separated):
+#   lemma  pres1s pres2s pres3s pres1p pres2p pres3p  subj_sg subj_pl  ps1  fut_stem  pp
+#
+# Derived elsewhere: imperfect and present participle from pres1p minus
+# -ons; past-historic series from ps1's ending (-ai → er-series, -s →
+# s-series with circumflexed 1p/2p); imperfect subjunctive from ps1;
+# imperative from pres2s/pres1p/pres2p (final -s dropped after -es, vas → va).
+#
+# Defective archaic bases (gésir, férir, ouïr, issir, saillir, faillir)
+# stay out: their gaps need variant/defective slots the schema lacks yet.
+aller	vais	vas	va	allons	allez	vont	aill	all	allai	ir	allé
+envoyer	envoie	envoies	envoie	envoyons	envoyez	envoient	envoi	envoy	envoyai	enverr	envoyé
+partir	pars	pars	part	partons	partez	partent	part	part	partis	partir	parti
+sortir	sors	sors	sort	sortons	sortez	sortent	sort	sort	sortis	sortir	sorti
+dormir	dors	dors	dort	dormons	dormez	dorment	dorm	dorm	dormis	dormir	dormi
+servir	sers	sers	sert	servons	servez	servent	serv	serv	servis	servir	servi
+mentir	mens	mens	ment	mentons	mentez	mentent	ment	ment	mentis	mentir	menti
+sentir	sens	sens	sent	sentons	sentez	sentent	sent	sent	sentis	sentir	senti
+repentir	repens	repens	repent	repentons	repentez	repentent	repent	repent	repentis	repentir	repenti
+tenir	tiens	tiens	tient	tenons	tenez	tiennent	tienn	ten	tins	tiendr	tenu
+venir	viens	viens	vient	venons	venez	viennent	vienn	ven	vins	viendr	venu
+courir	cours	cours	court	courons	courez	courent	cour	cour	courus	courr	couru
+mourir	meurs	meurs	meurt	mourons	mourez	meurent	meur	mour	mourus	mourr	mort
+ouvrir	ouvre	ouvres	ouvre	ouvrons	ouvrez	ouvrent	ouvr	ouvr	ouvris	ouvrir	ouvert
+couvrir	couvre	couvres	couvre	couvrons	couvrez	couvrent	couvr	couvr	couvris	couvrir	couvert
+offrir	offre	offres	offre	offrons	offrez	offrent	offr	offr	offris	offrir	offert
+souffrir	souffre	souffres	souffre	souffrons	souffrez	souffrent	souffr	souffr	souffris	souffrir	souffert
+cueillir	cueille	cueilles	cueille	cueillons	cueillez	cueillent	cueill	cueill	cueillis	cueiller	cueilli
+bouillir	bous	bous	bout	bouillons	bouillez	bouillent	bouill	bouill	bouillis	bouillir	bouilli
+fuir	fuis	fuis	fuit	fuyons	fuyez	fuient	fui	fuy	fuis	fuir	fui
+vêtir	vêts	vêts	vêt	vêtons	vêtez	vêtent	vêt	vêt	vêtis	vêtir	vêtu
+quérir	quiers	quiers	quiert	quérons	quérez	quièrent	quièr	quér	quis	querr	quis
+haïr	hais	hais	hait	haïssons	haïssez	haïssent	haïss	haïss	haïs	haïr	haï

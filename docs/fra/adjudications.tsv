@@ -1,0 +1,5 @@
+# French adjudication log: rulings on slots where ablaut::fra disagrees
+# with a gold oracle. Columns: lemma <TAB> features ("*" = whole paradigm)
+# <TAB> ruling (ours | both | theirs) <TAB> rationale.
+# Rulings "ours"/"both" count the engine's form as correct in golden_fra.
+automaintenir	*	ours	Lefff conjugates it second group (automaintenis); it derives from tenir (automaintiens, automaintiendrai) like all -tenir verbs. Bescherelle: tenir, type 22.

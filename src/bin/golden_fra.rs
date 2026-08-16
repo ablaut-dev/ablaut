@@ -21,14 +21,14 @@ use std::fmt::Write as _;
 use std::fs;
 
 /// CI regression gates (percent), measured against Lefff alone (99.92 /
-/// 94.81 with the second group; the margin absorbs Lefff updates, not
+/// 95.98 with the lexicon; the margin absorbs Lefff updates, not
 /// regressions).
 /// Against the two-oracle agreement gold the engine scores 100.00% — the
 /// Lefff-alone shortfall is the 1990-rectification `-eler`/`-eter` doublets
 /// where Lefff lists only the reformed spelling and kaikki only the
 /// classical one; variant-set output will resolve it.
 const MIN_FORM_PCT: f64 = 99.8;
-const MIN_LEMMA_COVERAGE_PCT: f64 = 94.0;
+const MIN_LEMMA_COVERAGE_PCT: f64 = 95.0;
 
 const CATEGORIES: [&str; 10] = [
     "infinitive",
@@ -114,6 +114,20 @@ fn category(features: &str) -> &'static str {
     }
 }
 
+/// Mismatches ruled "ours"/"both" in the adjudication log count as correct.
+/// A "*" in the features column applies to the lemma's whole paradigm.
+fn load_adjudications() -> HashSet<(String, String)> {
+    fs::read_to_string("docs/fra/adjudications.tsv")
+        .expect("docs/fra/adjudications.tsv")
+        .lines()
+        .filter(|l| !l.starts_with('#') && !l.is_empty())
+        .filter_map(|l| {
+            let f: Vec<&str> = l.split('\t').collect();
+            matches!(f[2], "ours" | "both").then(|| (f[0].to_string(), f[1].to_string()))
+        })
+        .collect()
+}
+
 fn parse_gold(data: &str) -> Gold {
     let mut gold: Gold = HashMap::new();
     for line in data.lines() {
@@ -173,6 +187,7 @@ struct Scores {
     mismatches: String,
     supported_lemmas: usize,
     total_lemmas: usize,
+    adjudicated_hits: usize,
 }
 
 impl Scores {
@@ -194,7 +209,7 @@ fn pct(matched: usize, total: usize) -> f64 {
     }
 }
 
-fn score(gold: &Gold) -> Scores {
+fn score(gold: &Gold, adjudicated: &HashSet<(String, String)>) -> Scores {
     let mut s = Scores::default();
     for (lemma, feats) in gold {
         s.total_lemmas += 1;
@@ -209,7 +224,16 @@ fn score(gold: &Gold) -> Scores {
             };
             let tally = s.by_category.entry(category(features)).or_default();
             tally.total += 1;
-            if variants.contains(&form) {
+            let ok = variants.contains(&form)
+                || if adjudicated.contains(&(lemma.clone(), features.clone()))
+                    || adjudicated.contains(&(lemma.clone(), "*".to_string()))
+                {
+                    s.adjudicated_hits += 1;
+                    true
+                } else {
+                    false
+                };
+            if ok {
                 tally.matched += 1;
             } else {
                 *s.lemma_errors.entry(lemma.clone()).or_default() += 1;
@@ -239,6 +263,12 @@ fn report(paths: &[String], s: &Scores, dropped: usize) {
         s.supported_lemmas,
         pct(s.supported_lemmas, s.total_lemmas)
     );
+    if s.adjudicated_hits > 0 {
+        println!(
+            "adjudicated forms counted as correct: {}",
+            s.adjudicated_hits
+        );
+    }
     if dropped > 0 {
         println!("oracle-disagreement slots excluded from gold: {dropped}");
     }
@@ -310,7 +340,7 @@ fn main() {
         None => (first, 0),
     };
 
-    let scores = score(&gold);
+    let scores = score(&gold, &load_adjudications());
     report(&paths, &scores, dropped);
     if check {
         check_gates(&scores);
