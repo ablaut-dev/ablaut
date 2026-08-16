@@ -65,6 +65,15 @@ pub enum Error {
     NotAVerb,
 }
 
+impl std::fmt::Display for Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Unsupported => write!(f, "not a supported French verb"),
+            Self::NotAVerb => write!(f, "not a French infinitive"),
+        }
+    }
+}
+
 /// `-eler`/`-eter` verbs that take a grave accent (*gèle*) instead of the
 /// default consonant doubling (*appelle*). Base verbs; prefixed derivatives
 /// (*dégeler*, *racheter*) are matched by suffix.
@@ -792,6 +801,59 @@ impl Verb {
     }
 }
 
+/// The full conjugation table of a French verb as one plain struct —
+/// shared by the WebAssembly and Python bindings. Rows are
+/// [je, tu, il/elle, nous, vous, ils/elles].
+#[cfg_attr(feature = "wasm", derive(serde::Serialize))]
+#[cfg_attr(feature = "wasm", serde(rename_all = "camelCase"))]
+pub struct Table {
+    pub infinitive: String,
+    pub present_participle: String,
+    pub past_participle: String,
+    /// [tu, nous, vous].
+    pub imperative: [Option<String>; 3],
+    pub present: [String; 6],
+    pub imperfect: [String; 6],
+    pub past_historic: [String; 6],
+    pub future: [String; 6],
+    pub conditional: [String; 6],
+    pub subjunctive_present: [String; 6],
+    pub subjunctive_imperfect: [String; 6],
+}
+
+const SLOTS: [(Person, Number); 6] = [
+    (Person::First, Number::Singular),
+    (Person::Second, Number::Singular),
+    (Person::Third, Number::Singular),
+    (Person::First, Number::Plural),
+    (Person::Second, Number::Plural),
+    (Person::Third, Number::Plural),
+];
+
+impl Table {
+    #[must_use]
+    pub fn build(v: &Verb) -> Self {
+        let row = |t: SimpleTense| SLOTS.map(|(p, n)| v.conjugate(t, p, n));
+        Self {
+            infinitive: v.infinitive().to_string(),
+            present_participle: v.present_participle(),
+            past_participle: v.past_participle(),
+            imperative: [
+                v.imperative(Person::Second, Number::Singular),
+                v.imperative(Person::First, Number::Plural),
+                v.imperative(Person::Second, Number::Plural),
+            ],
+            present: row(SimpleTense::Present),
+            imperfect: row(SimpleTense::Imperfect),
+            past_historic: row(SimpleTense::PastHistoric),
+            future: row(SimpleTense::Future),
+            conditional: row(SimpleTense::Conditional),
+            subjunctive_present: row(SimpleTense::SubjunctivePresent),
+            subjunctive_imperfect: row(SimpleTense::SubjunctiveImperfect),
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -996,6 +1058,25 @@ mod tests {
         assert_eq!(h.conjugate(Present, P1, PL), "haïssons");
         assert_eq!(h.conjugate(PastHistoric, P1, PL), "haïmes");
         assert_eq!(h.conjugate(SubjunctiveImperfect, P3, SG), "haït");
+    }
+
+    #[test]
+    fn table_builds() {
+        let t = Table::build(&v("parler"));
+        assert_eq!(t.present[0], "parle");
+        assert_eq!(t.imperative[0].as_deref(), Some("parle"));
+        let t = Table::build(&v("être"));
+        assert_eq!(t.present[3], "sommes");
+        assert_eq!(t.subjunctive_present[2], "soit");
+    }
+
+    #[test]
+    fn lang_codes() {
+        use crate::Lang;
+        assert_eq!(Lang::from_code("fr"), Some(Lang::Fra));
+        assert_eq!(Lang::from_code("FRA"), Some(Lang::Fra));
+        assert_eq!(Lang::from_code("german"), Some(Lang::Deu));
+        assert_eq!(Lang::from_code("xx"), None);
     }
 
     #[test]
