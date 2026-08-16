@@ -133,6 +133,65 @@ impl From<crate::fra::Table> for FrenchConjugation {
     }
 }
 
+/// The full conjugation table of one Spanish verb. Rows are
+/// [yo, tú, él/ella, nosotros, vosotros, ellos/ellas].
+#[pyclass(get_all, frozen)]
+struct SpanishConjugation {
+    infinitive: String,
+    gerund: String,
+    past_participle: String,
+    /// [tú, usted, nosotros, vosotros, ustedes]
+    imperative: Vec<Option<String>>,
+    present: Vec<String>,
+    imperfect: Vec<String>,
+    preterite: Vec<String>,
+    future: Vec<String>,
+    conditional: Vec<String>,
+    subjunctive_present: Vec<String>,
+    subjunctive_imperfect: Vec<String>,
+    subjunctive_future: Vec<String>,
+    perfecto_compuesto: Vec<String>,
+    pluscuamperfecto: Vec<String>,
+    preterito_anterior: Vec<String>,
+    futuro_perfecto: Vec<String>,
+    condicional_perfecto: Vec<String>,
+    subjuntivo_perfecto: Vec<String>,
+    subjuntivo_pluscuamperfecto: Vec<String>,
+}
+
+#[pymethods]
+impl SpanishConjugation {
+    fn __repr__(&self) -> String {
+        format!("SpanishConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::spa::Table> for SpanishConjugation {
+    fn from(t: crate::spa::Table) -> Self {
+        SpanishConjugation {
+            infinitive: t.infinitive,
+            gerund: t.gerund,
+            past_participle: t.past_participle,
+            imperative: t.imperative.into(),
+            present: t.present.into(),
+            imperfect: t.imperfect.into(),
+            preterite: t.preterite.into(),
+            future: t.future.into(),
+            conditional: t.conditional.into(),
+            subjunctive_present: t.subjunctive_present.into(),
+            subjunctive_imperfect: t.subjunctive_imperfect.into(),
+            subjunctive_future: t.subjunctive_future.into(),
+            perfecto_compuesto: t.perfecto_compuesto.into(),
+            pluscuamperfecto: t.pluscuamperfecto.into(),
+            preterito_anterior: t.preterito_anterior.into(),
+            futuro_perfecto: t.futuro_perfecto.into(),
+            condicional_perfecto: t.condicional_perfecto.into(),
+            subjuntivo_perfecto: t.subjuntivo_perfecto.into(),
+            subjuntivo_pluscuamperfecto: t.subjuntivo_pluscuamperfecto.into(),
+        }
+    }
+}
+
 /// Conjugate an infinitive: `ablaut.conjugate("aufstehen").present[0]`
 /// → "stehe auf", `ablaut.conjugate("parler", lang="fra").present[0]`
 /// → "parle". Raises ValueError for unknown languages and for strings
@@ -155,6 +214,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Spa) => {
+            let v = crate::spa::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(SpanishConjugation::from(crate::spa::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         None => Err(PyValueError::new_err(format!("unknown language: {lang}"))),
     }
 }
@@ -163,6 +229,7 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
 fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<Conjugation>()?;
     m.add_class::<FrenchConjugation>()?;
+    m.add_class::<SpanishConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())
 }

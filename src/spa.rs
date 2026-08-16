@@ -50,6 +50,25 @@ pub enum SimpleTense {
     SubjunctiveFuture,
 }
 
+/// The seven compound tenses: haber + invariable past participle.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum AnalyticTense {
+    /// Pretérito perfecto compuesto: he hablado.
+    PerfectoCompuesto,
+    /// Pluscuamperfecto: había hablado.
+    Pluscuamperfecto,
+    /// Pretérito anterior: hube hablado.
+    PreteritoAnterior,
+    /// Futuro perfecto: habré hablado.
+    FuturoPerfecto,
+    /// Condicional perfecto: habría hablado.
+    CondicionalPerfecto,
+    /// Subjuntivo perfecto: haya hablado.
+    SubjuntivoPerfecto,
+    /// Subjuntivo pluscuamperfecto: hubiera hablado (-se variant).
+    SubjuntivoPluscuamperfecto,
+}
+
 /// Why an infinitive cannot be conjugated (yet).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Error {
@@ -98,6 +117,90 @@ const SFUT_ERIR: [&str; 6] = ["iere", "ieres", "iere", "iéremos", "iereis", "ie
 
 fn is_vowel(c: char) -> bool {
     "aeiouáéíóúü".contains(c)
+}
+
+/// Attach an enclitic pronoun to an imperative, keeping the stress
+/// written: levanta+te → levántate, levantemos+nos → levantémonos,
+/// vestid+os → vestíos.
+fn encliticize(stress_word: &str, bare: &str, clitic: &str) -> String {
+    // Syllable nuclei as (byte index of the stressable vowel, vowel).
+    fn nuclei(word: &str) -> Vec<(usize, char)> {
+        let mut out = Vec::new();
+        let mut group: Vec<(usize, char)> = Vec::new();
+        let flush = |group: &mut Vec<(usize, char)>, out: &mut Vec<(usize, char)>| {
+            if group.is_empty() {
+                return;
+            }
+            // Two strong vowels are two syllables (le-a); otherwise the
+            // strong (or accented, or last) vowel carries the group.
+            let strong = |c: char| "aeoáéóíú".contains(c);
+            let strongs: Vec<&(usize, char)> = group.iter().filter(|(_, c)| strong(*c)).collect();
+            if strongs.len() >= 2 {
+                for s in strongs {
+                    out.push(*s);
+                }
+            } else if let Some(s) = strongs.first() {
+                out.push(**s);
+            } else {
+                out.push(*group.last().unwrap());
+            }
+            group.clear();
+        };
+        for (i, c) in word.char_indices() {
+            if is_vowel(c) {
+                group.push((i, c));
+            } else {
+                flush(&mut group, &mut out);
+            }
+        }
+        flush(&mut group, &mut out);
+        out
+    }
+    let accented = |c: char| "áéíóú".contains(c);
+    let accent = |c: char| match c {
+        'a' => 'á',
+        'e' => 'é',
+        'i' => 'í',
+        'o' => 'ó',
+        'u' => 'ú',
+        other => other,
+    };
+    let bare_nuclei = nuclei(stress_word);
+    // The stressed nucleus of the bare form: an existing accent wins,
+    // else final vowel/n/s stresses the penult, otherwise the last.
+    let stressed_from_end = bare_nuclei
+        .iter()
+        .rev()
+        .position(|(_, c)| accented(*c))
+        .unwrap_or_else(|| {
+            if stress_word.ends_with(|c: char| is_vowel(c) || c == 'n' || c == 's')
+                && bare_nuclei.len() > 1
+            {
+                1
+            } else {
+                0
+            }
+        });
+    let target = bare_nuclei[bare_nuclei.len() - 1 - stressed_from_end];
+    let combined = format!("{bare}{clitic}");
+    let comb_nuclei = nuclei(&combined);
+    // Where would the default rule put the stress in the combined word?
+    let default_from_end = if combined.ends_with(|c: char| is_vowel(c) || c == 'n' || c == 's')
+        && comb_nuclei.len() > 1
+    {
+        1
+    } else {
+        0
+    };
+    let default_idx = comb_nuclei[comb_nuclei.len() - 1 - default_from_end].0;
+    if default_idx == target.0 || accented(target.1) {
+        return combined;
+    }
+    let mut out = String::with_capacity(combined.len() + 1);
+    out.push_str(&combined[..target.0]);
+    out.push(accent(target.1));
+    out.push_str(&combined[target.0 + target.1.len_utf8()..]);
+    out
 }
 
 /// The compiled-in irregular lexicon (see the schema comment there).
@@ -231,6 +334,9 @@ fn replace_last(stem: &str, targets: &[char], to: &str) -> String {
 #[derive(Debug, Clone)]
 pub struct Verb {
     infinitive: String,
+    /// Pronominal (levantarse): finite forms carry the clitic and the
+    /// imperative attaches it enclitically.
+    reflexive: bool,
     /// Infinitive minus the group ending.
     stem: String,
     group: Group,
@@ -256,9 +362,21 @@ impl Person {
 }
 
 impl Verb {
-    /// Build a verb from its infinitive.
+    /// Build a verb from its infinitive. A -se infinitive (levantarse,
+    /// arrepentirse) conjugates pronominally.
     pub fn from_infinitive(infinitive: &str) -> Result<Self, Error> {
-        let inf = infinitive.trim();
+        let mut inf = infinitive.trim();
+        let mut reflexive = false;
+        if let Some(bare) = inf.strip_suffix("se") {
+            if bare.ends_with("ar")
+                || bare.ends_with("er")
+                || bare.ends_with("ir")
+                || bare.ends_with("ír")
+            {
+                inf = bare;
+                reflexive = true;
+            }
+        }
         if inf.is_empty() || inf.contains(char::is_whitespace) || inf.contains('\'') {
             return Err(Error::NotAVerb);
         }
@@ -284,6 +402,7 @@ impl Verb {
         }
         Ok(Self {
             infinitive: inf.to_string(),
+            reflexive,
             stem: stem.to_string(),
             group,
             class: if lex.is_some() { None } else { stem_class(inf) },
@@ -292,9 +411,28 @@ impl Verb {
         })
     }
 
-    /// The infinitive as normalized.
-    pub fn infinitive(&self) -> &str {
-        &self.infinitive
+    /// The infinitive as normalized (levantarse for pronominal verbs).
+    pub fn infinitive(&self) -> String {
+        if self.reflexive {
+            format!("{}se", self.infinitive)
+        } else {
+            self.infinitive.clone()
+        }
+    }
+
+    /// Prepend the reflexive clitic to a finite form.
+    fn cliticize(&self, form: String, person: Person, number: Number) -> String {
+        if !self.reflexive {
+            return form;
+        }
+        let clitic = match (person, number) {
+            (Person::First, Number::Singular) => "me",
+            (Person::Second, Number::Singular) => "te",
+            (Person::Third, _) => "se",
+            (Person::First, Number::Plural) => "nos",
+            (Person::Second, Number::Plural) => "os",
+        };
+        format!("{clitic} {form}")
     }
 
     /// The stem with the class change applied for a stressed slot:
@@ -647,8 +785,13 @@ impl Verb {
         self.infinitive.clone()
     }
 
-    /// A finite form without the -se doublet (that is in variants()).
+    /// A finite form without the -se doublet (that is in variants());
+    /// pronominal verbs carry their clitic (me levanto).
     pub fn conjugate(&self, tense: SimpleTense, person: Person, number: Number) -> String {
+        self.cliticize(self.plain(tense, person, number), person, number)
+    }
+
+    fn plain(&self, tense: SimpleTense, person: Person, number: Number) -> String {
         let i = person.index(number);
         if let Some(e) = &self.lex {
             let e = e.clone();
@@ -721,7 +864,7 @@ impl Verb {
                 Some(e) => self.conjugate_lex(&e.clone(), tense, i, true),
                 None => self.regular_form(tense, i, true),
             };
-            out.push(form);
+            out.push(self.cliticize(form, person, number));
         }
         out
     }
@@ -729,6 +872,38 @@ impl Verb {
     /// The imperative: tú, usted (subjunctive), nosotros, vosotros,
     /// ustedes. No first-person singular.
     pub fn imperative(&self, person: Person, number: Number) -> Option<String> {
+        let bare = self.imperative_bare(person, number)?;
+        if !self.reflexive {
+            return Some(bare);
+        }
+        let clitic = match (person, number) {
+            (Person::Second, Number::Singular) => "te",
+            (Person::Third, Number::Singular) => "se",
+            (Person::First, Number::Plural) => "nos",
+            (Person::Second, Number::Plural) => "os",
+            (Person::Third, Number::Plural) => "se",
+            _ => return None,
+        };
+        // nosotros drops its s before nos (levantémonos); vosotros
+        // drops the d before os (levantaos, vestíos).
+        let mut b = bare.clone();
+        if clitic == "nos" && b.ends_with('s') {
+            b.pop();
+        }
+        if clitic == "os" && b.ends_with('d') {
+            b.pop();
+            if b.ends_with("id") || b.ends_with('i') {
+                // vestid → vestí + os keeps the hiatus written.
+                if b.ends_with('i') {
+                    b.pop();
+                    b.push('í');
+                }
+            }
+        }
+        Some(encliticize(&bare, &b, clitic))
+    }
+
+    fn imperative_bare(&self, person: Person, number: Number) -> Option<String> {
         match (person, number) {
             (Person::First, Number::Singular) => None,
             // tú: the 3sg present (habla, come, vive), or the stored
@@ -741,7 +916,7 @@ impl Verb {
                         if !self.prefix.is_empty() && f == "di" {
                             // decir derivatives use the long form:
                             // contradice, desdice, predice.
-                            return Some(self.conjugate(
+                            return Some(self.plain(
                                 SimpleTense::Present,
                                 Person::Third,
                                 Number::Singular,
@@ -759,9 +934,9 @@ impl Verb {
                         };
                         format!("{}{f}", self.prefix)
                     }
-                    None => self.conjugate(SimpleTense::Present, Person::Third, Number::Singular),
+                    None => self.plain(SimpleTense::Present, Person::Third, Number::Singular),
                 },
-                None => self.conjugate(SimpleTense::Present, Person::Third, Number::Singular),
+                None => self.plain(SimpleTense::Present, Person::Third, Number::Singular),
             }),
             // vosotros: stem + ad/ed/id (íd after a bare vowel: oíd).
             (Person::Second, Number::Plural) => {
@@ -779,8 +954,29 @@ impl Verb {
                 Some(format!("{}{ending}", self.stem))
             }
             // usted, nosotros, ustedes: the present subjunctive.
-            (p, n) => Some(self.conjugate(SimpleTense::SubjunctivePresent, p, n)),
+            (p, n) => Some(self.plain(SimpleTense::SubjunctivePresent, p, n)),
         }
+    }
+
+    /// A compound form: conjugated haber + invariable past participle,
+    /// with the reflexive clitic for pronominal verbs (me he levantado).
+    pub fn analytic(&self, tense: AnalyticTense, person: Person, number: Number) -> String {
+        let haber = Self::from_infinitive("haber").expect("haber conjugates");
+        let simple = match tense {
+            AnalyticTense::PerfectoCompuesto => SimpleTense::Present,
+            AnalyticTense::Pluscuamperfecto => SimpleTense::Imperfect,
+            AnalyticTense::PreteritoAnterior => SimpleTense::Preterite,
+            AnalyticTense::FuturoPerfecto => SimpleTense::Future,
+            AnalyticTense::CondicionalPerfecto => SimpleTense::Conditional,
+            AnalyticTense::SubjuntivoPerfecto => SimpleTense::SubjunctivePresent,
+            AnalyticTense::SubjuntivoPluscuamperfecto => SimpleTense::SubjunctiveImperfect,
+        };
+        let composed = format!(
+            "{} {}",
+            haber.conjugate(simple, person, number),
+            self.past_participle()
+        );
+        self.cliticize(composed, person, number)
     }
 
     /// Gerund: hablando, comiendo, construyendo, leyendo.
@@ -840,6 +1036,78 @@ impl Verb {
     }
 }
 
+/// The full conjugation table of a Spanish verb as one plain struct —
+/// shared by the WebAssembly and Python bindings. Rows are
+/// [yo, tú, él/ella, nosotros, vosotros, ellos/ellas].
+#[cfg_attr(feature = "wasm", derive(serde::Serialize))]
+#[cfg_attr(feature = "wasm", serde(rename_all = "camelCase"))]
+pub struct Table {
+    pub infinitive: String,
+    pub gerund: String,
+    pub past_participle: String,
+    /// [tú, usted, nosotros, vosotros, ustedes].
+    pub imperative: [Option<String>; 5],
+    pub present: [String; 6],
+    pub imperfect: [String; 6],
+    pub preterite: [String; 6],
+    pub future: [String; 6],
+    pub conditional: [String; 6],
+    pub subjunctive_present: [String; 6],
+    pub subjunctive_imperfect: [String; 6],
+    pub subjunctive_future: [String; 6],
+    pub perfecto_compuesto: [String; 6],
+    pub pluscuamperfecto: [String; 6],
+    pub preterito_anterior: [String; 6],
+    pub futuro_perfecto: [String; 6],
+    pub condicional_perfecto: [String; 6],
+    pub subjuntivo_perfecto: [String; 6],
+    pub subjuntivo_pluscuamperfecto: [String; 6],
+}
+
+const SLOTS: [(Person, Number); 6] = [
+    (Person::First, Number::Singular),
+    (Person::Second, Number::Singular),
+    (Person::Third, Number::Singular),
+    (Person::First, Number::Plural),
+    (Person::Second, Number::Plural),
+    (Person::Third, Number::Plural),
+];
+
+impl Table {
+    #[must_use]
+    pub fn build(v: &Verb) -> Self {
+        let row = |t: SimpleTense| SLOTS.map(|(p, n)| v.conjugate(t, p, n));
+        let arow = |t: AnalyticTense| SLOTS.map(|(p, n)| v.analytic(t, p, n));
+        Self {
+            infinitive: v.infinitive(),
+            gerund: v.gerund(),
+            past_participle: v.past_participle(),
+            imperative: [
+                v.imperative(Person::Second, Number::Singular),
+                v.imperative(Person::Third, Number::Singular),
+                v.imperative(Person::First, Number::Plural),
+                v.imperative(Person::Second, Number::Plural),
+                v.imperative(Person::Third, Number::Plural),
+            ],
+            present: row(SimpleTense::Present),
+            imperfect: row(SimpleTense::Imperfect),
+            preterite: row(SimpleTense::Preterite),
+            future: row(SimpleTense::Future),
+            conditional: row(SimpleTense::Conditional),
+            subjunctive_present: row(SimpleTense::SubjunctivePresent),
+            subjunctive_imperfect: row(SimpleTense::SubjunctiveImperfect),
+            subjunctive_future: row(SimpleTense::SubjunctiveFuture),
+            perfecto_compuesto: arow(AnalyticTense::PerfectoCompuesto),
+            pluscuamperfecto: arow(AnalyticTense::Pluscuamperfecto),
+            preterito_anterior: arow(AnalyticTense::PreteritoAnterior),
+            futuro_perfecto: arow(AnalyticTense::FuturoPerfecto),
+            condicional_perfecto: arow(AnalyticTense::CondicionalPerfecto),
+            subjuntivo_perfecto: arow(AnalyticTense::SubjuntivoPerfecto),
+            subjuntivo_pluscuamperfecto: arow(AnalyticTense::SubjuntivoPluscuamperfecto),
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -852,6 +1120,38 @@ mod tests {
 
     fn v(inf: &str) -> Verb {
         Verb::from_infinitive(inf).unwrap()
+    }
+
+    #[test]
+    fn analytic_and_reflexive() {
+        use AnalyticTense::*;
+        let h = v("hablar");
+        assert_eq!(h.analytic(PerfectoCompuesto, P1, SG), "he hablado");
+        assert_eq!(h.analytic(Pluscuamperfecto, P3, SG), "había hablado");
+        assert_eq!(h.analytic(PreteritoAnterior, P3, SG), "hubo hablado");
+        assert_eq!(h.analytic(FuturoPerfecto, P1, PL), "habremos hablado");
+        assert_eq!(h.analytic(SubjuntivoPerfecto, P1, SG), "haya hablado");
+        assert_eq!(
+            h.analytic(SubjuntivoPluscuamperfecto, P3, SG),
+            "hubiera hablado"
+        );
+        let l = v("levantarse");
+        assert_eq!(l.infinitive(), "levantarse");
+        assert_eq!(l.conjugate(Present, P1, SG), "me levanto");
+        assert_eq!(l.conjugate(Present, P3, PL), "se levantan");
+        assert_eq!(l.analytic(PerfectoCompuesto, P1, SG), "me he levantado");
+        assert_eq!(l.imperative(P2, SG).unwrap(), "levántate");
+        assert_eq!(l.imperative(P3, SG).unwrap(), "levántese");
+        assert_eq!(l.imperative(P1, PL).unwrap(), "levantémonos");
+        assert_eq!(l.imperative(P2, PL).unwrap(), "levantaos");
+        assert_eq!(v("sentarse").imperative(P2, SG).unwrap(), "siéntate");
+        assert_eq!(v("vestirse").imperative(P2, SG).unwrap(), "vístete");
+        assert_eq!(v("vestirse").imperative(P2, PL).unwrap(), "vestíos");
+        assert_eq!(v("irse").imperative(P2, SG).unwrap(), "vete");
+        assert_eq!(
+            v("arrepentirse").conjugate(Present, P1, SG),
+            "me arrepiento"
+        );
     }
 
     #[test]
