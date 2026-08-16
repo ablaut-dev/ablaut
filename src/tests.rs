@@ -920,3 +920,97 @@ fn zu_infinitive_input() {
     assert_eq!(v("zu gehen").past_participle(), "gegangen");
     assert_eq!(v("zu aufstehen").infinitive(), "aufstehen");
 }
+
+#[test]
+fn reflexive_pronoun_agrees() {
+    let f = v("sich freuen");
+    assert_eq!(
+        row(&f, Present, Indicative),
+        [
+            "freue mich",
+            "freust dich",
+            "freut sich",
+            "freuen uns",
+            "freut euch",
+            "freuen sich"
+        ]
+    );
+    assert_eq!(f.past_participle(), "sich gefreut");
+    assert_eq!(f.zu_infinitive(), "sich zu freuen");
+    assert_eq!(f.imperative(Singular).as_deref(), Some("freu dich"));
+    assert_eq!(f.imperative(Plural).as_deref(), Some("freut euch"));
+    assert_eq!(f.imperative_first_plural(), "freuen wir uns");
+    assert_eq!(f.imperative_polite(), "freuen Sie sich");
+    assert_eq!(
+        f.analytic(AnalyticTense::Perfect, Indicative, First, Singular),
+        "habe mich gefreut"
+    );
+    assert_eq!(
+        f.analytic(AnalyticTense::FutureI, Indicative, First, Plural),
+        "werden uns freuen"
+    );
+}
+
+#[test]
+fn reflexive_separable_word_order() {
+    // The pronoun lands after the finite verb, before the particle.
+    let s = v("sich vorstellen");
+    assert_eq!(
+        s.conjugate(Present, Indicative, Third, Singular),
+        "stellt sich vor"
+    );
+    assert_eq!(
+        s.conjugate(Present, Indicative, First, Singular),
+        "stelle mich vor"
+    );
+    assert_eq!(s.imperative(Singular).as_deref(), Some("stell dich vor"));
+    assert_eq!(s.past_participle(), "sich vorgestellt");
+    assert_eq!(
+        s.analytic(AnalyticTense::Perfect, Indicative, Second, Singular),
+        "hast dich vorgestellt"
+    );
+}
+
+#[test]
+fn zu_inside_multiword_input() {
+    assert_eq!(v("sich zu freuen").infinitive(), "sich freuen");
+    assert_eq!(v("Rad zu fahren").infinitive(), "Rad fahren");
+}
+
+#[test]
+fn lexicon_strong_additions() {
+    // Verbs found missing in the launch-day adversarial sweep.
+    assert_eq!(v("backen").past_participle(), "gebacken");
+    assert_eq!(v("salzen").past_participle(), "gesalzen");
+    assert_eq!(v("melken").past_participle(), "gemolken");
+    assert_eq!(
+        v("flechten").conjugate(Present, Indicative, Third, Singular),
+        "flicht"
+    );
+    assert_eq!(v("flechten").past_participle(), "geflochten");
+    assert_eq!(
+        v("glimmen").conjugate(Preterite, Indicative, Third, Singular),
+        "glomm"
+    );
+    assert_eq!(
+        v("erlöschen").conjugate(Present, Indicative, Third, Singular),
+        "erlischt"
+    );
+    assert_eq!(
+        v("erlöschen").conjugate(Preterite, Indicative, Third, Singular),
+        "erlosch"
+    );
+    assert_eq!(v("erlöschen").past_participle(), "erloschen");
+    assert_eq!(v("erschrecken").past_participle(), "erschrocken");
+    // du birst: a changed stem in -st absorbs the whole 2sg ending.
+    assert_eq!(
+        v("bersten").conjugate(Present, Indicative, Second, Singular),
+        "birst"
+    );
+    assert_eq!(
+        v("bersten").conjugate(Present, Indicative, Third, Singular),
+        "birst"
+    );
+    // wett|erleuchten must not be split off wetterleuchten.
+    assert_eq!(v("wetterleuchten").past_participle(), "gewetterleuchtet");
+}

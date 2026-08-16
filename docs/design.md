@@ -102,15 +102,26 @@ in stem-changing 3sg forms) were found that way rather than planned.
 `Verb::from_infinitive` normalizes common messy input before parsing:
 surrounding and repeated whitespace is trimmed and collapsed, a leading
 capital or stray casing is lowercased (German infinitives are entirely
-lowercase), and a leading *zu* particle is stripped (*zu gehen*). Multiword
-lemmas keep their noun's capital (*Rad fahren*).
+lowercase), and a free *zu* particle is stripped (*zu gehen*,
+*Rad zu fahren*). Multiword lemmas keep their noun's capital
+(*Rad fahren*).
 
-Two input kinds are deliberately *not* guessed, because doing so is
+Reflexive lemmas (*sich freuen*) are recognized: the pronoun agrees with
+the subject in finite and analytic forms (*freue mich*, *hast dich
+gefreut*, *stellt sich vor*) and stays *sich* in citation forms
+(*sich gefreut*, *sich zu freuen*). The accusative pronoun is always
+used; the handful of dative-reflexive verbs (*sich etwas merken*: *ich
+merke mir*) would need valence data to tell apart.
+
+Three input kinds are deliberately *not* guessed, because doing so is
 ambiguous: umlaut transcriptions typed without a German keyboard
-(*ueben* for *üben*, *schoen* for *schön*) and conjugated forms given
-instead of the infinitive (*ging*, *gegangen*). The first would need a
-dictionary to disambiguate from legitimate letter sequences (*neu*,
-*Steuer*); the second is lemmatization, a separate direction.
+(*ueben* for *üben*, *schoen* for *schön*), conjugated forms given
+instead of the infinitive (*ging*, *gegangen*), and one-word
+zu-infinitives with an infixed *zu* (*aufzustehen*). The first would need
+a dictionary to disambiguate from legitimate letter sequences (*neu*,
+*Steuer*); the second is lemmatization, a separate direction; the third
+cannot be told apart from lemmas whose stem begins with *zu-*
+(*aufzucken* is *auf|zucken*, not *auf-zu-cken*).
 
 ## Scope: morphology, not syntax
 
