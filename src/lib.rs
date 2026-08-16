@@ -18,6 +18,7 @@ mod orthography;
 mod prefix;
 #[cfg(feature = "python")]
 mod python;
+pub mod spa;
 mod suppletive;
 pub mod table;
 #[cfg(feature = "wasm")]

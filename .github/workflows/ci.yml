@@ -57,3 +57,14 @@ jobs:
         run: ./scripts/fra/fetch_lefff.sh
       - name: French golden harness with regression gate
         run: cargo run --release --bin golden_fra -- data/fra/lefff.tsv --check
+      - name: Cache FreeLing spa
+        id: freeling
+        uses: actions/cache@v5
+        with:
+          path: data/spa/freeling.tsv
+          key: freeling-spa-v1
+      - name: Fetch FreeLing spa
+        if: steps.freeling.outputs.cache-hit != 'true'
+        run: ./scripts/spa/fetch_freeling.sh
+      - name: Spanish golden harness with regression gate
+        run: cargo run --release --bin golden_spa -- data/spa/freeling.tsv --check

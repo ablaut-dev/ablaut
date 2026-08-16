@@ -1,0 +1,24 @@
+# Spanish adjudication log: rulings on slots where ablaut::spa disagrees
+# with a gold oracle. Columns: lemma <TAB> features ("*" = whole paradigm)
+# <TAB> ruling (ours | both | theirs) <TAB> rationale.
+# Rulings "ours"/"both" count the engine's form as correct in golden_spa.
+aberrar	*	ours	FreeLing diphthongizes this verb; kaikki explicitly conjugates it regular, as does the RAE.
+acollar	*	ours	FreeLing diphthongizes this verb; kaikki explicitly conjugates it regular, as does the RAE.
+ajorar	*	ours	FreeLing diphthongizes this verb; kaikki explicitly conjugates it regular, as does the RAE.
+anticuar	*	ours	FreeLing diphthongizes this verb; kaikki explicitly conjugates it regular, as does the RAE.
+apercollar	*	ours	FreeLing diphthongizes this verb; kaikki explicitly conjugates it regular, as does the RAE.
+asestar	*	ours	FreeLing diphthongizes this verb; kaikki explicitly conjugates it regular, as does the RAE.
+atesar	*	ours	FreeLing diphthongizes this verb; kaikki explicitly conjugates it regular, as does the RAE.
+decentar	*	ours	FreeLing diphthongizes this verb; kaikki explicitly conjugates it regular, as does the RAE.
+derrengar	*	ours	FreeLing diphthongizes this verb; kaikki explicitly conjugates it regular, as does the RAE.
+desdentar	*	ours	FreeLing diphthongizes this verb; kaikki explicitly conjugates it regular, as does the RAE.
+dezmar	*	ours	FreeLing diphthongizes this verb; kaikki explicitly conjugates it regular, as does the RAE.
+encovar	*	ours	FreeLing diphthongizes this verb; kaikki explicitly conjugates it regular, as does the RAE.
+enmelar	*	ours	FreeLing diphthongizes this verb; kaikki explicitly conjugates it regular, as does the RAE.
+filiar	*	ours	FreeLing diphthongizes this verb; kaikki explicitly conjugates it regular, as does the RAE.
+inserir	*	ours	FreeLing diphthongizes this verb; kaikki explicitly conjugates it regular, as does the RAE.
+miar	*	ours	FreeLing diphthongizes this verb; kaikki explicitly conjugates it regular, as does the RAE.
+ortografiar	*	ours	FreeLing diphthongizes this verb; kaikki explicitly conjugates it regular, as does the RAE.
+destrocar	*	ours	FreeLing drops the s (detroqué); destrocar keeps its full stem: destroqué.
+apropincuar	*	both	apropincua (kaikki) and apropincúa (FreeLing) are both standard; the RAE admits both accentuations for -cuar verbs.
+imprimir	V.PTCP;PST;MASC;SG	both	impreso and imprimido are both standard participles.

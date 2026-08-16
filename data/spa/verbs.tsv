@@ -1,0 +1,58 @@
+# Spanish irregular lexicon. One row per base; prefixed derivatives
+# (proponer, obtener, deshacer, conducir via the bound stem ducir)
+# resolve by longest-base suffix match, except the EXACT_ONLY bases in
+# src/spa.rs (ser, ir, ver, dar, estar, andar, haber, asir) whose
+# suffixes collide with regular verbs (toser, mandar, mover, prestar).
+#
+# Columns (tab-separated), "-" means derive:
+#   lemma  pres1..pres6  subj (stem, or 6 comma-separated forms)
+#   pret1 (strong preterite 1sg: puse → pus- + e,iste,o,imos,isteis,
+#   ieron, j absorbing the i of -ieron; both imperfect subjunctives and
+#   the future subjunctive derive from the preterite 3pl)
+#   fut_stem  pp  impf6(comma)  ger  imp2sg  pret6(comma)
+ser	soy	eres	es	somos	sois	son	se	-	-	sido	era,eras,era,éramos,erais,eran	siendo	sé	fui,fuiste,fue,fuimos,fuisteis,fueron
+estar	estoy	estás	está	estamos	estáis	están	esté,estés,esté,estemos,estéis,estén	estuve	-	estado	-	-	está	-
+ir	voy	vas	va	vamos	vais	van	vay	-	-	ido	iba,ibas,iba,íbamos,ibais,iban	yendo	ve	fui,fuiste,fue,fuimos,fuisteis,fueron
+haber	he	has	ha	hemos	habéis	han	hay	hube	habr	habido	-	-	he	-
+tener	tengo	tienes	tiene	tenemos	tenéis	tienen	teng	tuve	tendr	tenido	-	-	ten	-
+venir	vengo	vienes	viene	venimos	venís	vienen	veng	vine	vendr	venido	-	viniendo	ven	-
+poner	pongo	pones	pone	ponemos	ponéis	ponen	pong	puse	pondr	puesto	-	-	pon	-
+poder	puedo	puedes	puede	podemos	podéis	pueden	pueda,puedas,pueda,podamos,podáis,puedan	pude	podr	podido	-	pudiendo	puede	-
+querer	quiero	quieres	quiere	queremos	queréis	quieren	quiera,quieras,quiera,queramos,queráis,quieran	quise	querr	querido	-	-	quiere	-
+saber	sé	sabes	sabe	sabemos	sabéis	saben	sep	supe	sabr	sabido	-	-	sabe	-
+caber	quepo	cabes	cabe	cabemos	cabéis	caben	quep	cupe	cabr	cabido	-	-	cabe	-
+dar	doy	das	da	damos	dais	dan	dé,des,dé,demos,deis,den	-	-	dado	-	-	da	di,diste,dio,dimos,disteis,dieron
+ver	veo	ves	ve	vemos	veis	ven	ve	-	-	visto	veía,veías,veía,veíamos,veíais,veían	viendo	ve	vi,viste,vio,vimos,visteis,vieron
+hacer	hago	haces	hace	hacemos	hacéis	hacen	hag	-	har	hecho	-	-	haz	hice,hiciste,hizo,hicimos,hicisteis,hicieron
+decir	digo	dices	dice	decimos	decís	dicen	dig	dije	dir	dicho	-	diciendo	di	-
+bendecir	bendigo	bendices	bendice	bendecimos	bendecís	bendicen	bendig	bendije	-	bendecido	-	bendiciendo	bendice	-
+maldecir	maldigo	maldices	maldice	maldecimos	maldecís	maldicen	maldig	maldije	-	maldecido	-	maldiciendo	maldice	-
+traer	traigo	traes	trae	traemos	traéis	traen	traig	traje	-	traído	-	-	trae	-
+caer	caigo	caes	cae	caemos	caéis	caen	caig	-	-	caído	-	-	cae	-
+oír	oigo	oyes	oye	oímos	oís	oyen	oig	-	-	oído	-	-	oye	-
+salir	salgo	sales	sale	salimos	salís	salen	salg	-	saldr	salido	-	-	sal	-
+valer	valgo	vales	vale	valemos	valéis	valen	valg	-	valdr	valido	-	-	vale	-
+andar	ando	andas	anda	andamos	andáis	andan	and	anduve	-	andado	-	-	anda	-
+ducir	duzco	duces	duce	ducimos	ducís	ducen	duzc	duje	-	ducido	-	-	duce	-
+satisfacer	satisfago	satisfaces	satisface	satisfacemos	satisfacéis	satisfacen	satisfag	-	satisfar	satisfecho	-	-	satisfaz	satisfice,satisficiste,satisfizo,satisficimos,satisficisteis,satisficieron
+yacer	yazco	yaces	yace	yacemos	yacéis	yacen	yazc	-	-	yacido	-	-	yace	-
+asir	asgo	ases	ase	asimos	asís	asen	asg	-	-	asido	-	-	ase	-
+reír	río	ríes	ríe	reímos	reís	ríen	ría,rías,ría,riamos,riáis,rían	-	-	reído	-	riendo	ríe	reí,reíste,rió,reímos,reísteis,rieron
+erguir	yergo	yergues	yergue	erguimos	erguís	yerguen	yerga,yergas,yerga,irgamos,irgáis,yergan	-	-	erguido	-	irguiendo	yergue	erguí,erguiste,irguió,erguimos,erguisteis,irguieron
+prever	preveo	prevés	prevé	prevemos	prevéis	prevén	preve	-	-	previsto	preveía,preveías,preveía,preveíamos,preveíais,preveían	previendo	prevé	preví,previste,previó,previmos,previsteis,previeron
+entrever	entreveo	entrevés	entrevé	entrevemos	entrevéis	entrevén	entreve	-	-	entrevisto	entreveía,entreveías,entreveía,entreveíamos,entreveíais,entreveían	entreviendo	entrevé	entreví,entreviste,entrevió,entrevimos,entrevisteis,entrevieron
+facer	fago	faces	face	facemos	facéis	facen	fag	-	far	fecho	-	-	faz	fice,ficiste,fizo,ficimos,ficisteis,ficieron
+leír	lío	líes	líe	leímos	leís	líen	lía,lías,lía,liamos,liáis,lían	-	-	leído	-	liendo	líe	leí,leíste,lió,leímos,leísteis,lieron
+rever	reveo	revés	revé	revemos	revéis	revén	reve	-	-	revisto	reveía,reveías,reveía,reveíamos,reveíais,reveían	reviendo	revé	reví,reviste,revió,revimos,revisteis,revieron
+antever	anteveo	antevés	antevé	antevemos	antevéis	antevén	anteve	-	-	antevisto	anteveía,anteveías,anteveía,anteveíamos,anteveíais,anteveían	anteviendo	antevé	anteví,anteviste,antevió,antevimos,antevisteis,antevieron
+trasver	trasveo	trasvés	trasvé	trasvemos	trasvéis	trasvén	trasve	-	-	trasvisto	trasveía,trasveías,trasveía,trasveíamos,trasveíais,trasveían	trasviendo	trasvé	trasví,trasviste,trasvió,trasvimos,trasvisteis,trasvieron
+desandar	desando	desandas	desanda	desandamos	desandáis	desandan	desand	desanduve	-	desandado	-	-	desanda	-
+desasir	desasgo	desases	desase	desasimos	desasís	desasen	desasg	-	-	desasido	-	-	desase	-
+desosar	deshueso	deshuesas	deshuesa	desosamos	desosáis	deshuesan	deshuese,deshueses,deshuese,desosemos,desoséis,deshuesen	-	-	desosado	-	-	deshuesa	-
+raer	raigo	raes	rae	raemos	raéis	raen	raig	-	-	raído	-	-	rae	-
+condecir	condigo	condices	condice	condecimos	condecís	condicen	condig	condije	-	condicho	-	condiciendo	condice	-
+contradecir	contradigo	contradices	contradice	contradecimos	contradecís	contradicen	contradig	contradije	-	contradicho	-	contradiciendo	contradice	-
+desdecir	desdigo	desdices	desdice	desdecimos	desdecís	desdicen	desdig	desdije	-	desdicho	-	desdiciendo	desdice	-
+entredecir	entredigo	entredices	entredice	entredecimos	entredecís	entredicen	entredig	entredije	-	entredicho	-	entrediciendo	entredice	-
+predecir	predigo	predices	predice	predecimos	predecís	predicen	predig	predije	-	predicho	-	prediciendo	predice	-
+redecir	redigo	redices	redice	redecimos	redecís	redicen	redig	redije	-	redicho	-	rediciendo	redice	-
