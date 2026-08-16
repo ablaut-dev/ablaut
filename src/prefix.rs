@@ -24,6 +24,10 @@ pub enum Separability {
     /// obsiegen): fused finite forms (lobsang) but separable-style ge- and
     /// zu-infixes (lobgesungen, lobzusingen).
     Fused,
+    /// Reflexive lemma (sich freuen): the pronoun agrees with the subject
+    /// in finite forms (freue mich, freust dich) and stays *sich* in
+    /// citation forms (sich gefreut, sich zu freuen).
+    Reflexive,
 }
 
 /// Longest-first so compounds win (herausfinden ≠ her+ausfinden).

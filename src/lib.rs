@@ -133,17 +133,27 @@ impl Verb {
             infinitive = rest;
         }
         // Multiword lemmas (Rad fahren, Bescheid wissen): the last word
-        // conjugates; the rest is a phrasal particle.
+        // conjugates; the rest is a phrasal particle. "sich freuen" is a
+        // reflexive lemma, not a phrasal one: the pronoun must agree with
+        // the subject. A trailing zu inside the particle ("Rad zu fahren",
+        // "sich zu freuen") is the zu-infinitive again; drop it.
         if let Some((particle, verb)) = infinitive.rsplit_once(' ') {
+            let particle = particle.strip_suffix(" zu").unwrap_or(particle);
+            let (particle, sep) = if particle.eq_ignore_ascii_case("sich") {
+                ("sich".to_string(), Separability::Reflexive)
+            } else {
+                (particle.to_string(), Separability::Phrasal)
+            };
             let base = Self::from_infinitive(verb)?;
+            let lemma = format!("{particle} {}", base.infinitive());
             return Ok(Self {
-                infinitive: infinitive.to_string(),
+                infinitive: lemma,
                 stem: String::new(),
                 schwa_stem: false,
                 ieren: false,
                 e_merge: false,
                 class: Class::Weak,
-                prefix: Some((particle.to_string(), Separability::Phrasal)),
+                prefix: Some((particle, sep)),
                 part2_override: None,
                 base: Some(Box::new(base)),
             });
@@ -297,8 +307,9 @@ impl Verb {
             Some((p, Separability::Separable | Separability::Fused)) => {
                 format!("{p}zu{}", self.base().infinitive())
             }
-            // Rad zu fahren: the particle stays free, zu stays a particle.
-            Some((p, Separability::Phrasal)) => {
+            // Rad zu fahren, sich zu freuen: the particle stays free,
+            // zu stays a particle.
+            Some((p, Separability::Phrasal | Separability::Reflexive)) => {
                 format!("{p} zu {}", self.base().infinitive())
             }
             _ => format!("zu {}", self.infinitive),
@@ -327,25 +338,36 @@ impl Verb {
             AnalyticTense::Perfect => format!(
                 "{} {}",
                 aux(own_aux).conjugate(Tense::Present, mood, person, number),
-                self.past_participle()
+                self.agree_reflexive(self.past_participle(), person, number)
             ),
             AnalyticTense::Pluperfect => format!(
                 "{} {}",
                 aux(own_aux).conjugate(Tense::Preterite, mood, person, number),
-                self.past_participle()
+                self.agree_reflexive(self.past_participle(), person, number)
             ),
             AnalyticTense::FutureI => format!(
                 "{} {}",
                 aux("werden").conjugate(Tense::Present, mood, person, number),
-                self.infinitive
+                self.agree_reflexive(self.infinitive.clone(), person, number)
             ),
             AnalyticTense::FutureII => format!(
                 "{} {} {}",
                 aux("werden").conjugate(Tense::Present, mood, person, number),
-                self.past_participle(),
+                self.agree_reflexive(self.past_participle(), person, number),
                 own_aux
             ),
         }
+    }
+
+    /// Swap the citation *sich* of a reflexive lemma's phrase for the
+    /// pronoun agreeing with the subject (habe **mich** gefreut).
+    fn agree_reflexive(&self, phrase: String, person: Person, number: Number) -> String {
+        if matches!(self.prefix, Some((_, Separability::Reflexive))) {
+            if let Some(rest) = phrase.strip_prefix("sich ") {
+                return format!("{} {rest}", reflexive_pronoun(person, number));
+            }
+        }
+        phrase
     }
 
     /// Processual passive (Vorgangspassiv): *wird gekauft*, *wurde gekauft*.
@@ -428,6 +450,11 @@ impl Verb {
             return match sep {
                 Separability::Separable | Separability::Phrasal => format!("{f} {prefix}"),
                 Separability::Inseparable | Separability::Fused => format!("{prefix}{f}"),
+                // The pronoun lands right after the finite verb, before any
+                // separable particle (stellt sich vor).
+                Separability::Reflexive => {
+                    insert_after_finite(&f, reflexive_pronoun(person, number))
+                }
             };
         }
         let i = person.index(number);
@@ -521,6 +548,15 @@ impl Verb {
             return Some(match sep {
                 Separability::Separable | Separability::Phrasal => format!("{imp} {prefix}"),
                 Separability::Inseparable | Separability::Fused => format!("{prefix}{imp}"),
+                // The imperative addresses du/ihr, pronoun before any
+                // separable particle: freu dich!, stell dich vor!
+                Separability::Reflexive => {
+                    let pron = match number {
+                        Number::Singular => "dich",
+                        Number::Plural => "euch",
+                    };
+                    insert_after_finite(&imp, pron)
+                }
             });
         }
         match (&self.class, number) {
@@ -587,8 +623,9 @@ impl Verb {
                 Separability::Inseparable => {
                     format!("{prefix}{}", base.strip_prefix("ge").unwrap_or(&base))
                 }
-                // Phrasal particles stay free words (Rad gefahren).
-                Separability::Phrasal => format!("{prefix} {base}"),
+                // Phrasal particles stay free words (Rad gefahren); the
+                // citation participle keeps sich (sich gefreut).
+                Separability::Phrasal | Separability::Reflexive => format!("{prefix} {base}"),
             };
         }
         match &self.class {
@@ -720,10 +757,34 @@ fn plausible_base(base: &str) -> bool {
 /// 2sg present on a changed stem: raw attachment with s-coalescence only
 /// (du sprichst, du lässt, du weißt, du hältst).
 fn second_sg_changed(stem: &str) -> String {
-    if matches!(stem.chars().last(), Some('s' | 'ß' | 'x' | 'z')) {
+    if stem.ends_with("st") {
+        // A changed stem already ending in -st absorbs the whole ending
+        // (du birst).
+        stem.to_string()
+    } else if matches!(stem.chars().last(), Some('s' | 'ß' | 'x' | 'z')) {
         format!("{stem}t")
     } else {
         format!("{stem}st")
+    }
+}
+
+/// Insert a word after the finite verb of a possibly multiword form
+/// (stellt vor + sich → stellt sich vor).
+fn insert_after_finite(form: &str, word: &str) -> String {
+    match form.split_once(' ') {
+        Some((finite, rest)) => format!("{finite} {word} {rest}"),
+        None => format!("{form} {word}"),
+    }
+}
+
+/// The accusative reflexive pronoun agreeing with the subject.
+const fn reflexive_pronoun(person: Person, number: Number) -> &'static str {
+    match (person, number) {
+        (Person::First, Number::Singular) => "mich",
+        (Person::Second, Number::Singular) => "dich",
+        (Person::First, Number::Plural) => "uns",
+        (Person::Second, Number::Plural) => "euch",
+        (Person::Third, _) => "sich",
     }
 }
 

@@ -5,6 +5,7 @@
 # "-" means: not applicable / derive by rule.
 #
 # infinitive	class	pres	pret	konj2	part2	imp	aux
+backen	m	-	backt	backt	gebacken	-	h
 beginnen	s	-	begann	begänn	begonnen	-	h
 bieten	s	-	bot	böt	geboten	-	h
 bitten	s	-	bat	bät	gebeten	-	h
@@ -456,7 +457,7 @@ begleiten	a	-	-	-	-	-	h
 beitreten	a	-	-	-	-	-	s
 beklimmen	a	-	-	-	-	-	s
 bereitstehen	a	-	-	-	-	-	s
-bersten	a	-	-	-	-	-	s
+bersten	s	birst	barst	börst	geborsten	birst	s
 beschreiten	a	-	-	-	-	-	h
 bespringen	a	-	-	-	-	-	h
 besteigen	a	-	-	-	-	-	h
@@ -527,11 +528,13 @@ erklingen	a	-	-	-	-	-	s
 erkranken	a	-	-	-	-	-	s
 erleschen	a	-	-	-	-	-	s
 erliegen	a	-	-	-	-	-	s
+erlöschen	s	erlisch	erlosch	erlösch	erloschen	erlisch	s
 erröten	a	-	-	-	-	-	s
 ersaufen	a	-	-	-	-	-	s
 erschauern	a	-	-	-	-	-	s
 erscheinen	a	-	-	-	-	-	s
 erschleichen	a	-	-	-	-	-	h
+erschrecken	s	erschrick	erschrak	erschräk	erschrocken	erschrick	s
 erstarken	a	-	-	-	-	-	s
 erstarren	a	-	-	-	-	-	s
 ersteigen	a	-	-	-	-	-	h
@@ -546,6 +549,7 @@ fehlgehen	a	-	-	-	-	-	s
 fehlschlagen	a	-	-	-	-	-	s
 festfrieren	a	-	-	-	-	-	s
 flanieren	a	-	-	-	-	-	s
+flechten	s	flicht	flocht	flöcht	geflochten	flicht	h
 fleuchen	a	-	-	-	-	-	s
 fliessen	a	-	-	-	-	-	s
 flitzen	a	-	-	-	-	-	s
@@ -564,6 +568,7 @@ gegnen	a	-	-	-	-	-	s
 gelangen	a	-	-	-	-	-	s
 geraten	a	-	-	-	-	-	s
 gerathen	a	-	-	-	-	-	s
+glimmen	s	-	glomm	glömm	geglommen	-	h
 glücken	a	-	-	-	-	-	s
 gondeln	a	-	-	-	-	-	s
 gurken	a	-	-	-	-	-	s
@@ -609,7 +614,7 @@ kajolen	a	-	-	-	-	-	s
 karjolen	a	-	-	-	-	-	s
 karriolen	a	-	-	-	-	-	s
 klettern	a	-	-	-	-	-	s
-klimmen	a	-	-	-	-	-	s
+klimmen	s	-	klomm	klömm	geklommen	-	s
 kollabieren	a	-	-	-	-	-	s
 kollidieren	a	-	-	-	-	-	s
 korrodieren	a	-	-	-	-	-	s
@@ -625,6 +630,7 @@ liegenbleiben	a	-	-	-	-	-	s
 losziehen	a	-	-	-	-	-	s
 marschieren	a	-	-	-	-	-	s
 mausrutschen	a	-	-	-	-	-	s
+melken	m	-	melkt	melkt	gemolken	-	h
 missfallen	a	-	-	-	-	-	h
 missglücken	a	-	-	-	-	-	s
 missraten	a	-	-	-	-	-	s
@@ -660,6 +666,7 @@ reisen	a	-	-	-	-	-	s
 rundgehen	a	-	-	-	-	-	s
 rutschen	a	-	-	-	-	-	s
 rütschen	a	-	-	-	-	-	s
+salzen	m	-	salzt	salzt	gesalzen	-	h
 scheitern	a	-	-	-	-	-	s
 schlendern	a	-	-	-	-	-	s
 schliddern	a	-	-	-	-	-	s
@@ -912,6 +919,7 @@ gegenzeichnen	f	gegen	-	-	-	-	h
 gegenchecken	f	gegen	-	-	-	-	h
 gegenbeschuldigen	f	gegen	-	-	-	-	h
 rückdrehen	f	rück	-	-	-	-	h
+wetterleuchten	w	-	-	-	-	-	h
 zweckentfremden	f	zweck	-	-	-	-	h
 zwangsernähren	f	zwangs	-	-	-	-	h
 zwangsenteignen	f	zwangs	-	-	-	-	h
