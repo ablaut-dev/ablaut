@@ -21,7 +21,7 @@
   <img src="https://img.shields.io/crates/l/ablaut" alt="license">
 </p>
 
-<p align="center"><a href="https://ablaut-demo.vercel.app"><b>Try it in the browser</b></a></p>
+<p align="center"><a href="https://ablaut.dev"><b>Try it in the browser</b></a></p>
 
 <br>
 
