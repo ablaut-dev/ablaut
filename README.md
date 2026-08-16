@@ -77,6 +77,17 @@ v.imperative(Number::Singular); // Some("steh auf"); None for modals
 
 The full paradigm as one struct: `ablaut::table::Table::build(&v)`.
 
+French uses the same pattern under `ablaut::fra`:
+
+```rust
+use ablaut::fra::{Number, Person, SimpleTense, Verb};
+
+let v = Verb::from_infinitive("appeler")?;
+v.conjugate(SimpleTense::Present, Person::First, Number::Singular); // "appelle"
+v.conjugate(SimpleTense::Future, Person::First, Number::Singular);  // "appellerai"
+v.variants(SimpleTense::Present, Person::First, Number::Singular);  // spelling doublets
+```
+
 ### Python
 
 ```sh
@@ -92,6 +103,10 @@ c.perfect[0]        # "bin aufgestanden"
 c.auxiliary         # "sein"
 c.zu_infinitive     # "aufzustehen"
 c.imperative        # [None, None] for modals
+
+f = ablaut.conjugate("appeler", lang="fra")
+f.present[0]        # "appelle"
+f.past_historic[2]  # "appela"
 ```
 
 Wheels are abi3 (Python 3.11+); no Rust toolchain needed.
@@ -108,6 +123,8 @@ await init();
 const c = conjugate("aufstehen");
 c.present[0];       // "stehe auf"
 c.zuInfinitive;     // "aufzustehen"
+const f = conjugate("appeler", "fra");
+f.present[0];       // "appelle"
 ```
 
 ## Coverage

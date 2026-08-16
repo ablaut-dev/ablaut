@@ -74,18 +74,79 @@ impl From<Table> for Conjugation {
     }
 }
 
+/// The full conjugation table of one French verb. Rows are
+/// [je, tu, il/elle, nous, vous, ils/elles].
+#[pyclass(get_all, frozen)]
+struct FrenchConjugation {
+    infinitive: String,
+    present_participle: String,
+    past_participle: String,
+    /// [tu, nous, vous]
+    imperative: Vec<Option<String>>,
+    present: Vec<String>,
+    imperfect: Vec<String>,
+    past_historic: Vec<String>,
+    future: Vec<String>,
+    conditional: Vec<String>,
+    subjunctive_present: Vec<String>,
+    subjunctive_imperfect: Vec<String>,
+}
+
+#[pymethods]
+impl FrenchConjugation {
+    fn __repr__(&self) -> String {
+        format!("FrenchConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::fra::Table> for FrenchConjugation {
+    fn from(t: crate::fra::Table) -> Self {
+        FrenchConjugation {
+            infinitive: t.infinitive,
+            present_participle: t.present_participle,
+            past_participle: t.past_participle,
+            imperative: t.imperative.into(),
+            present: t.present.into(),
+            imperfect: t.imperfect.into(),
+            past_historic: t.past_historic.into(),
+            future: t.future.into(),
+            conditional: t.conditional.into(),
+            subjunctive_present: t.subjunctive_present.into(),
+            subjunctive_imperfect: t.subjunctive_imperfect.into(),
+        }
+    }
+}
+
 /// Conjugate an infinitive: `ablaut.conjugate("aufstehen").present[0]`
-/// → "stehe auf". Raises ValueError for strings that are not German
-/// infinitives.
+/// → "stehe auf", `ablaut.conjugate("parler", lang="fra").present[0]`
+/// → "parle". Raises ValueError for unknown languages and for strings
+/// that are not infinitives of the requested language.
 #[pyfunction]
-fn conjugate(infinitive: &str) -> PyResult<Conjugation> {
-    let v = Verb::from_infinitive(infinitive).map_err(|e| PyValueError::new_err(e.to_string()))?;
-    Ok(Table::build(&v).into())
+#[pyo3(signature = (infinitive, lang = "deu"))]
+fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject> {
+    match crate::Lang::from_code(lang) {
+        Some(crate::Lang::Deu) => {
+            let v = Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(Conjugation::from(Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Fra) => {
+            let v = crate::fra::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(FrenchConjugation::from(crate::fra::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        None => Err(PyValueError::new_err(format!("unknown language: {lang}"))),
+    }
 }
 
 #[pymodule]
 fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<Conjugation>()?;
+    m.add_class::<FrenchConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())
 }

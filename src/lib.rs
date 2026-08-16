@@ -24,6 +24,29 @@ pub mod table;
 mod wasm;
 
 pub use features::{Mood, Number, Person, Tense};
+
+/// A supported language, for the multi-language entry points in the
+/// bindings. ISO 639 codes and English names are accepted.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Lang {
+    /// German — the original engine.
+    Deu,
+    /// French.
+    Fra,
+}
+
+impl Lang {
+    /// Parse a language code ("de", "deu", "german", "fr", "fra",
+    /// "french"; case-insensitive).
+    #[must_use]
+    pub fn from_code(code: &str) -> Option<Self> {
+        match code.to_ascii_lowercase().as_str() {
+            "de" | "deu" | "ger" | "german" => Some(Self::Deu),
+            "fr" | "fra" | "fre" | "french" => Some(Self::Fra),
+            _ => None,
+        }
+    }
+}
 use lexicon::{DualRuling, LexClass, LexEntry};
 use orthography::attach;
 use prefix::Separability;
