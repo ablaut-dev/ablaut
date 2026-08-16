@@ -55,6 +55,27 @@ pub enum SimpleTense {
     SubjunctiveImperfect,
 }
 
+/// Aspirated-h infinitives block elision (je me hisse, not je m'hisse);
+/// the more common mute h elides (je m'habille). Matched by suffix.
+const H_ASPIRE: [&str; 16] = [
+    "haïr",
+    "hacher",
+    "haleter",
+    "hanter",
+    "happer",
+    "harceler",
+    "harnacher",
+    "hausser",
+    "hâter",
+    "héler",
+    "hennir",
+    "hérisser",
+    "heurter",
+    "hisser",
+    "hocher",
+    "hurler",
+];
+
 /// The perfect auxiliary.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Auxiliary {
@@ -336,6 +357,9 @@ pub struct Verb {
     /// For lexical verbs: what precedes the base (*sou* in *soutenir*).
     prefix: String,
     group: Group,
+    /// Pronominal (s'asseoir, se lever): finite forms carry the
+    /// reflexive clitic and compounds take être.
+    reflexive: bool,
 }
 
 impl Person {
@@ -362,7 +386,15 @@ impl Verb {
     /// Build a verb from its infinitive. Regular first-group (-er) and
     /// second-group (-ir/-iss-) verbs are accepted.
     pub fn from_infinitive(infinitive: &str) -> Result<Self, Error> {
-        let inf = infinitive.trim();
+        let mut inf = infinitive.trim();
+        let mut reflexive = false;
+        for marker in ["s'", "s\u{2019}", "se ", "s\u{2019} "] {
+            if let Some(rest) = inf.strip_prefix(marker) {
+                inf = rest.trim_start();
+                reflexive = true;
+                break;
+            }
+        }
         if inf.is_empty() || inf.contains(char::is_whitespace) {
             return Err(Error::NotAVerb);
         }
@@ -418,12 +450,52 @@ impl Verb {
             stem: stem.to_string(),
             prefix,
             group,
+            reflexive,
         })
     }
 
-    /// The infinitive as normalized.
-    pub fn infinitive(&self) -> &str {
-        &self.infinitive
+    /// True if the stem-initial sound elides a preceding clitic or je
+    /// (m'assieds, j'habille): a vowel, or h unless aspirated.
+    fn elides(&self, form: &str) -> bool {
+        let aspirated =
+            form.starts_with('h') && H_ASPIRE.iter().any(|v| self.infinitive.ends_with(v));
+        form.starts_with([
+            'a', 'e', 'i', 'o', 'u', 'y', '\u{e0}', '\u{e2}', '\u{e9}', '\u{e8}', '\u{ea}',
+            '\u{ee}', '\u{f4}', '\u{fb}',
+        ]) || (form.starts_with('h') && !aspirated)
+    }
+
+    /// Prepend the reflexive clitic to a finite form (me lève, m'assieds,
+    /// s'assied, nous asseyons).
+    fn cliticize(&self, form: String, person: Person, number: Number) -> String {
+        if !self.reflexive {
+            return form;
+        }
+        let full = match (person, number) {
+            (Person::First, Number::Singular) => "me",
+            (Person::Second, Number::Singular) => "te",
+            (Person::Third, _) => "se",
+            (Person::First, Number::Plural) => "nous",
+            (Person::Second, Number::Plural) => "vous",
+        };
+        if matches!(full, "me" | "te" | "se") && self.elides(&form) {
+            format!("{}'{form}", &full[..1])
+        } else {
+            format!("{full} {form}")
+        }
+    }
+
+    /// The infinitive as normalized (s'asseoir, se lever for
+    /// pronominal verbs).
+    pub fn infinitive(&self) -> String {
+        if !self.reflexive {
+            return self.infinitive.clone();
+        }
+        if self.elides(&self.infinitive) {
+            format!("s'{}", self.infinitive)
+        } else {
+            format!("se {}", self.infinitive)
+        }
     }
 
     /// Whether this `-eler`/`-eter` verb doubles its consonant (*appelle*)
@@ -626,8 +698,13 @@ impl Verb {
         format!("{}{form}", self.prefix)
     }
 
-    /// A finite form.
+    /// A finite form (with the reflexive clitic for pronominal verbs).
     pub fn conjugate(&self, tense: SimpleTense, person: Person, number: Number) -> String {
+        self.cliticize(self.finite(tense, person, number), person, number)
+    }
+
+    /// A finite form without the reflexive clitic.
+    fn finite(&self, tense: SimpleTense, person: Person, number: Number) -> String {
         let i = person.index(number);
         if let Group::Lex(entries) = &self.group {
             return self.conjugate_lex(&entries[0], tense, i);
@@ -688,6 +765,21 @@ impl Verb {
     /// *finissons*), 2pl (*parlez*, *finissez*). Other bundles have no
     /// imperative.
     pub fn imperative(&self, person: Person, number: Number) -> Option<String> {
+        if self.reflexive {
+            let bare = self.imperative_bare(person, number)?;
+            let clitic = match (person, number) {
+                (Person::Second, Number::Singular) => "toi",
+                (Person::First, Number::Plural) => "nous",
+                (Person::Second, Number::Plural) => "vous",
+                _ => return None,
+            };
+            return Some(format!("{bare}-{clitic}"));
+        }
+        self.imperative_bare(person, number)
+    }
+
+    /// The imperative without a reflexive clitic.
+    fn imperative_bare(&self, person: Person, number: Number) -> Option<String> {
         if let Group::Lex(entries) = &self.group {
             let e = &entries[0];
             if let Some(imp) = &e.imp3 {
@@ -740,6 +832,18 @@ impl Verb {
 
     /// Present participle: *parlant*, *commençant*, *finissant*, *tenant*.
     pub fn present_participle(&self) -> String {
+        let bare = self.present_participle_bare();
+        if !self.reflexive {
+            return bare;
+        }
+        if self.elides(&bare) {
+            format!("s'{bare}")
+        } else {
+            format!("se {bare}")
+        }
+    }
+
+    fn present_participle_bare(&self) -> String {
         match &self.group {
             Group::Er => Self::attach(&self.stem, "ant"),
             Group::Ir => format!("{}issant", self.stem),
@@ -761,7 +865,7 @@ impl Verb {
     /// The perfect auxiliary: avoir, or être for the motion/change class.
     #[must_use]
     pub fn auxiliary(&self) -> Auxiliary {
-        if ETRE_VERBS.contains(&self.infinitive.as_str()) {
+        if self.reflexive || ETRE_VERBS.contains(&self.infinitive.as_str()) {
             Auxiliary::Etre
         } else {
             Auxiliary::Avoir
@@ -789,7 +893,8 @@ impl Verb {
         if self.auxiliary() == Auxiliary::Etre && number == Number::Plural && !pp.ends_with('s') {
             pp.push('s');
         }
-        format!("{} {pp}", aux.conjugate(simple, person, number))
+        let composed = format!("{} {pp}", aux.conjugate(simple, person, number));
+        self.cliticize(composed, person, number)
     }
 
     /// Past participle, masculine singular: *parlé*, *fini*, *tenu*.
@@ -814,7 +919,7 @@ impl Verb {
     /// (assiéra/assoira).
     pub fn variants(&self, tense: SimpleTense, person: Person, number: Number) -> Vec<String> {
         let i = person.index(number);
-        let mut out = vec![self.conjugate(tense, person, number)];
+        let mut out = vec![self.finite(tense, person, number)];
         match &self.group {
             Group::Lex(entries) => {
                 for e in &entries[1..] {
@@ -848,6 +953,10 @@ impl Verb {
             },
             _ => {}
         }
+        let out = out
+            .into_iter()
+            .map(|f| self.cliticize(f, person, number))
+            .collect();
         Self::dedup(out)
     }
 
@@ -1209,6 +1318,34 @@ mod tests {
         assert_eq!(asseoir.analytic(PasseCompose, P3, PL), "ont assis");
         assert_eq!(v("prévenir").auxiliary(), Auxiliary::Avoir);
         assert_eq!(v("revenir").auxiliary(), Auxiliary::Etre);
+    }
+
+    #[test]
+    fn reflexive_verbs() {
+        use AnalyticTense::PasseCompose;
+        let a = v("s'asseoir");
+        assert_eq!(a.infinitive(), "s'asseoir");
+        assert_eq!(a.conjugate(Present, P1, SG), "m'assieds");
+        assert_eq!(a.conjugate(Present, P3, SG), "s'assied");
+        assert_eq!(a.conjugate(Present, P1, PL), "nous asseyons");
+        assert_eq!(a.auxiliary(), Auxiliary::Etre);
+        assert_eq!(a.analytic(PasseCompose, P1, SG), "me suis assis");
+        assert_eq!(a.analytic(PasseCompose, P3, SG), "s'est assis");
+        assert_eq!(a.analytic(PasseCompose, P1, PL), "nous sommes assis");
+        assert_eq!(a.imperative(P2, SG).unwrap(), "assieds-toi");
+        assert_eq!(a.imperative(P1, PL).unwrap(), "asseyons-nous");
+        assert_eq!(a.present_participle(), "s'asseyant");
+        let l = v("se lever");
+        assert_eq!(l.infinitive(), "se lever");
+        assert_eq!(l.conjugate(Present, P1, SG), "me lève");
+        assert_eq!(l.analytic(PasseCompose, P3, PL), "se sont levés");
+        assert_eq!(l.imperative(P2, SG).unwrap(), "lève-toi");
+        assert_eq!(v("s'habiller").conjugate(Present, P1, SG), "m'habille");
+        assert_eq!(v("se hisser").conjugate(Present, P1, SG), "me hisse");
+        // Bare asseoir stays transitive: avoir, no clitic.
+        let bare = v("asseoir");
+        assert_eq!(bare.auxiliary(), Auxiliary::Avoir);
+        assert_eq!(bare.analytic(PasseCompose, P1, SG), "ai assis");
     }
 
     #[test]
