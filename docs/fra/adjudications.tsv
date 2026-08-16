@@ -3,3 +3,12 @@
 # <TAB> ruling (ours | both | theirs) <TAB> rationale.
 # Rulings "ours"/"both" count the engine's form as correct in golden_fra.
 automaintenir	*	ours	Lefff conjugates it second group (automaintenis); it derives from tenir (automaintiens, automaintiendrai) like all -tenir verbs. Bescherelle: tenir, type 22.
+taire	V;IND;PRS;SG;3	ours	Lefff writes taît; taire takes no circumflex in the 3sg present (only plaît does). Grevisse §778.
+énamourer	*	ours	Lefff conjugates it on a meur- stem (énameure); s'énamourer is a regular -er verb: énamoure. TLFi s.v. énamourer.
+enamourer	*	ours	Same Lefff meur-stem error as énamourer.
+fileter	*	both	filète (Larousse) and filette (Lefff, Robert) are both attested; kaikki has only the grave form, Lefff only the doubled one.
+échoir	V.PTCP;PRS	both	échéant (canonical, cf. le cas échéant) and échoyant (Lefff) are both standard.
+rassir	V.PTCP;PST;MASC;SG	both	rassi and rassis are both attested past participles (pain rassis by analogy with the adjective).
+foutre	V;IMP;SG;2	ours	Lefff writes fouts; the imperative is fous (pres2s without change), cf. fous le camp.
+contrefoutre	V;IMP;SG;2	ours	Same as foutre: contrefous, not contrefouts.
+repaître	V;SBJV;PST;SG;3	ours	Lefff lists repusse for the 3sg; the imperfect subjunctive 3sg is repût (circumflex series of repus).

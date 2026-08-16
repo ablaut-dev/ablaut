@@ -158,23 +158,8 @@ struct LexEntry {
     imp3: Option<[String; 3]>,
 }
 
-/// Look up `inf` in the lexicon: exact base match, or base matched by
-/// suffix with the leading prefix returned (*soutenir* → ("sou", tenir)).
-/// Longest base wins so *repentir* is not *r + (?)entir*.
-fn lexical(inf: &str) -> Option<(String, LexEntry)> {
-    let mut best: Option<(&str, Vec<&str>)> = None;
-    for line in LEXICON_TSV.lines() {
-        if line.starts_with('#') || line.is_empty() {
-            continue;
-        }
-        let cols: Vec<&str> = line.split('\t').collect();
-        let lemma = cols[0];
-        if inf.ends_with(lemma) && !best.as_ref().is_some_and(|(b, _)| b.len() >= lemma.len()) {
-            best = Some((lemma, cols));
-        }
-    }
-    let (lemma, cols) = best?;
-    let prefix = inf[..inf.len() - lemma.len()].to_string();
+/// Parse one lexicon line into an entry.
+fn parse_entry(cols: &[&str]) -> LexEntry {
     let opt = |i: usize| cols.get(i).filter(|c| **c != "-").map(|c| (*c).to_string());
     fn split<const N: usize>(s: Option<String>) -> Option<[String; N]> {
         s.map(|s| {
@@ -182,21 +167,50 @@ fn lexical(inf: &str) -> Option<(String, LexEntry)> {
             v.try_into().expect("wrong count in comma column")
         })
     }
-    Some((
-        prefix,
-        LexEntry {
-            pres: std::array::from_fn(|i| cols[1 + i].to_string()),
-            subj_sg: cols[7].to_string(),
-            subj_pl: cols[8].to_string(),
-            ps: cols[9].to_string(),
-            fut: cols[10].to_string(),
-            pp: cols[11].to_string(),
-            impf: opt(12),
-            prsp: opt(13),
-            subj6: split(opt(14)),
-            imp3: split(opt(15)),
-        },
-    ))
+    LexEntry {
+        pres: std::array::from_fn(|i| cols[1 + i].to_string()),
+        subj_sg: cols[7].to_string(),
+        subj_pl: cols[8].to_string(),
+        ps: cols[9].to_string(),
+        fut: cols[10].to_string(),
+        pp: cols[11].to_string(),
+        impf: opt(12),
+        prsp: opt(13),
+        subj6: split(opt(14)),
+        imp3: split(opt(15)),
+    }
+}
+
+/// Look up `inf` in the lexicon: exact base match, or base matched by
+/// suffix with the leading prefix returned (*soutenir* → ("sou", tenir)).
+/// Longest base wins so *repentir* is not *r + (?)entir*. A lemma may
+/// carry several rows (competing paradigms: *asseoir* assieds/assois);
+/// the first row is the canonical one.
+fn lexical(inf: &str) -> Option<(String, Vec<LexEntry>)> {
+    let mut lemma: Option<&str> = None;
+    let mut entries: Vec<LexEntry> = Vec::new();
+    for line in LEXICON_TSV.lines() {
+        if line.starts_with('#') || line.is_empty() {
+            continue;
+        }
+        let cols: Vec<&str> = line.split('\t').collect();
+        if !inf.ends_with(cols[0]) {
+            continue;
+        }
+        match lemma {
+            Some(l) if cols[0].len() < l.len() => {}
+            Some(l) if cols[0].len() == l.len() => entries.push(parse_entry(&cols)),
+            _ => {
+                lemma = Some(cols[0]);
+                entries = vec![parse_entry(&cols)];
+            }
+        }
+    }
+    // The comparison above relies on equal-length matches being the same
+    // lemma, which suffix matching guarantees.
+    let lemma = lemma?;
+    let prefix = inf[..inf.len() - lemma.len()].to_string();
+    Some((prefix, entries))
 }
 
 /// Circumflex the last vowel of a past-historic stem (tin → tîn, parti →
@@ -227,8 +241,9 @@ enum Group {
     Ir,
     /// Regular third-group -dre (vendre, répondre, perdre, mordre).
     Re,
-    /// Irregular, from the lexicon.
-    Lex(Box<LexEntry>),
+    /// Irregular, from the lexicon; several rows mean competing
+    /// paradigms (asseoir), the first canonical.
+    Lex(Vec<LexEntry>),
 }
 
 /// A conjugatable French verb.
@@ -273,7 +288,7 @@ impl Verb {
         let (stem, prefix, group) = if let Some(stem) = inf.strip_suffix("er") {
             if IRREGULAR_ER.contains(&inf) || inf.ends_with("envoyer") {
                 match lexical(inf) {
-                    Some((prefix, e)) => ("", prefix, Group::Lex(Box::new(e))),
+                    Some((prefix, e)) => ("", prefix, Group::Lex(e)),
                     None => return Err(Error::Unsupported),
                 }
             } else {
@@ -290,7 +305,7 @@ impl Verb {
                     && THIRD_GROUP_IR.iter().any(|base| inf.ends_with(base)));
             if third {
                 match lexical(inf) {
-                    Some((prefix, e)) => ("", prefix, Group::Lex(Box::new(e))),
+                    Some((prefix, e)) => ("", prefix, Group::Lex(e)),
                     None => return Err(Error::Unsupported),
                 }
             } else {
@@ -302,7 +317,7 @@ impl Verb {
             // not know but ends in -dre (and is not one of the lexical
             // -oudre/-indre families) is the regular vendre class.
             match lexical(inf) {
-                Some((prefix, e)) => ("", prefix, Group::Lex(Box::new(e))),
+                Some((prefix, e)) => ("", prefix, Group::Lex(e)),
                 None => match inf.strip_suffix("re") {
                     Some(stem) if stem.ends_with('d') && !inf.ends_with("oudre") => {
                         (stem, String::new(), Group::Re)
@@ -357,6 +372,38 @@ impl Verb {
             let last = s.chars().last().unwrap();
             return format!("{s}{last}");
         }
+        Self::grave(s, in_future).unwrap_or_else(|| s.clone())
+    }
+
+    /// Alternate mute stems accepted alongside the canonical one:
+    /// -ayer may keep its y (paye), non-appeler/jeter doubling verbs may
+    /// take the 1990 grave accent (courrièle), and é may take è in the
+    /// 1990 future/conditional (cèderai).
+    fn alt_mute_stems(&self, in_future: bool) -> Vec<String> {
+        let s = &self.stem;
+        let mut alts = Vec::new();
+        if let Some(body) = s.strip_suffix('y') {
+            if body.ends_with('a') {
+                alts.push(s.clone());
+            }
+        }
+        if self.doubles()
+            && !self.infinitive.ends_with("appeler")
+            && !self.infinitive.ends_with("jeter")
+        {
+            alts.extend(Self::grave(s, false));
+        }
+        if in_future {
+            let alt = self.mute_stem(false);
+            if alt != self.mute_stem(true) {
+                alts.push(alt);
+            }
+        }
+        alts
+    }
+
+    /// The e/é → è open-syllable adjustment, or None if it does not apply.
+    fn grave(s: &str, in_future: bool) -> Option<String> {
         // Last e/é in an open syllable takes a grave accent: lève, cède,
         // sèvre (consonant + liquid), sèche/règne/lègue (digraphs count as
         // one consonant sound). A closed syllable (accepte, ferme), a
@@ -391,9 +438,11 @@ impl Verb {
             i -= 1;
         }
         let liquid = |u: &str| u == "r" || u == "l";
+        // x and w are loanword consonants; so is a single f in this
+        // position (débriefe, briefe) — no native e/é+f+er verb exists.
         let clean = units
             .iter()
-            .all(|u| !u.contains(['x', 'w', 'ç', '-', '\'']));
+            .all(|u| !u.contains(['x', 'w', 'f', 'ç', '-', '\'']));
         let open = clean
             && match units.as_slice() {
                 [_] => true,
@@ -409,10 +458,10 @@ impl Verb {
             if grave {
                 let head: String = chars[..i - 1].iter().collect();
                 let tail: String = chars[i..].iter().collect();
-                return format!("{head}è{tail}");
+                return Some(format!("{head}è{tail}"));
             }
         }
-        s.clone()
+        None
     }
 
     /// Attach an ending, softening a stem-final *c*/*g* before *a*/*â*/*o*.
@@ -499,8 +548,8 @@ impl Verb {
     /// A finite form.
     pub fn conjugate(&self, tense: SimpleTense, person: Person, number: Number) -> String {
         let i = person.index(number);
-        if let Group::Lex(e) = &self.group {
-            return self.conjugate_lex(e, tense, i);
+        if let Group::Lex(entries) = &self.group {
+            return self.conjugate_lex(&entries[0], tense, i);
         }
         if matches!(self.group, Group::Ir) {
             // The second group is agglutinative: bare stem + ending, the
@@ -558,7 +607,8 @@ impl Verb {
     /// *finissons*), 2pl (*parlez*, *finissez*). Other bundles have no
     /// imperative.
     pub fn imperative(&self, person: Person, number: Number) -> Option<String> {
-        if let Group::Lex(e) = &self.group {
+        if let Group::Lex(entries) = &self.group {
+            let e = &entries[0];
             if let Some(imp) = &e.imp3 {
                 let form = match (person, number) {
                     (Person::Second, Number::Singular) => &imp[0],
@@ -613,7 +663,8 @@ impl Verb {
             Group::Er => Self::attach(&self.stem, "ant"),
             Group::Ir => format!("{}issant", self.stem),
             Group::Re => format!("{}ant", self.stem),
-            Group::Lex(e) => {
+            Group::Lex(entries) => {
+                let e = &entries[0];
                 if let Some(prsp) = &e.prsp {
                     return format!("{}{prsp}", self.prefix);
                 }
@@ -632,8 +683,112 @@ impl Verb {
             Group::Er => format!("{}é", self.stem),
             Group::Ir => format!("{}i", self.stem),
             Group::Re => format!("{}u", self.stem),
-            Group::Lex(e) => format!("{}{}", self.prefix, e.pp),
+            Group::Lex(entries) => format!("{}{}", self.prefix, entries[0].pp),
         }
+    }
+
+    fn dedup(mut v: Vec<String>) -> Vec<String> {
+        let mut seen = std::collections::HashSet::new();
+        v.retain(|f| seen.insert(f.clone()));
+        v
+    }
+
+    /// Every standard spelling of a finite form, canonical first: the
+    /// 1990-rectification doublets (courrielle/courrièle, céderai/cèderai),
+    /// the -ayer doublets (paie/paye), and competing lexicon paradigms
+    /// (assiéra/assoira).
+    pub fn variants(&self, tense: SimpleTense, person: Person, number: Number) -> Vec<String> {
+        let i = person.index(number);
+        let mut out = vec![self.conjugate(tense, person, number)];
+        match &self.group {
+            Group::Lex(entries) => {
+                for e in &entries[1..] {
+                    out.push(self.conjugate_lex(e, tense, i));
+                }
+            }
+            Group::Er => match tense {
+                SimpleTense::Present | SimpleTense::SubjunctivePresent => {
+                    let endings = if matches!(tense, SimpleTense::Present) {
+                        &PRESENT
+                    } else {
+                        &SUBJ_PRESENT
+                    };
+                    if is_mute(endings[i]) {
+                        for alt in self.alt_mute_stems(false) {
+                            out.push(Self::attach(&alt, endings[i]));
+                        }
+                    }
+                }
+                SimpleTense::Future | SimpleTense::Conditional => {
+                    let endings = if matches!(tense, SimpleTense::Future) {
+                        &FUTURE
+                    } else {
+                        &CONDITIONAL
+                    };
+                    for alt in self.alt_mute_stems(true) {
+                        out.push(format!("{alt}er{}", endings[i]));
+                    }
+                }
+                _ => {}
+            },
+            _ => {}
+        }
+        Self::dedup(out)
+    }
+
+    /// Every standard spelling of an imperative form, canonical first.
+    pub fn imperative_variants(&self, person: Person, number: Number) -> Vec<String> {
+        let Some(canon) = self.imperative(person, number) else {
+            return Vec::new();
+        };
+        let mut out = vec![canon];
+        if matches!(self.group, Group::Er)
+            && matches!((person, number), (Person::Second, Number::Singular))
+        {
+            for alt in self.alt_mute_stems(false) {
+                out.push(Self::attach(&alt, "e"));
+            }
+        }
+        if let Group::Lex(entries) = &self.group {
+            // Every row's present-derived imperative counts, including the
+            // canonical row's when an imp3 override shadows it (veuillons
+            // and voulons are both standard).
+            for e in entries.iter() {
+                let form = match (person, number) {
+                    (Person::Second, Number::Singular) => {
+                        let p2 = &e.pres[1];
+                        p2.strip_suffix('s')
+                            .filter(|f| f.ends_with('e') || *f == "va")
+                            .unwrap_or(p2)
+                            .to_string()
+                    }
+                    (Person::First, Number::Plural) => e.pres[3].clone(),
+                    (Person::Second, Number::Plural) => e.pres[4].clone(),
+                    _ => continue,
+                };
+                out.push(format!("{}{form}", self.prefix));
+            }
+        }
+        Self::dedup(out)
+    }
+
+    /// Every standard present participle (asseyant/assoyant).
+    pub fn present_participle_variants(&self) -> Vec<String> {
+        let mut out = vec![self.present_participle()];
+        if let Group::Lex(entries) = &self.group {
+            for e in &entries[1..] {
+                if let Some(prsp) = &e.prsp {
+                    out.push(format!("{}{prsp}", self.prefix));
+                } else {
+                    let impf = e
+                        .impf
+                        .as_deref()
+                        .unwrap_or_else(|| e.pres[3].strip_suffix("ons").unwrap_or(&e.pres[3]));
+                    out.push(format!("{}{impf}ant", self.prefix));
+                }
+            }
+        }
+        Self::dedup(out)
     }
 }
 
@@ -773,7 +928,7 @@ mod tests {
             );
         }
         // Still out: bases with no lexicon row at all.
-        for bad in ["férir", "seoir", "asseoir", "surseoir"] {
+        for bad in ["férir", "seoir", "messeoir", "issir"] {
             assert_eq!(
                 Verb::from_infinitive(bad).unwrap_err(),
                 Error::Unsupported,
