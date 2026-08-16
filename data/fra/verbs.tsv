@@ -1,17 +1,25 @@
-# French irregular lexicon: third-group -ir bases and the two irregular
-# first-group verbs. One row per base verb; prefixed derivatives
-# (soutenir, accueillir, renvoyer) are derived in src/fra.rs by prefix.
+# French irregular lexicon: third-group verbs and the two irregular
+# first-group verbs. One row per base; prefixed derivatives (soutenir,
+# accueillir, renvoyer, reconnaître) are derived in src/fra.rs by
+# longest-base suffix match. Some bases are bound stems that are not
+# verbs themselves (crire, uire, clure, cevoir, eindre, oindre, aindre):
+# they exist so whole families resolve by prefix.
 #
-# Columns (tab-separated):
-#   lemma  pres1s pres2s pres3s pres1p pres2p pres3p  subj_sg subj_pl  ps1  fut_stem  pp
+# Columns (tab-separated); trailing optional columns may be omitted,
+# and "-" means "derive":
+#   lemma  pres1s pres2s pres3s pres1p pres2p pres3p  subj_sg subj_pl
+#   ps1  fut_stem  pp  [impf_stem  prsp  subj6(comma)  imp3(comma)]
 #
-# Derived elsewhere: imperfect and present participle from pres1p minus
-# -ons; past-historic series from ps1's ending (-ai → er-series, -s →
-# s-series with circumflexed 1p/2p); imperfect subjunctive from ps1;
-# imperative from pres2s/pres1p/pres2p (final -s dropped after -es, vas → va).
+# Derived defaults: imperfect stem and present participle from pres1p
+# minus -ons; past-historic series from ps1's ending (-ai → er-series,
+# -s → s-series with circumflexed 1p/2p); imperfect subjunctive from
+# ps1; imperative from pres2s/pres1p/pres2p (final -s dropped after
+# -es, vas → va). The overrides carry être/avoir-class irregularity
+# (étais, ayant, soit, sache).
 #
-# Defective archaic bases (gésir, férir, ouïr, issir, saillir, faillir)
-# stay out: their gaps need variant/defective slots the schema lacks yet.
+# Defective bases (gésir, férir, ouïr, issir, saillir, faillir, traire,
+# pleuvoir, falloir, bruire, frire, paître, asseoir) stay out: their
+# gaps need variant/defective slots the schema lacks yet.
 aller	vais	vas	va	allons	allez	vont	aill	all	allai	ir	allé
 envoyer	envoie	envoies	envoie	envoyons	envoyez	envoient	envoi	envoy	envoyai	enverr	envoyé
 partir	pars	pars	part	partons	partez	partent	part	part	partis	partir	parti
@@ -35,3 +43,56 @@ fuir	fuis	fuis	fuit	fuyons	fuyez	fuient	fui	fuy	fuis	fuir	fui
 vêtir	vêts	vêts	vêt	vêtons	vêtez	vêtent	vêt	vêt	vêtis	vêtir	vêtu
 quérir	quiers	quiers	quiert	quérons	quérez	quièrent	quièr	quér	quis	querr	quis
 haïr	hais	hais	hait	haïssons	haïssez	haïssent	haïss	haïss	haïs	haïr	haï
+être	suis	es	est	sommes	êtes	sont	-	-	fus	ser	été	ét	-	sois,sois,soit,soyons,soyez,soient	sois,soyons,soyez
+avoir	ai	as	a	avons	avez	ont	-	-	eus	aur	eu	av	ayant	aie,aies,ait,ayons,ayez,aient	aie,ayons,ayez
+faire	fais	fais	fait	faisons	faites	font	fass	fass	fis	fer	fait
+dire	dis	dis	dit	disons	dites	disent	dis	dis	dis	dir	dit
+contredire	contredis	contredis	contredit	contredisons	contredisez	contredisent	contredis	contredis	contredis	contredir	contredit
+dédire	dédis	dédis	dédit	dédisons	dédisez	dédisent	dédis	dédis	dédis	dédir	dédit
+interdire	interdis	interdis	interdit	interdisons	interdisez	interdisent	interdis	interdis	interdis	interdir	interdit
+médire	médis	médis	médit	médisons	médisez	médisent	médis	médis	médis	médir	médit
+prédire	prédis	prédis	prédit	prédisons	prédisez	prédisent	prédis	prédis	prédis	prédir	prédit
+maudire	maudis	maudis	maudit	maudissons	maudissez	maudissent	maudiss	maudiss	maudis	maudir	maudit
+lire	lis	lis	lit	lisons	lisez	lisent	lis	lis	lus	lir	lu
+crire	cris	cris	crit	crivons	crivez	crivent	criv	criv	crivis	crir	crit
+rire	ris	ris	rit	rions	riez	rient	ri	ri	ris	rir	ri
+uire	uis	uis	uit	uisons	uisez	uisent	uis	uis	uisis	uir	uit
+luire	luis	luis	luit	luisons	luisez	luisent	luis	luis	luisis	luir	lui
+nuire	nuis	nuis	nuit	nuisons	nuisez	nuisent	nuis	nuis	nuisis	nuir	nui
+prendre	prends	prends	prend	prenons	prenez	prennent	prenn	pren	pris	prendr	pris
+mettre	mets	mets	met	mettons	mettez	mettent	mett	mett	mis	mettr	mis
+battre	bats	bats	bat	battons	battez	battent	batt	batt	battis	battr	battu
+rompre	romps	romps	rompt	rompons	rompez	rompent	romp	romp	rompis	rompr	rompu
+vaincre	vaincs	vaincs	vainc	vainquons	vainquez	vainquent	vainqu	vainqu	vainquis	vaincr	vaincu
+aindre	ains	ains	aint	aignons	aignez	aignent	aign	aign	aignis	aindr	aint
+eindre	eins	eins	eint	eignons	eignez	eignent	eign	eign	eignis	eindr	eint
+oindre	oins	oins	oint	oignons	oignez	oignent	oign	oign	oignis	oindr	oint
+moudre	mouds	mouds	moud	moulons	moulez	moulent	moul	moul	moulus	moudr	moulu
+coudre	couds	couds	coud	cousons	cousez	cousent	cous	cous	cousis	coudr	cousu
+résoudre	résous	résous	résout	résolvons	résolvez	résolvent	résolv	résolv	résolus	résoudr	résolu
+connaître	connais	connais	connaît	connaissons	connaissez	connaissent	connaiss	connaiss	connus	connaîtr	connu
+paraître	parais	parais	paraît	paraissons	paraissez	paraissent	paraiss	paraiss	parus	paraîtr	paru
+naître	nais	nais	naît	naissons	naissez	naissent	naiss	naiss	naquis	naîtr	né
+croître	croîs	croîs	croît	croissons	croissez	croissent	croiss	croiss	crûs	croîtr	crû
+accroître	accrois	accrois	accroît	accroissons	accroissez	accroissent	accroiss	accroiss	accrus	accroîtr	accru
+décroître	décrois	décrois	décroît	décroissons	décroissez	décroissent	décroiss	décroiss	décrus	décroîtr	décru
+croire	crois	crois	croit	croyons	croyez	croient	croi	croy	crus	croir	cru
+boire	bois	bois	boit	buvons	buvez	boivent	boiv	buv	bus	boir	bu
+plaire	plais	plais	plaît	plaisons	plaisez	plaisent	plais	plais	plus	plair	plu
+taire	tais	tais	tait	taisons	taisez	taisent	tais	tais	tus	tair	tu
+clure	clus	clus	clut	cluons	cluez	cluent	clu	clu	clus	clur	clu
+vivre	vis	vis	vit	vivons	vivez	vivent	viv	viv	vécus	vivr	vécu
+suivre	suis	suis	suit	suivons	suivez	suivent	suiv	suiv	suivis	suivr	suivi
+devoir	dois	dois	doit	devons	devez	doivent	doiv	dev	dus	devr	dû
+pouvoir	peux	peux	peut	pouvons	pouvez	peuvent	puiss	puiss	pus	pourr	pu
+vouloir	veux	veux	veut	voulons	voulez	veulent	veuill	voul	voulus	voudr	voulu	-	-	-	veuille,veuillons,veuillez
+savoir	sais	sais	sait	savons	savez	savent	sach	sach	sus	saur	su	-	sachant	-	sache,sachons,sachez
+voir	vois	vois	voit	voyons	voyez	voient	voi	voy	vis	verr	vu
+prévoir	prévois	prévois	prévoit	prévoyons	prévoyez	prévoient	prévoi	prévoy	prévis	prévoir	prévu
+pourvoir	pourvois	pourvois	pourvoit	pourvoyons	pourvoyez	pourvoient	pourvoi	pourvoy	pourvus	pourvoir	pourvu
+cevoir	çois	çois	çoit	cevons	cevez	çoivent	çoiv	cev	çus	cevr	çu
+valoir	vaux	vaux	vaut	valons	valez	valent	vaill	val	valus	vaudr	valu
+prévaloir	prévaux	prévaux	prévaut	prévalons	prévalez	prévalent	préval	préval	prévalus	prévaudr	prévalu
+mouvoir	meus	meus	meut	mouvons	mouvez	meuvent	meuv	mouv	mus	mouvr	mû
+émouvoir	émeus	émeus	émeut	émouvons	émouvez	émeuvent	émeuv	émouv	émus	émouvr	ému
+promouvoir	promeus	promeus	promeut	promouvons	promouvez	promeuvent	promeuv	promouv	promus	promouvr	promu
