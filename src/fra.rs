@@ -55,6 +55,78 @@ pub enum SimpleTense {
     SubjunctiveImperfect,
 }
 
+/// The perfect auxiliary.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Auxiliary {
+    Avoir,
+    Etre,
+}
+
+/// The seven compound (analytic) tense/mood combinations: perfect
+/// auxiliary + past participle, on top of each simple tense of the
+/// auxiliary.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum AnalyticTense {
+    /// Passé composé: aux present (j'ai parlé, je suis allé).
+    PasseCompose,
+    /// Plus-que-parfait: aux imperfect (j'avais parlé).
+    PlusQueParfait,
+    /// Passé antérieur: aux past historic (j'eus parlé).
+    PasseAnterieur,
+    /// Futur antérieur: aux future (j'aurai parlé).
+    FuturAnterieur,
+    /// Conditionnel passé: aux conditional (j'aurais parlé).
+    ConditionnelPasse,
+    /// Subjonctif passé: aux present subjunctive (que j'aie parlé).
+    SubjonctifPasse,
+    /// Subjonctif plus-que-parfait: aux imperfect subjunctive (que
+    /// j'eusse parlé).
+    SubjonctifPlusQueParfait,
+}
+
+/// The closed list of être-auxiliary verbs (the motion/change class) and
+/// their être-taking derivatives, as exact lemmas: the venir family
+/// splits (revenir takes être, prévenir takes avoir), so no suffix
+/// matching. Everything else takes avoir; pronominal uses always take
+/// être, but the bare lemma is what the API conjugates.
+const ETRE_VERBS: [&str; 35] = [
+    "aller",
+    "arriver",
+    "venir",
+    "devenir",
+    "redevenir",
+    "revenir",
+    "parvenir",
+    "survenir",
+    "advenir",
+    "intervenir",
+    "provenir",
+    "obvenir",
+    "bienvenir",
+    "entrer",
+    "rentrer",
+    "sortir",
+    "ressortir",
+    "partir",
+    "repartir",
+    "monter",
+    "remonter",
+    "descendre",
+    "redescendre",
+    "rester",
+    "retourner",
+    "tomber",
+    "retomber",
+    "passer",
+    "naître",
+    "renaître",
+    "mourir",
+    "remourir",
+    "décéder",
+    "apparaître",
+    "réapparaître",
+];
+
 /// Why an infinitive cannot be conjugated (yet).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Error {
@@ -686,6 +758,40 @@ impl Verb {
         }
     }
 
+    /// The perfect auxiliary: avoir, or être for the motion/change class.
+    #[must_use]
+    pub fn auxiliary(&self) -> Auxiliary {
+        if ETRE_VERBS.contains(&self.infinitive.as_str()) {
+            Auxiliary::Etre
+        } else {
+            Auxiliary::Avoir
+        }
+    }
+
+    /// A compound form: conjugated auxiliary + past participle, with
+    /// masculine subject agreement for être (nous sommes allés).
+    pub fn analytic(&self, tense: AnalyticTense, person: Person, number: Number) -> String {
+        let aux_lemma = match self.auxiliary() {
+            Auxiliary::Avoir => "avoir",
+            Auxiliary::Etre => "être",
+        };
+        let aux = Self::from_infinitive(aux_lemma).expect("auxiliary conjugates");
+        let simple = match tense {
+            AnalyticTense::PasseCompose => SimpleTense::Present,
+            AnalyticTense::PlusQueParfait => SimpleTense::Imperfect,
+            AnalyticTense::PasseAnterieur => SimpleTense::PastHistoric,
+            AnalyticTense::FuturAnterieur => SimpleTense::Future,
+            AnalyticTense::ConditionnelPasse => SimpleTense::Conditional,
+            AnalyticTense::SubjonctifPasse => SimpleTense::SubjunctivePresent,
+            AnalyticTense::SubjonctifPlusQueParfait => SimpleTense::SubjunctiveImperfect,
+        };
+        let mut pp = self.past_participle();
+        if self.auxiliary() == Auxiliary::Etre && number == Number::Plural && !pp.ends_with('s') {
+            pp.push('s');
+        }
+        format!("{} {pp}", aux.conjugate(simple, person, number))
+    }
+
     /// Past participle, masculine singular: *parlé*, *fini*, *tenu*.
     pub fn past_participle(&self) -> String {
         match &self.group {
@@ -808,6 +914,7 @@ impl Verb {
 #[cfg_attr(feature = "wasm", serde(rename_all = "camelCase"))]
 pub struct Table {
     pub infinitive: String,
+    pub auxiliary: String,
     pub present_participle: String,
     pub past_participle: String,
     /// [tu, nous, vous].
@@ -819,6 +926,13 @@ pub struct Table {
     pub conditional: [String; 6],
     pub subjunctive_present: [String; 6],
     pub subjunctive_imperfect: [String; 6],
+    pub passe_compose: [String; 6],
+    pub plus_que_parfait: [String; 6],
+    pub passe_anterieur: [String; 6],
+    pub futur_anterieur: [String; 6],
+    pub conditionnel_passe: [String; 6],
+    pub subjonctif_passe: [String; 6],
+    pub subjonctif_plus_que_parfait: [String; 6],
 }
 
 const SLOTS: [(Person, Number); 6] = [
@@ -834,8 +948,13 @@ impl Table {
     #[must_use]
     pub fn build(v: &Verb) -> Self {
         let row = |t: SimpleTense| SLOTS.map(|(p, n)| v.conjugate(t, p, n));
+        let arow = |t: AnalyticTense| SLOTS.map(|(p, n)| v.analytic(t, p, n));
         Self {
             infinitive: v.infinitive().to_string(),
+            auxiliary: match v.auxiliary() {
+                Auxiliary::Avoir => "avoir".to_string(),
+                Auxiliary::Etre => "être".to_string(),
+            },
             present_participle: v.present_participle(),
             past_participle: v.past_participle(),
             imperative: [
@@ -850,6 +969,13 @@ impl Table {
             conditional: row(SimpleTense::Conditional),
             subjunctive_present: row(SimpleTense::SubjunctivePresent),
             subjunctive_imperfect: row(SimpleTense::SubjunctiveImperfect),
+            passe_compose: arow(AnalyticTense::PasseCompose),
+            plus_que_parfait: arow(AnalyticTense::PlusQueParfait),
+            passe_anterieur: arow(AnalyticTense::PasseAnterieur),
+            futur_anterieur: arow(AnalyticTense::FuturAnterieur),
+            conditionnel_passe: arow(AnalyticTense::ConditionnelPasse),
+            subjonctif_passe: arow(AnalyticTense::SubjonctifPasse),
+            subjonctif_plus_que_parfait: arow(AnalyticTense::SubjonctifPlusQueParfait),
         }
     }
 }
@@ -1058,6 +1184,31 @@ mod tests {
         assert_eq!(h.conjugate(Present, P1, PL), "haïssons");
         assert_eq!(h.conjugate(PastHistoric, P1, PL), "haïmes");
         assert_eq!(h.conjugate(SubjunctiveImperfect, P3, SG), "haït");
+    }
+
+    #[test]
+    fn analytic_tenses() {
+        use AnalyticTense::*;
+        let p = v("parler");
+        assert_eq!(p.analytic(PasseCompose, P1, SG), "ai parlé");
+        assert_eq!(p.analytic(PlusQueParfait, P3, SG), "avait parlé");
+        assert_eq!(p.analytic(PasseAnterieur, P3, SG), "eut parlé");
+        assert_eq!(p.analytic(FuturAnterieur, P1, SG), "aurai parlé");
+        assert_eq!(p.analytic(ConditionnelPasse, P2, SG), "aurais parlé");
+        assert_eq!(p.analytic(SubjonctifPasse, P1, SG), "aie parlé");
+        assert_eq!(p.analytic(SubjonctifPlusQueParfait, P3, SG), "eût parlé");
+        let a = v("aller");
+        assert_eq!(a.auxiliary(), Auxiliary::Etre);
+        assert_eq!(a.analytic(PasseCompose, P1, SG), "suis allé");
+        assert_eq!(a.analytic(PasseCompose, P1, PL), "sommes allés");
+        assert_eq!(a.analytic(PlusQueParfait, P3, PL), "étaient allés");
+        let m = v("mourir");
+        assert_eq!(m.analytic(PasseCompose, P3, SG), "est mort");
+        assert_eq!(m.analytic(PasseCompose, P3, PL), "sont morts");
+        let asseoir = v("asseoir");
+        assert_eq!(asseoir.analytic(PasseCompose, P3, PL), "ont assis");
+        assert_eq!(v("prévenir").auxiliary(), Auxiliary::Avoir);
+        assert_eq!(v("revenir").auxiliary(), Auxiliary::Etre);
     }
 
     #[test]
