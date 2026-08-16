@@ -2,7 +2,7 @@
 """Cross-examine the two gold oracles (UniMorph deu vs kaikki.org) and triage
 ablaut's mismatches against their agreement.
 
-Usage: python3 scripts/cross_oracle.py data/unimorph/deu data/kaikki/deu.tsv \
+Usage: python3 scripts/cross_oracle.py data/deu/unimorph data/deu/kaikki.tsv \
            target/golden_mismatches.tsv
 
 For every (lemma, feature) both oracles cover:

@@ -38,7 +38,7 @@ describe every strong verb in the language.
   (794k forms, including analytic tenses and the perfect auxiliary). Where
   the two sources agree with each other, ablaut has **zero known errors**;
   every remaining disagreement is ruled on in a published
-  [adjudication log](docs/adjudications.tsv) with references to standard
+  [adjudication log](docs/deu/adjudications.tsv) with references to standard
   grammars.
 - **Generalizes to unseen verbs.** A rule engine with a curated exception
   lexicon, not a lookup table: novel verbs (*googeln*, *downloaden*)
@@ -134,20 +134,20 @@ All synthetic and analytic forms of standard German:
   (*ich sammle*), the Latinate *-ieren* participle (*studiert* but
   *geschmiert*), and per-lexeme perfect auxiliaries (*aufstehen*: *sein*)
 
-The exception lexicon ([`data/verbs.tsv`](data/verbs.tsv), about 900
+The exception lexicon ([`data/deu/verbs.tsv`](data/deu/verbs.tsv), about 900
 human-readable rulings) is compiled into the binary.
 
 ## How correctness is verified
 
 `src/bin/golden.rs` diffs every generated form against the gold data
-(`scripts/fetch_unimorph.sh`, `scripts/fetch_kaikki.sh`) and CI fails if
+(`scripts/deu/fetch_unimorph.sh`, `scripts/deu/fetch_kaikki.sh`) and CI fails if
 accuracy regresses below pinned thresholds. `scripts/cross_oracle.py`
 cross-examines the two oracles against each other: they agree on 98.9% of
 their 195k shared slots, and triaging ablaut's mismatches against that
 agreement separates genuine bugs from gold-data errors.
 
 The method has found real errors in the gold data itself, documented in
-[`docs/adjudications.tsv`](docs/adjudications.tsv): UniMorph gives the
+[`docs/deu/adjudications.tsv`](docs/deu/adjudications.tsv): UniMorph gives the
 Konjunktiv II of *nennen* as *nannte* (correct: *nennte*) and marks
 *wisse!* as nonexistent; Wiktionary assigns *wachen* the auxiliary *sein*
 and conjugates *entgelten* weak. One caveat: both oracles derive from

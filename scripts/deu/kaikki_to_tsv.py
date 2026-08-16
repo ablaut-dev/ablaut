@@ -2,7 +2,7 @@
 """Convert the kaikki.org (Wiktextract) German verb JSONL into the UniMorph-style
 lemma<TAB>form<TAB>features TSV that the golden harness reads.
 
-Usage: python3 scripts/kaikki_to_tsv.py data/kaikki/verbs.jsonl > data/kaikki/deu.tsv
+Usage: python3 scripts/deu/kaikki_to_tsv.py data/deu/kaikki-verbs.jsonl > data/deu/kaikki.tsv
 
 Only synthetic conjugation-table forms are kept (analytic tenses are the
 compositional layer's business). The perfect auxiliary is emitted as a
