@@ -898,3 +898,25 @@ fn leading_capital_is_normalized() {
     assert_eq!(r.past_participle(), "Rad gefahren");
     assert_eq!(v("Rad Fahren").past_participle(), "Rad gefahren");
 }
+
+#[test]
+fn input_whitespace_is_normalized() {
+    for inp in [" gehen", "gehen ", "  gehen  ", "\tgehen", "gehen\n"] {
+        assert_eq!(v(inp).past_participle(), "gegangen", "input {inp:?}");
+    }
+    // Internal runs collapse; the noun keeps its capital.
+    assert_eq!(v("Rad  fahren").past_participle(), "Rad gefahren");
+}
+
+#[test]
+fn input_case_is_normalized() {
+    assert_eq!(v("GEHEN").past_participle(), "gegangen");
+    assert_eq!(v("AbbRechen").past_participle(), "abgebrochen");
+    assert_eq!(v("GÖNNEN").past_participle(), "gegönnt");
+}
+
+#[test]
+fn zu_infinitive_input() {
+    assert_eq!(v("zu gehen").past_participle(), "gegangen");
+    assert_eq!(v("zu aufstehen").infinitive(), "aufstehen");
+}

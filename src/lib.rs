@@ -120,6 +120,18 @@ impl Verb {
     // Internal expect: a prefixed base always carries its inner verb.
     #[allow(clippy::missing_panics_doc)]
     pub fn from_infinitive(infinitive: &str) -> Result<Self, Error> {
+        // Normalize whitespace first: users paste " gehen ", "Rad  fahren",
+        // trailing newlines or tabs. Collapses runs to single spaces, trims.
+        let normalized = normalize_whitespace(infinitive);
+        let mut infinitive = normalized.as_ref();
+        // "zu gehen": strip the zu-infinitive particle so the bare verb
+        // conjugates (no verb lemma is the two words "zu <x>").
+        if let Some(rest) = infinitive
+            .strip_prefix("zu ")
+            .or_else(|| infinitive.strip_prefix("Zu "))
+        {
+            infinitive = rest;
+        }
         // Multiword lemmas (Rad fahren, Bescheid wissen): the last word
         // conjugates; the rest is a phrasal particle.
         if let Some((particle, verb)) = infinitive.rsplit_once(' ') {
@@ -136,10 +148,11 @@ impl Verb {
                 base: Some(Box::new(base)),
             });
         }
-        // German verb infinitives are lowercase; users may type a leading
-        // capital ("Abbrechen"). Normalize it here, after the multiword split
-        // so the noun in "Rad fahren" keeps its capital.
-        let lowered = lower_first(infinitive);
+        // German verb infinitives are entirely lowercase; users type
+        // "Abbrechen", "GEHEN", "AbbRechen". Lowercase the whole verb token
+        // here, after the multiword split so the noun in "Rad fahren" keeps
+        // its capital.
+        let lowered = lower_all(infinitive);
         let infinitive = lowered.as_ref();
         if let Some(s) = suppletive::lookup(infinitive) {
             return Ok(Self {
@@ -613,16 +626,28 @@ fn latinate_ieren(infinitive: &str) -> bool {
         .is_some_and(|pre| pre.chars().any(is_vowel))
 }
 
-/// Lowercase the first character (German infinitives are lowercase). Borrows
-/// unchanged when the input already starts lowercase, so the common path
-/// allocates nothing.
-fn lower_first(s: &str) -> std::borrow::Cow<'_, str> {
-    let mut chars = s.chars();
-    match chars.next() {
-        Some(first) if first.is_uppercase() => {
-            std::borrow::Cow::Owned(first.to_lowercase().chain(chars).collect())
-        }
-        _ => std::borrow::Cow::Borrowed(s),
+/// Lowercase every character (German infinitives are entirely lowercase).
+/// Borrows unchanged when already lowercase, so the common path allocates
+/// nothing.
+fn lower_all(s: &str) -> std::borrow::Cow<'_, str> {
+    if s.chars().any(char::is_uppercase) {
+        std::borrow::Cow::Owned(s.to_lowercase())
+    } else {
+        std::borrow::Cow::Borrowed(s)
+    }
+}
+
+/// Trim surrounding whitespace and collapse internal runs to single spaces.
+/// Borrows unchanged when the input is already clean.
+fn normalize_whitespace(s: &str) -> std::borrow::Cow<'_, str> {
+    let clean = s.trim();
+    if clean.len() == s.len()
+        && !clean.contains(|c: char| c.is_whitespace() && c != ' ')
+        && !clean.contains("  ")
+    {
+        std::borrow::Cow::Borrowed(clean)
+    } else {
+        std::borrow::Cow::Owned(clean.split_whitespace().collect::<Vec<_>>().join(" "))
     }
 }
 
