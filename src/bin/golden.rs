@@ -2,7 +2,7 @@
 //! dataset (<https://github.com/unimorph/deu>).
 //!
 //! Usage: cargo run --release --bin golden [path-to-gold-tsv] [--check]
-//!        (default: data/unimorph/deu — see `scripts/fetch_unimorph.sh`)
+//!        (default: data/unimorph/deu — see `scripts/fetch_unimorph_deu.sh`)
 //!
 //! A prediction counts as a match if it is among the gold variants for that
 //! (lemma, feature bundle). Mismatches are written to
@@ -176,8 +176,8 @@ fn parse_gold(data: &str) -> Gold<'_> {
 /// Mismatches ruled "ours"/"both" in the adjudication log count as correct.
 /// A "*" in the features column applies to the lemma's whole paradigm.
 fn load_adjudications() -> HashSet<(String, String)> {
-    fs::read_to_string("docs/adjudications.tsv")
-        .expect("docs/adjudications.tsv")
+    fs::read_to_string("docs/adjudications-deu.tsv")
+        .expect("docs/adjudications-deu.tsv")
         .lines()
         .filter(|l| !l.starts_with('#') && !l.is_empty())
         .filter_map(|l| {
@@ -397,7 +397,7 @@ fn main() {
         .cloned()
         .unwrap_or_else(|| "data/unimorph/deu".to_string());
     let data = fs::read_to_string(&path)
-        .unwrap_or_else(|e| panic!("cannot read {path}: {e}. Run scripts/fetch_unimorph.sh first"));
+        .unwrap_or_else(|e| panic!("cannot read {path}: {e}. Run scripts/fetch_unimorph_deu.sh first"));
 
     let gold = parse_gold(&data);
     let adjudicated = load_adjudications();

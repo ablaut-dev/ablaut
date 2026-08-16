@@ -1,7 +1,7 @@
 //! The exception lexicon (Layer A of `docs/design.md`): the finite list of
 //! verbs whose forms are not fully predictable from the infinitive.
 //!
-//! The data lives in `data/verbs.tsv` — human-readable, diffable, and the
+//! The data lives in `data/verbs-deu.tsv` — human-readable, diffable, and the
 //! unit the golden-test harness will grow against. It is embedded at compile
 //! time and parsed once on first lookup; no I/O at runtime.
 
@@ -44,7 +44,7 @@ pub struct LexEntry {
     pub aux: Auxiliary,
 }
 
-static TSV: &str = include_str!("../data/verbs.tsv");
+static TSV: &str = include_str!("../data/verbs-deu.tsv");
 
 fn opt(field: &str) -> Option<String> {
     (field != "-").then(|| field.to_string())

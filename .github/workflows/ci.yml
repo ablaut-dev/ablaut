@@ -43,6 +43,6 @@ jobs:
           key: unimorph-deu-v1
       - name: Fetch UniMorph deu
         if: steps.unimorph.outputs.cache-hit != 'true'
-        run: ./scripts/fetch_unimorph.sh
+        run: ./scripts/fetch_unimorph_deu.sh
       - name: Golden harness with regression gate
         run: cargo run --release --bin golden -- --check

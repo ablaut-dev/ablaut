@@ -5,6 +5,6 @@
 set -e
 mkdir -p data/kaikki
 curl -sL "https://kaikki.org/dictionary/German/pos-verb/kaikki.org-dictionary-German-by-pos-verb.jsonl" \
-  -o data/kaikki/verbs.jsonl
-python3 scripts/kaikki_to_tsv.py data/kaikki/verbs.jsonl > data/kaikki/deu.tsv
+  -o data/kaikki/verbs-deu.jsonl
+python3 scripts/kaikki_deu_to_tsv.py data/kaikki/verbs-deu.jsonl > data/kaikki/deu.tsv
 wc -l data/kaikki/deu.tsv
