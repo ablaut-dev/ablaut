@@ -46,3 +46,14 @@ jobs:
         run: ./scripts/deu/fetch_unimorph.sh
       - name: Golden harness with regression gate
         run: cargo run --release --bin golden -- --check
+      - name: Cache Lefff fra
+        id: lefff
+        uses: actions/cache@v5
+        with:
+          path: data/fra/lefff.tsv
+          key: lefff-fra-v1
+      - name: Fetch Lefff fra
+        if: steps.lefff.outputs.cache-hit != 'true'
+        run: ./scripts/fra/fetch_lefff.sh
+      - name: French golden harness with regression gate
+        run: cargo run --release --bin golden_fra -- data/fra/lefff.tsv --check

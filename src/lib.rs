@@ -12,6 +12,7 @@
 //! Everything irregular lives in `data/deu/verbs.tsv`, compiled in.
 
 mod features;
+pub mod fra;
 mod lexicon;
 mod orthography;
 mod prefix;
