@@ -5,7 +5,7 @@ authors:
   - family-names: "Florentz"
     given-names: "Romain"
 repository-code: "https://github.com/v4nn4/ablaut"
-url: "https://ablaut-demo.vercel.app"
+url: "https://ablaut.dev"
 license: "MIT OR Apache-2.0"
 keywords:
   - German
