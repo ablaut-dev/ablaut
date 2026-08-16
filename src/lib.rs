@@ -34,6 +34,8 @@ pub enum Lang {
     Deu,
     /// French.
     Fra,
+    /// Spanish.
+    Spa,
 }
 
 impl Lang {
@@ -44,6 +46,7 @@ impl Lang {
         match code.to_ascii_lowercase().as_str() {
             "de" | "deu" | "ger" | "german" => Some(Self::Deu),
             "fr" | "fra" | "fre" | "french" => Some(Self::Fra),
+            "es" | "spa" | "spanish" => Some(Self::Spa),
             _ => None,
         }
     }
