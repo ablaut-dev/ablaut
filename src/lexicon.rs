@@ -14,10 +14,10 @@ use std::sync::OnceLock;
 /// A per-lexeme prefix ruling: prefix, behavior, forced-weak base, and an
 /// optional participle override for hybrids like obliegen (fused finite,
 /// zu-infix, but inseparable participle: oblegen).
-pub(crate) type DualRuling = (&'static str, Separability, bool, Option<&'static str>);
+pub type DualRuling = (&'static str, Separability, bool, Option<&'static str>);
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub(crate) enum LexClass {
+pub enum LexClass {
     /// Ablaut verbs: strong preterite endings (ich sang, zero ending).
     Strong,
     /// Changed stem with weak -te endings (denken → dachte).
@@ -28,7 +28,7 @@ pub(crate) enum LexClass {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub(crate) struct LexEntry {
+pub struct LexEntry {
     pub class: LexClass,
     /// Strong/mixed: changed 2/3sg present stem (sprich-, fähr-, ha-).
     /// Preterite-present: the whole-singular present stem (kann, weiß).
@@ -60,7 +60,7 @@ struct Lexicon {
     /// dual-prefix rulings overriding the prefix's default behavior
     /// (umarmen is inseparable; umringen is inseparable over a *weak* base —
     /// denominal from Ring, not strong ringen). Maps lemma →
-    /// (prefix, behavior, force_weak_base).
+    /// (prefix, behavior, `force_weak_base`).
     dual: HashMap<&'static str, DualRuling>,
     /// Class "a": per-lexeme perfect-auxiliary overrides. Prefixed verbs
     /// inherit their base's auxiliary by default, which change-of-state
@@ -140,18 +140,18 @@ fn lexicon() -> &'static Lexicon {
     LEX.get_or_init(|| parse(TSV))
 }
 
-pub(crate) fn lookup(infinitive: &str) -> Option<&'static LexEntry> {
+pub fn lookup(infinitive: &str) -> Option<&'static LexEntry> {
     lexicon().entries.get(infinitive)
 }
 
-pub(crate) fn is_forced_weak(infinitive: &str) -> bool {
+pub fn is_forced_weak(infinitive: &str) -> bool {
     lexicon().forced_weak.contains(infinitive)
 }
 
-pub(crate) fn dual_override(infinitive: &str) -> Option<DualRuling> {
+pub fn dual_override(infinitive: &str) -> Option<DualRuling> {
     lexicon().dual.get(infinitive).copied()
 }
 
-pub(crate) fn aux_override(infinitive: &str) -> Option<Auxiliary> {
+pub fn aux_override(infinitive: &str) -> Option<Auxiliary> {
     lexicon().aux.get(infinitive).copied()
 }

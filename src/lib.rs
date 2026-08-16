@@ -44,9 +44,11 @@ pub enum Auxiliary {
     Sein,
 }
 
-/// Analytic (periphrastic) tenses (Layer C of `docs/design.md`). Composed from
-/// an auxiliary conjugated by the same synthetic core plus a participle or
-/// infinitive; the morphological heavy lifting is already done.
+/// Analytic (periphrastic) tenses (Layer C of `docs/design.md`).
+///
+/// Composed from an auxiliary conjugated by the same synthetic core plus a
+/// participle or infinitive; the morphological heavy lifting is already
+/// done.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum AnalyticTense {
     /// habe gekauft / bin gekommen
@@ -86,7 +88,7 @@ pub struct Verb {
     /// Lexical participle override (obliegen → oblegen).
     part2_override: Option<&'static str>,
     /// …and the base verb whose paradigm it inherits (stehen).
-    base: Option<Box<Verb>>,
+    base: Option<Box<Self>>,
 }
 
 /// Errors raised when constructing a [`Verb`].
@@ -99,7 +101,7 @@ pub enum Error {
 impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Error::InvalidInfinitive(s) => write!(f, "not a German infinitive: {s}"),
+            Self::InvalidInfinitive(s) => write!(f, "not a German infinitive: {s}"),
         }
     }
 }
@@ -110,12 +112,19 @@ impl Verb {
     /// Build a verb from its infinitive, consulting the exception lexicon
     /// and falling back to the productive weak paradigm. This is the main
     /// entry point.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`Error::InvalidInfinitive`] for strings that cannot be a
+    /// German infinitive (no -n/-en ending, empty stem).
+    // Internal expect: a prefixed base always carries its inner verb.
+    #[allow(clippy::missing_panics_doc)]
     pub fn from_infinitive(infinitive: &str) -> Result<Self, Error> {
         // Multiword lemmas (Rad fahren, Bescheid wissen): the last word
         // conjugates; the rest is a phrasal particle.
         if let Some((particle, verb)) = infinitive.rsplit_once(' ') {
             let base = Self::from_infinitive(verb)?;
-            return Ok(Verb {
+            return Ok(Self {
                 infinitive: infinitive.to_string(),
                 stem: String::new(),
                 schwa_stem: false,
@@ -128,7 +137,7 @@ impl Verb {
             });
         }
         if let Some(s) = suppletive::lookup(infinitive) {
-            return Ok(Verb {
+            return Ok(Self {
                 infinitive: infinitive.to_string(),
                 stem: infinitive.trim_end_matches('n').to_string(),
                 schwa_stem: false,
@@ -167,8 +176,10 @@ impl Verb {
                 // → bean·spruchen: beanspruchte). A separable outer over an
                 // inseparable inner stays nested (an+vertrauen: vertraute an).
                 let (p, base) = match (sep, &base.prefix) {
-                    (Separability::Separable, Some((inner, Separability::Separable)))
-                    | (Separability::Fused, Some((inner, Separability::Separable)))
+                    (
+                        Separability::Separable | Separability::Fused,
+                        Some((inner, Separability::Separable)),
+                    )
                     | (Separability::Inseparable, Some((inner, _))) => {
                         let fused = format!("{p}{inner}");
                         let inner_base = (**base.base.as_ref().expect("prefixed")).clone();
@@ -176,7 +187,7 @@ impl Verb {
                     }
                     _ => (p.to_string(), base),
                 };
-                return Ok(Verb {
+                return Ok(Self {
                     infinitive: infinitive.to_string(),
                     stem: String::new(),
                     schwa_stem: false,
@@ -194,6 +205,11 @@ impl Verb {
 
     /// Build a verb forced into the weak (regular) paradigm, bypassing the
     /// lexicon. Useful for novel coinages; wrong for strong verbs.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`Error::InvalidInfinitive`] for strings that cannot be a
+    /// German infinitive (no -n/-en ending, empty stem).
     pub fn weak(infinitive: &str) -> Result<Self, Error> {
         let schwa_stem = infinitive.ends_with("eln") || infinitive.ends_with("ern");
         // knien-type verbs (consonant + -ien) keep the e in their stem:
@@ -211,7 +227,7 @@ impl Verb {
         if stem.is_empty() {
             return Err(Error::InvalidInfinitive(infinitive.into()));
         }
-        Ok(Verb {
+        Ok(Self {
             infinitive: infinitive.to_string(),
             stem: stem.to_string(),
             schwa_stem,
@@ -224,6 +240,7 @@ impl Verb {
         })
     }
 
+    #[must_use]
     pub fn infinitive(&self) -> &str {
         &self.infinitive
     }
@@ -231,16 +248,17 @@ impl Verb {
     /// True if this verb's paradigm is grounded in the exception lexicon or
     /// a suppletive entry (directly, or through its base for prefixed verbs),
     /// i.e. not conjugated by the productive weak fallback.
+    #[must_use]
     pub fn is_lexical(&self) -> bool {
-        match &self.base {
-            Some(base) => base.is_lexical(),
-            None => !matches!(self.class, Class::Weak),
-        }
+        self.base
+            .as_ref()
+            .map_or(!matches!(self.class, Class::Weak), |base| base.is_lexical())
     }
 
     /// The perfect auxiliary (*haben* or *sein*): per-lexeme class-"a"
     /// override if present, else inherited from the base for prefixed verbs,
     /// else the lexicon entry, defaulting to *haben*.
+    #[must_use]
     pub fn auxiliary(&self) -> Auxiliary {
         if let Some(aux) = lexicon::aux_override(&self.infinitive) {
             return aux;
@@ -255,6 +273,7 @@ impl Verb {
 
     /// The zu-infinitive: separable prefixes infix zu (aufzustehen);
     /// otherwise it is the particle zu plus the infinitive (zu kaufen).
+    #[must_use]
     pub fn zu_infinitive(&self) -> String {
         match &self.prefix {
             Some((p, Separability::Separable | Separability::Fused)) => {
@@ -269,8 +288,11 @@ impl Verb {
     }
 
     /// An analytic tense form. The mood conjugates the auxiliary: Perfekt
-    /// Konjunktiv is *habe gekauft* (KonjI) or *hätte gekauft* (KonjII);
-    /// FutureI + KonjunktivII is the *würde*-form.
+    /// Konjunktiv is *habe gekauft* (`KonjI`) or *hätte gekauft* (`KonjII`);
+    /// `FutureI` + `KonjunktivII` is the *würde*-form.
+    // The auxiliaries are literal known infinitives; construction cannot fail.
+    #[allow(clippy::missing_panics_doc)]
+    #[must_use]
     pub fn analytic(
         &self,
         tense: AnalyticTense,
@@ -278,7 +300,7 @@ impl Verb {
         person: Person,
         number: Number,
     ) -> String {
-        let aux = |name: &str| Verb::from_infinitive(name).expect("auxiliary");
+        let aux = |name: &str| Self::from_infinitive(name).expect("auxiliary");
         let own_aux = match self.auxiliary() {
             Auxiliary::Haben => "haben",
             Auxiliary::Sein => "sein",
@@ -309,8 +331,11 @@ impl Verb {
     }
 
     /// Processual passive (Vorgangspassiv): *wird gekauft*, *wurde gekauft*.
+    // werden is a literal known infinitive; construction cannot fail.
+    #[allow(clippy::missing_panics_doc)]
+    #[must_use]
     pub fn passive(&self, tense: Tense, mood: Mood, person: Person, number: Number) -> String {
-        let werden = Verb::from_infinitive("werden").expect("werden");
+        let werden = Self::from_infinitive("werden").expect("werden");
         format!(
             "{} {}",
             werden.conjugate(tense, mood, person, number),
@@ -319,6 +344,9 @@ impl Verb {
     }
 
     /// Statal passive (Zustandspassiv): *ist gekauft*, *war gekauft*.
+    // sein is a literal known infinitive; construction cannot fail.
+    #[allow(clippy::missing_panics_doc)]
+    #[must_use]
     pub fn statal_passive(
         &self,
         tense: Tense,
@@ -326,7 +354,7 @@ impl Verb {
         person: Person,
         number: Number,
     ) -> String {
-        let sein = Verb::from_infinitive("sein").expect("sein");
+        let sein = Self::from_infinitive("sein").expect("sein");
         format!(
             "{} {}",
             sein.conjugate(tense, mood, person, number),
@@ -336,6 +364,7 @@ impl Verb {
 
     /// The perfect infinitive (Infinitiv II): *gekauft haben*,
     /// *aufgestanden sein*.
+    #[must_use]
     pub fn perfect_infinitive(&self) -> String {
         let aux = match self.auxiliary() {
             Auxiliary::Haben => "haben",
@@ -346,11 +375,13 @@ impl Verb {
 
     /// The adhortative (1pl) imperative: *stehen wir auf!*, *seien wir!*.
     /// Built on Konjunktiv I, which is why *sein* comes out right.
+    #[must_use]
     pub fn imperative_first_plural(&self) -> String {
         self.imperative_with_pronoun("wir", Person::First)
     }
 
     /// The polite (Sie) imperative: *stehen Sie auf!*, *seien Sie!*.
+    #[must_use]
     pub fn imperative_polite(&self) -> String {
         self.imperative_with_pronoun("Sie", Person::Third)
     }
@@ -365,13 +396,14 @@ impl Verb {
         }
     }
 
-    fn base(&self) -> &Verb {
+    fn base(&self) -> &Self {
         self.base.as_ref().expect("prefixed verb has a base")
     }
 
     /// A finite synthetic form. Separable prefixes split off, verb-second
     /// style (*stehe auf*); the syntax of where each word lands is out of
     /// scope (see docs/design.md).
+    #[must_use]
     pub fn conjugate(&self, tense: Tense, mood: Mood, person: Person, number: Number) -> String {
         if let Some((prefix, sep)) = &self.prefix {
             let f = self.base().conjugate(tense, mood, person, number);
@@ -464,6 +496,7 @@ impl Verb {
 
     /// Imperative — exists only in the 2nd person. Returns `None` for verbs
     /// without one (the modals).
+    #[must_use]
     pub fn imperative(&self, number: Number) -> Option<String> {
         if let Some((prefix, sep)) = &self.prefix {
             let imp = self.base().imperative(number)?;
@@ -521,6 +554,7 @@ impl Verb {
     }
 
     /// Partizip II (gekauft, gesungen, studiert, vergessen, aufgestanden).
+    #[must_use]
     pub fn past_participle(&self) -> String {
         if let Some(p2) = self.part2_override {
             return p2.to_string();
@@ -554,6 +588,7 @@ impl Verb {
     }
 
     /// Partizip I (kaufend, seiend).
+    #[must_use]
     pub fn present_participle(&self) -> String {
         match &self.class {
             Class::Suppletive(s) => s.part1.to_string(),
@@ -575,7 +610,7 @@ fn latinate_ieren(infinitive: &str) -> bool {
 
 /// Vowels for plausibility checks, including accented loan-word vowels
 /// (crèmen must not look vowel-less).
-fn is_vowel(c: char) -> bool {
+const fn is_vowel(c: char) -> bool {
     matches!(
         c,
         'a' | 'e'

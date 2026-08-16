@@ -19,10 +19,11 @@ pub enum Number {
     Plural,
 }
 
-/// The two synthetic tenses of German. All other tenses (Perfekt, Futur, …)
-/// are analytic: they are composed from an auxiliary plus a participle or
-/// infinitive, and belong to the compositional layer, not the morphological
-/// core.
+/// The two synthetic tenses of German.
+///
+/// All other tenses (Perfekt, Futur, …) are analytic: they are composed
+/// from an auxiliary plus a participle or infinitive, and belong to the
+/// compositional layer, not the morphological core.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Tense {
     Present,
@@ -40,11 +41,11 @@ pub enum Mood {
 
 impl Person {
     /// Index into a six-slot paradigm row (1sg..3pl).
-    pub(crate) fn index(self, number: Number) -> usize {
+    pub(crate) const fn index(self, number: Number) -> usize {
         let p = match self {
-            Person::First => 0,
-            Person::Second => 1,
-            Person::Third => 2,
+            Self::First => 0,
+            Self::Second => 1,
+            Self::Third => 2,
         };
         match number {
             Number::Singular => p,

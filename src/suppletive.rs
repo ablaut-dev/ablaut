@@ -5,7 +5,7 @@
 use crate::Auxiliary;
 
 #[derive(Debug, PartialEq, Eq)]
-pub(crate) struct Suppletive {
+pub struct Suppletive {
     pub infinitive: &'static str,
     /// Six-slot rows: 1sg, 2sg, 3sg, 1pl, 2pl, 3pl.
     pub present: [&'static str; 6],
@@ -19,7 +19,7 @@ pub(crate) struct Suppletive {
     pub aux: Auxiliary,
 }
 
-pub(crate) static SEIN: Suppletive = Suppletive {
+pub static SEIN: Suppletive = Suppletive {
     infinitive: "sein",
     present: ["bin", "bist", "ist", "sind", "seid", "sind"],
     preterite: ["war", "warst", "war", "waren", "wart", "waren"],
@@ -32,7 +32,7 @@ pub(crate) static SEIN: Suppletive = Suppletive {
     aux: Auxiliary::Sein,
 };
 
-pub(crate) static WERDEN: Suppletive = Suppletive {
+pub static WERDEN: Suppletive = Suppletive {
     infinitive: "werden",
     present: ["werde", "wirst", "wird", "werden", "werdet", "werden"],
     preterite: ["wurde", "wurdest", "wurde", "wurden", "wurdet", "wurden"],
@@ -45,7 +45,7 @@ pub(crate) static WERDEN: Suppletive = Suppletive {
     aux: Auxiliary::Sein,
 };
 
-pub(crate) static TUN: Suppletive = Suppletive {
+pub static TUN: Suppletive = Suppletive {
     infinitive: "tun",
     present: ["tue", "tust", "tut", "tun", "tut", "tun"],
     preterite: ["tat", "tatest", "tat", "taten", "tatet", "taten"],
@@ -58,7 +58,7 @@ pub(crate) static TUN: Suppletive = Suppletive {
     aux: Auxiliary::Haben,
 };
 
-pub(crate) fn lookup(infinitive: &str) -> Option<&'static Suppletive> {
+pub fn lookup(infinitive: &str) -> Option<&'static Suppletive> {
     match infinitive {
         "sein" => Some(&SEIN),
         "werden" => Some(&WERDEN),

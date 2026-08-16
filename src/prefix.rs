@@ -13,7 +13,7 @@
 //! until per-lexeme flags land in the lexicon.
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub(crate) enum Separability {
+pub enum Separability {
     Separable,
     Inseparable,
     /// Multiword lemma (Rad fahren): behaves like a separable particle in
@@ -237,10 +237,7 @@ const INSEPARABLE: &[&str] = &[
 /// looks like a real verb. `valid` is the caller's judgment of the remainder
 /// (lexicon hit, or a weak stem with a vowel and length ≥ 3 — this rejects
 /// false splits like be+ten, zu+cken, ge+igen, fest+igen).
-pub(crate) fn split(
-    infinitive: &str,
-    valid: impl Fn(&str) -> bool,
-) -> Option<(&str, Separability, &str)> {
+pub fn split(infinitive: &str, valid: impl Fn(&str) -> bool) -> Option<(&str, Separability, &str)> {
     let mut candidates: Vec<(&str, Separability)> = Vec::new();
     for p in SEPARABLE {
         candidates.push((p, Separability::Separable));
