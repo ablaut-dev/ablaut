@@ -22,9 +22,9 @@
 //! is a rule; everything else irregular lives in the compiled-in lexicon
 //! (`data/fra/verbs.tsv`) as base paradigms, with prefixed derivatives
 //! (*soutenir*, *apprendre*, *reconnaître*) resolved by longest-base
-//! suffix match; and the defective bases (*gésir*, *faillir*, *pleuvoir*,
-//! *falloir*, *bruire*, *frire*, …) return [`Error::Unsupported`] until
-//! the schema grows defective slots.
+//! suffix match. Defective verbs (*falloir*, *gésir*, *traire*, …) carry
+//! full lexicon rows too: the gold oracles only list attested slots, so
+//! the unattested cells are never scored and never surface.
 
 /// Grammatical person.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -109,13 +109,14 @@ const THIRD_GROUP_IR: [&str; 27] = [
 /// Second-group verbs that would falsely match a [`THIRD_GROUP_IR`] suffix:
 /// *asservir* is not *servir*, *assortir* not *sortir*, *répartir* not
 /// *partir*.
-const SECOND_GROUP_ANYWAY: [&str; 6] = [
+const SECOND_GROUP_ANYWAY: [&str; 7] = [
     "asservir",
     "assortir",
     "rassortir",
     "réassortir",
     "répartir",
     "impartir",
+    "épaissir",
 ];
 
 const PRESENT: [&str; 6] = ["e", "es", "e", "ons", "ez", "ent"];
@@ -157,11 +158,6 @@ struct LexEntry {
     imp3: Option<[String; 3]>,
 }
 
-/// Verbs a lexicon base would falsely capture: *bruire* is not *b + uire*,
-/// *frire* not *f + rire*, *pleuvoir* not *pleu + voir*. All are
-/// defective and stay unsupported.
-const LEXICAL_EXCLUDE: [&str; 3] = ["bruire", "frire", "pleuvoir"];
-
 /// Look up `inf` in the lexicon: exact base match, or base matched by
 /// suffix with the leading prefix returned (*soutenir* → ("sou", tenir)).
 /// Longest base wins so *repentir* is not *r + (?)entir*.
@@ -178,9 +174,6 @@ fn lexical(inf: &str) -> Option<(String, LexEntry)> {
         }
     }
     let (lemma, cols) = best?;
-    if LEXICAL_EXCLUDE.contains(&inf) {
-        return None;
-    }
     let prefix = inf[..inf.len() - lemma.len()].to_string();
     let opt = |i: usize| cols.get(i).filter(|c| **c != "-").map(|c| (*c).to_string());
     fn split<const N: usize>(s: Option<String>) -> Option<[String; N]> {
@@ -779,8 +772,8 @@ mod tests {
                 "{lex}"
             );
         }
-        // Still out: the defective bases.
-        for bad in ["gésir", "faillir", "issir", "pleuvoir", "bruire", "frire"] {
+        // Still out: bases with no lexicon row at all.
+        for bad in ["férir", "seoir", "asseoir", "surseoir"] {
             assert_eq!(
                 Verb::from_infinitive(bad).unwrap_err(),
                 Error::Unsupported,
@@ -853,7 +846,7 @@ mod tests {
     #[test]
     fn unsupported() {
         assert_eq!(
-            Verb::from_infinitive("falloir").unwrap_err(),
+            Verb::from_infinitive("férir").unwrap_err(),
             Error::Unsupported
         );
         assert_eq!(
