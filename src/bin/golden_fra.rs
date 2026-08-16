@@ -20,14 +20,11 @@ use std::collections::{BTreeMap, HashMap, HashSet};
 use std::fmt::Write as _;
 use std::fs;
 
-/// CI regression gates (percent), measured against Lefff alone (99.92 /
-/// 99.80 with the defectives; the margin absorbs Lefff updates, not
-/// regressions).
-/// Against the two-oracle agreement gold the engine scores 100.00% — the
-/// Lefff-alone shortfall is the 1990-rectification `-eler`/`-eter` doublets
-/// where Lefff lists only the reformed spelling and kaikki only the
-/// classical one; variant-set output will resolve it.
-const MIN_FORM_PCT: f64 = 99.8;
+/// CI regression gates (percent), measured against Lefff alone (100.00 /
+/// 99.83 with variant-set scoring and the adjudication log; the margin
+/// absorbs Lefff updates, not regressions). The agreement gold is also
+/// at 100.00%.
+const MIN_FORM_PCT: f64 = 99.95;
 const MIN_LEMMA_COVERAGE_PCT: f64 = 99.5;
 
 const CATEGORIES: [&str; 10] = [
@@ -63,19 +60,20 @@ fn number(tag: &str) -> Option<Number> {
     }
 }
 
-/// Map a feature bundle from the oracle TSVs to the engine.
-fn generate(verb: &Verb, features: &str) -> Option<String> {
+/// Map a feature bundle from the oracle TSVs to the engine's variant set
+/// (canonical form first; empty means unsupported bundle).
+fn generate(verb: &Verb, features: &str) -> Option<Vec<String>> {
     let f: Vec<&str> = features.split(';').collect();
     let tense = |t: SimpleTense, n: &str, p: &str| match (person(p), number(n)) {
-        (Some(p), Some(n)) => Some(verb.conjugate(t, p, n)),
+        (Some(p), Some(n)) => Some(verb.variants(t, p, n)),
         _ => None,
     };
     match f.as_slice() {
-        ["V", "NFIN"] => Some(verb.infinitive().to_string()),
-        ["V.PTCP", "PRS"] => Some(verb.present_participle()),
-        ["V.PTCP", "PST", "MASC", "SG"] => Some(verb.past_participle()),
+        ["V", "NFIN"] => Some(vec![verb.infinitive().to_string()]),
+        ["V.PTCP", "PRS"] => Some(verb.present_participle_variants()),
+        ["V.PTCP", "PST", "MASC", "SG"] => Some(vec![verb.past_participle()]),
         ["V", "IMP", n, p] => match (person(p), number(n)) {
-            (Some(p), Some(n)) => verb.imperative(p, n),
+            (Some(p), Some(n)) => Some(verb.imperative_variants(p, n)).filter(|v| !v.is_empty()),
             _ => None,
         },
         ["V", "IND", "PRS", n, p] => tense(SimpleTense::Present, n, p),
@@ -219,12 +217,12 @@ fn score(gold: &Gold, adjudicated: &HashSet<(String, String)>) -> Scores {
         };
         s.supported_lemmas += 1;
         for (features, variants) in feats {
-            let Some(form) = generate(&verb, features) else {
+            let Some(forms) = generate(&verb, features) else {
                 continue;
             };
             let tally = s.by_category.entry(category(features)).or_default();
             tally.total += 1;
-            let ok = variants.contains(&form)
+            let ok = forms.iter().any(|f| variants.contains(f))
                 || if adjudicated.contains(&(lemma.clone(), features.clone()))
                     || adjudicated.contains(&(lemma.clone(), "*".to_string()))
                 {
@@ -241,7 +239,8 @@ fn score(gold: &Gold, adjudicated: &HashSet<(String, String)>) -> Scores {
                 sorted.sort();
                 let _ = writeln!(
                     s.mismatches,
-                    "{lemma}\t{features}\t{form}\t{}",
+                    "{lemma}\t{features}\t{}\t{}",
+                    forms.join("|"),
                     sorted
                         .iter()
                         .map(|v| v.as_str())
