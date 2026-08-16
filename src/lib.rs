@@ -136,6 +136,11 @@ impl Verb {
                 base: Some(Box::new(base)),
             });
         }
+        // German verb infinitives are lowercase; users may type a leading
+        // capital ("Abbrechen"). Normalize it here, after the multiword split
+        // so the noun in "Rad fahren" keeps its capital.
+        let lowered = lower_first(infinitive);
+        let infinitive = lowered.as_ref();
         if let Some(s) = suppletive::lookup(infinitive) {
             return Ok(Self {
                 infinitive: infinitive.to_string(),
@@ -606,6 +611,19 @@ fn latinate_ieren(infinitive: &str) -> bool {
         .strip_suffix("ieren")
         .or_else(|| infinitive.strip_suffix("iren"))
         .is_some_and(|pre| pre.chars().any(is_vowel))
+}
+
+/// Lowercase the first character (German infinitives are lowercase). Borrows
+/// unchanged when the input already starts lowercase, so the common path
+/// allocates nothing.
+fn lower_first(s: &str) -> std::borrow::Cow<'_, str> {
+    let mut chars = s.chars();
+    match chars.next() {
+        Some(first) if first.is_uppercase() => {
+            std::borrow::Cow::Owned(first.to_lowercase().chain(chars).collect())
+        }
+        _ => std::borrow::Cow::Borrowed(s),
+    }
 }
 
 /// Vowels for plausibility checks, including accented loan-word vowels
