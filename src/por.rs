@@ -350,8 +350,7 @@ impl Verb {
                 }
             }
             Group::Er | Group::Ir if hard => {
-                if self.lex.is_none() && false {
-                } else if let Some(body) = s.strip_suffix("gu") {
+                if let Some(body) = s.strip_suffix("gu") {
                     s = format!("{body}g"); // seguir → sigo, erguer → ergo
                 } else if let Some(body) = s.strip_suffix("qu") {
                     s = format!("{body}c"); // delinquir → delinco
@@ -780,8 +779,8 @@ mod tests {
     use Number::{Plural as PL, Singular as SG};
     use Person::{First as P1, Second as P2, Third as P3};
     use SimpleTense::{
-        Conditional, Future, Imperfect, Pluperfect, Present, Preterite, SubjunctiveFuture,
-        SubjunctiveImperfect, SubjunctivePresent,
+        Future, Imperfect, Pluperfect, Present, Preterite, SubjunctiveFuture, SubjunctiveImperfect,
+        SubjunctivePresent,
     };
 
     fn v(inf: &str) -> Verb {
