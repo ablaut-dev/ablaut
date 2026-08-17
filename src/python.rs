@@ -241,6 +241,41 @@ impl From<crate::por::Table> for PortugueseConjugation {
     }
 }
 
+/// The full conjugation table of one Czech verb. Person rows are
+/// [já, ty, on/ona, my, vy, oni]; participle rows are
+/// [masc sg, fem sg, neut sg, masc-anim pl, fem pl, neut pl].
+#[pyclass(get_all, frozen)]
+struct CzechConjugation {
+    infinitive: String,
+    present: Vec<String>,
+    /// [2sg, 1pl, 2pl]
+    imperative: Vec<Option<String>>,
+    past_participle: Vec<String>,
+    passive_participle: Option<Vec<String>>,
+    /// [masc, fem/neut, plural]
+    transgressive: Vec<Option<String>>,
+}
+
+#[pymethods]
+impl CzechConjugation {
+    fn __repr__(&self) -> String {
+        format!("CzechConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::ces::Table> for CzechConjugation {
+    fn from(t: crate::ces::Table) -> Self {
+        CzechConjugation {
+            infinitive: t.infinitive,
+            present: t.present.into(),
+            imperative: t.imperative.into(),
+            past_participle: t.past_participle.into(),
+            passive_participle: t.passive_participle.map(Into::into),
+            transgressive: t.transgressive.into(),
+        }
+    }
+}
+
 /// The full conjugation table of one Danish verb (single forms — no
 /// person/number agreement).
 #[pyclass(get_all, frozen)]
@@ -467,6 +502,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Ces) => {
+            let v = crate::ces::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(CzechConjugation::from(crate::ces::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         Some(crate::Lang::Dan) => {
             let v = crate::dan::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
@@ -515,6 +557,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<RomanianConjugation>()?;
     m.add_class::<EnglishConjugation>()?;
     m.add_class::<DanishConjugation>()?;
+    m.add_class::<CzechConjugation>()?;
     m.add_class::<ItalianConjugation>()?;
     m.add_class::<SwedishConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;

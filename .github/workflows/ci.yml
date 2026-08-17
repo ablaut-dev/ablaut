@@ -101,6 +101,17 @@ jobs:
         run: ./scripts/eng/fetch_agid.sh
       - name: English golden harness with regression gate
         run: cargo run --release --bin golden_eng -- data/eng/agid.tsv --check
+      - name: Cache MorfFlex ces
+        id: morfflex
+        uses: actions/cache@v5
+        with:
+          path: data/ces/morfflex.tsv
+          key: morfflex-ces-v1
+      - name: Fetch MorfFlex ces
+        if: steps.morfflex.outputs.cache-hit != 'true'
+        run: ./scripts/ces/fetch_morfflex.sh
+      - name: Czech golden harness with regression gate
+        run: cargo run --release --bin golden_ces -- data/ces/morfflex.tsv --check
       - name: Cache COR dan
         id: cor
         uses: actions/cache@v5
