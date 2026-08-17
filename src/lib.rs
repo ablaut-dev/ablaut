@@ -20,6 +20,7 @@ pub mod por;
 mod prefix;
 #[cfg(feature = "python")]
 mod python;
+pub mod ron;
 pub mod spa;
 mod suppletive;
 pub mod table;
@@ -42,6 +43,8 @@ pub enum Lang {
     Por,
     /// Italian.
     Ita,
+    /// Romanian.
+    Ron,
 }
 
 impl Lang {
@@ -55,6 +58,7 @@ impl Lang {
             "es" | "spa" | "spanish" => Some(Self::Spa),
             "pt" | "por" | "portuguese" => Some(Self::Por),
             "it" | "ita" | "italian" => Some(Self::Ita),
+            "ro" | "ron" | "rum" | "romanian" => Some(Self::Ron),
             _ => None,
         }
     }
