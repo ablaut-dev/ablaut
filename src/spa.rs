@@ -1049,6 +1049,10 @@ pub struct Table {
     pub infinitive: String,
     pub gerund: String,
     pub past_participle: String,
+    /// Rioplatense voseo: the vos present (hablás, sos) and
+    /// imperative (hablá, andá), derived from the paradigm.
+    pub present_vos: Option<String>,
+    pub imperative_vos: Option<String>,
     /// [tú, usted, nosotros, vosotros, ustedes].
     pub imperative: [Option<String>; 5],
     pub present: [String; 6],
@@ -1078,6 +1082,47 @@ const SLOTS: [(Person, Number); 6] = [
 ];
 
 impl Table {
+    /// The vos present derives from the vosotros form: habláis →
+    /// hablás, coméis → comés, sois → sos, vais → vas; -ís forms are
+    /// already the vos form (vivís).
+    fn vos_present(vosotros: &str) -> Option<String> {
+        for (suffix, repl) in [
+            ("áis", "ás"),
+            ("éis", "és"),
+            ("ois", "os"),
+            ("ais", "as"),
+            ("eis", "es"),
+        ] {
+            if let Some(stem) = vosotros.strip_suffix(suffix) {
+                return Some(format!("{stem}{repl}"));
+            }
+        }
+        vosotros.ends_with("ís").then(|| vosotros.to_string())
+    }
+
+    /// The vos imperative is the infinitive minus -r with a stressed
+    /// final vowel (hablá, comé, viví); ir borrows andá from andar.
+    fn vos_imperative(infinitive: &str) -> Option<String> {
+        if infinitive == "ir" {
+            return Some("andá".to_string());
+        }
+        if infinitive == "irse" {
+            return Some("andate".to_string());
+        }
+        let base = infinitive.strip_suffix('r')?;
+        let mut c = base.chars().collect::<Vec<_>>();
+        let last = c.pop()?;
+        let stressed = match last {
+            'a' => 'á',
+            'e' => 'é',
+            'i' => 'í',
+            'á' | 'é' | 'í' => last,
+            _ => return None,
+        };
+        c.push(stressed);
+        Some(c.into_iter().collect())
+    }
+
     #[must_use]
     pub fn build(v: &Verb) -> Self {
         let row = |t: SimpleTense| SLOTS.map(|(p, n)| v.conjugate(t, p, n));
@@ -1086,6 +1131,12 @@ impl Table {
             infinitive: v.infinitive(),
             gerund: v.gerund(),
             past_participle: v.past_participle(),
+            present_vos: Self::vos_present(&v.conjugate(
+                SimpleTense::Present,
+                Person::Second,
+                Number::Plural,
+            )),
+            imperative_vos: Self::vos_imperative(&v.infinitive()),
             imperative: [
                 v.imperative(Person::Second, Number::Singular),
                 v.imperative(Person::Third, Number::Singular),
