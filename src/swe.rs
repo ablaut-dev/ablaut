@@ -198,6 +198,25 @@ impl Verb {
         out
     }
 
+    fn parts_slot(&self, slot: Slot) -> Option<String> {
+        match slot {
+            Slot::Past => self.parts.past.clone(),
+            Slot::Supine => self.parts.supine.clone(),
+            _ => None,
+        }
+    }
+
+    /// Derive a deponent's s-form from the base verb obtained by
+    /// stripping the final s (bitas → bita), falling back to the
+    /// weak-1 default when no base exists.
+    fn deponent_via_base(&self, slot: Slot) -> Option<String> {
+        self.infinitive
+            .strip_suffix('s')
+            .filter(|b| !b.ends_with('s'))
+            .and_then(|b| Verb::from_infinitive(b).ok())
+            .and_then(|base| base.passive(slot))
+    }
+
     /// The s-passive of a slot: talas, talades, läses, görs. For
     /// deponents the parts themselves are the s-forms.
     pub fn passive(&self, slot: Slot) -> Option<String> {
@@ -210,8 +229,13 @@ impl Verb {
                         .clone()
                         .unwrap_or_else(|| self.infinitive.clone()),
                 ),
-                Slot::Past => self.parts.past.clone(),
-                Slot::Supine => self.parts.supine.clone(),
+                // An s-lemma without stored parts derives from its
+                // base verb's s-passive (bitas → bita → bet → bets,
+                // hoppas → hoppa → hoppades); irregular deponents
+                // carry parts entries instead.
+                Slot::Past | Slot::Supine => self
+                    .parts_slot(slot)
+                    .or_else(|| self.deponent_via_base(slot)),
                 _ => None,
             };
         }
@@ -259,11 +283,15 @@ pub struct Table {
 impl Table {
     #[must_use]
     pub fn build(v: &Verb) -> Self {
+        // Deponents (hoppas, andas) have no active voice; their s-forms
+        // are the verb's only forms, so they fill the primary slots
+        // rather than leaving the table empty.
+        let form = |slot: Slot| v.active_voice(slot).or_else(|| v.passive(slot));
         Self {
             infinitive: v.infinitive().to_string(),
-            present: v.active_voice(Slot::Present),
-            past: v.active_voice(Slot::Past),
-            supine: v.active_voice(Slot::Supine),
+            present: form(Slot::Present),
+            past: form(Slot::Past),
+            supine: form(Slot::Supine),
             imperative: v.active_voice(Slot::Imperative),
             infinitive_passive: v.passive(Slot::Infinitive),
             present_passive: v.passive(Slot::Present),
@@ -297,7 +325,12 @@ mod tests {
         assert_eq!(g.passive(Slot::Present).unwrap(), "görs");
         let h = v("hoppas");
         assert_eq!(h.active_voice(Slot::Present), None);
-        assert!(h.passive(Slot::Present).is_some());
+        assert_eq!(h.passive(Slot::Past).unwrap(), "hoppades");
+        assert_eq!(h.passive(Slot::Supine).unwrap(), "hoppats");
+        // Irregular deponents come from the parts table, not weak 1.
+        assert_eq!(v("trivas").passive(Slot::Past).unwrap(), "trivdes");
+        assert_eq!(Table::build(&h).present.unwrap(), "hoppas");
+        assert_eq!(Table::build(&h).past.unwrap(), "hoppades");
     }
 
     #[test]

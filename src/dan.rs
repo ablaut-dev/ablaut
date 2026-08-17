@@ -223,11 +223,15 @@ pub struct Table {
 impl Table {
     #[must_use]
     pub fn build(v: &Verb) -> Self {
+        // Deponents (synes, lykkes) have no active voice; their s-forms
+        // are the verb's only forms, so they fill the primary slots
+        // rather than leaving the table empty.
+        let form = |slot: Slot| v.active(slot).or_else(|| v.passive(slot));
         Self {
             infinitive: v.infinitive().to_string(),
-            present: v.active(Slot::Present),
-            past: v.active(Slot::Past),
-            past_participle: v.active(Slot::PastParticiple),
+            present: form(Slot::Present),
+            past: form(Slot::Past),
+            past_participle: form(Slot::PastParticiple),
             imperative: v.active(Slot::Imperative),
             present_participle: v.active(Slot::PresentParticiple),
             infinitive_passive: v.passive(Slot::Infinitive),
@@ -268,7 +272,8 @@ mod tests {
         assert_eq!(s.passive(Slot::Past).unwrap(), "skreves");
         let d = v("lykkes");
         assert_eq!(d.active(Slot::Present), None);
-        assert!(d.passive(Slot::Present).is_some());
+        assert_eq!(Table::build(&d).present.unwrap(), "lykkes");
+        assert_eq!(Table::build(&d).past.unwrap(), "lykkedes");
         assert_eq!(v("at bo").infinitive(), "bo");
     }
 }
