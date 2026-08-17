@@ -3,10 +3,10 @@ name = "ablaut"
 version = "0.6.0"
 edition = "2021"
 rust-version = "1.75"
-description = "A fast, correct German verb conjugator"
+description = "Fast, correct verb conjugation for 15 European languages, each verified against two independent gold lexicons"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/v4nn4/ablaut"
-keywords = ["german", "conjugation", "morphology", "nlp", "linguistics"]
+keywords = ["conjugation", "morphology", "nlp", "linguistics", "language"]
 categories = ["text-processing"]
 
 [lib]
