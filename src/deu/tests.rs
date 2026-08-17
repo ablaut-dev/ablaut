@@ -928,6 +928,28 @@ fn zu_infinitive_input() {
     // zu-infinitives.
     assert_eq!(v("hinzuf\u{fc}gen").infinitive(), "hinzuf\u{fc}gen");
     assert_eq!(v("zustehen").infinitive(), "zustehen");
+    // herzustellen is herstellen's zu-infinitive (herzu- lemmas are
+    // archaic; the productive reading wins).
+    assert_eq!(v("herzustellen").infinitive(), "herstellen");
+    assert_eq!(v("zu zu gehen").infinitive(), "gehen");
+}
+
+#[test]
+fn dual_prefix_rulings() {
+    // Translate, not ferry across: the frequent reading is inseparable.
+    let u = v("\u{fc}bersetzen");
+    assert_eq!(
+        u.conjugate(Present, Indicative, Person::Third, Number::Singular),
+        "\u{fc}bersetzt"
+    );
+    assert_eq!(u.past_participle(), "\u{fc}bersetzt");
+    // eislaufen separates and inherits laufen's strong paradigm.
+    let e = v("eislaufen");
+    assert_eq!(
+        e.conjugate(Present, Indicative, Person::First, Number::Singular),
+        "laufe eis"
+    );
+    assert_eq!(e.past_participle(), "eisgelaufen");
 }
 
 #[test]

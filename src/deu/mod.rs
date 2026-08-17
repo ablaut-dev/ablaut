@@ -127,6 +127,11 @@ impl Verb {
         // "sich zu freuen") is the zu-infinitive again; drop it.
         if let Some((particle, verb)) = infinitive.rsplit_once(' ') {
             let particle = particle.strip_suffix(" zu").unwrap_or(particle);
+            // A bare zu left over ("zu zu gehen" after the first strip)
+            // is still the infinitive particle, not a phrasal lemma.
+            if particle.eq_ignore_ascii_case("zu") {
+                return Self::from_infinitive(verb);
+            }
             let (particle, sep) = if particle.eq_ignore_ascii_case("sich") {
                 ("sich".to_string(), Separability::Reflexive)
             } else {
@@ -211,7 +216,7 @@ impl Verb {
                 if matches!(sep, Separability::Separable | Separability::Fused)
                     && p.len() > 2
                     && p.ends_with("zu")
-                    && !matches!(p.as_str(), "hinzu" | "dazu" | "herzu")
+                    && !matches!(p.as_str(), "hinzu" | "dazu")
                 {
                     let outer = &p[..p.len() - 2];
                     return Self::from_infinitive(&format!("{outer}{}", base.infinitive()));
