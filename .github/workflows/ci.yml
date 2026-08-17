@@ -112,6 +112,17 @@ jobs:
         run: ./scripts/ces/fetch_morfflex.sh
       - name: Czech golden harness with regression gate
         run: cargo run --release --bin golden_ces -- data/ces/morfflex.tsv --check
+      - name: Cache Sloleks slv
+        id: sloleks
+        uses: actions/cache@v5
+        with:
+          path: data/slv/sloleks.tsv
+          key: sloleks-slv-v1
+      - name: Fetch Sloleks slv
+        if: steps.sloleks.outputs.cache-hit != 'true'
+        run: ./scripts/slv/fetch_sloleks.sh
+      - name: Slovenian golden harness with regression gate
+        run: cargo run --release --bin golden_slv -- data/slv/sloleks.tsv --check
       - name: Cache COR dan
         id: cor
         uses: actions/cache@v5
