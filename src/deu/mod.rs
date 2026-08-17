@@ -203,8 +203,25 @@ impl Verb {
                     }
                     _ => (p.to_string(), base),
                 };
+                // "aufzustehen", "anzurufen": a fused particle ending in
+                // -zu that is not one of the real -zu particles (hinzu,
+                // dazu, herzu) is a separable verb's zu-infinitive with
+                // the infixed zu picked up as a prefix; drop the zu and
+                // reparse ("hinzuzufügen" → outer "hinzu" → hinzufügen).
+                if matches!(sep, Separability::Separable | Separability::Fused)
+                    && p.len() > 2
+                    && p.ends_with("zu")
+                    && !matches!(p.as_str(), "hinzu" | "dazu" | "herzu")
+                {
+                    let outer = &p[..p.len() - 2];
+                    return Self::from_infinitive(&format!("{outer}{}", base.infinitive()));
+                }
+                // Compose the lemma from its parts rather than echoing
+                // the input: the base may have normalized an infixed zu
+                // away (hinzuzufügen → hinzu + fügen = hinzufügen).
+                let lemma = format!("{p}{}", base.infinitive());
                 return Ok(Self {
-                    infinitive: infinitive.to_string(),
+                    infinitive: lemma,
                     stem: String::new(),
                     schwa_stem: false,
                     ieren: false,
