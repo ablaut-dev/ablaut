@@ -22,6 +22,7 @@ mod prefix;
 mod python;
 pub mod spa;
 mod suppletive;
+pub mod swe;
 pub mod table;
 #[cfg(feature = "wasm")]
 mod wasm;
@@ -42,6 +43,8 @@ pub enum Lang {
     Por,
     /// Italian.
     Ita,
+    /// Swedish.
+    Swe,
 }
 
 impl Lang {
@@ -55,6 +58,7 @@ impl Lang {
             "es" | "spa" | "spanish" => Some(Self::Spa),
             "pt" | "por" | "portuguese" => Some(Self::Por),
             "it" | "ita" | "italian" => Some(Self::Ita),
+            "sv" | "swe" | "swedish" => Some(Self::Swe),
             _ => None,
         }
     }

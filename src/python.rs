@@ -286,6 +286,45 @@ impl From<crate::ita::Table> for ItalianConjugation {
     }
 }
 
+/// The principal parts of one Swedish verb.
+#[pyclass(get_all, frozen)]
+struct SwedishConjugation {
+    infinitive: String,
+    present: Option<String>,
+    past: Option<String>,
+    supine: Option<String>,
+    imperative: Option<String>,
+    infinitive_passive: Option<String>,
+    present_passive: Option<String>,
+    past_passive: Option<String>,
+    supine_passive: Option<String>,
+    subjunctive_past: Option<String>,
+}
+
+#[pymethods]
+impl SwedishConjugation {
+    fn __repr__(&self) -> String {
+        format!("SwedishConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::swe::Table> for SwedishConjugation {
+    fn from(t: crate::swe::Table) -> Self {
+        SwedishConjugation {
+            infinitive: t.infinitive,
+            present: t.present,
+            past: t.past,
+            supine: t.supine,
+            imperative: t.imperative,
+            infinitive_passive: t.infinitive_passive,
+            present_passive: t.present_passive,
+            past_passive: t.past_passive,
+            supine_passive: t.supine_passive,
+            subjunctive_past: t.subjunctive_past,
+        }
+    }
+}
+
 /// Conjugate an infinitive: `ablaut.conjugate("aufstehen").present[0]`
 /// → "stehe auf", `ablaut.conjugate("parler", lang="fra").present[0]`
 /// → "parle". Raises ValueError for unknown languages and for strings
@@ -305,6 +344,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
             let v = crate::fra::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
             Ok(FrenchConjugation::from(crate::fra::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Swe) => {
+            let v = crate::swe::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(SwedishConjugation::from(crate::swe::Table::build(&v))
                 .into_pyobject(py)?
                 .into())
         }
@@ -340,6 +386,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<SpanishConjugation>()?;
     m.add_class::<PortugueseConjugation>()?;
     m.add_class::<ItalianConjugation>()?;
+    m.add_class::<SwedishConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())
 }
