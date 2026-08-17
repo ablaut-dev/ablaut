@@ -198,6 +198,25 @@ impl Verb {
         out
     }
 
+    fn parts_slot(&self, slot: Slot) -> Option<String> {
+        match slot {
+            Slot::Past => self.parts.past.clone(),
+            Slot::Supine => self.parts.supine.clone(),
+            _ => None,
+        }
+    }
+
+    /// Derive a deponent's s-form from the base verb obtained by
+    /// stripping the final s (bitas → bita), falling back to the
+    /// weak-1 default when no base exists.
+    fn deponent_via_base(&self, slot: Slot) -> Option<String> {
+        self.infinitive
+            .strip_suffix('s')
+            .filter(|b| !b.ends_with('s'))
+            .and_then(|b| Verb::from_infinitive(b).ok())
+            .and_then(|base| base.passive(slot))
+    }
+
     /// The s-passive of a slot: talas, talades, läses, görs. For
     /// deponents the parts themselves are the s-forms.
     pub fn passive(&self, slot: Slot) -> Option<String> {
@@ -210,18 +229,13 @@ impl Verb {
                         .clone()
                         .unwrap_or_else(|| self.infinitive.clone()),
                 ),
-                // Regular -as deponents follow weak 1 (hoppas →
-                // hoppades, hoppats); exceptions carry parts entries.
-                Slot::Past => self.parts.past.clone().or_else(|| {
-                    self.infinitive
-                        .strip_suffix("as")
-                        .map(|s| format!("{s}ades"))
-                }),
-                Slot::Supine => self.parts.supine.clone().or_else(|| {
-                    self.infinitive
-                        .strip_suffix("as")
-                        .map(|s| format!("{s}ats"))
-                }),
+                // An s-lemma without stored parts derives from its
+                // base verb's s-passive (bitas → bita → bet → bets,
+                // hoppas → hoppa → hoppades); irregular deponents
+                // carry parts entries instead.
+                Slot::Past | Slot::Supine => self
+                    .parts_slot(slot)
+                    .or_else(|| self.deponent_via_base(slot)),
                 _ => None,
             };
         }
