@@ -462,8 +462,8 @@ impl Verb {
 /// The full conjugation table of an Irish verb — shared by the
 /// WebAssembly and Python bindings. Rows run [base, 1sg, 2sg, 1pl,
 /// 2pl, 3pl, autonomous], with None for analytic-only slots.
-#[cfg_attr(feature = "wasm", derive(serde::Serialize))]
-#[cfg_attr(feature = "wasm", serde(rename_all = "camelCase"))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "camelCase"))]
 pub struct Table {
     pub lemma: String,
     pub verbal_noun: String,

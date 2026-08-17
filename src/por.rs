@@ -719,8 +719,8 @@ impl Verb {
 /// The full conjugation table of a Portuguese verb as one plain struct —
 /// shared by the WebAssembly and Python bindings. Rows are
 /// [eu, tu, ele/ela, nós, vós, eles/elas].
-#[cfg_attr(feature = "wasm", derive(serde::Serialize))]
-#[cfg_attr(feature = "wasm", serde(rename_all = "camelCase"))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "camelCase"))]
 pub struct Table {
     pub infinitive: String,
     pub gerund: String,

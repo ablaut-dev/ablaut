@@ -304,8 +304,8 @@ impl Verb {
 
 /// The full conjugation table of a Slovenian verb — shared by the
 /// WebAssembly and Python bindings. Nine-slot rows run sg1…pl3.
-#[cfg_attr(feature = "wasm", derive(serde::Serialize))]
-#[cfg_attr(feature = "wasm", serde(rename_all = "camelCase"))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "camelCase"))]
 pub struct Table {
     pub infinitive: String,
     pub supine: String,
