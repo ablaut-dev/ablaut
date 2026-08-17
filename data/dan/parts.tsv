@@ -392,7 +392,7 @@ dytte	-	-	-	dyt	-	-
 dægge	-	-	-	dæg	-	-
 dække	-	-	-	dæk	-
 dæmme	-	-	-	dæm	-
-dø	-	døde	-	-	-
+dø	-	døde	død	-	-	-
 døbe	-	døbte	døbt	-	-
 dødsdømme	-	dødsdømte	dødsdømt	dødsdøm	-
 dølge	-	dulgte	dulgt	-	-
@@ -842,7 +842,7 @@ guddommeliggøre	guddommeliggør	guddommeliggjorde	guddommeliggjort	-	-
 guffe	-	-	-	guf	-	-
 gyde	-	-	gydt	-	-
 gyse	-	gyste	gyst	-	-
-gå	-	gik	-	-	-
+gå	-	gik	-	-	-	gikkes
 gække	-	-	-	gæk	-
 gælde	-	gjaldt	gjaldt	-	-
 gældsætte	-	gældsatte	gældsat	gældsæt	-	gældsattes
@@ -1195,6 +1195,7 @@ lulle	-	-	-	lul	-	-
 lurepasse	-	-	-	lurepas	-	-
 lyde	-	lød	lydt	-	-
 lydskrive	-	lydskrev	lydskrevet	-	-	-
+lykkes	-	lykkedes	lykkedes	-	-	-
 lyksaliggøre	lyksaliggør	lyksaliggjorde	lyksaliggjort	-	-
 lynstege	-	lynstegte	lynstegt	-	-	lynstegtes
 lyse	-	lyste	lyst	-	-

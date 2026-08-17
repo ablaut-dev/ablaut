@@ -175,10 +175,11 @@ impl Verb {
             .filter(|s| s.ends_with(['á', 'é', 'í', 'ó', 'ú', 'o', 'e']))
         {
             (Class::Vowel, s.to_string())
-        } else if broad_final(lemma) {
-            (Class::OneBroad, lemma.to_string())
+        } else if broad_final(&prs) {
+            // Unparseable mined base (deir): it is itself the stem.
+            (Class::OneBroad, prs.clone())
         } else {
-            (Class::OneSlender, lemma.to_string())
+            (Class::OneSlender, prs.clone())
         };
         Ok(Self {
             lemma: lemma.to_string(),
@@ -225,10 +226,17 @@ impl Verb {
             .unwrap_or_else(|| self.e(["faidh", "fidh", "óidh", "eoidh", "faidh"]))
     }
 
-    /// The conditional base off the future (glanfaidh → glanfadh).
+    /// The conditional base off the future (glanfaidh → glanfadh,
+    /// brisfidh → brisfeadh, ceannóidh → ceannódh).
     fn cond_base(&self) -> String {
         let f = self.fut_base();
-        format!("{}dh", f.strip_suffix("idh").unwrap_or(&f))
+        if f.ends_with("faidh") || f.ends_with("óidh") || f.ends_with("eoidh") {
+            format!("{}dh", f.strip_suffix("idh").unwrap_or(&f))
+        } else if let Some(b) = f.strip_suffix("fidh") {
+            format!("{b}feadh")
+        } else {
+            format!("{}dh", f.strip_suffix("idh").unwrap_or(&f))
+        }
     }
 
     /// The present autonomous (glantar) and its t-stem, which drives
@@ -252,6 +260,8 @@ impl Verb {
         let pst_pl: Option<&str> = match self.lemma.as_str() {
             "tar" => Some("tánga"),
             "clois" | "cluin" => Some("cuala"),
+            "téigh" => Some("cua"),
+            "abair" => Some("dúra"),
             _ => None,
         };
         let pst = self.pst_base();
@@ -301,6 +311,8 @@ impl Verb {
             (Past, Autonomous) => match (pst_pl, &self.row.pst_base) {
                 (Some(p), _) => match self.lemma.as_str() {
                     "tar" => "tángthas".to_string(),
+                    "téigh" => "cuathas".to_string(),
+                    "abair" => "dúradh".to_string(),
                     _ => format!("{p}thas"),
                 },
                 (None, Some(b))
@@ -343,34 +355,42 @@ impl Verb {
                 }
             }
             (Conditional, Base) => cond,
-            (Conditional, FirstSingular) => {
-                format!("{}inn", cond.strip_suffix("dh").unwrap_or(&cond))
-            }
-            (Conditional, SecondSingular) => {
-                let b = cond
-                    .strip_suffix("adh")
-                    .or_else(|| cond.strip_suffix("eadh"));
-                match b {
-                    Some(b) if cond.ends_with("eadh") => format!("{b}eá"),
-                    Some(b) => format!("{b}á"),
-                    None => return None,
-                }
-            }
-            (Conditional, FirstPlural) => {
-                format!("{}imis", cond.strip_suffix("dh").unwrap_or(&cond))
-            }
-            (Conditional, ThirdPlural) => {
-                format!("{}idís", cond.strip_suffix("dh").unwrap_or(&cond))
-            }
-            (Conditional, Autonomous) => {
-                let b = cond
-                    .strip_suffix("adh")
-                    .or_else(|| cond.strip_suffix("eadh"));
-                match b {
-                    Some(b) if cond.ends_with("eadh") => format!("{b}í"),
-                    Some(b) => format!("{b}aí"),
-                    None => return None,
-                }
+            (Conditional, FirstSingular | FirstPlural | ThirdPlural | SecondSingular)
+            | (Conditional, Autonomous) => {
+                // All conditional persons ride the future base:
+                // glanfaidh → glanfainn/glanfá/glanfaimis/glanfaidís/
+                // glanfaí; brisfidh → brisfinn/brisfeá/brisfí;
+                // ceannóidh → ceannóinn/ceannófá/ceannófaí.
+                let (b, endings): (&str, [&str; 5]) = if let Some(b) = fut.strip_suffix("faidh")
+                {
+                    // keep the f with the base
+                    let _ = b;
+                    (
+                        &fut[..fut.len() - "aidh".len()],
+                        ["ainn", "á", "aimis", "aidís", "aí"],
+                    )
+                } else if fut.ends_with("óidh") || fut.ends_with("eoidh") {
+                    (
+                        &fut[..fut.len() - "idh".len()],
+                        ["inn", "fá", "imis", "idís", "faí"],
+                    )
+                } else if fut.ends_with("fidh") {
+                    (
+                        &fut[..fut.len() - "idh".len()],
+                        ["inn", "eá", "imis", "idís", "í"],
+                    )
+                } else {
+                    return None;
+                };
+                let i = match slot {
+                    FirstSingular => 0,
+                    SecondSingular => 1,
+                    FirstPlural => 2,
+                    ThirdPlural => 3,
+                    Autonomous => 4,
+                    _ => return None,
+                };
+                format!("{b}{}", endings[i])
             }
             (Imperative, SecondSingular) => {
                 self.row.imp2.clone().unwrap_or_else(|| self.lemma.clone())
