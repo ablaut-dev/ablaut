@@ -101,6 +101,17 @@ jobs:
         run: ./scripts/eng/fetch_agid.sh
       - name: English golden harness with regression gate
         run: cargo run --release --bin golden_eng -- data/eng/agid.tsv --check
+      - name: Cache COR dan
+        id: cor
+        uses: actions/cache@v5
+        with:
+          path: data/dan/cor-verbs.tsv
+          key: cor-dan-v1
+      - name: Fetch COR dan
+        if: steps.cor.outputs.cache-hit != 'true'
+        run: ./scripts/dan/fetch_cor.sh
+      - name: Danish golden harness with regression gate
+        run: cargo run --release --bin golden_dan -- data/dan/cor-verbs.tsv --check
       - name: Cache dexonline ron
         id: dexonline
         uses: actions/cache@v5
