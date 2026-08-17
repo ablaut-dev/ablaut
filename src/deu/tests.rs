@@ -919,6 +919,15 @@ fn input_case_is_normalized() {
 fn zu_infinitive_input() {
     assert_eq!(v("zu gehen").past_participle(), "gegangen");
     assert_eq!(v("zu aufstehen").infinitive(), "aufstehen");
+    // Infixed zu: the zu-infinitive of a separable verb is one token.
+    assert_eq!(v("aufzustehen").infinitive(), "aufstehen");
+    assert_eq!(v("anzurufen").infinitive(), "anrufen");
+    assert_eq!(v("zuzumachen").infinitive(), "zumachen");
+    assert_eq!(v("hinzuzuf\u{fc}gen").infinitive(), "hinzuf\u{fc}gen");
+    // Real -zu particles keep their zu: these are lemmas, not
+    // zu-infinitives.
+    assert_eq!(v("hinzuf\u{fc}gen").infinitive(), "hinzuf\u{fc}gen");
+    assert_eq!(v("zustehen").infinitive(), "zustehen");
 }
 
 #[test]
