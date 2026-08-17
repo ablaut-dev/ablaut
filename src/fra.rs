@@ -433,6 +433,10 @@ impl Verb {
     /// Build a verb from its infinitive. Regular first-group (-er) and
     /// second-group (-ir/-iss-) verbs are accepted.
     pub fn from_infinitive(infinitive: &str) -> Result<Self, Error> {
+        // Case-fold: lemmas are lowercase in every oracle of this
+        // language (the Abbrechen lesson, generalized).
+        let lowered = infinitive.to_lowercase();
+        let infinitive = lowered.as_str();
         let normalized = normalize(infinitive);
         let mut inf = normalized.as_str();
         let mut reflexive = false;

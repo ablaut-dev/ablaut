@@ -97,6 +97,15 @@ pub struct Verb {
 impl Verb {
     /// Build a verb from its infinitive.
     pub fn from_infinitive(infinitive: &str) -> Result<Self, Error> {
+        // Case-fold only onto known lemmas (VARA → vara); SALDO has a
+        // handful of legitimately capitalized verbs.
+        let lowered = infinitive.trim().to_lowercase();
+        let infinitive = if parts(infinitive.trim()).is_none() && parts(lowered.as_str()).is_some()
+        {
+            lowered.as_str()
+        } else {
+            infinitive
+        };
         let inf = infinitive.trim();
         if inf.is_empty()
             || inf.contains(char::is_whitespace)
@@ -209,6 +218,11 @@ impl Verb {
         let active = self.active(slot)?;
         Some(match slot {
             Slot::Present => {
+                // Suppletive vara: the s-form rides the infinitive
+                // (varas), not the present (är).
+                if self.infinitive == "vara" {
+                    return Some("varas".to_string());
+                }
                 if active == format!("{}r", self.infinitive) {
                     // Weak-1 and vowel-stem presents drop their r:
                     // talas, strös, begås.

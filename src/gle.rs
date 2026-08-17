@@ -137,6 +137,10 @@ impl Verb {
     /// Build a verb from its citation form (the 2sg imperative:
     /// glan, ceannaigh).
     pub fn from_infinitive(lemma: &str) -> Result<Self, Error> {
+        // Case-fold: lemmas are lowercase in every oracle of this
+        // language (the Abbrechen lesson, generalized).
+        let lowered = lemma.to_lowercase();
+        let lemma = lowered.as_str();
         let lemma = lemma.trim();
         if lemma.is_empty()
             || lemma.contains(char::is_whitespace)

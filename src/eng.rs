@@ -87,6 +87,16 @@ impl Verb {
     /// Build a verb from its infinitive (the "to" particle is
     /// accepted and stripped).
     pub fn from_infinitive(infinitive: &str) -> Result<Self, Error> {
+        // Case-fold only onto known lemmas: Run/BE reach run/be, but
+        // Americanize, DJ and Frenchify are legitimately capitalized
+        // and regular capitalized input keeps its casing.
+        let lowered = infinitive.trim().to_lowercase();
+        let infinitive =
+            if !rows().contains_key(infinitive.trim()) && rows().contains_key(lowered.as_str()) {
+                lowered.as_str()
+            } else {
+                infinitive
+            };
         let mut inf = infinitive.trim();
         if let Some(rest) = inf.strip_prefix("to ") {
             inf = rest.trim();
