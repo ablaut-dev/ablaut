@@ -123,6 +123,17 @@ jobs:
         run: ./scripts/slv/fetch_sloleks.sh
       - name: Slovenian golden harness with regression gate
         run: cargo run --release --bin golden_slv -- data/slv/sloleks.tsv --check
+      - name: Cache Vabamorf est
+        id: vabamorf
+        uses: actions/cache@v5
+        with:
+          path: data/est/vabamorf.tsv
+          key: vabamorf-est-v1
+      - name: Fetch Vabamorf est
+        if: steps.vabamorf.outputs.cache-hit != 'true'
+        run: ./scripts/est/fetch_vabamorf.sh
+      - name: Estonian golden harness with regression gate
+        run: cargo run --release --bin golden_est -- data/est/vabamorf.tsv --check
       - name: Cache COR dan
         id: cor
         uses: actions/cache@v5

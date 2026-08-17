@@ -20,6 +20,11 @@ pub fn conjugate(infinitive: &str, lang: Option<String>) -> Result<JsValue, JsEr
             let v = Verb::from_infinitive(infinitive).map_err(|e| JsError::new(&e.to_string()))?;
             Ok(serde_wasm_bindgen::to_value(&Table::build(&v))?)
         }
+        Some(crate::Lang::Est) => {
+            let v = crate::est::Verb::from_infinitive(infinitive)
+                .map_err(|e| JsError::new(&e.to_string()))?;
+            Ok(serde_wasm_bindgen::to_value(&crate::est::Table::build(&v))?)
+        }
         Some(crate::Lang::Fra) => {
             let v = crate::fra::Verb::from_infinitive(infinitive)
                 .map_err(|e| JsError::new(&e.to_string()))?;

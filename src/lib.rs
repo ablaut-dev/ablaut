@@ -14,6 +14,7 @@
 pub mod ces;
 pub mod dan;
 pub mod eng;
+pub mod est;
 mod features;
 pub mod fra;
 pub mod ita;
@@ -46,6 +47,8 @@ pub enum Lang {
     Dan,
     /// English.
     Eng,
+    /// Estonian.
+    Est,
     /// French.
     Fra,
     /// Slovenian.
@@ -72,6 +75,7 @@ impl Lang {
             "cs" | "ces" | "cze" | "czech" => Some(Self::Ces),
             "da" | "dan" | "danish" => Some(Self::Dan),
             "en" | "eng" | "english" => Some(Self::Eng),
+            "et" | "est" | "estonian" => Some(Self::Est),
             "fr" | "fra" | "fre" | "french" => Some(Self::Fra),
             "sl" | "slv" | "slovenian" | "slovene" => Some(Self::Slv),
             "es" | "spa" | "spanish" => Some(Self::Spa),
