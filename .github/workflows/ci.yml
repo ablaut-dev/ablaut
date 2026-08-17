@@ -90,3 +90,14 @@ jobs:
         run: ./scripts/ita/fetch_morphit.sh
       - name: Italian golden harness with regression gate
         run: cargo run --release --bin golden_ita -- data/ita/morphit.tsv --check
+      - name: Cache dexonline ron
+        id: dexonline
+        uses: actions/cache@v5
+        with:
+          path: data/ron/dexonline.tsv
+          key: dexonline-ron-v1
+      - name: Fetch dexonline ron
+        if: steps.dexonline.outputs.cache-hit != 'true'
+        run: ./scripts/ron/fetch_dexonline.sh
+      - name: Romanian golden harness with regression gate
+        run: cargo run --release --bin golden_ron -- data/ron/dexonline.tsv --check

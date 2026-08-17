@@ -241,6 +241,45 @@ impl From<crate::por::Table> for PortugueseConjugation {
     }
 }
 
+/// The full conjugation table of one Romanian verb. Rows are
+/// [eu, tu, el/ea, noi, voi, ei/ele].
+#[pyclass(get_all, frozen)]
+struct RomanianConjugation {
+    infinitive: String,
+    gerund: String,
+    participle: String,
+    /// [tu, voi]
+    imperative: Vec<String>,
+    present: Vec<String>,
+    imperfect: Vec<String>,
+    simple_perfect: Vec<String>,
+    pluperfect: Vec<String>,
+    subjunctive: Vec<String>,
+}
+
+#[pymethods]
+impl RomanianConjugation {
+    fn __repr__(&self) -> String {
+        format!("RomanianConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::ron::Table> for RomanianConjugation {
+    fn from(t: crate::ron::Table) -> Self {
+        RomanianConjugation {
+            infinitive: t.infinitive,
+            gerund: t.gerund,
+            participle: t.participle,
+            imperative: t.imperative.into(),
+            present: t.present.into(),
+            imperfect: t.imperfect.into(),
+            simple_perfect: t.simple_perfect.into(),
+            pluperfect: t.pluperfect.into(),
+            subjunctive: t.subjunctive.into(),
+        }
+    }
+}
+
 /// The full conjugation table of one Italian verb. Rows are
 /// [io, tu, lui/lei, noi, voi, loro].
 #[pyclass(get_all, frozen)]
@@ -315,6 +354,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Ron) => {
+            let v = crate::ron::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(RomanianConjugation::from(crate::ron::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         Some(crate::Lang::Por) => {
             let v = crate::por::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
@@ -339,6 +385,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<FrenchConjugation>()?;
     m.add_class::<SpanishConjugation>()?;
     m.add_class::<PortugueseConjugation>()?;
+    m.add_class::<RomanianConjugation>()?;
     m.add_class::<ItalianConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())

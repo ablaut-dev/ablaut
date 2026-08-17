@@ -35,3 +35,19 @@ IMP 2sg/2pl.
 - 99.13% agreement; 1,977 disjoint (0.87%) — the widest scaffold gap
   of the covered languages, reflecting dexonline's variant-rich
   inflection models; the adjudication corpus for engine work
+
+## Engine results (2026-08-17)
+
+Theme-vowel classes with the productive augments as defaults (-ez,
+-esc, -ăsc); bare presents and the -e/-ea classes are mined into
+`data/ron/classes.tsv` (1,184 assignments), and verbs the class rules
+cannot reach carry explicit rows in `data/ron/verbs.tsv` (3,587).
+Rules carry the derived tenses: imperfect from the theme, perfect
+simple and pluperfect from the participle with stress reduction
+(trase → trăsei, coapse → copsei), t→ț/d→z/s→ș palatalization and
+e→ea/o→oa diphthongization in the present.
+
+- Agreement gold (kaikki ∩ dexonline): 225,494 forms, **100.00%**
+- dexonline alone (CI gate): 424,475 forms, 99.69% (gate 99.5); the
+  residual is dexonline's multi-model variant verbs (fărmăca-type
+  double inflection models)
