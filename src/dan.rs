@@ -89,6 +89,10 @@ impl Verb {
     /// Build a verb from its infinitive (the "at" particle is
     /// accepted and stripped).
     pub fn from_infinitive(infinitive: &str) -> Result<Self, Error> {
+        // Case-fold: lemmas are lowercase in every oracle of this
+        // language (the Abbrechen lesson, generalized).
+        let lowered = infinitive.to_lowercase();
+        let infinitive = lowered.as_str();
         let mut inf = infinitive.trim();
         if let Some(rest) = inf.strip_prefix("at ") {
             inf = rest.trim();

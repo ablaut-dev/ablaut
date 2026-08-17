@@ -273,6 +273,10 @@ impl Person {
 impl Verb {
     /// Build a verb from its infinitive.
     pub fn from_infinitive(infinitive: &str) -> Result<Self, Error> {
+        // Case-fold: lemmas are lowercase in every oracle of this
+        // language (the Abbrechen lesson, generalized).
+        let lowered = infinitive.to_lowercase();
+        let infinitive = lowered.as_str();
         let inf = infinitive.trim();
         if inf.is_empty() || inf.contains(char::is_whitespace) || inf.contains('\'') {
             return Err(Error::NotAVerb);
