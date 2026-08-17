@@ -241,6 +241,47 @@ impl From<crate::por::Table> for PortugueseConjugation {
     }
 }
 
+/// The full conjugation table of one Irish verb. Rows run [base,
+/// 1sg, 2sg, 1pl, 2pl, 3pl, autonomous]; None marks analytic-only
+/// slots (filled with pronouns in running text).
+#[pyclass(get_all, frozen)]
+struct IrishConjugation {
+    lemma: String,
+    verbal_noun: String,
+    verbal_adjective: String,
+    present: Vec<Option<String>>,
+    past: Vec<Option<String>>,
+    past_habitual: Vec<Option<String>>,
+    future: Vec<Option<String>>,
+    conditional: Vec<Option<String>>,
+    imperative: Vec<Option<String>>,
+    subjunctive: Vec<Option<String>>,
+}
+
+#[pymethods]
+impl IrishConjugation {
+    fn __repr__(&self) -> String {
+        format!("IrishConjugation({:?})", self.lemma)
+    }
+}
+
+impl From<crate::gle::Table> for IrishConjugation {
+    fn from(t: crate::gle::Table) -> Self {
+        IrishConjugation {
+            lemma: t.lemma,
+            verbal_noun: t.verbal_noun,
+            verbal_adjective: t.verbal_adjective,
+            present: t.present.into(),
+            past: t.past.into(),
+            past_habitual: t.past_habitual.into(),
+            future: t.future.into(),
+            conditional: t.conditional.into(),
+            imperative: t.imperative.into(),
+            subjunctive: t.subjunctive.into(),
+        }
+    }
+}
+
 /// The full conjugation table of one Finnish verb. Six-slot rows run
 /// [minä, sinä, hän, me, te, he].
 #[pyclass(get_all, frozen)]
@@ -630,6 +671,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Gle) => {
+            let v = crate::gle::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(IrishConjugation::from(crate::gle::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         Some(crate::Lang::Fin) => {
             let v = crate::fin::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
@@ -710,6 +758,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<SlovenianConjugation>()?;
     m.add_class::<EstonianConjugation>()?;
     m.add_class::<FinnishConjugation>()?;
+    m.add_class::<IrishConjugation>()?;
     m.add_class::<ItalianConjugation>()?;
     m.add_class::<SwedishConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;

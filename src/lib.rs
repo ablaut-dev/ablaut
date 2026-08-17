@@ -18,6 +18,7 @@ pub mod est;
 mod features;
 pub mod fin;
 pub mod fra;
+pub mod gle;
 pub mod ita;
 mod lexicon;
 mod orthography;
@@ -60,6 +61,8 @@ pub enum Lang {
     Spa,
     /// Portuguese.
     Por,
+    /// Irish.
+    Gle,
     /// Italian.
     Ita,
     /// Romanian.
@@ -84,6 +87,7 @@ impl Lang {
             "sl" | "slv" | "slovenian" | "slovene" => Some(Self::Slv),
             "es" | "spa" | "spanish" => Some(Self::Spa),
             "pt" | "por" | "portuguese" => Some(Self::Por),
+            "ga" | "gle" | "irish" => Some(Self::Gle),
             "it" | "ita" | "italian" => Some(Self::Ita),
             "ro" | "ron" | "rum" | "romanian" => Some(Self::Ron),
             "sv" | "swe" | "swedish" => Some(Self::Swe),

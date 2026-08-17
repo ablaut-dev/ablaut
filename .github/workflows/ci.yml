@@ -145,6 +145,17 @@ jobs:
         run: ./scripts/fin/fetch_omorfi.sh
       - name: Finnish golden harness with regression gate
         run: cargo run --release --bin golden_fin -- data/fin/omorfi.tsv --check
+      - name: Cache BuNaMo gle
+        id: bunamo
+        uses: actions/cache@v5
+        with:
+          path: data/gle/bunamo.tsv
+          key: bunamo-gle-v1
+      - name: Fetch BuNaMo gle
+        if: steps.bunamo.outputs.cache-hit != 'true'
+        run: ./scripts/gle/fetch_bunamo.sh
+      - name: Irish golden harness with regression gate
+        run: cargo run --release --bin golden_gle -- data/gle/bunamo.tsv --check
       - name: Cache COR dan
         id: cor
         uses: actions/cache@v5
