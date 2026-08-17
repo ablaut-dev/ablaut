@@ -1,0 +1,82 @@
+# Portuguese irregular lexicon. One row per base; prefixed derivatives
+# resolve by longest-base suffix match except EXACT_ONLY bases in
+# src/por.rs (ser, ir, ter, vir, ver, dar, por, rir, ler, crer — their
+# suffixes collide with regular verbs: meter, partir, servir, chover,
+# andar, colorir, falar, comer). Accent-shifting ter/vir compounds have
+# explicit rows (contém, convéns).
+#
+# Columns, "-" means derive:
+#   lemma pres1..6 subj6(comma) pret6(comma) fut_stem pp impf6 ger
+#   imp2sg inf_base (overrides the infinitive for future/conditional/
+#   personal-infinitive/subjunctive-future stems: pôr → por)
+#
+# Pluperfect, imperfect subjunctive and future subjunctive derive from
+# the preterite 3pl (tiveram → tivera, tivesse, tiver).
+ser	sou	és	é	somos	sois	são	seja,sejas,seja,sejamos,sejais,sejam	fui,foste,foi,fomos,fostes,foram	-	sido	era,eras,era,éramos,éreis,eram	-	sê	-
+estar	estou	estás	está	estamos	estais	estão	esteja,estejas,esteja,estejamos,estejais,estejam	estive,estiveste,esteve,estivemos,estivestes,estiveram	-	estado	-	-	-	-
+ir	vou	vais	vai	vamos	ides	vão	vá,vás,vá,vamos,vades,vão	fui,foste,foi,fomos,fostes,foram	-	ido	ia,ias,ia,íamos,íeis,iam	indo	vai	-
+haver	hei	hás	há	havemos	haveis	hão	haja,hajas,haja,hajamos,hajais,hajam	houve,houveste,houve,houvemos,houvestes,houveram	-	havido	-	-	-	-
+dar	dou	dás	dá	damos	dais	dão	dê,dês,dê,demos,deis,deem	dei,deste,deu,demos,destes,deram	-	dado	-	-	-	-
+saber	sei	sabes	sabe	sabemos	sabeis	sabem	saiba,saibas,saiba,saibamos,saibais,saibam	soube,soubeste,soube,soubemos,soubestes,souberam	-	sabido	-	-	-	-
+caber	caibo	cabes	cabe	cabemos	cabeis	cabem	caiba,caibas,caiba,caibamos,caibais,caibam	coube,coubeste,coube,coubemos,coubestes,couberam	-	cabido	-	-	-	-
+poder	posso	podes	pode	podemos	podeis	podem	possa,possas,possa,possamos,possais,possam	pude,pudeste,pôde,pudemos,pudestes,puderam	-	podido	-	-	-	-
+querer	quero	queres	quer	queremos	quereis	querem	queira,queiras,queira,queiramos,queirais,queiram	quis,quiseste,quis,quisemos,quisestes,quiseram	-	querido	-	-	-	-
+requerer	requeiro	requeres	requer	requeremos	requereis	requerem	requeira,requeiras,requeira,requeiramos,requeirais,requeiram	requeri,requereste,requereu,requeremos,requerestes,requereram	-	requerido	-	-	-	-
+ver	vejo	vês	vê	vemos	vedes	veem	veja,vejas,veja,vejamos,vejais,vejam	vi,viste,viu,vimos,vistes,viram	-	visto	-	-	-	-
+ler	leio	lês	lê	lemos	ledes	leem	leia,leias,leia,leiamos,leiais,leiam	li,leste,leu,lemos,lestes,leram	-	lido	-	-	-	-
+crer	creio	crês	crê	cremos	credes	creem	creia,creias,creia,creiamos,creiais,creiam	cri,creste,creu,cremos,crestes,creram	-	crido	-	-	-	-
+rir	rio	ris	ri	rimos	rides	riem	ria,rias,ria,riamos,riais,riam	ri,riste,riu,rimos,ristes,riram	-	rido	-	-	-	-
+pedir	peço	pedes	pede	pedimos	pedis	pedem	peça,peças,peça,peçamos,peçais,peçam	pedi,pediste,pediu,pedimos,pedistes,pediram	-	pedido	-	-	-	-
+medir	meço	medes	mede	medimos	medis	medem	meça,meças,meça,meçamos,meçais,meçam	medi,mediste,mediu,medimos,medistes,mediram	-	medido	-	-	-	-
+ouvir	ouço	ouves	ouve	ouvimos	ouvis	ouvem	ouça,ouças,ouça,ouçamos,ouçais,ouçam	ouvi,ouviste,ouviu,ouvimos,ouvistes,ouviram	-	ouvido	-	-	-	-
+perder	perco	perdes	perde	perdemos	perdeis	perdem	perca,percas,perca,percamos,percais,percam	perdi,perdeste,perdeu,perdemos,perdestes,perderam	-	perdido	-	-	-	-
+valer	valho	vales	vale	valemos	valeis	valem	valha,valhas,valha,valhamos,valhais,valham	vali,valeste,valeu,valemos,valestes,valeram	-	valido	-	-	-	-
+prazer	prazo	prazes	praz	prazemos	prazeis	prazem	praza,prazas,praza,prazamos,prazais,prazam	prouve,prouveste,prouve,prouvemos,prouvestes,prouveram	-	prazido	-	-	-	-
+roer	roo	róis	rói	roemos	roeis	roem	roa,roas,roa,roamos,roais,roam	roí,roeste,roeu,roemos,roestes,roeram	-	roído	-	-	-	-
+moer	moo	móis	mói	moemos	moeis	moem	moa,moas,moa,moamos,moais,moam	moí,moeste,moeu,moemos,moestes,moeram	-	moído	-	-	-	-
+doer	doo	dóis	dói	doemos	doeis	doem	doa,doas,doa,doamos,doais,doam	doí,doeste,doeu,doemos,doestes,doeram	-	doído	-	-	-	-
+sortir	surto	surtes	surte	sortimos	sortis	surtem	surta,surtas,surta,surtamos,surtais,surtam	sorti,sortiste,sortiu,sortimos,sortistes,sortiram	-	sortido	-	-	-	-
+polir	pulo	pules	pule	polimos	polis	pulem	pula,pulas,pula,pulamos,pulais,pulam	poli,poliste,poliu,polimos,polistes,poliram	-	polido	-	-	-	-
+fazer	faço	fazes	faz	fazemos	fazeis	fazem	faça,faças,faça,façamos,façais,façam	fiz,fizeste,fez,fizemos,fizestes,fizeram	far	feito	-	-	-	-
+dizer	digo	dizes	diz	dizemos	dizeis	dizem	diga,digas,diga,digamos,digais,digam	disse,disseste,disse,dissemos,dissestes,disseram	dir	dito	-	-	-	-
+trazer	trago	trazes	traz	trazemos	trazeis	trazem	traga,tragas,traga,tragamos,tragais,tragam	trouxe,trouxeste,trouxe,trouxemos,trouxestes,trouxeram	trar	trazido	-	-	-	-
+duzir	duzo	duzes	duz	duzimos	duzis	duzem	duza,duzas,duza,duzamos,duzais,duzam	duzi,duziste,duziu,duzimos,duzistes,duziram	-	duzido	-	-	-	-
+luzir	luzo	luzes	luz	luzimos	luzis	luzem	luza,luzas,luza,luzamos,luzais,luzam	luzi,luziste,luziu,luzimos,luzistes,luziram	-	luzido	-	-	-	-
+ter	tenho	tens	tem	temos	tendes	têm	tenha,tenhas,tenha,tenhamos,tenhais,tenham	tive,tiveste,teve,tivemos,tivestes,tiveram	-	tido	tinha,tinhas,tinha,tínhamos,tínheis,tinham	-	-	-
+abster	abstenho	absténs	abstém	abstemos	abstendes	abstêm	abstenha,abstenhas,abstenha,abstenhamos,abstenhais,abstenham	abstive,abstiveste,absteve,abstivemos,abstivestes,abstiveram	-	abstido	abstinha,abstinhas,abstinha,abstínhamos,abstínheis,abstinham	-	-	-
+ater	atenho	aténs	atém	atemos	atendes	atêm	atenha,atenhas,atenha,atenhamos,atenhais,atenham	ative,ativeste,ateve,ativemos,ativestes,ativeram	-	atido	atinha,atinhas,atinha,atínhamos,atínheis,atinham	-	-	-
+conter	contenho	conténs	contém	contemos	contendes	contêm	contenha,contenhas,contenha,contenhamos,contenhais,contenham	contive,contiveste,conteve,contivemos,contivestes,contiveram	-	contido	continha,continhas,continha,contínhamos,contínheis,continham	-	-	-
+deter	detenho	deténs	detém	detemos	detendes	detêm	detenha,detenhas,detenha,detenhamos,detenhais,detenham	detive,detiveste,deteve,detivemos,detivestes,detiveram	-	detido	detinha,detinhas,detinha,detínhamos,detínheis,detinham	-	-	-
+entreter	entretenho	entreténs	entretém	entretemos	entretendes	entretêm	entretenha,entretenhas,entretenha,entretenhamos,entretenhais,entretenham	entretive,entretiveste,entreteve,entretivemos,entretivestes,entretiveram	-	entretido	entretinha,entretinhas,entretinha,entretínhamos,entretínheis,entretinham	-	-	-
+manter	mantenho	manténs	mantém	mantemos	mantendes	mantêm	mantenha,mantenhas,mantenha,mantenhamos,mantenhais,mantenham	mantive,mantiveste,manteve,mantivemos,mantivestes,mantiveram	-	mantido	mantinha,mantinhas,mantinha,mantínhamos,mantínheis,mantinham	-	-	-
+obter	obtenho	obténs	obtém	obtemos	obtendes	obtêm	obtenha,obtenhas,obtenha,obtenhamos,obtenhais,obtenham	obtive,obtiveste,obteve,obtivemos,obtivestes,obtiveram	-	obtido	obtinha,obtinhas,obtinha,obtínhamos,obtínheis,obtinham	-	-	-
+reter	retenho	reténs	retém	retemos	retendes	retêm	retenha,retenhas,retenha,retenhamos,retenhais,retenham	retive,retiveste,reteve,retivemos,retivestes,retiveram	-	retido	retinha,retinhas,retinha,retínhamos,retínheis,retinham	-	-	-
+suster	sustenho	susténs	sustém	sustemos	sustendes	sustêm	sustenha,sustenhas,sustenha,sustenhamos,sustenhais,sustenham	sustive,sustiveste,susteve,sustivemos,sustivestes,sustiveram	-	sustido	sustinha,sustinhas,sustinha,sustínhamos,sustínheis,sustinham	-	-	-
+vir	venho	vens	vem	vimos	vindes	vêm	venha,venhas,venha,venhamos,venhais,venham	vim,vieste,veio,viemos,viestes,vieram	-	vindo	vinha,vinhas,vinha,vínhamos,vínheis,vinham	vindo	-	-
+advir	advenho	advéns	advém	advimos	advindes	advêm	advenha,advenhas,advenha,advenhamos,advenhais,advenham	advim,advieste,adveio,adviemos,adviestes,advieram	-	advindo	advinha,advinhas,advinha,advínhamos,advínheis,advinham	advindo	-	-
+avir	avenho	avéns	avém	avimos	avindes	avêm	avenha,avenhas,avenha,avenhamos,avenhais,avenham	avim,avieste,aveio,aviemos,aviestes,avieram	-	avindo	avinha,avinhas,avinha,avínhamos,avínheis,avinham	avindo	-	-
+convir	convenho	convéns	convém	convimos	convindes	convêm	convenha,convenhas,convenha,convenhamos,convenhais,convenham	convim,convieste,conveio,conviemos,conviestes,convieram	-	convindo	convinha,convinhas,convinha,convínhamos,convínheis,convinham	convindo	-	-
+desavir	desavenho	desavéns	desavém	desavimos	desavindes	desavêm	desavenha,desavenhas,desavenha,desavenhamos,desavenhais,desavenham	desavim,desavieste,desaveio,desaviemos,desaviestes,desavieram	-	desavindo	desavinha,desavinhas,desavinha,desavínhamos,desavínheis,desavinham	desavindo	-	-
+intervir	intervenho	intervéns	intervém	intervimos	intervindes	intervêm	intervenha,intervenhas,intervenha,intervenhamos,intervenhais,intervenham	intervim,intervieste,interveio,interviemos,interviestes,intervieram	-	intervindo	intervinha,intervinhas,intervinha,intervínhamos,intervínheis,intervinham	intervindo	-	-
+provir	provenho	provéns	provém	provimos	provindes	provêm	provenha,provenhas,provenha,provenhamos,provenhais,provenham	provim,provieste,proveio,proviemos,proviestes,provieram	-	provindo	provinha,provinhas,provinha,provínhamos,provínheis,provinham	provindo	-	-
+sobrevir	sobrevenho	sobrevéns	sobrevém	sobrevimos	sobrevindes	sobrevêm	sobrevenha,sobrevenhas,sobrevenha,sobrevenhamos,sobrevenhais,sobrevenham	sobrevim,sobrevieste,sobreveio,sobreviemos,sobreviestes,sobrevieram	-	sobrevindo	sobrevinha,sobrevinhas,sobrevinha,sobrevínhamos,sobrevínheis,sobrevinham	sobrevindo	-	-
+pôr	ponho	pões	põe	pomos	pondes	põem	ponha,ponhas,ponha,ponhamos,ponhais,ponham	pus,puseste,pôs,pusemos,pusestes,puseram	por	posto	punha,punhas,punha,púnhamos,púnheis,punham	pondo	põe	por
+por	ponho	pões	põe	pomos	pondes	põem	ponha,ponhas,ponha,ponhamos,ponhais,ponham	pus,puseste,pôs,pusemos,pusestes,puseram	por	posto	punha,punhas,punha,púnhamos,púnheis,punham	pondo	põe	por
+rever	revejo	revês	revê	revemos	revedes	reveem	reveja,revejas,reveja,revejamos,revejais,revejam	revi,reviste,reviu,revimos,revistes,reviram	-	revisto	-	-	-	-
+prever	prevejo	prevês	prevê	prevemos	prevedes	preveem	preveja,prevejas,preveja,prevejamos,prevejais,prevejam	previ,previste,previu,previmos,previstes,previram	-	previsto	-	-	-	-
+antever	antevejo	antevês	antevê	antevemos	antevedes	anteveem	anteveja,antevejas,anteveja,antevejamos,antevejais,antevejam	antevi,anteviste,anteviu,antevimos,antevistes,anteviram	-	antevisto	-	-	-	-
+entrever	entrevejo	entrevês	entrevê	entrevemos	entrevedes	entreveem	entreveja,entrevejas,entreveja,entrevejamos,entrevejais,entrevejam	entrevi,entreviste,entreviu,entrevimos,entrevistes,entreviram	-	entrevisto	-	-	-	-
+devir	devenho	devéns	devém	devimos	devindes	devêm	devenha,devenhas,devenha,devenhamos,devenhais,devenham	devim,devieste,deveio,deviemos,deviestes,devieram	-	devindo	devinha,devinhas,devinha,devínhamos,devínheis,devinham	devindo	-	-
+desdar	desdou	desdás	desdá	desdamos	desdais	desdão	desdê,desdês,desdê,desdemos,desdeis,desdeem	desdei,desdeste,desdeu,desdemos,desdestes,desderam	-	desdado	-	-	-	-
+arguir	arguo	arguis	argui	arguimos	arguis	arguem	argua,arguas,argua,arguamos,arguais,arguam	argui,arguiste,arguiu,arguimos,arguistes,arguiram	-	arguido	arguia,arguias,arguia,arguíamos,arguíeis,arguiam	arguindo	argui	-
+delinquir	delinquo	delinquis	delinqui	delinquimos	delinquis	delinquem	delinqua,delinquas,delinqua,delinquamos,delinquais,delinquam	delinqui,delinquiste,delinquiu,delinquimos,delinquistes,delinquiram	-	delinquido	delinquia,delinquias,delinquia,delinquíamos,delinquíeis,delinquiam	delinquindo	delinqui	-
+retorquir	retorquo	retorquis	retorqui	retorquimos	retorquis	retorquem	retorqua,retorquas,retorqua,retorquamos,retorquais,retorquam	retorqui,retorquiste,retorquiu,retorquimos,retorquistes,retorquiram	-	retorquido	retorquia,retorquias,retorquia,retorquíamos,retorquíeis,retorquiam	retorquindo	retorqui	-
+reaver	reavemos	reaveis	reavê	reavemos	reaveis	reaveem	reaja,reajas,reaja,reajamos,reajais,reajam	reouve,reouveste,reouve,reouvemos,reouvestes,reouveram	-	reavido	-	-	-	-
+sorrir	sorrio	sorris	sorri	sorrimos	sorrides	sorriem	sorria,sorrias,sorria,sorriamos,sorriais,sorriam	sorri,sorriste,sorriu,sorrimos,sorristes,sorriram	-	sorrido	-	-	-	-
+reler	releio	relês	relê	relemos	reledes	releem	releia,releias,releia,releiamos,releiais,releiam	reli,releste,releu,relemos,relestes,releram	-	relido	-	-	-	-
+tresler	tresleio	treslês	treslê	treslemos	tresledes	tresleem	tresleia,tresleias,tresleia,tresleiamos,tresleiais,tresleiam	tresli,tresleste,tresleu,treslemos,treslestes,tresleram	-	treslido	-	-	-	-
+prover	provejo	provês	provê	provemos	provedes	proveem	proveja,provejas,proveja,provejamos,provejais,provejam	provi,proveste,proveu,provemos,provestes,proveram	-	provido	-	-	-	-
+descrer	descreio	descrês	descrê	descremos	descredes	descreem	descreia,descreias,descreia,descreiamos,descreiais,descreiam	descri,descreste,descreu,descremos,descrestes,descreram	-	descrido	-	-	-	-
+frigir	frijo	freges	frege	frigimos	frigis	fregem	frija,frijas,frija,frijamos,frijais,frijam	frigi,frigiste,frigiu,frigimos,frigistes,frigiram	-	frigido	frigia,frigias,frigia,frigíamos,frigíeis,frigiam	frigindo	frege	-
+jazer	jazo	jazes	jaz	jazemos	jazeis	jazem	jaza,jazas,jaza,jazamos,jazais,jazam	jazi,jazeste,jazeu,jazemos,jazestes,jazeram	-	jazido	-	-	jaz	-
+soer	soo	sóis	sói	soemos	soeis	soem	soa,soas,soa,soamos,soais,soam	soí,soeste,soeu,soemos,soestes,soeram	-	soído	-	-	sói	-
