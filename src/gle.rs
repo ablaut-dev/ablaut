@@ -465,6 +465,7 @@ impl Verb {
 #[cfg_attr(feature = "serde", derive(serde::Serialize))]
 #[cfg_attr(feature = "serde", serde(rename_all = "camelCase"))]
 pub struct Table {
+    #[cfg_attr(feature = "serde", serde(rename = "infinitive"))]
     pub lemma: String,
     pub verbal_noun: String,
     pub verbal_adjective: String,
@@ -480,28 +481,48 @@ pub struct Table {
 impl Table {
     #[must_use]
     pub fn build(v: &Verb) -> Self {
-        let slots = [
-            Slot::Base,
-            Slot::FirstSingular,
-            Slot::SecondSingular,
-            Slot::FirstPlural,
-            Slot::SecondPlural,
-            Slot::ThirdPlural,
-            Slot::Autonomous,
-        ];
-        let row = |t: Tense| slots.map(|s| v.form(t, s));
         Self {
             lemma: v.infinitive().to_string(),
             verbal_noun: v.verbal_noun(),
             verbal_adjective: v.verbal_adjective(),
-            present: row(Tense::Present),
-            past: row(Tense::Past),
-            past_habitual: row(Tense::PastHabitual),
-            future: row(Tense::Future),
-            conditional: row(Tense::Conditional),
-            imperative: row(Tense::Imperative),
-            subjunctive: row(Tense::Subjunctive),
+            present: Self::row(v, Tense::Present),
+            past: Self::row(v, Tense::Past),
+            past_habitual: Self::row(v, Tense::PastHabitual),
+            future: Self::row(v, Tense::Future),
+            conditional: Self::row(v, Tense::Conditional),
+            imperative: Self::row(v, Tense::Imperative),
+            subjunctive: Self::row(v, Tense::Subjunctive),
         }
+    }
+
+    /// One display row per tense: [mé, tú, sé/sí, muid, sibh, siad,
+    /// briathar saor]. Synthetic forms are used where they exist;
+    /// everywhere else the analytic base composes with its pronoun.
+    /// The past, past habitual, and conditional carry the initial
+    /// mutation (glan → ghlan, ól → d'ól); the autonomous form is
+    /// mutated only in the past habitual and conditional, matching the
+    /// written standard.
+    fn row(v: &Verb, t: Tense) -> [Option<String>; 7] {
+        const PRONOUNS: [&str; 6] = ["mé", "tú", "sé/sí", "muid", "sibh", "siad"];
+        let mutate = matches!(t, Tense::Past | Tense::PastHabitual | Tense::Conditional);
+        let mutate_auto = matches!(t, Tense::PastHabitual | Tense::Conditional);
+        let mutated = |f: String| if mutate { Verb::lenite(&f) } else { f };
+        let base = v.form(t, Slot::Base).map(&mutated);
+        let cell = |slot: Slot, i: usize| {
+            v.form(t, slot)
+                .map(&mutated)
+                .or_else(|| base.clone().map(|b| format!("{b} {}", PRONOUNS[i])))
+        };
+        [
+            cell(Slot::FirstSingular, 0),
+            cell(Slot::SecondSingular, 1),
+            base.clone().map(|b| format!("{b} {}", PRONOUNS[2])),
+            cell(Slot::FirstPlural, 3),
+            cell(Slot::SecondPlural, 4),
+            cell(Slot::ThirdPlural, 5),
+            v.form(t, Slot::Autonomous)
+                .map(|f| if mutate_auto { Verb::lenite(&f) } else { f }),
+        ]
     }
 }
 
