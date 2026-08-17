@@ -79,3 +79,14 @@ jobs:
         run: ./scripts/por/fetch_morphobr.sh
       - name: Portuguese golden harness with regression gate
         run: cargo run --release --bin golden_por -- data/por/morphobr.tsv --check
+      - name: Cache Morph-It ita
+        id: morphit
+        uses: actions/cache@v5
+        with:
+          path: data/ita/morphit.tsv
+          key: morphit-ita-v1
+      - name: Fetch Morph-It ita
+        if: steps.morphit.outputs.cache-hit != 'true'
+        run: ./scripts/ita/fetch_morphit.sh
+      - name: Italian golden harness with regression gate
+        run: cargo run --release --bin golden_ita -- data/ita/morphit.tsv --check

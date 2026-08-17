@@ -13,6 +13,7 @@
 
 mod features;
 pub mod fra;
+pub mod ita;
 mod lexicon;
 mod orthography;
 pub mod por;
@@ -39,6 +40,8 @@ pub enum Lang {
     Spa,
     /// Portuguese.
     Por,
+    /// Italian.
+    Ita,
 }
 
 impl Lang {
@@ -51,6 +54,7 @@ impl Lang {
             "fr" | "fra" | "fre" | "french" => Some(Self::Fra),
             "es" | "spa" | "spanish" => Some(Self::Spa),
             "pt" | "por" | "portuguese" => Some(Self::Por),
+            "it" | "ita" | "italian" => Some(Self::Ita),
             _ => None,
         }
     }
