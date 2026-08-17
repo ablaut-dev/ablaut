@@ -7,3 +7,4 @@ Cargo.lock
 !/data/*/classes.tsv
 !/data/*/strong.tsv
 __pycache__/
+!/data/*/parts.tsv
