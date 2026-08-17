@@ -89,10 +89,15 @@ impl Verb {
     /// Build a verb from its infinitive (the "at" particle is
     /// accepted and stripped).
     pub fn from_infinitive(infinitive: &str) -> Result<Self, Error> {
-        // Case-fold: lemmas are lowercase in every oracle of this
-        // language (the Abbrechen lesson, generalized).
-        let lowered = infinitive.to_lowercase();
-        let infinitive = lowered.as_str();
+        // Case-fold only onto known lemmas (VÆRE → være); COR keeps a
+        // few legitimately capitalized verbs.
+        let lowered = infinitive.trim().to_lowercase();
+        let infinitive = if parts(infinitive.trim()).is_none() && parts(lowered.as_str()).is_some()
+        {
+            lowered.as_str()
+        } else {
+            infinitive
+        };
         let mut inf = infinitive.trim();
         if let Some(rest) = inf.strip_prefix("at ") {
             inf = rest.trim();
