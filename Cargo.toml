@@ -5,7 +5,7 @@ edition = "2021"
 rust-version = "1.75"
 description = "Fast, correct verb conjugation for 15 European languages, each verified against two independent gold lexicons"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/v4nn4/ablaut"
+repository = "https://github.com/ablaut-dev/ablaut"
 keywords = ["conjugation", "morphology", "nlp", "linguistics", "language"]
 categories = ["text-processing"]
 
