@@ -241,6 +241,44 @@ impl From<crate::por::Table> for PortugueseConjugation {
     }
 }
 
+/// The full conjugation table of one Danish verb (single forms — no
+/// person/number agreement).
+#[pyclass(get_all, frozen)]
+struct DanishConjugation {
+    infinitive: String,
+    present: Option<String>,
+    past: Option<String>,
+    past_participle: Option<String>,
+    imperative: Option<String>,
+    present_participle: Option<String>,
+    infinitive_passive: Option<String>,
+    present_passive: Option<String>,
+    past_passive: Option<String>,
+}
+
+#[pymethods]
+impl DanishConjugation {
+    fn __repr__(&self) -> String {
+        format!("DanishConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::dan::Table> for DanishConjugation {
+    fn from(t: crate::dan::Table) -> Self {
+        DanishConjugation {
+            infinitive: t.infinitive,
+            present: t.present,
+            past: t.past,
+            past_participle: t.past_participle,
+            imperative: t.imperative,
+            present_participle: t.present_participle,
+            infinitive_passive: t.infinitive_passive,
+            present_passive: t.present_passive,
+            past_passive: t.past_passive,
+        }
+    }
+}
+
 /// The full conjugation table of one English verb.
 #[pyclass(get_all, frozen)]
 struct EnglishConjugation {
@@ -429,6 +467,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Dan) => {
+            let v = crate::dan::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(DanishConjugation::from(crate::dan::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         Some(crate::Lang::Eng) => {
             let v = crate::eng::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
@@ -469,6 +514,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<PortugueseConjugation>()?;
     m.add_class::<RomanianConjugation>()?;
     m.add_class::<EnglishConjugation>()?;
+    m.add_class::<DanishConjugation>()?;
     m.add_class::<ItalianConjugation>()?;
     m.add_class::<SwedishConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
