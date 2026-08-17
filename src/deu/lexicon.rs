@@ -5,7 +5,7 @@
 //! unit the golden-test harness will grow against. It is embedded at compile
 //! time and parsed once on first lookup; no I/O at runtime.
 
-use crate::prefix::Separability;
+use crate::deu::prefix::Separability;
 use crate::Auxiliary;
 use std::collections::HashMap;
 use std::sync::OnceLock;
@@ -44,7 +44,7 @@ pub struct LexEntry {
     pub aux: Auxiliary,
 }
 
-static TSV: &str = include_str!("../data/deu/verbs.tsv");
+static TSV: &str = include_str!("../../data/deu/verbs.tsv");
 
 fn opt(field: &str) -> Option<String> {
     (field != "-").then(|| field.to_string())
