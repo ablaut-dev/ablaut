@@ -17,7 +17,7 @@
   <a href="https://crates.io/crates/ablaut"><img src="https://img.shields.io/crates/v/ablaut" alt="crates.io"></a>
   <a href="https://pypi.org/project/ablaut/"><img src="https://img.shields.io/pypi/v/ablaut" alt="PyPI"></a>
   <a href="https://www.npmjs.com/package/@v4nn4/ablaut"><img src="https://img.shields.io/npm/v/%40v4nn4%2Fablaut" alt="npm"></a>
-  <a href="https://github.com/v4nn4/ablaut/actions/workflows/ci.yml"><img src="https://github.com/v4nn4/ablaut/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/ablaut-dev/ablaut/actions/workflows/ci.yml"><img src="https://github.com/ablaut-dev/ablaut/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <img src="https://img.shields.io/crates/l/ablaut" alt="license">
 </p>
 

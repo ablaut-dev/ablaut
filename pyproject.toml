@@ -17,7 +17,7 @@ classifiers = [
 dynamic = ["version"]
 
 [project.urls]
-Repository = "https://github.com/v4nn4/ablaut"
+Repository = "https://github.com/ablaut-dev/ablaut"
 
 [tool.maturin]
 features = ["python"]

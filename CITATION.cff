@@ -4,7 +4,7 @@ title: "ablaut: a fast, correct German verb conjugator"
 authors:
   - family-names: "Florentz"
     given-names: "Romain"
-repository-code: "https://github.com/v4nn4/ablaut"
+repository-code: "https://github.com/ablaut-dev/ablaut"
 url: "https://ablaut.dev"
 license: "MIT OR Apache-2.0"
 keywords:
