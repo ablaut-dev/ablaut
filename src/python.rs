@@ -241,6 +241,35 @@ impl From<crate::por::Table> for PortugueseConjugation {
     }
 }
 
+/// The full conjugation table of one English verb.
+#[pyclass(get_all, frozen)]
+struct EnglishConjugation {
+    infinitive: String,
+    past: String,
+    past_participle: String,
+    present_participle: String,
+    third_singular: String,
+}
+
+#[pymethods]
+impl EnglishConjugation {
+    fn __repr__(&self) -> String {
+        format!("EnglishConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::eng::Table> for EnglishConjugation {
+    fn from(t: crate::eng::Table) -> Self {
+        EnglishConjugation {
+            infinitive: t.infinitive,
+            past: t.past,
+            past_participle: t.past_participle,
+            present_participle: t.present_participle,
+            third_singular: t.third_singular,
+        }
+    }
+}
+
 /// The full conjugation table of one Romanian verb. Rows are
 /// [eu, tu, el/ea, noi, voi, ei/ele].
 #[pyclass(get_all, frozen)]
@@ -400,6 +429,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Eng) => {
+            let v = crate::eng::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(EnglishConjugation::from(crate::eng::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         Some(crate::Lang::Ron) => {
             let v = crate::ron::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
@@ -432,6 +468,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<SpanishConjugation>()?;
     m.add_class::<PortugueseConjugation>()?;
     m.add_class::<RomanianConjugation>()?;
+    m.add_class::<EnglishConjugation>()?;
     m.add_class::<ItalianConjugation>()?;
     m.add_class::<SwedishConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;

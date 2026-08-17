@@ -11,6 +11,7 @@
 //! *wissen*), and three stored suppletives (*sein*, *werden*, *tun*).
 //! Everything irregular lives in `data/deu/verbs.tsv`, compiled in.
 
+pub mod eng;
 mod features;
 pub mod fra;
 pub mod ita;
@@ -36,6 +37,8 @@ pub use features::{Mood, Number, Person, Tense};
 pub enum Lang {
     /// German — the original engine.
     Deu,
+    /// English.
+    Eng,
     /// French.
     Fra,
     /// Spanish.
@@ -57,6 +60,7 @@ impl Lang {
     pub fn from_code(code: &str) -> Option<Self> {
         match code.to_ascii_lowercase().as_str() {
             "de" | "deu" | "ger" | "german" => Some(Self::Deu),
+            "en" | "eng" | "english" => Some(Self::Eng),
             "fr" | "fra" | "fre" | "french" => Some(Self::Fra),
             "es" | "spa" | "spanish" => Some(Self::Spa),
             "pt" | "por" | "portuguese" => Some(Self::Por),
