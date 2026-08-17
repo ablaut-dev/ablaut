@@ -9,7 +9,7 @@
 
 <h1 align="center">ablaut</h1>
 
-<p align="center">Fast, correct verb conjugation for 15 European languages.</p>
+<p align="center">Fast, correct verb conjugation for 14 European languages.</p>
 
 <br>
 
@@ -33,14 +33,14 @@ still describe every strong verb in the language.
 
 - **Measured correctness.** Every language is validated against two
   independent machine-readable lexicons. Where the two sources agree,
-  ablaut has zero known errors in fourteen of fifteen languages; the
+  ablaut has zero known errors in thirteen of fourteen languages; the
   remaining disagreements are ruled on in published adjudication logs.
   CI re-checks 3.5 million forms on every change.
 - **Generalizes to unseen verbs.** Rule engines with curated exception
   tables, not lookup dumps: novel verbs (*googeln*, *tweeter*)
   conjugate correctly.
 - **Fast and small.** No I/O, no runtime data files, no dependencies in
-  the core crate. A full table takes microseconds; all fifteen
+  the core crate. A full table takes microseconds; all fourteen
   languages fit in one small WebAssembly binary.
 - **Permissively licensed.** MIT OR Apache-2.0. Reference lexicons are
   used at test time only and never shipped.
