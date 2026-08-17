@@ -614,8 +614,8 @@ impl Verb {
 /// The full conjugation table of an Italian verb as one plain struct —
 /// shared by the WebAssembly and Python bindings. Rows are
 /// [io, tu, lui/lei, noi, voi, loro].
-#[cfg_attr(feature = "wasm", derive(serde::Serialize))]
-#[cfg_attr(feature = "wasm", serde(rename_all = "camelCase"))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "camelCase"))]
 pub struct Table {
     pub infinitive: String,
     /// Perfect auxiliary: "avere" (default), "essere", or

@@ -19,7 +19,8 @@ serde-wasm-bindgen = { version = "0.6", optional = true }
 pyo3 = { version = "0.24", features = ["extension-module", "abi3-py311"], optional = true }
 
 [features]
-wasm = ["dep:wasm-bindgen", "dep:serde", "dep:serde-wasm-bindgen"]
+serde = ["dep:serde"]
+wasm = ["dep:wasm-bindgen", "serde", "dep:serde-wasm-bindgen"]
 python = ["dep:pyo3"]
 
 [dev-dependencies]

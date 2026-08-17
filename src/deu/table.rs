@@ -3,8 +3,8 @@
 
 use crate::{AnalyticTense, Auxiliary, Mood, Number, Person, Tense, Verb};
 
-#[cfg_attr(feature = "wasm", derive(serde::Serialize))]
-#[cfg_attr(feature = "wasm", serde(rename_all = "camelCase"))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "camelCase"))]
 pub struct Table {
     pub infinitive: String,
     pub zu_infinitive: String,
