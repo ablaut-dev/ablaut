@@ -210,8 +210,18 @@ impl Verb {
                         .clone()
                         .unwrap_or_else(|| self.infinitive.clone()),
                 ),
-                Slot::Past => self.parts.past.clone(),
-                Slot::Supine => self.parts.supine.clone(),
+                // Regular -as deponents follow weak 1 (hoppas →
+                // hoppades, hoppats); exceptions carry parts entries.
+                Slot::Past => self.parts.past.clone().or_else(|| {
+                    self.infinitive
+                        .strip_suffix("as")
+                        .map(|s| format!("{s}ades"))
+                }),
+                Slot::Supine => self.parts.supine.clone().or_else(|| {
+                    self.infinitive
+                        .strip_suffix("as")
+                        .map(|s| format!("{s}ats"))
+                }),
                 _ => None,
             };
         }
@@ -259,11 +269,15 @@ pub struct Table {
 impl Table {
     #[must_use]
     pub fn build(v: &Verb) -> Self {
+        // Deponents (hoppas, andas) have no active voice; their s-forms
+        // are the verb's only forms, so they fill the primary slots
+        // rather than leaving the table empty.
+        let form = |slot: Slot| v.active_voice(slot).or_else(|| v.passive(slot));
         Self {
             infinitive: v.infinitive().to_string(),
-            present: v.active_voice(Slot::Present),
-            past: v.active_voice(Slot::Past),
-            supine: v.active_voice(Slot::Supine),
+            present: form(Slot::Present),
+            past: form(Slot::Past),
+            supine: form(Slot::Supine),
             imperative: v.active_voice(Slot::Imperative),
             infinitive_passive: v.passive(Slot::Infinitive),
             present_passive: v.passive(Slot::Present),
@@ -297,7 +311,12 @@ mod tests {
         assert_eq!(g.passive(Slot::Present).unwrap(), "görs");
         let h = v("hoppas");
         assert_eq!(h.active_voice(Slot::Present), None);
-        assert!(h.passive(Slot::Present).is_some());
+        assert_eq!(h.passive(Slot::Past).unwrap(), "hoppades");
+        assert_eq!(h.passive(Slot::Supine).unwrap(), "hoppats");
+        // Irregular deponents come from the parts table, not weak 1.
+        assert_eq!(v("trivas").passive(Slot::Past).unwrap(), "trivdes");
+        assert_eq!(Table::build(&h).present.unwrap(), "hoppas");
+        assert_eq!(Table::build(&h).past.unwrap(), "hoppades");
     }
 
     #[test]
