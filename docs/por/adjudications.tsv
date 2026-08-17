@@ -1,0 +1,4 @@
+# Portuguese adjudication log: rulings on slots where ablaut::por
+# disagrees with a gold oracle. Columns: lemma <TAB> features ("*" =
+# whole paradigm) <TAB> ruling (ours | both | theirs) <TAB> rationale.
+retorquir	*	both	MorphoBr conjugates the o→u metaphony with qu→c (returco, returcas); kaikki and Priberam keep retorquo/retorque. Both patterns are attested for this defective verb.

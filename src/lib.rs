@@ -15,6 +15,7 @@ mod features;
 pub mod fra;
 mod lexicon;
 mod orthography;
+pub mod por;
 mod prefix;
 #[cfg(feature = "python")]
 mod python;
@@ -36,6 +37,8 @@ pub enum Lang {
     Fra,
     /// Spanish.
     Spa,
+    /// Portuguese.
+    Por,
 }
 
 impl Lang {
@@ -47,6 +50,7 @@ impl Lang {
             "de" | "deu" | "ger" | "german" => Some(Self::Deu),
             "fr" | "fra" | "fre" | "french" => Some(Self::Fra),
             "es" | "spa" | "spanish" => Some(Self::Spa),
+            "pt" | "por" | "portuguese" => Some(Self::Por),
             _ => None,
         }
     }

@@ -44,6 +44,12 @@ def features(parts):
         return None
     if tag == "INF" and len(parts) == 1:
         return "V;NFIN"
+    if tag == "IMP" and parts[1:] == ["2", "PL"]:
+        # MorphoBr fills the vós imperative with the indicative form
+        # (falais); the true imperative is falai (kaikki, Cunha/Cintra).
+        # Systematic corpus convention, excluded rather than adjudicated
+        # per lemma.
+        return None
     key = TENSE.get(tag)
     if key and len(parts) == 3 and parts[1] in "123" and parts[2] in NUMBER:
         return f"{key};{NUMBER[parts[2]]};{parts[1]}"

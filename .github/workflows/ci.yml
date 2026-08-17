@@ -68,3 +68,14 @@ jobs:
         run: ./scripts/spa/fetch_freeling.sh
       - name: Spanish golden harness with regression gate
         run: cargo run --release --bin golden_spa -- data/spa/freeling.tsv --check
+      - name: Cache MorphoBr por
+        id: morphobr
+        uses: actions/cache@v5
+        with:
+          path: data/por/morphobr.tsv
+          key: morphobr-por-v1
+      - name: Fetch MorphoBr por
+        if: steps.morphobr.outputs.cache-hit != 'true'
+        run: ./scripts/por/fetch_morphobr.sh
+      - name: Portuguese golden harness with regression gate
+        run: cargo run --release --bin golden_por -- data/por/morphobr.tsv --check
