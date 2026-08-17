@@ -556,6 +556,7 @@ impl From<crate::ron::Table> for RomanianConjugation {
 #[pyclass(get_all, frozen)]
 struct ItalianConjugation {
     infinitive: String,
+    auxiliary: String,
     gerund: String,
     present_participle: String,
     past_participle: String,
@@ -581,6 +582,7 @@ impl From<crate::ita::Table> for ItalianConjugation {
     fn from(t: crate::ita::Table) -> Self {
         ItalianConjugation {
             infinitive: t.infinitive,
+            auxiliary: t.auxiliary,
             gerund: t.gerund,
             present_participle: t.present_participle,
             past_participle: t.past_participle,

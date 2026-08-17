@@ -98,6 +98,26 @@ static STRONG_TSV: &str = include_str!("../data/ita/strong.tsv");
 /// The compiled-in irregular lexicon.
 static LEXICON_TSV: &str = include_str!("../data/ita/verbs.tsv");
 
+/// Non-default perfect auxiliaries (lemma \t essere|essere/avere).
+static AUX_TSV: &str = include_str!("../data/ita/aux.tsv");
+
+fn auxiliary(inf: &str) -> &'static str {
+    use std::collections::HashMap;
+    use std::sync::OnceLock;
+    static MAP: OnceLock<HashMap<&'static str, &'static str>> = OnceLock::new();
+    let m = MAP.get_or_init(|| {
+        AUX_TSV
+            .lines()
+            .filter(|l| !l.starts_with('#') && !l.is_empty())
+            .filter_map(|l| {
+                let mut f = l.split('\t');
+                Some((f.next()?, f.next()?))
+            })
+            .collect()
+    });
+    m.get(inf).copied().unwrap_or("avere")
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum StemClass {
     /// Plain -ire without -isc- (dormo).
@@ -594,6 +614,9 @@ impl Verb {
 #[cfg_attr(feature = "wasm", serde(rename_all = "camelCase"))]
 pub struct Table {
     pub infinitive: String,
+    /// Perfect auxiliary: "avere" (default), "essere", or
+    /// "essere/avere" for dual-auxiliary verbs, mined from kaikki.
+    pub auxiliary: String,
     pub gerund: String,
     pub present_participle: String,
     pub past_participle: String,
@@ -623,6 +646,7 @@ impl Table {
         let row = |t: SimpleTense| SLOTS.map(|(p, n)| v.conjugate(t, p, n));
         Self {
             infinitive: v.infinitive().to_string(),
+            auxiliary: auxiliary(v.infinitive()).to_string(),
             gerund: v.gerund(),
             present_participle: v.present_participle(),
             past_participle: v.past_participle(),
