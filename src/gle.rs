@@ -338,10 +338,8 @@ impl Verb {
                     format!("{}far", &fut[..fut.len() - "idh".len()])
                 } else if let Some(b) = fut.strip_suffix("aidh") {
                     format!("{b}ar")
-                } else if let Some(b) = fut.strip_suffix("idh") {
-                    format!("{b}ear")
                 } else {
-                    return None;
+                    format!("{}ear", fut.strip_suffix("idh")?)
                 }
             }
             (Conditional, Base) => cond,
