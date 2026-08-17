@@ -24,6 +24,7 @@ mod prefix;
 #[cfg(feature = "python")]
 mod python;
 pub mod ron;
+pub mod slv;
 pub mod spa;
 mod suppletive;
 pub mod swe;
@@ -47,6 +48,8 @@ pub enum Lang {
     Eng,
     /// French.
     Fra,
+    /// Slovenian.
+    Slv,
     /// Spanish.
     Spa,
     /// Portuguese.
@@ -70,6 +73,7 @@ impl Lang {
             "da" | "dan" | "danish" => Some(Self::Dan),
             "en" | "eng" | "english" => Some(Self::Eng),
             "fr" | "fra" | "fre" | "french" => Some(Self::Fra),
+            "sl" | "slv" | "slovenian" | "slovene" => Some(Self::Slv),
             "es" | "spa" | "spanish" => Some(Self::Spa),
             "pt" | "por" | "portuguese" => Some(Self::Por),
             "it" | "ita" | "italian" => Some(Self::Ita),

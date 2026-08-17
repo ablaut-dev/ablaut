@@ -241,6 +241,38 @@ impl From<crate::por::Table> for PortugueseConjugation {
     }
 }
 
+/// The full conjugation table of one Slovenian verb. Nine-slot rows
+/// run [sg1, sg2, sg3, du1, du2, du3, pl1, pl2, pl3]; participles
+/// run [m, f, n] × [sg, du, pl].
+#[pyclass(get_all, frozen)]
+struct SlovenianConjugation {
+    infinitive: String,
+    supine: String,
+    present: Vec<String>,
+    /// [2sg, 1du, 2du, 1pl, 2pl]
+    imperative: Vec<Option<String>>,
+    participle: Vec<String>,
+}
+
+#[pymethods]
+impl SlovenianConjugation {
+    fn __repr__(&self) -> String {
+        format!("SlovenianConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::slv::Table> for SlovenianConjugation {
+    fn from(t: crate::slv::Table) -> Self {
+        SlovenianConjugation {
+            infinitive: t.infinitive,
+            supine: t.supine,
+            present: t.present.into(),
+            imperative: t.imperative.into(),
+            participle: t.participle.into(),
+        }
+    }
+}
+
 /// The full conjugation table of one Czech verb. Person rows are
 /// [já, ty, on/ona, my, vy, oni]; participle rows are
 /// [masc sg, fem sg, neut sg, masc-anim pl, fem pl, neut pl].
@@ -502,6 +534,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Slv) => {
+            let v = crate::slv::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(SlovenianConjugation::from(crate::slv::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         Some(crate::Lang::Ces) => {
             let v = crate::ces::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
@@ -558,6 +597,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<EnglishConjugation>()?;
     m.add_class::<DanishConjugation>()?;
     m.add_class::<CzechConjugation>()?;
+    m.add_class::<SlovenianConjugation>()?;
     m.add_class::<ItalianConjugation>()?;
     m.add_class::<SwedishConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
