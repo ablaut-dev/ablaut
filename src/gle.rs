@@ -361,8 +361,7 @@ impl Verb {
                 // glanfaidh → glanfainn/glanfá/glanfaimis/glanfaidís/
                 // glanfaí; brisfidh → brisfinn/brisfeá/brisfí;
                 // ceannóidh → ceannóinn/ceannófá/ceannófaí.
-                let (b, endings): (&str, [&str; 5]) = if let Some(b) = fut.strip_suffix("faidh")
-                {
+                let (b, endings): (&str, [&str; 5]) = if let Some(b) = fut.strip_suffix("faidh") {
                     // keep the f with the base
                     let _ = b;
                     (
