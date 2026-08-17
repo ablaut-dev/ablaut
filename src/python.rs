@@ -241,6 +241,57 @@ impl From<crate::por::Table> for PortugueseConjugation {
     }
 }
 
+/// The full conjugation table of one Finnish verb. Six-slot rows run
+/// [minä, sinä, hän, me, te, he].
+#[pyclass(get_all, frozen)]
+struct FinnishConjugation {
+    infinitive: String,
+    present: Vec<String>,
+    past: Vec<String>,
+    conditional: Vec<String>,
+    potential: Vec<String>,
+    /// [2sg, 3sg, 1pl, 2pl, 3pl]
+    imperative: Vec<Option<String>>,
+    present_passive: String,
+    past_passive: String,
+    conditional_passive: String,
+    potential_passive: String,
+    imperative_passive: String,
+    present_participle: String,
+    past_participle: String,
+    present_passive_participle: String,
+    past_passive_participle: String,
+}
+
+#[pymethods]
+impl FinnishConjugation {
+    fn __repr__(&self) -> String {
+        format!("FinnishConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::fin::Table> for FinnishConjugation {
+    fn from(t: crate::fin::Table) -> Self {
+        FinnishConjugation {
+            infinitive: t.infinitive,
+            present: t.present.into(),
+            past: t.past.into(),
+            conditional: t.conditional.into(),
+            potential: t.potential.into(),
+            imperative: t.imperative.into(),
+            present_passive: t.present_passive,
+            past_passive: t.past_passive,
+            conditional_passive: t.conditional_passive,
+            potential_passive: t.potential_passive,
+            imperative_passive: t.imperative_passive,
+            present_participle: t.present_participle,
+            past_participle: t.past_participle,
+            present_passive_participle: t.present_passive_participle,
+            past_passive_participle: t.past_passive_participle,
+        }
+    }
+}
+
 /// The full conjugation table of one Estonian verb. Six-slot rows
 /// run [ma, sa, ta, me, te, nad].
 #[pyclass(get_all, frozen)]
@@ -579,6 +630,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Fin) => {
+            let v = crate::fin::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(FinnishConjugation::from(crate::fin::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         Some(crate::Lang::Est) => {
             let v = crate::est::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
@@ -651,6 +709,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<CzechConjugation>()?;
     m.add_class::<SlovenianConjugation>()?;
     m.add_class::<EstonianConjugation>()?;
+    m.add_class::<FinnishConjugation>()?;
     m.add_class::<ItalianConjugation>()?;
     m.add_class::<SwedishConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;

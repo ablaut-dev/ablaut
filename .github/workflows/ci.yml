@@ -134,6 +134,17 @@ jobs:
         run: ./scripts/est/fetch_vabamorf.sh
       - name: Estonian golden harness with regression gate
         run: cargo run --release --bin golden_est -- data/est/vabamorf.tsv --check
+      - name: Cache Omorfi fin
+        id: omorfi
+        uses: actions/cache@v5
+        with:
+          path: data/fin/omorfi.tsv
+          key: omorfi-fin-v1
+      - name: Fetch Omorfi fin
+        if: steps.omorfi.outputs.cache-hit != 'true'
+        run: ./scripts/fin/fetch_omorfi.sh
+      - name: Finnish golden harness with regression gate
+        run: cargo run --release --bin golden_fin -- data/fin/omorfi.tsv --check
       - name: Cache COR dan
         id: cor
         uses: actions/cache@v5

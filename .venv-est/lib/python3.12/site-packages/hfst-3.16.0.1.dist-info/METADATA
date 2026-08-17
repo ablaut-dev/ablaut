@@ -1,0 +1,347 @@
+Metadata-Version: 2.1
+Name: hfst
+Version: 3.16.0.1
+Summary: Python SWIG-bound interface for HFST
+Author: HFST team
+Author-email: hfst-bugs@helsinki.fi
+License: GNU GPL3
+Project-URL: Homepage, https://hfst.github.io/
+Project-URL: Documentation, https://github.com/hfst/python/wiki
+Project-URL: Repository, https://github.com/reynoldsnlp/hfst-python.git
+Keywords: Finite-state transducer,morphology,morphological,part of speech,tagger,Natural Language Processing,NLP
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: C++
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Education
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Human Machine Interfaces
+Classifier: Topic :: Text Processing :: Linguistic
+Classifier: Topic :: Utilities
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# HFST for python
+
+| | |
+| --- | --- |
+| CI/CD | [![CI - Test, Build, and Publish](https://github.com/reynoldsnlp/hfst-python/actions/workflows/build.yml/badge.svg)](https://github.com/reynoldsnlp/hfst-python/actions/workflows/build.yml) |
+| Package | [![PyPI - Version](https://img.shields.io/pypi/v/hfst.svg?logo=pypi&label=PyPI&logoColor=gold)](https://pypi.org/project/hfst/) [![PyPI - Downloads](https://img.shields.io/pypi/dm/hfst.svg?color=blue&label=Downloads&logo=pypi&logoColor=gold)](https://pypi.org/project/hfst/) [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/hfst.svg?logo=python&label=Python&logoColor=gold)](https://pypi.org/project/hfst/) |
+| Meta | ![CI Buildwheel Badge](https://img.shields.io/badge/build-cibuildwheel-blue?logo=python&link=https%3A%2F%2Fcibuildwheel.readthedocs.io%2Fen%2Fstable%2F) [![linting - Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v0.json)](https://github.com/charliermarsh/ruff) ![PyPI - License](https://img.shields.io/pypi/l/hfst) |
+
+## Package description
+
+Package `hfst` contains python bindings for the [Helsinki Finite-State
+Technology (HFST)](https://hfst.github.io) C++ library. HFST toolkit is
+intended for processing natural language morphologies. The toolkit is
+demonstrated by wide-coverage implementations of a number of languages of
+varying morphological complexity.
+
+## Installation
+
+For most users, simply run...
+
+```console
+$ python3 -m pip install hfst
+```
+
+On some OSes, you can install `hfst` python bindings by [running
+`install_nightly.sh`](https://wiki.apertium.org/wiki/Installation#Install_Apertium_Core_by_packaging.2Fvirtual_environment).
+
+
+We compile wheels using
+[cibuildwheel](https://cibuildwheel.readthedocs.io/en/stable/) which enables us
+to publish wheels for CPython and PyPy on a large variety of OS/architecture
+combinations.  If wheels for your platform are not available, open an issue!
+(Windows support coming soon!)
+
+## Usage
+
+C++ side functions and classes are wrapped with SWIG under module 'libhfst'. It
+is possible to use this module directly, but there is a package named 'hfst'
+which encapsulates the libhfst module in a more user-friendly manner. The
+structure of the package is
+
+* hfst
+  * hfst.exceptions
+  * hfst.sfst\_rules
+  * hfst.xerox\_rules
+
+The module hfst.exceptions contains HfstException and its subclasses. The
+modules hfst.sfst\_rules and hfst.xerox\_rules contain functions that create
+transducers implementing replace and two-level rules. All other functions and
+classes are in module hfst.
+
+For documentation and examples, see https://hfst.github.io/python/index.html.
+
+## Requirements
+
+Compiling hfst from source requires at least C++ compiler (tested with gcc
+5.4.0), readline and getline libraries and setuptools package for python
+(tested with version 28.8.0). Swig is no longer needed as pre-generated files
+are included in source distribution.
+
+## Compiling from scratch
+
+This repository has a submodule with the underlying C++ code. The first time
+you clone this repository, run `$ git submodule init` to initialize the
+submodule. Thereafter, every time that you want to pull in the latest changes
+from the C++ hfst repository, run `$ git submodule update --remote` or `$ git
+pull --recurse-submodules`. See the [manylinux build
+script](scripts/linux_before_all.sh) for an example of how to compile the
+underlying C++ library.
+
+Once the library is available, the package can be installed by running...
+
+```
+python3 -m pip install .
+```
+
+...in the root directory of the repository.
+
+## Running tests
+
+Tests are contained in the `test/` directory. To run tests, you must first
+install `pytest` using `python3 -m pip install pytest`.  Then, in the
+root directory of this repository, run `python3 -m pytest`.
+
+## Documentation
+
+See wiki-based [package documentation](https://github.com/hfst/python/wiki) on
+our Github pages. In python, you can also use `dir` and `help` commands, e.g.:
+
+``dir(hfst)``
+
+``help(hfst.HfstTransducer)``
+
+## License
+
+HFST is licensed under Gnu GPL version 3.0.
+
+## Troubleshooting
+
+#### *Pip starts to compile from source although there is a wheel available*
+
+Try upgrading pip with
+
+```
+python3 -m pip install --upgrade pip
+```
+
+Another reason for this can be that the source package on PyPI is newer (i.e.
+has a higher version number) than the corresponding wheel for the given
+environment. Report this via our [issue
+tracker](https://github.com/reynoldsnlp/hfst-python/issues/) so a fresh wheel
+can be created.
+
+#### *Error message "command ... failed with error code ..."*
+
+Try rerunning pip in verbose mode with
+
+```
+python3 -m pip install --verbose [--upgrade] hfst
+```
+
+to get more information.
+
+#### TypeError: catching classes that do not inherit from BaseException is not allowed
+
+Some version combinations of SWIG and Python make HFST exception classes
+subclasses of Python's `object` instead of Exception. Then you will get the
+error above. If this is the case, run...
+
+```
+sed -i 's/class HfstException(_object):/class HfstException(Exception):/' libhfst.py
+```
+
+...after build/installation to be able to use HfstException and its subclasses
+in Python.
+
+## Links
+
+[HFST project main page](https://hfst.github.io): more information about the
+project
+
+[Github issue tracker](https://github.com/hfst/hfst/issues/): for comments,
+feature requests and bug reports
+
+                   GNU LESSER GENERAL PUBLIC LICENSE
+                       Version 3, 29 June 2007
+
+ Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
+ Everyone is permitted to copy and distribute verbatim copies
+ of this license document, but changing it is not allowed.
+
+
+  This version of the GNU Lesser General Public License incorporates
+the terms and conditions of version 3 of the GNU General Public
+License, supplemented by the additional permissions listed below.
+
+  0. Additional Definitions.
+
+  As used herein, "this License" refers to version 3 of the GNU Lesser
+General Public License, and the "GNU GPL" refers to version 3 of the GNU
+General Public License.
+
+  "The Library" refers to a covered work governed by this License,
+other than an Application or a Combined Work as defined below.
+
+  An "Application" is any work that makes use of an interface provided
+by the Library, but which is not otherwise based on the Library.
+Defining a subclass of a class defined by the Library is deemed a mode
+of using an interface provided by the Library.
+
+  A "Combined Work" is a work produced by combining or linking an
+Application with the Library.  The particular version of the Library
+with which the Combined Work was made is also called the "Linked
+Version".
+
+  The "Minimal Corresponding Source" for a Combined Work means the
+Corresponding Source for the Combined Work, excluding any source code
+for portions of the Combined Work that, considered in isolation, are
+based on the Application, and not on the Linked Version.
+
+  The "Corresponding Application Code" for a Combined Work means the
+object code and/or source code for the Application, including any data
+and utility programs needed for reproducing the Combined Work from the
+Application, but excluding the System Libraries of the Combined Work.
+
+  1. Exception to Section 3 of the GNU GPL.
+
+  You may convey a covered work under sections 3 and 4 of this License
+without being bound by section 3 of the GNU GPL.
+
+  2. Conveying Modified Versions.
+
+  If you modify a copy of the Library, and, in your modifications, a
+facility refers to a function or data to be supplied by an Application
+that uses the facility (other than as an argument passed when the
+facility is invoked), then you may convey a copy of the modified
+version:
+
+   a) under this License, provided that you make a good faith effort to
+   ensure that, in the event an Application does not supply the
+   function or data, the facility still operates, and performs
+   whatever part of its purpose remains meaningful, or
+
+   b) under the GNU GPL, with none of the additional permissions of
+   this License applicable to that copy.
+
+  3. Object Code Incorporating Material from Library Header Files.
+
+  The object code form of an Application may incorporate material from
+a header file that is part of the Library.  You may convey such object
+code under terms of your choice, provided that, if the incorporated
+material is not limited to numerical parameters, data structure
+layouts and accessors, or small macros, inline functions and templates
+(ten or fewer lines in length), you do both of the following:
+
+   a) Give prominent notice with each copy of the object code that the
+   Library is used in it and that the Library and its use are
+   covered by this License.
+
+   b) Accompany the object code with a copy of the GNU GPL and this license
+   document.
+
+  4. Combined Works.
+
+  You may convey a Combined Work under terms of your choice that,
+taken together, effectively do not restrict modification of the
+portions of the Library contained in the Combined Work and reverse
+engineering for debugging such modifications, if you also do each of
+the following:
+
+   a) Give prominent notice with each copy of the Combined Work that
+   the Library is used in it and that the Library and its use are
+   covered by this License.
+
+   b) Accompany the Combined Work with a copy of the GNU GPL and this license
+   document.
+
+   c) For a Combined Work that displays copyright notices during
+   execution, include the copyright notice for the Library among
+   these notices, as well as a reference directing the user to the
+   copies of the GNU GPL and this license document.
+
+   d) Do one of the following:
+
+       0) Convey the Minimal Corresponding Source under the terms of this
+       License, and the Corresponding Application Code in a form
+       suitable for, and under terms that permit, the user to
+       recombine or relink the Application with a modified version of
+       the Linked Version to produce a modified Combined Work, in the
+       manner specified by section 6 of the GNU GPL for conveying
+       Corresponding Source.
+
+       1) Use a suitable shared library mechanism for linking with the
+       Library.  A suitable mechanism is one that (a) uses at run time
+       a copy of the Library already present on the user's computer
+       system, and (b) will operate properly with a modified version
+       of the Library that is interface-compatible with the Linked
+       Version.
+
+   e) Provide Installation Information, but only if you would otherwise
+   be required to provide such information under section 6 of the
+   GNU GPL, and only to the extent that such information is
+   necessary to install and execute a modified version of the
+   Combined Work produced by recombining or relinking the
+   Application with a modified version of the Linked Version. (If
+   you use option 4d0, the Installation Information must accompany
+   the Minimal Corresponding Source and Corresponding Application
+   Code. If you use option 4d1, you must provide the Installation
+   Information in the manner specified by section 6 of the GNU GPL
+   for conveying Corresponding Source.)
+
+  5. Combined Libraries.
+
+  You may place library facilities that are a work based on the
+Library side by side in a single library together with other library
+facilities that are not Applications and are not covered by this
+License, and convey such a combined library under terms of your
+choice, if you do both of the following:
+
+   a) Accompany the combined library with a copy of the same work based
+   on the Library, uncombined with any other library facilities,
+   conveyed under the terms of this License.
+
+   b) Give prominent notice with the combined library that part of it
+   is a work based on the Library, and explaining where to find the
+   accompanying uncombined form of the same work.
+
+  6. Revised Versions of the GNU Lesser General Public License.
+
+  The Free Software Foundation may publish revised and/or new versions
+of the GNU Lesser General Public License from time to time. Such new
+versions will be similar in spirit to the present version, but may
+differ in detail to address new problems or concerns.
+
+  Each version is given a distinguishing version number. If the
+Library as you received it specifies that a certain numbered version
+of the GNU Lesser General Public License "or any later version"
+applies to it, you have the option of following the terms and
+conditions either of that published version or of any later version
+published by the Free Software Foundation. If the Library as you
+received it does not specify a version number of the GNU Lesser
+General Public License, you may choose any version of the GNU Lesser
+General Public License ever published by the Free Software Foundation.
+
+  If the Library as you received it specifies that a proxy can decide
+whether future versions of the GNU Lesser General Public License shall
+apply, that proxy's public statement of acceptance of any version is
+permanent authorization for you to choose that version for the
+Library.
