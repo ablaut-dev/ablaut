@@ -1,0 +1,47 @@
+# Italian adjudication log. Columns: lemma <TAB> features ("*" = whole
+# paradigm) <TAB> ruling (ours | both | theirs) <TAB> rationale.
+essere	V;IMP;PL;2	ours	Morph-It lists sete/site (archaic) and siate; the standard voi imperative of essere is siate — our subjunctive-based form.
+disparire	*	both	disparire admits both the -isc- conjugation (disparisce) and the plain one (dispare); Morph-It carries only the plain forms.
+spiovere	V;IND;PST;PFV;PL;3	ours	Morph-It's spiobbeno/spioverno are dialectal; spiovvero (and regular spioverono) are standard.
+travedere	V.PTCP;PST;MASC;SG	both	travisto and traveduto are both attested; Morph-It lists only the -uto form.
+stravedere	V.PTCP;PST;MASC;SG	both	Same doublet as travedere.
+confare	*	ours	Morph-It conjugates this -fare compound as a regular -are verb (mansuefo, mansuefò); Treccani conjugates the family like fare (mansuefaccio, mansuefece).
+contraffare	*	ours	Morph-It conjugates this -fare compound as a regular -are verb (mansuefo, mansuefò); Treccani conjugates the family like fare (mansuefaccio, mansuefece).
+malfare	*	ours	Morph-It conjugates this -fare compound as a regular -are verb (mansuefo, mansuefò); Treccani conjugates the family like fare (mansuefaccio, mansuefece).
+mansuefare	*	ours	Morph-It conjugates this -fare compound as a regular -are verb (mansuefo, mansuefò); Treccani conjugates the family like fare (mansuefaccio, mansuefece).
+sfare	*	ours	Morph-It conjugates this -fare compound as a regular -are verb (mansuefo, mansuefò); Treccani conjugates the family like fare (mansuefaccio, mansuefece).
+torrefare	*	ours	Morph-It conjugates this -fare compound as a regular -are verb (mansuefo, mansuefò); Treccani conjugates the family like fare (mansuefaccio, mansuefece).
+tumefare	*	ours	Morph-It conjugates this -fare compound as a regular -are verb (mansuefo, mansuefò); Treccani conjugates the family like fare (mansuefaccio, mansuefece).
+abbattere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+assistere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+battere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+capere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+combattere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+competere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+concernere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+consistere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+contessere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+controbattere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+controvertere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+delinquere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+desistere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+dibattere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+escutere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+esimere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+esistere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+fervere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+fottere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+imbattere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+intessere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+mescere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+mietere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+potere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+prepotere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+riabbattere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+ribattere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+sbattere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+serpere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+sfottere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+strafottere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+tessere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.
+vertere	*	ours	Morph-It writes the passato remoto 3sg with a grave accent (-è); the standard spelling is -é (credé). DOP/Treccani.

@@ -241,6 +241,51 @@ impl From<crate::por::Table> for PortugueseConjugation {
     }
 }
 
+/// The full conjugation table of one Italian verb. Rows are
+/// [io, tu, lui/lei, noi, voi, loro].
+#[pyclass(get_all, frozen)]
+struct ItalianConjugation {
+    infinitive: String,
+    gerund: String,
+    present_participle: String,
+    past_participle: String,
+    /// [tu, Lei, noi, voi, Loro]
+    imperative: Vec<Option<String>>,
+    present: Vec<String>,
+    imperfect: Vec<String>,
+    past_historic: Vec<String>,
+    future: Vec<String>,
+    conditional: Vec<String>,
+    subjunctive_present: Vec<String>,
+    subjunctive_imperfect: Vec<String>,
+}
+
+#[pymethods]
+impl ItalianConjugation {
+    fn __repr__(&self) -> String {
+        format!("ItalianConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::ita::Table> for ItalianConjugation {
+    fn from(t: crate::ita::Table) -> Self {
+        ItalianConjugation {
+            infinitive: t.infinitive,
+            gerund: t.gerund,
+            present_participle: t.present_participle,
+            past_participle: t.past_participle,
+            imperative: t.imperative.into(),
+            present: t.present.into(),
+            imperfect: t.imperfect.into(),
+            past_historic: t.past_historic.into(),
+            future: t.future.into(),
+            conditional: t.conditional.into(),
+            subjunctive_present: t.subjunctive_present.into(),
+            subjunctive_imperfect: t.subjunctive_imperfect.into(),
+        }
+    }
+}
+
 /// Conjugate an infinitive: `ablaut.conjugate("aufstehen").present[0]`
 /// → "stehe auf", `ablaut.conjugate("parler", lang="fra").present[0]`
 /// → "parle". Raises ValueError for unknown languages and for strings
@@ -260,6 +305,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
             let v = crate::fra::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
             Ok(FrenchConjugation::from(crate::fra::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Ita) => {
+            let v = crate::ita::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(ItalianConjugation::from(crate::ita::Table::build(&v))
                 .into_pyobject(py)?
                 .into())
         }
@@ -287,6 +339,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<FrenchConjugation>()?;
     m.add_class::<SpanishConjugation>()?;
     m.add_class::<PortugueseConjugation>()?;
+    m.add_class::<ItalianConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())
 }
