@@ -101,3 +101,14 @@ jobs:
         run: ./scripts/ron/fetch_dexonline.sh
       - name: Romanian golden harness with regression gate
         run: cargo run --release --bin golden_ron -- data/ron/dexonline.tsv --check
+      - name: Cache SALDO swe
+        id: saldo
+        uses: actions/cache@v5
+        with:
+          path: data/swe/saldo.tsv
+          key: saldo-swe-v1
+      - name: Fetch SALDO swe
+        if: steps.saldo.outputs.cache-hit != 'true'
+        run: ./scripts/swe/fetch_saldo.sh
+      - name: Swedish golden harness with regression gate
+        run: cargo run --release --bin golden_swe -- data/swe/saldo.tsv --check
