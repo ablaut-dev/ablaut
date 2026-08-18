@@ -106,6 +106,20 @@ v.conjugate(fra::SimpleTense::Future, fra::Person::First, fra::Number::Singular)
 // "appellerai"
 ```
 
+Reverse lookup maps a conjugated form back to its infinitive(s) and
+the slots it fills — fully productive for German, English, French and
+Spanish, irregular-index-backed for all 14 languages:
+
+```rust
+use ablaut::{reverse, Lang};
+
+let m = reverse("suis", Lang::Fra);
+// être (present 1sg) and suivre (present 1sg, present 2sg)
+assert_eq!(m.len(), 2);
+assert_eq!(reverse("war", Lang::Deu)[0].infinitive, "sein");
+assert_eq!(reverse("hablé", Lang::Spa)[0].infinitive, "hablar");
+```
+
 ### Python
 
 ```sh

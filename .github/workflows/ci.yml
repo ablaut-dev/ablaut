@@ -189,3 +189,5 @@ jobs:
         run: ./scripts/swe/fetch_saldo.sh
       - name: Swedish golden harness with regression gate
         run: cargo run --release --bin golden_swe -- data/swe/saldo.tsv --check
+      - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
+        run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng
