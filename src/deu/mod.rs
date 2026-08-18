@@ -606,6 +606,9 @@ impl Verb {
     /// epenthesis stems (arbeite!, atme!), schwa stems (sammle!), and
     /// -ieren/-igen verbs (studiere!, entschuldige!).
     fn imperative_sg_default(&self) -> String {
+        if let Some(imp) = lexicon::weak_imp_override(&self.infinitive) {
+            return imp.to_string();
+        }
         let mandatory_e = self.schwa_stem
             || self.ieren
             || self.infinitive.ends_with("igen")
