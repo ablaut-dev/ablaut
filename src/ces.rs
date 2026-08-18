@@ -412,11 +412,20 @@ pub enum TransgressiveSlot {
     Plural,
 }
 
-/// The bare imperative of the í-classes: drop the theme, soften a
-/// final dental (mluvit → mluv, platit → plať is mined; the default
-/// keeps the consonant).
+/// The bare imperative of the í-classes: drop the theme, then
+/// palatalize a final dental (vidět → viď, poltit → polť, vlnit →
+/// vlň). Other stem finals keep their shape (mluvit → mluv, prosit →
+/// pros); a lexically mutated stem (prosit → pros, myslit → mysli) is
+/// carried by the mined row, which is consulted first.
 fn imp_bare(stem: &str) -> String {
-    stem.to_string()
+    let mut chars: Vec<char> = stem.chars().collect();
+    match chars.last() {
+        Some('d') => *chars.last_mut().unwrap() = 'ď',
+        Some('t') => *chars.last_mut().unwrap() = 'ť',
+        Some('n') => *chars.last_mut().unwrap() = 'ň',
+        _ => return stem.to_string(),
+    }
+    chars.into_iter().collect()
 }
 
 /// d/t/n soften to ď/ť/ň before -ě (transgressive masc).
@@ -666,5 +675,83 @@ mod tests {
                 .unwrap(),
             "znáni"
         );
+    }
+
+    /// Transitive athematic verbs carry a real passive participle
+    /// their oracles under-attest; #88 supplies them by lexicon row
+    /// (dbán, ukraden, nalezen), while intransitive/reflexive
+    /// athematics (vstát, usmát se, přistát, smát se) correctly have
+    /// none. See data/ces/verbs.tsv.
+    #[test]
+    fn athematic_passive_participles() {
+        for (lemma, masc, fem) in [
+            ("dbát", "dbán", "dbána"),
+            ("ukrást", "ukraden", "ukradena"),
+            ("nalézt", "nalezen", "nalezena"),
+        ] {
+            let verb = v(lemma);
+            assert_eq!(
+                verb.passive_participle(Gender::MasculineAnimate, Number::Singular)
+                    .as_deref(),
+                Some(masc),
+                "{lemma} passive masc"
+            );
+            assert_eq!(
+                verb.passive_participle(Gender::Feminine, Number::Singular)
+                    .as_deref(),
+                Some(fem),
+                "{lemma} passive fem"
+            );
+        }
+        // ukrást's whole paradigm comes from its supplied row.
+        let u = v("ukrást");
+        assert_eq!(u.present(Person::First, Number::Singular), "ukradnu");
+        assert_eq!(
+            u.imperative(Person::Second, Number::Singular).as_deref(),
+            Some("ukradni")
+        );
+        // Intransitive / reflexive athematics stay empty.
+        for lemma in ["vstát", "usmát", "přistát", "smát"] {
+            assert_eq!(
+                v(lemma).passive_participle(Gender::MasculineAnimate, Number::Singular),
+                None,
+                "{lemma} is intransitive: no passive participle"
+            );
+        }
+    }
+
+    /// The i-class bare imperative palatalizes a final dental
+    /// (vidět → viď, poltit → polť, vlnit → vlň), including the
+    /// plural (viďme, polťme); non-dental finals keep their shape
+    /// (mluvit → mluv). #88.
+    #[test]
+    fn imperative_dental_palatalization() {
+        // vidět derives 2sg (viď) but its plural is the mined archaic
+        // vizme/vizte, so it only exercises the 2sg path here.
+        assert_eq!(
+            v("vidět")
+                .imperative(Person::Second, Number::Singular)
+                .as_deref(),
+            Some("viď")
+        );
+        for (lemma, sg, pl2) in [
+            ("poltit", "polť", "polťte"),
+            ("vlnit", "vlň", "vlňte"),
+            ("závidět", "záviď", "záviďte"),
+            ("zpochybnit", "zpochybň", "zpochybňte"),
+            ("mluvit", "mluv", "mluvte"),
+        ] {
+            let verb = v(lemma);
+            assert_eq!(
+                verb.imperative(Person::Second, Number::Singular).as_deref(),
+                Some(sg),
+                "{lemma} imperative 2sg"
+            );
+            assert_eq!(
+                verb.imperative(Person::Second, Number::Plural).as_deref(),
+                Some(pl2),
+                "{lemma} imperative 2pl"
+            );
+        }
     }
 }
