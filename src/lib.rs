@@ -25,6 +25,7 @@ pub mod ita;
 pub mod por;
 #[cfg(feature = "python")]
 mod python;
+pub mod reverse;
 pub mod ron;
 pub mod slv;
 pub mod spa;
@@ -37,6 +38,7 @@ mod wasm;
 pub use deu::features::{Mood, Number, Person, Tense};
 pub use deu::table;
 pub use deu::{AnalyticTense, Auxiliary, Error, Verb};
+pub use reverse::{reverse, ReverseMatch};
 
 /// A supported language, for the multi-language entry points in the
 /// bindings. ISO 639 codes and English names are accepted.
