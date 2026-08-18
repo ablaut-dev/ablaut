@@ -278,6 +278,14 @@ pub struct Table {
     pub past_passive: Option<String>,
     pub supine_passive: Option<String>,
     pub subjunctive_past: Option<String>,
+    /// Person rows for the tense tables: Swedish verbs do not agree,
+    /// so each row repeats one form six times ([jag … de]).
+    pub presens_row: Option<[String; 6]>,
+    pub preteritum_row: Option<[String; 6]>,
+    pub perfekt_row: Option<[String; 6]>,
+    pub pluskvamperfekt_row: Option<[String; 6]>,
+    pub futurum_row: [String; 6],
+    pub konditionalis_row: [String; 6],
 }
 
 impl Table {
@@ -287,17 +295,27 @@ impl Table {
         // are the verb's only forms, so they fill the primary slots
         // rather than leaving the table empty.
         let form = |slot: Slot| v.active_voice(slot).or_else(|| v.passive(slot));
+        let uniform = |f: String| std::array::from_fn(|_| f.clone());
+        let present = form(Slot::Present);
+        let past = form(Slot::Past);
+        let supine = form(Slot::Supine);
         Self {
             infinitive: v.infinitive().to_string(),
-            present: form(Slot::Present),
-            past: form(Slot::Past),
-            supine: form(Slot::Supine),
             imperative: v.active_voice(Slot::Imperative),
             infinitive_passive: v.passive(Slot::Infinitive),
             present_passive: v.passive(Slot::Present),
             past_passive: v.passive(Slot::Past),
             supine_passive: v.passive(Slot::Supine),
             subjunctive_past: v.active_voice(Slot::SubjunctivePast),
+            presens_row: present.clone().map(uniform),
+            preteritum_row: past.clone().map(uniform),
+            perfekt_row: supine.as_ref().map(|s| uniform(format!("har {s}"))),
+            pluskvamperfekt_row: supine.as_ref().map(|s| uniform(format!("hade {s}"))),
+            futurum_row: uniform(format!("ska {}", v.infinitive())),
+            konditionalis_row: uniform(format!("skulle {}", v.infinitive())),
+            present,
+            past,
+            supine,
         }
     }
 }
@@ -308,6 +326,17 @@ mod tests {
 
     fn v(inf: &str) -> Verb {
         Verb::from_infinitive(inf).unwrap()
+    }
+
+    #[test]
+    fn analytic_rows() {
+        let t = Table::build(&v("tala"));
+        assert_eq!(t.presens_row.as_ref().unwrap()[0], "talar");
+        assert_eq!(t.preteritum_row.as_ref().unwrap()[5], "talade");
+        assert_eq!(t.perfekt_row.as_ref().unwrap()[0], "har talat");
+        assert_eq!(t.pluskvamperfekt_row.as_ref().unwrap()[3], "hade talat");
+        assert_eq!(t.futurum_row[0], "ska tala");
+        assert_eq!(t.konditionalis_row[2], "skulle tala");
     }
 
     #[test]

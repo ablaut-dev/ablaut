@@ -335,7 +335,15 @@ pub struct Table {
     pub present_participle: String,
     pub nud_participle: String,
     pub tud_participle: String,
+    /// olema + nud-participle: olen rääkinud.
+    pub perfect: [String; 6],
+    /// olin rääkinud.
+    pub pluperfect: [String; 6],
 }
+
+/// The olema rows used by the perfect tenses.
+const OLEMA_PRES: [&str; 6] = ["olen", "oled", "on", "oleme", "olete", "on"];
+const OLEMA_PAST: [&str; 6] = ["olin", "olid", "oli", "olime", "olite", "olid"];
 
 impl Table {
     #[must_use]
@@ -366,6 +374,10 @@ impl Table {
             present_participle: v.nonfinite(NonfiniteSlot::PresentParticiple),
             nud_participle: v.nonfinite(NonfiniteSlot::NudParticiple),
             tud_participle: v.nonfinite(NonfiniteSlot::TudParticiple),
+            perfect: OLEMA_PRES
+                .map(|a| format!("{a} {}", v.nonfinite(NonfiniteSlot::NudParticiple))),
+            pluperfect: OLEMA_PAST
+                .map(|a| format!("{a} {}", v.nonfinite(NonfiniteSlot::NudParticiple))),
         }
     }
 }
@@ -376,6 +388,16 @@ mod tests {
 
     fn v(inf: &str) -> Verb {
         Verb::from_infinitive(inf).unwrap()
+    }
+
+    #[test]
+    fn perfect_tenses() {
+        let t = Table::build(&v("rääkima"));
+        assert_eq!(t.perfect[0], "olen rääkinud");
+        assert_eq!(t.perfect[2], "on rääkinud");
+        assert_eq!(t.perfect[3], "oleme rääkinud");
+        assert_eq!(t.pluperfect[0], "olin rääkinud");
+        assert_eq!(t.pluperfect[5], "olid rääkinud");
     }
 
     #[test]

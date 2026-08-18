@@ -737,7 +737,28 @@ pub struct Table {
     pub subjunctive_present: [String; 6],
     pub subjunctive_imperfect: [String; 6],
     pub subjunctive_future: [String; 6],
+    pub perfeito_composto: [String; 6],
+    pub mais_que_perfeito_composto: [String; 6],
+    pub futuro_composto: [String; 6],
+    pub condicional_composto: [String; 6],
+    pub conjuntivo_perfeito: [String; 6],
+    pub conjuntivo_mais_que_perfeito: [String; 6],
 }
+
+/// The ter paradigms used by the compound tenses (tenho falado …).
+const TER_PRES: [&str; 6] = ["tenho", "tens", "tem", "temos", "tendes", "têm"];
+const TER_IMPERF: [&str; 6] = ["tinha", "tinhas", "tinha", "tínhamos", "tínheis", "tinham"];
+const TER_FUT: [&str; 6] = ["terei", "terás", "terá", "teremos", "tereis", "terão"];
+const TER_COND: [&str; 6] = ["teria", "terias", "teria", "teríamos", "teríeis", "teriam"];
+const TER_SUBJ_PRES: [&str; 6] = ["tenha", "tenhas", "tenha", "tenhamos", "tenhais", "tenham"];
+const TER_SUBJ_IMPERF: [&str; 6] = [
+    "tivesse",
+    "tivesses",
+    "tivesse",
+    "tivéssemos",
+    "tivésseis",
+    "tivessem",
+];
 
 const SLOTS: [(Person, Number); 6] = [
     (Person::First, Number::Singular),
@@ -752,6 +773,8 @@ impl Table {
     #[must_use]
     pub fn build(v: &Verb) -> Self {
         let row = |t: SimpleTense| SLOTS.map(|(p, n)| v.conjugate(t, p, n));
+        let pp = v.past_participle();
+        let arow = |aux: [&'static str; 6]| aux.map(|f| format!("{f} {pp}"));
         Self {
             infinitive: v.infinitive().to_string(),
             gerund: v.gerund(),
@@ -773,6 +796,12 @@ impl Table {
             subjunctive_present: row(SimpleTense::SubjunctivePresent),
             subjunctive_imperfect: row(SimpleTense::SubjunctiveImperfect),
             subjunctive_future: row(SimpleTense::SubjunctiveFuture),
+            perfeito_composto: arow(TER_PRES),
+            mais_que_perfeito_composto: arow(TER_IMPERF),
+            futuro_composto: arow(TER_FUT),
+            condicional_composto: arow(TER_COND),
+            conjuntivo_perfeito: arow(TER_SUBJ_PRES),
+            conjuntivo_mais_que_perfeito: arow(TER_SUBJ_IMPERF),
         }
     }
 }
@@ -789,6 +818,18 @@ mod tests {
 
     fn v(inf: &str) -> Verb {
         Verb::from_infinitive(inf).unwrap()
+    }
+
+    #[test]
+    fn compound_tenses() {
+        let t = Table::build(&v("falar"));
+        assert_eq!(t.perfeito_composto[0], "tenho falado");
+        assert_eq!(t.perfeito_composto[5], "têm falado");
+        assert_eq!(t.mais_que_perfeito_composto[3], "tínhamos falado");
+        assert_eq!(t.futuro_composto[2], "terá falado");
+        assert_eq!(t.condicional_composto[4], "teríeis falado");
+        assert_eq!(t.conjuntivo_perfeito[1], "tenhas falado");
+        assert_eq!(t.conjuntivo_mais_que_perfeito[3], "tivéssemos falado");
     }
 
     #[test]

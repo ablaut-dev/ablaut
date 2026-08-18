@@ -616,7 +616,19 @@ pub struct Table {
     pub simple_perfect: [String; 6],
     pub pluperfect: [String; 6],
     pub subjunctive: [String; 6],
+    pub perfect_compus: [String; 6],
+    pub viitor: [String; 6],
+    pub conditional_prezent: [String; 6],
+    pub subjunctive_perfect: [String; 6],
+    pub conditional_perfect: [String; 6],
+    pub viitor_anterior: [String; 6],
 }
+
+/// Auxiliary rows for the analytic tenses: a avea (am vorbit),
+/// a vrea (voi vorbi) and the conditional clitics (aș vorbi).
+const AVEA: [&str; 6] = ["am", "ai", "a", "am", "ați", "au"];
+const VREA: [&str; 6] = ["voi", "vei", "va", "vom", "veți", "vor"];
+const COND: [&str; 6] = ["aș", "ai", "ar", "am", "ați", "ar"];
 
 impl Table {
     #[must_use]
@@ -641,6 +653,12 @@ impl Table {
             simple_perfect: row(&|p, n| v.indicative(Tense::SimplePerfect, p, n)),
             pluperfect: row(&|p, n| v.indicative(Tense::Pluperfect, p, n)),
             subjunctive: row(&|p, n| v.subjunctive(p, n)),
+            perfect_compus: AVEA.map(|a| format!("{a} {}", v.participle())),
+            viitor: VREA.map(|a| format!("{a} {}", v.infinitive())),
+            conditional_prezent: COND.map(|a| format!("{a} {}", v.infinitive())),
+            subjunctive_perfect: std::array::from_fn(|_| format!("fi {}", v.participle())),
+            conditional_perfect: COND.map(|a| format!("{a} fi {}", v.participle())),
+            viitor_anterior: VREA.map(|a| format!("{a} fi {}", v.participle())),
         }
     }
 }
@@ -651,6 +669,20 @@ mod tests {
 
     fn v(inf: &str) -> Verb {
         Verb::from_infinitive(inf).unwrap()
+    }
+
+    #[test]
+    fn analytic_tenses() {
+        let t = Table::build(&v("vorbi"));
+        assert_eq!(t.perfect_compus[0], "am vorbit");
+        assert_eq!(t.perfect_compus[4], "ați vorbit");
+        assert_eq!(t.viitor[0], "voi vorbi");
+        assert_eq!(t.viitor[5], "vor vorbi");
+        assert_eq!(t.conditional_prezent[0], "aș vorbi");
+        assert_eq!(t.conditional_prezent[2], "ar vorbi");
+        assert_eq!(t.subjunctive_perfect[3], "fi vorbit");
+        assert_eq!(t.conditional_perfect[0], "aș fi vorbit");
+        assert_eq!(t.viitor_anterior[2], "va fi vorbit");
     }
 
     #[test]
