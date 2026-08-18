@@ -789,9 +789,28 @@ impl Verb {
         self.infinitive.clone()
     }
 
+    /// True for a slot normative Spanish lacks. soler (RAE, DPD s.v.
+    /// soler) has no future, conditional, or future subjunctive — its
+    /// meaning, habit up to now, is incompatible with them — and both
+    /// gold oracles attest exactly that gap. abolir is deliberately NOT
+    /// here: the modern RAE (DLE conjugation model) accepts its full
+    /// paradigm (abolo, aboles), the traditional -i-only restriction
+    /// having been lifted.
+    fn defective(&self, tense: SimpleTense) -> bool {
+        self.infinitive == "soler"
+            && matches!(
+                tense,
+                SimpleTense::Future | SimpleTense::Conditional | SimpleTense::SubjunctiveFuture
+            )
+    }
+
     /// A finite form without the -se doublet (that is in variants());
-    /// pronominal verbs carry their clitic (me levanto).
+    /// pronominal verbs carry their clitic (me levanto). An em dash
+    /// marks a normatively defective slot, as in the French tables.
     pub fn conjugate(&self, tense: SimpleTense, person: Person, number: Number) -> String {
+        if self.defective(tense) {
+            return "\u{2014}".to_string();
+        }
         self.cliticize(self.plain(tense, person, number), person, number)
     }
 
@@ -908,6 +927,10 @@ impl Verb {
     }
 
     fn imperative_bare(&self, person: Person, number: Number) -> Option<String> {
+        // Defective: soler has no imperative in normative use (RAE).
+        if self.infinitive == "soler" {
+            return None;
+        }
         match (person, number) {
             (Person::First, Number::Singular) => None,
             // tú: the 3sg present (habla, come, vive), or the stored
@@ -1050,7 +1073,12 @@ pub struct Table {
     pub gerund: String,
     pub past_participle: String,
     /// Rioplatense voseo: the vos present (hablás, sos) and
-    /// imperative (hablá, andá), derived from the paradigm.
+    /// imperative (hablá, andá), derived from the paradigm. These two
+    /// are the whole voseo surface on purpose: in every other tense vos
+    /// takes the tú form, and for the present subjunctive the RAE holds
+    /// the tuteante form (hables) as the prestige norm even for voseo
+    /// speakers — the oxytone doublet (hablés) is regionally and
+    /// stylistically marked, so no subjunctive_vos field exists.
     pub present_vos: Option<String>,
     pub imperative_vos: Option<String>,
     /// [tú, usted, nosotros, vosotros, ustedes].
@@ -1136,7 +1164,11 @@ impl Table {
                 Person::Second,
                 Number::Plural,
             )),
-            imperative_vos: Self::vos_imperative(&v.infinitive()),
+            // Gated on the tú imperative so a defective verb (soler)
+            // does not grow a vos imperative out of its infinitive.
+            imperative_vos: v
+                .imperative(Person::Second, Number::Singular)
+                .and_then(|_| Self::vos_imperative(&v.infinitive())),
             imperative: [
                 v.imperative(Person::Second, Number::Singular),
                 v.imperative(Person::Third, Number::Singular),
@@ -1343,6 +1375,27 @@ mod tests {
         assert_eq!(v("argüir").conjugate(Present, P1, PL), "argüimos");
         assert_eq!(v("bullir").conjugate(Preterite, P3, SG), "bulló");
         assert_eq!(v("reñir").gerund(), "riñendo");
+    }
+
+    #[test]
+    fn defective_soler_full_abolir() {
+        // soler is defective (RAE, DPD): no future, conditional, future
+        // subjunctive, or imperative; the attested tenses stay.
+        let s = v("soler");
+        assert_eq!(s.conjugate(Present, P1, SG), "suelo");
+        assert_eq!(s.conjugate(Imperfect, P3, SG), "solía");
+        assert_eq!(s.conjugate(SubjunctivePresent, P1, SG), "suela");
+        assert_eq!(s.conjugate(Future, P1, SG), "—");
+        assert_eq!(s.conjugate(Conditional, P3, SG), "—");
+        assert_eq!(s.conjugate(SubjunctiveFuture, P1, SG), "—");
+        assert!(s.imperative(P2, SG).is_none());
+        assert!(s.imperative(P3, PL).is_none());
+        let t = Table::build(&s);
+        assert_eq!(t.present_vos.as_deref(), Some("solés"));
+        assert_eq!(t.imperative_vos, None);
+        // abolir conjugates in full: the modern RAE accepts abolo.
+        assert_eq!(v("abolir").conjugate(Present, P1, SG), "abolo");
+        assert_eq!(v("abolir").imperative(P2, SG).as_deref(), Some("abole"));
     }
 
     #[test]

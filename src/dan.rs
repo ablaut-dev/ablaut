@@ -37,6 +37,30 @@ impl std::fmt::Display for Error {
 /// imperative, present participle, past passive ("-" = default).
 static PARTS_TSV: &str = include_str!("../data/dan/parts.tsv");
 
+/// Perfect auxiliaries (lemma \t har|er|er/har), mined from kaikki
+/// head templates. Coverage is partial — Wiktionary only marks the
+/// auxiliary on some entries — so absent lemmas yield `None` rather
+/// than a guessed default.
+static AUX_TSV: &str = include_str!("../data/dan/aux.tsv");
+
+/// The perfect auxiliary of a verb: "har" (at have), "er" (at være),
+/// or "er/har" for verbs attested with both. `None` when the mined
+/// data does not attest one.
+fn auxiliary(inf: &str) -> Option<&'static str> {
+    static MAP: OnceLock<HashMap<&'static str, &'static str>> = OnceLock::new();
+    let m = MAP.get_or_init(|| {
+        AUX_TSV
+            .lines()
+            .filter(|l| !l.starts_with('#') && !l.is_empty())
+            .filter_map(|l| {
+                let mut f = l.split('\t');
+                Some((f.next()?, f.next()?))
+            })
+            .collect()
+    });
+    m.get(inf).copied()
+}
+
 #[derive(Debug, Clone, Default)]
 struct Parts {
     present: Option<String>,
@@ -210,6 +234,10 @@ impl Verb {
 #[cfg_attr(feature = "serde", serde(rename_all = "camelCase"))]
 pub struct Table {
     pub infinitive: String,
+    /// Perfect auxiliary: "har", "er", or "er/har", mined from
+    /// kaikki; `None` when unattested. Composed perfects themselves
+    /// are out of scope here (issue #82).
+    pub auxiliary: Option<&'static str>,
     pub present: Option<String>,
     pub past: Option<String>,
     pub past_participle: Option<String>,
@@ -229,6 +257,7 @@ impl Table {
         let form = |slot: Slot| v.active(slot).or_else(|| v.passive(slot));
         Self {
             infinitive: v.infinitive().to_string(),
+            auxiliary: auxiliary(v.infinitive()),
             present: form(Slot::Present),
             past: form(Slot::Past),
             past_participle: form(Slot::PastParticiple),
@@ -275,5 +304,18 @@ mod tests {
         assert_eq!(Table::build(&d).present.unwrap(), "lykkes");
         assert_eq!(Table::build(&d).past.unwrap(), "lykkedes");
         assert_eq!(v("at bo").infinitive(), "bo");
+    }
+
+    #[test]
+    fn perfect_auxiliary() {
+        // Mined from kaikki head templates: at have vs at være.
+        assert_eq!(auxiliary("lave"), Some("har"));
+        assert_eq!(auxiliary("gå"), Some("er"));
+        assert_eq!(auxiliary("avancere"), Some("er/har"));
+        // Wiktionary does not mark an auxiliary for komme (bare
+        // participle "kommet" in the head template), so no guess.
+        assert_eq!(auxiliary("komme"), None);
+        assert_eq!(Table::build(&v("lave")).auxiliary, Some("har"));
+        assert_eq!(Table::build(&v("gå")).auxiliary, Some("er"));
     }
 }
