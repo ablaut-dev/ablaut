@@ -32,4 +32,77 @@ umfassen	V;NFIN;LGSPEC01	both	zu umfassen is correct for the inseparable sense; 
 übergehen	V;NFIN;LGSPEC01	both	zu übergehen is correct for the inseparable sense (skip); gold lists only überzugehen
 liegenlassen	V.PTCP;PST	both	liegengelassen and liegenlassen (Ersatzinfinitiv-style) are both standard; gold lists only the short form
 kahlscheren	*	ours	kahlscheren builds on scheren (schert kahl, kahlgeschoren); gold derives it from a verb schieren
-gegenchecken	V;IMP;SG;2	ours	Imperative gegencheck! follows the fused paradigm; gold splits only here, inconsistently with its own finite forms
+abkönnen	*	ours	Prefixed modal keeps its particle in finite forms (Duden: ich muss durch, ich will weg); gold lists the bare base paradigm without the particle
+ankönnen	*	ours	Prefixed modal keeps its particle in finite forms (Duden: ich muss durch, ich will weg); gold lists the bare base paradigm without the particle
+durchmüssen	*	ours	Prefixed modal keeps its particle in finite forms (Duden: ich muss durch, ich will weg); gold lists the bare base paradigm without the particle
+losmüssen	*	ours	Prefixed modal keeps its particle in finite forms (Duden: ich muss durch, ich will weg); gold lists the bare base paradigm without the particle
+umhinkönnen	*	ours	Prefixed modal keeps its particle in finite forms (Duden: ich muss durch, ich will weg); gold lists the bare base paradigm without the particle
+wegwollen	*	ours	Prefixed modal keeps its particle in finite forms (Duden: ich muss durch, ich will weg); gold lists the bare base paradigm without the particle
+wohlwollen	*	ours	Prefixed modal keeps its particle in finite forms (Duden: ich muss durch, ich will weg); gold lists the bare base paradigm without the particle
+zurückwollen	*	ours	Prefixed modal keeps its particle in finite forms (Duden: ich muss durch, ich will weg); gold lists the bare base paradigm without the particle
+hineinwollen	*	ours	Prefixed modal keeps its particle in finite forms (Duden: ich muss durch, ich will weg); gold lists the bare base paradigm without the particle
+hinaufwollen	*	ours	Prefixed modal keeps its particle in finite forms (Duden: ich muss durch, ich will weg); gold lists the bare base paradigm without the particle
+Bescheid wissen	*	ours	Phrasal lemma keeps Bescheid in finite forms (Duden: er weiß Bescheid); gold lists bare wissen forms and marks the existing imperative nonexistent
+einflechten	*	ours	flechten base is strong (flocht ein, eingeflochten, Duden); gold mixes weak flechtete forms with particle-less flocht
+erklingen	V;SBJV;SG;1;PST	ours	Konjunktiv II erklänge keeps the er- prefix (Duden); gold drops it (klänge)
+erklingen	V;SBJV;SG;2;PST	ours	See erklingen SBJV;SG;1;PST
+erklingen	V;SBJV;SG;3;PST	ours	See erklingen SBJV;SG;1;PST
+erklingen	V;SBJV;PL;1;PST	ours	See erklingen SBJV;SG;1;PST
+erklingen	V;SBJV;PL;2;PST	ours	See erklingen SBJV;SG;1;PST
+erklingen	V;SBJV;PL;3;PST	ours	See erklingen SBJV;SG;1;PST
+aufgreifen	*	ours	greifen is strong: griff auf, aufgegriffen (Duden); gold gives corrupt griffte/grifftest forms
+umwerben	*	ours	werben is strong: umwarb, umworben (Duden); gold gives corrupt umwarbte/umwuerbte-style forms
+wiedergeben	*	ours	geben is strong: gab wieder (Duden); gold gives corrupt gabte/gaebte forms
+erbitten	*	ours	bitten is strong: erbat, erbeten (Duden); gold gives weak erbittete/erbittet forms
+einschwören	*	ours	schwören is strong: schwor ein, eingeschworen (Duden); gold gives weak schwörte/eingeschwört forms
+nachsinnen	*	ours	sinnen is strong: sann nach, nachgesonnen (Duden); gold gives weak sinnte forms
+nachhängen	*	ours	Intransitive haengen is strong: hing nach, nachgehangen (Duden: Gedanken nachhängen, hing nach); gold gives weak hängte forms
+durchhängen	*	ours	Intransitive hängen is strong: hing durch, durchgehangen (Duden); gold gives weak hängte forms
+zerbersten	*	ours	bersten is strong: zerbarst, zerborsten (Duden); gold gives weak zerberstete forms and participle zerberst
+vermaßen	*	ours	Denominal vermaßen (Maß) is weak: vermaßte, vermaßt (Duden); gold repeats strong vermessen forms (vermaß)
+erdulden	*	ours	Stem in -d/-t/-Cn takes epenthetic e (Duden par. arbeitete, atmete: erduldete, robotete, vertrocknete); gold drops it (erduldte, robotte)
+anöden	*	ours	Stem in -d/-t/-Cn takes epenthetic e (Duden par. arbeitete, atmete: erduldete, robotete, vertrocknete); gold drops it (erduldte, robotte)
+zwangsenteignen	*	ours	Stem in -d/-t/-Cn takes epenthetic e (Duden par. arbeitete, atmete: erduldete, robotete, vertrocknete); gold drops it (erduldte, robotte)
+ausbeten	*	ours	Stem in -d/-t/-Cn takes epenthetic e (Duden par. arbeitete, atmete: erduldete, robotete, vertrocknete); gold drops it (erduldte, robotte)
+abdichten	*	ours	Stem in -d/-t/-Cn takes epenthetic e (Duden par. arbeitete, atmete: erduldete, robotete, vertrocknete); gold drops it (erduldte, robotte)
+roboten	*	ours	Stem in -d/-t/-Cn takes epenthetic e (Duden par. arbeitete, atmete: erduldete, robotete, vertrocknete); gold drops it (erduldte, robotte)
+entmachten	*	ours	Stem in -d/-t/-Cn takes epenthetic e (Duden par. arbeitete, atmete: erduldete, robotete, vertrocknete); gold drops it (erduldte, robotte)
+entfreunden	*	ours	Stem in -d/-t/-Cn takes epenthetic e (Duden par. arbeitete, atmete: erduldete, robotete, vertrocknete); gold drops it (erduldte, robotte)
+anreden	*	ours	Stem in -d/-t/-Cn takes epenthetic e (Duden par. arbeitete, atmete: erduldete, robotete, vertrocknete); gold drops it (erduldte, robotte)
+wegpusten	*	ours	Stem in -d/-t/-Cn takes epenthetic e (Duden par. arbeitete, atmete: erduldete, robotete, vertrocknete); gold drops it (erduldte, robotte)
+schmachten	*	ours	Stem in -d/-t/-Cn takes epenthetic e (Duden par. arbeitete, atmete: erduldete, robotete, vertrocknete); gold drops it (erduldte, robotte)
+entschulden	*	ours	Stem in -d/-t/-Cn takes epenthetic e (Duden par. arbeitete, atmete: erduldete, robotete, vertrocknete); gold drops it (erduldte, robotte)
+vertrocknen	*	ours	Stem in -d/-t/-Cn takes epenthetic e (Duden par. arbeitete, atmete: erduldete, robotete, vertrocknete); gold drops it (erduldte, robotte)
+verduften	*	ours	Stem in -d/-t/-Cn takes epenthetic e (Duden par. arbeitete, atmete: erduldete, robotete, vertrocknete); gold drops it (erduldte, robotte)
+wegschauen	*	ours	Modern standard has no epenthetic e here (du schaust weg, schaute weg; Duden); gold lists only archaic -est/-ete expansions (schauest, schauete)
+hinwegschauen	*	ours	Modern standard has no epenthetic e here (du schaust weg, schaute weg; Duden); gold lists only archaic -est/-ete expansions (schauest, schauete)
+hinaufschauen	*	ours	Modern standard has no epenthetic e here (du schaust weg, schaute weg; Duden); gold lists only archaic -est/-ete expansions (schauest, schauete)
+verdecken	*	ours	Modern standard has no epenthetic e here (du schaust weg, schaute weg; Duden); gold lists only archaic -est/-ete expansions (schauest, schauete)
+erlosen	*	ours	Modern standard has no epenthetic e here (du schaust weg, schaute weg; Duden); gold lists only archaic -est/-ete expansions (schauest, schauete)
+fuchsen	*	ours	Modern standard has no epenthetic e here (du schaust weg, schaute weg; Duden); gold lists only archaic -est/-ete expansions (schauest, schauete)
+einspeisen	*	ours	Modern standard has no epenthetic e here (du schaust weg, schaute weg; Duden); gold lists only archaic -est/-ete expansions (schauest, schauete)
+daherschwimmen	*	ours	Modern standard has no epenthetic e here (du schaust weg, schaute weg; Duden); gold lists only archaic -est/-ete expansions (schauest, schauete)
+gegenchecken	*	ours	Modern standard has no epenthetic e here (du schaust weg, schaute weg; Duden); gold lists only archaic -est/-ete expansions (schauest, schauete)
+schreien	*	both	Post-reform spelling schrien/spien (Duden since 1996); gold lists only the pre-reform schrieen/spieen
+aufschreien	*	both	Post-reform spelling schrien/spien (Duden since 1996); gold lists only the pre-reform schrieen/spieen
+herausschreien	*	both	Post-reform spelling schrien/spien (Duden since 1996); gold lists only the pre-reform schrieen/spieen
+niederschreien	*	both	Post-reform spelling schrien/spien (Duden since 1996); gold lists only the pre-reform schrieen/spieen
+speien	*	both	Post-reform spelling schrien/spien (Duden since 1996); gold lists only the pre-reform schrieen/spieen
+anspeien	*	both	Post-reform spelling schrien/spien (Duden since 1996); gold lists only the pre-reform schrieen/spieen
+ausspeien	*	both	Post-reform spelling schrien/spien (Duden since 1996); gold lists only the pre-reform schrieen/spieen
+einkommen	*	ours	Konjunktiv II umlauts: käme ein, tränke an (Duden); gold gives umlautless kame/tranke
+hinauskommen	*	ours	Konjunktiv II umlauts: käme ein, tränke an (Duden); gold gives umlautless kame/tranke
+hereinkommen	*	ours	Konjunktiv II umlauts: käme ein, tränke an (Duden); gold gives umlautless kame/tranke
+herauskommen	*	ours	Konjunktiv II umlauts: käme ein, tränke an (Duden); gold gives umlautless kame/tranke
+hineinkommen	*	ours	Konjunktiv II umlauts: käme ein, tränke an (Duden); gold gives umlautless kame/tranke
+hinkommen	*	ours	Konjunktiv II umlauts: käme ein, tränke an (Duden); gold gives umlautless kame/tranke
+hinzukommen	*	ours	Konjunktiv II umlauts: käme ein, tränke an (Duden); gold gives umlautless kame/tranke
+dazukommen	*	ours	Konjunktiv II umlauts: käme ein, tränke an (Duden); gold gives umlautless kame/tranke
+rauskommen	*	ours	Konjunktiv II umlauts: käme ein, tränke an (Duden); gold gives umlautless kame/tranke
+reinkommen	*	ours	Konjunktiv II umlauts: käme ein, tränke an (Duden); gold gives umlautless kame/tranke
+vorankommen	*	ours	Konjunktiv II umlauts: käme ein, tränke an (Duden); gold gives umlautless kame/tranke
+antrinken	*	ours	Konjunktiv II umlauts: käme ein, tränke an (Duden); gold gives umlautless kame/tranke
+umarbeiten	*	both	Separable verb (Duden: arbeitete um, umgearbeitet; dämpfte ab, abgedämpft); gold renders finite cells in verb-final order (umarbeite), our verb-second rendering is equally standard
+abdämpfen	*	both	Separable verb (Duden: arbeitete um, umgearbeitet; dämpfte ab, abgedämpft); gold renders finite cells in verb-final order (umarbeite), our verb-second rendering is equally standard
+aufsaugen	*	both	saugen is both strong and weak (sog auf/saugte auf, aufgesogen/aufgesaugt, Duden); gold lists only the weak set
+verweben	*	both	verweben is both weak and strong (verwebte/verwob, verwebt/verwoben, Duden); gold lacks the weak set
