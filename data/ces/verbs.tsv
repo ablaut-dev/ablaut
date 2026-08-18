@@ -163,7 +163,7 @@ cítit	-	-	-	-	-	-	ciť	ciťme	ciťte	-	cítěn	-	-
 danit	-	-	-	-	-	-	daň	daňme	daňte	-	daněn	-	-
 darebačit	-	-	-	-	-	-	-	-	-	-	-	darebače	-	-
 dařit	-	-	-	-	-	-	-	-	-	-	-	daře	-
-dbát	dbám	dbáš	dbá	dbáme	dbáte	dbají	dbej	dbejme	dbejte	dbal	-	dbaje	dbajíc
+dbát	dbám	dbáš	dbá	dbáme	dbáte	dbají	dbej	dbejme	dbejte	dbal	dbán	dbaje	dbajíc
 delšit	-	-	-	-	-	-	delši	delšeme	delšete	-	-	delše	-	-
 diskotančit	-	-	-	-	-	-	diskotanči	diskotančeme	diskotančete	-	-	diskotanče	-	-
 divočet	-	-	-	-	-	divočejí	divočej	divočejme	divočejte	-	-	divočeje	divočejíc	-
@@ -1398,7 +1398,7 @@ naloupit	-	-	-	-	-	-	nalup	nalupme	nalupte	-	-	-	-	-
 nalozit	-	-	-	-	-	-	-	-	-	-	-	naloze	-	-
 naložit	-	-	-	-	-	-	-	-	-	-	-	nalože	-	-
 nalámat	nalámu	nalámeš	naláme	nalámeme	nalámete	nalámou	-	-	-	-	-	-	-	-
-nalézt	nalezu	nalezeš	naleze	nalezeme	nalezete	nalezou	nalez	nalezme	nalezte	nalezl	-	-	-
+nalézt	nalezu	nalezeš	naleze	nalezeme	nalezete	nalezou	nalez	nalezme	nalezte	nalezl	nalezen	-	-
 nalít	naleji	naleješ	naleje	nalejeme	nalejete	nalejou	nalej	nalejme	nalejte	nalil	nalit	-	-	nalila
 nalíčit	-	-	-	-	-	-	nalič	naličme	naličte	-	-	-	-	-
 namamonit	-	-	-	-	-	-	namamoň	namamoňme	namamoňte	-	namamoněn	-	-	-
@@ -5328,6 +5328,7 @@ uklízet	-	-	-	-	-	uklízejí	uklízej	uklízejme	uklízejte	-	-	uklízeje	uklí
 ukmochtit	-	-	-	-	-	-	ukmochti	ukmochtěme	ukmochtěte	-	ukmochtěn	-	-	-
 uknotit	-	-	-	-	-	-	uknoť	uknoťme	uknoťte	-	uknocen	-	-	-
 ukojit	-	-	-	-	-	-	-	-	-	-	-	ukoje	-	-
+ukrást	ukradnu	ukradneš	ukradne	ukradneme	ukradnete	ukradnou	ukradni	ukradněme	ukradněte	ukradl	ukraden	-	-
 ukolejnit	-	-	-	-	-	-	ukolejň	ukolejňme	ukolejňte	-	ukolejněn	-	-	-
 ukonejšit	-	-	-	-	-	-	ukonejši	ukonejšeme	ukonejšete	-	-	-	-	-
 ukončit	-	-	-	-	-	-	ukonči	ukončeme	ukončete	-	-	-	-
