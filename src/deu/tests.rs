@@ -1045,3 +1045,72 @@ fn lexicon_strong_additions() {
     // wett|erleuchten must not be split off wetterleuchten.
     assert_eq!(v("wetterleuchten").past_participle(), "gewetterleuchtet");
 }
+
+#[test]
+fn issue_90_inseparable_prefix_rulings() {
+    // Duden: die Kosten übersteigen (überstieg, hat überstiegen).
+    let u = v("übersteigen");
+    assert_eq!(
+        u.conjugate(Preterite, Indicative, Third, Singular),
+        "überstieg"
+    );
+    assert_eq!(u.past_participle(), "überstiegen");
+    // Duden: sich etwas überlegen (überlegte, hat überlegt).
+    let l = v("überlegen");
+    assert_eq!(
+        l.conjugate(Present, Indicative, Third, Singular),
+        "überlegt"
+    );
+    assert_eq!(l.past_participle(), "überlegt");
+    // Duden: Steuern hinterziehen (hinterzog, hat hinterzogen).
+    let h = v("hinterziehen");
+    assert_eq!(
+        h.conjugate(Preterite, Indicative, Third, Singular),
+        "hinterzog"
+    );
+    assert_eq!(h.past_participle(), "hinterzogen");
+    // Duden: etwas unterbinden (unterband, hat unterbunden).
+    assert_eq!(v("unterbinden").past_participle(), "unterbunden");
+    // Duden: den Wagen überladen (überlud, hat überladen).
+    let o = v("überladen");
+    assert_eq!(
+        o.conjugate(Present, Indicative, Third, Singular),
+        "überlädt"
+    );
+    assert_eq!(o.past_participle(), "überladen");
+    // Duden: ein Beet umpflanzen, mit Pflanzen umgeben (umpflanzt).
+    assert_eq!(v("umpflanzen").past_participle(), "umpflanzt");
+}
+
+#[test]
+fn issue_90_separable_prefix_rulings() {
+    // Duden/Wiktionary: zweiteilen — teilte zwei, zweigeteilt.
+    let z = v("zweiteilen");
+    assert_eq!(
+        z.conjugate(Preterite, Indicative, Third, Singular),
+        "teilte zwei"
+    );
+    assert_eq!(z.past_participle(), "zweigeteilt");
+    assert_eq!(z.zu_infinitive(), "zweizuteilen");
+    // Wiktionary: gegenchecken — checkte gegen, gegengecheckt.
+    let g = v("gegenchecken");
+    assert_eq!(
+        g.conjugate(Preterite, Indicative, Third, Singular),
+        "checkte gegen"
+    );
+    assert_eq!(g.past_participle(), "gegengecheckt");
+    // Wiktionary: rückdrehen — drehte rück, rückgedreht.
+    assert_eq!(v("rückdrehen").past_participle(), "rückgedreht");
+}
+
+#[test]
+fn issue_90_erhaengen_is_weak() {
+    // Duden: sich erhängen — erhängte, hat erhängt (not strong hängen).
+    let e = v("erhängen");
+    assert_eq!(
+        e.conjugate(Preterite, Indicative, Third, Singular),
+        "erhängte"
+    );
+    assert_eq!(e.past_participle(), "erhängt");
+    assert_eq!(e.auxiliary(), Auxiliary::Haben);
+}

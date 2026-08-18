@@ -291,14 +291,14 @@ einquartieren	x	ein	-	-	-	-	h
 hineininterpretieren	x	hinein	-	-	-	-	h
 hineinoptieren	x	hinein	-	-	-	-	h
 hineinprojizieren	x	hinein	-	-	-	-	h
-hinterziehen	x	hinter	-	-	-	-	h
+hinterziehen	i	hinter	-	-	-	-	h
 hinzuaddieren	x	hin	-	-	-	-	h
 losmarschieren	x	los	-	-	-	-	h
 mitdiskutieren	x	mit	-	-	-	-	h
 mitfinanzieren	x	mit	-	-	-	-	h
 nachfinanzieren	x	nach	-	-	-	-	h
 nachproduzieren	x	nach	-	-	-	-	h
-unterbinden	x	unter	-	-	-	-	h
+unterbinden	i	unter	-	-	-	-	h
 unterbreiten	x	unter	-	-	-	-	h
 unterbringen	x	unter	-	-	-	-	h
 unterbuttern	x	unter	-	-	-	-	h
@@ -348,10 +348,10 @@ zufrieren	x	zu	-	-	-	-	h
 überhelfen	x	über	-	-	-	-	h
 überhören	x	über	-	-	-	-	h
 überkommen	x	über	-	-	-	-	h
-überladen	x	über	-	-	-	-	h
+überladen	i	über	-	-	-	-	h
 überlassen	x	über	-	-	-	-	h
 überlaufen	x	über	-	-	-	-	h
-überlegen	x	über	-	-	-	-	h
+überlegen	i	über	-	-	-	-	h
 überleiten	x	über	-	-	-	-	h
 überordnen	x	über	-	-	-	-	h
 überragen	x	über	-	-	-	-	h
@@ -365,7 +365,7 @@ zufrieren	x	zu	-	-	-	-	h
 übersiedeln	x	über	-	-	-	-	h
 überspielen	x	über	-	-	-	-	h
 überspringen	x	über	-	-	-	-	h
-übersteigen	x	über	-	-	-	-	h
+übersteigen	i	über	-	-	-	-	h
 übertreten	x	über	-	-	-	-	h
 übertünchen	x	über	-	-	-	-	h
 überwechseln	x	über	-	-	-	-	h
@@ -917,9 +917,9 @@ endlagern	f	end	-	-	-	-	h
 notlanden	f	not	-	-	-	-	s
 wechselwirken	f	wechsel	-	-	-	-	h
 gegenzeichnen	f	gegen	-	-	-	-	h
-gegenchecken	f	gegen	-	-	-	-	h
+gegenchecken	x	gegen	-	-	-	-	h
 gegenbeschuldigen	f	gegen	-	-	-	-	h
-rückdrehen	f	rück	-	-	-	-	h
+rückdrehen	x	rück	-	-	-	-	h
 wetterleuchten	w	-	-	-	-	-	h
 zweckentfremden	f	zweck	-	-	-	-	h
 zwangsernähren	f	zwangs	-	-	-	-	h
@@ -930,3 +930,6 @@ radebrechen	w	-	-	-	-	-	h
 umschmelzen	f	um	-	-	-	-	h
 aushauen	xw	aus	-	-	-	-	h
 reinhauen	xw	rein	-	-	-	-	h
+umpflanzen	i	um	-	-	-	-	h
+zweiteilen	x	zwei	-	-	-	-	h
+erhängen	iw	er	-	-	-	-	h
