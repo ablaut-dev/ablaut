@@ -1,1 +1,5 @@
 # lemma	features	ruling(ours|theirs|both)	note
+dati	V;IND;PRS;DU;2	theirs	Sloleks mirror lists only data/dej; the standard dual is dasta (Fran.si, SSKJ) — Apertium correct
+dati	V;IND;PRS;PL;2	theirs	standard daste; Sloleks mirror gap — Apertium correct
+vihati	V;IND;PRS;SG;1	ours	Apertium *vihl is a paradigm error; Sloleks vihljem is correct
+porasti	V;IND;PRS;SG;1	ours	-rasti family: Apertium mis-segments; Sloleks/engine correct

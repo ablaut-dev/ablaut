@@ -211,18 +211,30 @@ impl Verb {
         n * 3 + p
     }
 
-    /// The present indicative.
+    /// The present indicative. Every ending rides a vowel-final
+    /// present stem (delam = dela + m, delajo = dela + jo). A missing
+    /// cell in a partial explicit row derives from the explicit 1sg
+    /// (izdam → izda + ta = izdata, načnem → načnejo) — the mined 1sg
+    /// knows the true present stem where the class guess does not.
     pub fn present(&self, person: Person, number: Number) -> String {
         if let Some(f) = &self.row.present[Self::idx(person, number)] {
             return f.clone();
         }
-        let s = self.stem();
-        let endings: [&str; 9] = match self.class {
-            Class::A => ["am", "aš", "a", "ava", "ata", "ata", "amo", "ate", "ajo"],
-            Class::I => ["im", "iš", "i", "iva", "ita", "ita", "imo", "ite", "ijo"],
-            Class::Uje | Class::Ne => ["em", "eš", "e", "eva", "eta", "eta", "emo", "ete", "ejo"],
-        };
-        format!("{s}{}", endings[Self::idx(person, number)])
+        let stem = self.row.present[0]
+            .as_deref()
+            .and_then(|sg1| sg1.strip_suffix('m'))
+            .map(str::to_string)
+            .unwrap_or_else(|| {
+                let s = self.stem();
+                match self.class {
+                    // The A stem already ends in -a (trga).
+                    Class::A => s,
+                    Class::I => format!("{s}i"),
+                    Class::Uje | Class::Ne => format!("{s}e"),
+                }
+            });
+        const ENDINGS: [&str; 9] = ["m", "š", "", "va", "ta", "ta", "mo", "te", "jo"];
+        format!("{stem}{}", ENDINGS[Self::idx(person, number)])
     }
 
     /// The imperative 2sg (delaj, govori, kupuj, dvigni).

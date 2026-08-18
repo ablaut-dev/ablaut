@@ -47,12 +47,25 @@ second CI gate scores the Sloleks ∩ Apertium agreement instead —
 the same two-path harness, 8x the gold:
 
 - Sloleks ∩ Apertium agreement gold: 86,356 forms over 3,489
-  lemmas, **99.98%** (same 99.9/99.5 gates); 991 disagreement
+  lemmas, **100.00%** (same 99.9/99.5 gates); 991 disagreement
   slots on 161 lemmas excluded
-- The 17 mismatches sit on five lemmas where a `-` (derive) cell
-  in `data/slv/verbs.tsv` misfires: trgati (trgaam), žeti (ži),
-  peti/načeti (3pl), izdati (du3) — engine fixes, not oracle noise
-- Disagreement corpus is split: Sloleks-mirror oddities (dati:
-  only `data`/`dej` where the norm is dasta/daj) vs Apertium
-  paradigm errors (vihati → vihl; the -rasti family) — both
-  rightly excluded, adjudication candidates
+- The seven lemmas that once misfired on a `-` (derive) cell are
+  fixed with explicit rows: trgati, žeti, peti, načeti, izdati
+  (issue #98), plus gniti (irregular 3pl gnijo) and zapomniti
+  (i-conjugation per SSKJ) surfaced by the same gold
+- Disagreement corpus (adjudicated in `adjudications.tsv`):
+  Sloleks-mirror oddities where the norm follows Apertium (dati:
+  Sloleks lists only `data`/`dej`, the norm is dasta/daj) vs
+  Apertium paradigm errors where Sloleks is right (vihati → *vihl;
+  the -rasti family)
+
+## Homographs
+
+Slovenian verb homographs (e.g. the type/aspect pairs sharing an
+infinitive) are keyed by lemma alone; ablaut returns the paradigm of
+the lemma as spelled, and where two verbs share a spelling the
+lexicon row encodes the dominant standard paradigm. Aspect is not
+disambiguated in the reverse direction. No homograph currently
+produces a gate mismatch; should a genuine spelling collision with
+divergent paradigms surface in the gold, it is handled by an explicit
+`verbs.tsv` row for the standard reading, with the variant noted here.
