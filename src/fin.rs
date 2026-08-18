@@ -424,7 +424,16 @@ pub struct Table {
     pub past_participle: String,
     pub present_passive_participle: String,
     pub past_passive_participle: String,
+    /// olla + nut-participle, pluralized after me/te/he: olen puhunut,
+    /// olemme puhuneet.
+    pub perfekti: [String; 6],
+    /// olin puhunut.
+    pub pluskvamperfekti: [String; 6],
 }
+
+/// The olla rows used by the perfect tenses.
+const OLLA_PRES: [&str; 6] = ["olen", "olet", "on", "olemme", "olette", "ovat"];
+const OLLA_PAST: [&str; 6] = ["olin", "olit", "oli", "olimme", "olitte", "olivat"];
 
 impl Table {
     #[must_use]
@@ -459,8 +468,18 @@ impl Table {
             past_participle: v.participle(true, false),
             present_passive_participle: v.participle(false, true),
             past_passive_participle: v.participle(true, true),
+            perfekti: perfect_row(&OLLA_PRES, &v.participle(true, false)),
+            pluskvamperfekti: perfect_row(&OLLA_PAST, &v.participle(true, false)),
         }
     }
+}
+
+/// olla + participle, with the plural participle (puhunut → puhuneet)
+/// after the plural persons.
+fn perfect_row(aux: &[&str; 6], nut: &str) -> [String; 6] {
+    let cut = nut.char_indices().rev().nth(1).map_or(0, |(i, _)| i);
+    let neet = format!("{}eet", &nut[..cut]);
+    std::array::from_fn(|i| format!("{} {}", aux[i], if i < 3 { nut } else { &neet }))
 }
 
 #[cfg(test)]
@@ -469,6 +488,22 @@ mod tests {
 
     fn v(inf: &str) -> Verb {
         Verb::from_infinitive(inf).unwrap()
+    }
+
+    #[test]
+    fn perfect_tenses() {
+        let t = Table::build(&v("puhua"));
+        assert_eq!(t.perfekti[0], "olen puhunut");
+        assert_eq!(t.perfekti[3], "olemme puhuneet");
+        assert_eq!(t.pluskvamperfekti[2], "oli puhunut");
+        assert_eq!(t.pluskvamperfekti[5], "olivat puhuneet");
+        // Front-harmony participles pluralize the same way.
+        let s = Table::build(&v("syödä"));
+        assert_eq!(s.perfekti[0], "olen syönyt");
+        assert_eq!(s.perfekti[5], "ovat syöneet");
+        let o = Table::build(&v("olla"));
+        assert_eq!(o.perfekti[2], "on ollut");
+        assert_eq!(o.perfekti[4], "olette olleet");
     }
 
     #[test]

@@ -211,6 +211,12 @@ struct PortugueseConjugation {
     subjunctive_present: Vec<String>,
     subjunctive_imperfect: Vec<String>,
     subjunctive_future: Vec<String>,
+    perfeito_composto: Vec<String>,
+    mais_que_perfeito_composto: Vec<String>,
+    futuro_composto: Vec<String>,
+    condicional_composto: Vec<String>,
+    conjuntivo_perfeito: Vec<String>,
+    conjuntivo_mais_que_perfeito: Vec<String>,
 }
 
 #[pymethods]
@@ -237,6 +243,12 @@ impl From<crate::por::Table> for PortugueseConjugation {
             subjunctive_present: t.subjunctive_present.into(),
             subjunctive_imperfect: t.subjunctive_imperfect.into(),
             subjunctive_future: t.subjunctive_future.into(),
+            perfeito_composto: t.perfeito_composto.into(),
+            mais_que_perfeito_composto: t.mais_que_perfeito_composto.into(),
+            futuro_composto: t.futuro_composto.into(),
+            condicional_composto: t.condicional_composto.into(),
+            conjuntivo_perfeito: t.conjuntivo_perfeito.into(),
+            conjuntivo_mais_que_perfeito: t.conjuntivo_mais_que_perfeito.into(),
         }
     }
 }
@@ -302,6 +314,8 @@ struct FinnishConjugation {
     past_participle: String,
     present_passive_participle: String,
     past_passive_participle: String,
+    perfekti: Vec<String>,
+    pluskvamperfekti: Vec<String>,
 }
 
 #[pymethods]
@@ -329,6 +343,8 @@ impl From<crate::fin::Table> for FinnishConjugation {
             past_participle: t.past_participle,
             present_passive_participle: t.present_passive_participle,
             past_passive_participle: t.past_passive_participle,
+            perfekti: t.perfekti.into(),
+            pluskvamperfekti: t.pluskvamperfekti.into(),
         }
     }
 }
@@ -350,6 +366,8 @@ struct EstonianConjugation {
     present_participle: String,
     nud_participle: String,
     tud_participle: String,
+    perfect: Vec<String>,
+    pluperfect: Vec<String>,
 }
 
 #[pymethods]
@@ -374,6 +392,8 @@ impl From<crate::est::Table> for EstonianConjugation {
             present_participle: t.present_participle,
             nud_participle: t.nud_participle,
             tud_participle: t.tud_participle,
+            perfect: t.perfect.into(),
+            pluperfect: t.pluperfect.into(),
         }
     }
 }
@@ -389,6 +409,9 @@ struct SlovenianConjugation {
     /// [2sg, 1du, 2du, 1pl, 2pl]
     imperative: Vec<Option<String>>,
     participle: Vec<String>,
+    preteklik: Vec<String>,
+    prihodnjik: Vec<String>,
+    pogojnik: Vec<String>,
 }
 
 #[pymethods]
@@ -406,6 +429,9 @@ impl From<crate::slv::Table> for SlovenianConjugation {
             present: t.present.into(),
             imperative: t.imperative.into(),
             participle: t.participle.into(),
+            preteklik: t.preteklik.into(),
+            prihodnjik: t.prihodnjik.into(),
+            pogojnik: t.pogojnik.into(),
         }
     }
 }
@@ -423,6 +449,8 @@ struct CzechConjugation {
     passive_participle: Option<Vec<String>>,
     /// [masc, fem/neut, plural]
     transgressive: Vec<Option<String>>,
+    minuly_cas: Vec<String>,
+    kondicional: Vec<String>,
 }
 
 #[pymethods]
@@ -441,6 +469,8 @@ impl From<crate::ces::Table> for CzechConjugation {
             past_participle: t.past_participle.into(),
             passive_participle: t.passive_participle.map(Into::into),
             transgressive: t.transgressive.into(),
+            minuly_cas: t.minuly_cas.into(),
+            kondicional: t.kondicional.into(),
         }
     }
 }
@@ -491,6 +521,12 @@ struct EnglishConjugation {
     past_participle: String,
     present_participle: String,
     third_singular: String,
+    present_row: Vec<String>,
+    past_row: Vec<String>,
+    present_perfect_row: Vec<String>,
+    past_perfect_row: Vec<String>,
+    future_row: Vec<String>,
+    future_perfect_row: Vec<String>,
 }
 
 #[pymethods]
@@ -508,6 +544,12 @@ impl From<crate::eng::Table> for EnglishConjugation {
             past_participle: t.past_participle,
             present_participle: t.present_participle,
             third_singular: t.third_singular,
+            present_row: t.present_row.into(),
+            past_row: t.past_row.into(),
+            present_perfect_row: t.present_perfect_row.into(),
+            past_perfect_row: t.past_perfect_row.into(),
+            future_row: t.future_row.into(),
+            future_perfect_row: t.future_perfect_row.into(),
         }
     }
 }
@@ -526,6 +568,12 @@ struct RomanianConjugation {
     simple_perfect: Vec<String>,
     pluperfect: Vec<String>,
     subjunctive: Vec<String>,
+    perfect_compus: Vec<String>,
+    viitor: Vec<String>,
+    conditional_prezent: Vec<String>,
+    subjunctive_perfect: Vec<String>,
+    conditional_perfect: Vec<String>,
+    viitor_anterior: Vec<String>,
 }
 
 #[pymethods]
@@ -547,6 +595,12 @@ impl From<crate::ron::Table> for RomanianConjugation {
             simple_perfect: t.simple_perfect.into(),
             pluperfect: t.pluperfect.into(),
             subjunctive: t.subjunctive.into(),
+            perfect_compus: t.perfect_compus.into(),
+            viitor: t.viitor.into(),
+            conditional_prezent: t.conditional_prezent.into(),
+            subjunctive_perfect: t.subjunctive_perfect.into(),
+            conditional_perfect: t.conditional_perfect.into(),
+            viitor_anterior: t.viitor_anterior.into(),
         }
     }
 }
@@ -569,6 +623,12 @@ struct ItalianConjugation {
     conditional: Vec<String>,
     subjunctive_present: Vec<String>,
     subjunctive_imperfect: Vec<String>,
+    passato_prossimo: Vec<String>,
+    trapassato_prossimo: Vec<String>,
+    futuro_anteriore: Vec<String>,
+    condizionale_passato: Vec<String>,
+    congiuntivo_passato: Vec<String>,
+    congiuntivo_trapassato: Vec<String>,
 }
 
 #[pymethods]
@@ -594,6 +654,12 @@ impl From<crate::ita::Table> for ItalianConjugation {
             conditional: t.conditional.into(),
             subjunctive_present: t.subjunctive_present.into(),
             subjunctive_imperfect: t.subjunctive_imperfect.into(),
+            passato_prossimo: t.passato_prossimo.into(),
+            trapassato_prossimo: t.trapassato_prossimo.into(),
+            futuro_anteriore: t.futuro_anteriore.into(),
+            condizionale_passato: t.condizionale_passato.into(),
+            congiuntivo_passato: t.congiuntivo_passato.into(),
+            congiuntivo_trapassato: t.congiuntivo_trapassato.into(),
         }
     }
 }
@@ -611,6 +677,12 @@ struct SwedishConjugation {
     past_passive: Option<String>,
     supine_passive: Option<String>,
     subjunctive_past: Option<String>,
+    presens_row: Option<Vec<String>>,
+    preteritum_row: Option<Vec<String>>,
+    perfekt_row: Option<Vec<String>>,
+    pluskvamperfekt_row: Option<Vec<String>>,
+    futurum_row: Vec<String>,
+    konditionalis_row: Vec<String>,
 }
 
 #[pymethods]
@@ -633,6 +705,12 @@ impl From<crate::swe::Table> for SwedishConjugation {
             past_passive: t.past_passive,
             supine_passive: t.supine_passive,
             subjunctive_past: t.subjunctive_past,
+            presens_row: t.presens_row.map(Into::into),
+            preteritum_row: t.preteritum_row.map(Into::into),
+            perfekt_row: t.perfekt_row.map(Into::into),
+            pluskvamperfekt_row: t.pluskvamperfekt_row.map(Into::into),
+            futurum_row: t.futurum_row.into(),
+            konditionalis_row: t.konditionalis_row.into(),
         }
     }
 }
