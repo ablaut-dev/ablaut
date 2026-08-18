@@ -382,6 +382,20 @@ impl Verb {
                         &fut[..fut.len() - "idh".len()],
                         ["inn", "eá", "imis", "idís", "í"],
                     )
+                } else if fut.ends_with("aidh") {
+                    // Irregular f-less futures in broad -aidh
+                    // (rachaidh, geobhaidh): rachainn/rachfá/
+                    // rachaimis/rachaidís/rachfaí.
+                    (
+                        &fut[..fut.len() - "aidh".len()],
+                        ["ainn", "fá", "aimis", "aidís", "faí"],
+                    )
+                } else if fut.ends_with("idh") {
+                    // beidh: beinn/beifeá/beimis/beidís/beifí.
+                    (
+                        &fut[..fut.len() - "dh".len()],
+                        ["nn", "feá", "mis", "dís", "fí"],
+                    )
                 } else {
                     return None;
                 };
@@ -393,7 +407,14 @@ impl Verb {
                     Autonomous => 4,
                     _ => return None,
                 };
-                format!("{b}{}", endings[i])
+                let e = endings[i];
+                // The bh+f cluster simplifies in spelling:
+                // geobh + fá → geofá, geobh + faí → geofaí.
+                let b = match b.strip_suffix("bh") {
+                    Some(v) if e.starts_with('f') => v,
+                    _ => b,
+                };
+                format!("{b}{e}")
             }
             (Imperative, SecondSingular) => {
                 self.row.imp2.clone().unwrap_or_else(|| self.lemma.clone())
@@ -559,6 +580,87 @@ mod tests {
             b.form(Tense::Present, Slot::Autonomous).unwrap(),
             "bristear"
         );
+    }
+
+    #[test]
+    fn synthetic_conditional() {
+        // Regular classes ride the future base.
+        let g = v("glan");
+        assert_eq!(
+            g.form(Tense::Conditional, Slot::FirstSingular).unwrap(),
+            "glanfainn"
+        );
+        let o = v("ól");
+        assert_eq!(
+            o.form(Tense::Conditional, Slot::FirstSingular).unwrap(),
+            "ólfainn"
+        );
+        // Irregular f-less futures: rachaidh → rachainn/rachfá.
+        let t = v("téigh");
+        assert_eq!(
+            t.form(Tense::Conditional, Slot::FirstSingular).unwrap(),
+            "rachainn"
+        );
+        assert_eq!(
+            t.form(Tense::Conditional, Slot::SecondSingular).unwrap(),
+            "rachfá"
+        );
+        assert_eq!(
+            t.form(Tense::Conditional, Slot::FirstPlural).unwrap(),
+            "rachaimis"
+        );
+        assert_eq!(
+            t.form(Tense::Conditional, Slot::ThirdPlural).unwrap(),
+            "rachaidís"
+        );
+        assert_eq!(
+            t.form(Tense::Conditional, Slot::Autonomous).unwrap(),
+            "rachfaí"
+        );
+        // bh + f simplifies: geobhaidh → geofá; beidh → beifeá.
+        let f = v("faigh");
+        assert_eq!(
+            f.form(Tense::Conditional, Slot::FirstSingular).unwrap(),
+            "geobhainn"
+        );
+        assert_eq!(
+            f.form(Tense::Conditional, Slot::SecondSingular).unwrap(),
+            "geofá"
+        );
+        let b = v("bí");
+        assert_eq!(
+            b.form(Tense::Conditional, Slot::FirstSingular).unwrap(),
+            "beinn"
+        );
+        assert_eq!(
+            b.form(Tense::Conditional, Slot::SecondSingular).unwrap(),
+            "beifeá"
+        );
+        // The past habitual keeps its synthetic persons too.
+        assert_eq!(
+            t.form(Tense::PastHabitual, Slot::FirstSingular).unwrap(),
+            "téinn"
+        );
+        assert_eq!(
+            t.form(Tense::PastHabitual, Slot::SecondSingular).unwrap(),
+            "téiteá"
+        );
+    }
+
+    #[test]
+    fn table_mutates_synthetic_conditional() {
+        // Raw slots stay unmutated (the oracle convention); the
+        // display Table carries the initial mutation.
+        let table = Table::build(&v("ól"));
+        assert_eq!(table.conditional[0].as_deref(), Some("d'ólfainn"));
+        let table = Table::build(&v("glan"));
+        assert_eq!(table.conditional[0].as_deref(), Some("ghlanfainn"));
+        assert_eq!(table.conditional[1].as_deref(), Some("ghlanfá"));
+        let table = Table::build(&v("téigh"));
+        assert_eq!(table.conditional[0].as_deref(), Some("rachainn"));
+        assert_eq!(table.conditional[1].as_deref(), Some("rachfá"));
+        // 3sg stays analytic.
+        assert_eq!(table.conditional[2].as_deref(), Some("rachadh sé/sí"));
     }
 
     #[test]
