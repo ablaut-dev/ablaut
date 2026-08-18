@@ -204,6 +204,16 @@ impl Verb {
         }
     }
 
+    /// Whether the infinitive actually carries the class's theme
+    /// (mluv-it, kupov-at). Athematic infinitives (být, vzít, moct,
+    /// nést) fall through `stem()` unstripped, so class defaults
+    /// would glue endings onto the whole infinitive (býten, vzítě,
+    /// moctme); those slots must come from the lexicon row or stay
+    /// empty.
+    fn thematic(&self) -> bool {
+        self.stem().len() < self.infinitive.len()
+    }
+
     fn idx(person: Person, number: Number) -> usize {
         let p = match person {
             Person::First => 0,
@@ -230,19 +240,23 @@ impl Verb {
         format!("{s}{}", endings[Self::idx(person, number)])
     }
 
-    /// The imperative 2sg by class (mluv, dělej, kupuj, tiskni).
-    fn imp2(&self) -> String {
+    /// The imperative 2sg by class (mluv, dělej, kupuj, tiskni), or
+    /// None when the infinitive is athematic and the row is silent.
+    fn imp2(&self) -> Option<String> {
         if let Some(f) = &self.row.imp[0] {
-            return f.clone();
+            return Some(f.clone());
+        }
+        if !self.thematic() {
+            return None;
         }
         let s = self.stem();
-        match self.class {
+        Some(match self.class {
             Class::Uje => format!("{s}uj"),
             Class::A => format!("{s}ej"),
             Class::Ne => format!("{s}ni"),
             Class::EtEji => format!("{s}ej"),
             Class::I | Class::EtI => imp_bare(s),
-        }
+        })
     }
 
     /// An imperative form (2sg, 1pl, 2pl).
@@ -256,7 +270,7 @@ impl Verb {
         if let Some(f) = &self.row.imp[slot] {
             return Some(f.clone());
         }
-        let base = self.imp2();
+        let base = self.imp2()?;
         if suffix.is_empty() {
             return Some(base);
         }
@@ -297,6 +311,9 @@ impl Verb {
     fn pass_masc(&self) -> Option<String> {
         if let Some(f) = &self.row.pass {
             return Some(f.clone());
+        }
+        if !self.thematic() {
+            return None;
         }
         let inf = &self.infinitive;
         let s = self.stem();
@@ -360,20 +377,30 @@ impl Verb {
     /// (mluvíc), plural (mluvíce).
     pub fn transgressive(&self, slot: TransgressiveSlot) -> Option<String> {
         let s = self.stem();
-        let (dm, df) = match self.class {
-            Class::Uje => (format!("{s}uje"), format!("{s}ujíc")),
-            Class::A => (format!("{s}aje"), format!("{s}ajíc")),
-            Class::I | Class::EtI => (format!("{}ě", soften(s)), format!("{s}íc")),
-            Class::EtEji => (format!("{s}ěje"), format!("{s}ějíc")),
-            Class::Ne => (format!("{s}na"), format!("{s}nouc")),
-        };
-        let m = self.row.cvb_m.clone().unwrap_or(dm);
-        let f = self.row.cvb_fn.clone().unwrap_or(df);
-        Some(match slot {
+        let default = |mk: fn(&str) -> String| self.thematic().then(|| mk(s));
+        let m = self.row.cvb_m.clone().or_else(|| {
+            default(match self.class {
+                Class::Uje => |s| format!("{s}uje"),
+                Class::A => |s| format!("{s}aje"),
+                Class::I | Class::EtI => |s| format!("{}ě", soften(s)),
+                Class::EtEji => |s| format!("{s}ěje"),
+                Class::Ne => |s| format!("{s}na"),
+            })
+        });
+        let f = self.row.cvb_fn.clone().or_else(|| {
+            default(match self.class {
+                Class::Uje => |s| format!("{s}ujíc"),
+                Class::A => |s| format!("{s}ajíc"),
+                Class::I | Class::EtI => |s| format!("{s}íc"),
+                Class::EtEji => |s| format!("{s}ějíc"),
+                Class::Ne => |s| format!("{s}nouc"),
+            })
+        });
+        match slot {
             TransgressiveSlot::Masculine => m,
             TransgressiveSlot::FeminineNeuter => f,
-            TransgressiveSlot::Plural => format!("{f}e"),
-        })
+            TransgressiveSlot::Plural => f.map(|f| format!("{f}e")),
+        }
     }
 }
 
@@ -529,6 +556,72 @@ mod tests {
         assert_eq!(
             t.imperative(Person::First, Number::Plural).unwrap(),
             "tiskněme"
+        );
+    }
+
+    /// Athematic infinitives (být, moct, vzít) must not overgenerate:
+    /// class defaults would glue endings onto the whole infinitive
+    /// (býten, moctme, vzítě), so underived slots stay empty (#88).
+    #[test]
+    fn athematic_no_overgeneration() {
+        let byt = v("být");
+        assert_eq!(
+            byt.passive_participle(Gender::MasculineAnimate, Number::Singular),
+            None,
+            "být has no passive participle (was: býten)"
+        );
+        assert_eq!(
+            byt.imperative(Person::Second, Number::Singular).unwrap(),
+            "buď"
+        );
+        assert_eq!(
+            byt.transgressive(TransgressiveSlot::Masculine).unwrap(),
+            "jsa"
+        );
+
+        let moct = v("moct");
+        assert_eq!(moct.imperative(Person::Second, Number::Singular), None);
+        assert_eq!(moct.imperative(Person::First, Number::Plural), None);
+        assert_eq!(moct.imperative(Person::Second, Number::Plural), None);
+        assert_eq!(
+            moct.passive_participle(Gender::MasculineAnimate, Number::Singular),
+            None,
+            "moct has no passive participle (was: mocten)"
+        );
+        assert_eq!(
+            moct.transgressive(TransgressiveSlot::Masculine).unwrap(),
+            "moha"
+        );
+
+        let vzit = v("vzít");
+        assert_eq!(
+            vzit.transgressive(TransgressiveSlot::Masculine),
+            None,
+            "vzít has no present transgressive (was: vzítě)"
+        );
+        assert_eq!(vzit.transgressive(TransgressiveSlot::Plural), None);
+        assert_eq!(
+            vzit.passive_participle(Gender::MasculineAnimate, Number::Singular)
+                .unwrap(),
+            "vzat"
+        );
+        assert_eq!(
+            vzit.imperative(Person::First, Number::Plural).unwrap(),
+            "vezměme"
+        );
+
+        for lemma in ["jít", "mít"] {
+            assert_eq!(
+                v(lemma).passive_participle(Gender::MasculineAnimate, Number::Singular),
+                None,
+                "{lemma} has no passive participle"
+            );
+        }
+        assert_eq!(
+            v("znát")
+                .passive_participle(Gender::MasculineAnimate, Number::Plural)
+                .unwrap(),
+            "znáni"
         );
     }
 }
