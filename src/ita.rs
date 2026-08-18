@@ -99,7 +99,7 @@ static STRONG_TSV: &str = include_str!("../data/ita/strong.tsv");
 static LEXICON_TSV: &str = include_str!("../data/ita/verbs.tsv");
 
 /// Non-default perfect auxiliaries (lemma \t essere|essere/avere).
-static AUX_TSV: &str = include_str!("../data/ita/aux.tsv");
+static AUX_TSV: &str = include_str!("../data/ita/auxiliaries.tsv");
 
 fn auxiliary(inf: &str) -> &'static str {
     use std::collections::HashMap;

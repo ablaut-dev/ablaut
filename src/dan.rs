@@ -41,7 +41,7 @@ static PARTS_TSV: &str = include_str!("../data/dan/parts.tsv");
 /// head templates. Coverage is partial — Wiktionary only marks the
 /// auxiliary on some entries — so absent lemmas yield `None` rather
 /// than a guessed default.
-static AUX_TSV: &str = include_str!("../data/dan/aux.tsv");
+static AUX_TSV: &str = include_str!("../data/dan/auxiliaries.tsv");
 
 /// The perfect auxiliary of a verb: "har" (at have), "er" (at være),
 /// or "er/har" for verbs attested with both. `None` when the mined
