@@ -9,8 +9,40 @@ repository = "https://github.com/ablaut-dev/ablaut"
 keywords = ["conjugation", "morphology", "nlp", "linguistics", "language"]
 categories = ["text-processing"]
 
+include = [
+    "Cargo.toml",
+    "README.md",
+    "LICENSE-*",
+    "src/**/*.rs",
+    "data/ces/aspect.tsv",
+    "data/ces/classes.tsv",
+    "data/ces/verbs.tsv",
+    "data/dan/auxiliaries.tsv",
+    "data/dan/parts.tsv",
+    "data/deu/verbs.tsv",
+    "data/eng/verbs.tsv",
+    "data/est/verbs.tsv",
+    "data/fin/verbs.tsv",
+    "data/fra/verbs.tsv",
+    "data/gle/verbs.tsv",
+    "data/ita/auxiliaries.tsv",
+    "data/ita/classes.tsv",
+    "data/ita/strong.tsv",
+    "data/ita/verbs.tsv",
+    "data/por/classes.tsv",
+    "data/por/verbs.tsv",
+    "data/ron/classes.tsv",
+    "data/ron/verbs.tsv",
+    "data/slv/classes.tsv",
+    "data/slv/verbs.tsv",
+    "data/spa/classes.tsv",
+    "data/spa/verbs.tsv",
+    "data/swe/parts.tsv",
+]
+
 [lib]
 crate-type = ["cdylib", "rlib"]
+
 
 [dependencies]
 wasm-bindgen = { version = "0.2", optional = true }

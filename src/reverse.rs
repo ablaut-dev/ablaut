@@ -855,7 +855,7 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         }
         Lang::Dan => {
             col1(include_str!("../data/dan/parts.tsv"), &mut lemmas);
-            col1(include_str!("../data/dan/aux.tsv"), &mut lemmas);
+            col1(include_str!("../data/dan/auxiliaries.tsv"), &mut lemmas);
         }
         Lang::Eng => col1(include_str!("../data/eng/verbs.tsv"), &mut lemmas),
         Lang::Est => col1(include_str!("../data/est/verbs.tsv"), &mut lemmas),
@@ -881,7 +881,7 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
             col1(include_str!("../data/ita/verbs.tsv"), &mut lemmas);
             col1(include_str!("../data/ita/strong.tsv"), &mut lemmas);
             col1(include_str!("../data/ita/classes.tsv"), &mut lemmas);
-            col1(include_str!("../data/ita/aux.tsv"), &mut lemmas);
+            col1(include_str!("../data/ita/auxiliaries.tsv"), &mut lemmas);
         }
         Lang::Ron => {
             col1(include_str!("../data/ron/verbs.tsv"), &mut lemmas);
