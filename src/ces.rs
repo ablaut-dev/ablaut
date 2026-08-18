@@ -470,6 +470,11 @@ pub struct Table {
     pub passive_participle: Option<[String; 6]>,
     /// [masc, fem/neut, plural].
     pub transgressive: [Option<String>; 3],
+    /// Past tense on the masculine participle rows (mluvil jsem …);
+    /// the third persons take the bare participle.
+    pub minuly_cas: [String; 6],
+    /// Conditional (mluvil bych …).
+    pub kondicional: [String; 6],
 }
 
 impl Table {
@@ -506,6 +511,30 @@ impl Table {
                 v.imperative(Person::Second, Number::Plural),
             ],
             past_participle: row6(&|g, n| v.past_participle(g, n)),
+            minuly_cas: {
+                let sg = v.past_participle(Gender::MasculineAnimate, Number::Singular);
+                let pl = v.past_participle(Gender::MasculineAnimate, Number::Plural);
+                [
+                    format!("{sg} jsem"),
+                    format!("{sg} jsi"),
+                    sg,
+                    format!("{pl} jsme"),
+                    format!("{pl} jste"),
+                    pl,
+                ]
+            },
+            kondicional: {
+                let sg = v.past_participle(Gender::MasculineAnimate, Number::Singular);
+                let pl = v.past_participle(Gender::MasculineAnimate, Number::Plural);
+                [
+                    format!("{sg} bych"),
+                    format!("{sg} bys"),
+                    format!("{sg} by"),
+                    format!("{pl} bychom"),
+                    format!("{pl} byste"),
+                    format!("{pl} by"),
+                ]
+            },
             passive_participle: v
                 .passive_participle(Gender::MasculineAnimate, Number::Singular)
                 .map(|_| row6(&|g, n| v.passive_participle(g, n).unwrap_or_default())),
@@ -524,6 +553,20 @@ mod tests {
 
     fn v(inf: &str) -> Verb {
         Verb::from_infinitive(inf).unwrap()
+    }
+
+    #[test]
+    fn analytic_tenses() {
+        let t = Table::build(&v("mluvit"));
+        assert_eq!(t.minuly_cas[0], "mluvil jsem");
+        assert_eq!(t.minuly_cas[1], "mluvil jsi");
+        assert_eq!(t.minuly_cas[2], "mluvil");
+        assert_eq!(t.minuly_cas[3], "mluvili jsme");
+        assert_eq!(t.minuly_cas[5], "mluvili");
+        assert_eq!(t.kondicional[0], "mluvil bych");
+        assert_eq!(t.kondicional[2], "mluvil by");
+        assert_eq!(t.kondicional[3], "mluvili bychom");
+        assert_eq!(t.kondicional[5], "mluvili by");
     }
 
     #[test]

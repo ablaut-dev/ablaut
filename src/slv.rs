@@ -314,7 +314,20 @@ pub struct Table {
     pub imperative: [Option<String>; 5],
     /// [m, f, n] × [sg, du, pl].
     pub participle: [String; 9],
+    /// Analytic past on the masculine participle rows: sem delal,
+    /// sva delala, smo delali.
+    pub preteklik: [String; 9],
+    /// Analytic future: bom delal.
+    pub prihodnjik: [String; 9],
+    /// Conditional: bi delal.
+    pub pogojnik: [String; 9],
 }
+
+/// biti rows for the analytic tenses, sg1…pl3.
+const BITI_PRES: [&str; 9] = ["sem", "si", "je", "sva", "sta", "sta", "smo", "ste", "so"];
+const BITI_FUT: [&str; 9] = [
+    "bom", "boš", "bo", "bova", "bosta", "bosta", "bomo", "boste", "bodo",
+];
 
 impl Table {
     #[must_use]
@@ -353,8 +366,19 @@ impl Table {
                 (Gender::Neuter, Number::Plural),
             ]
             .map(|(g, n)| v.participle(g, n)),
+            preteklik: analytic_row(&BITI_PRES, v),
+            prihodnjik: analytic_row(&BITI_FUT, v),
+            pogojnik: analytic_row(&["bi"; 9], v),
         }
     }
+}
+
+/// Auxiliary + the masculine participle in the row's number
+/// (sem delal, sva delala, smo delali).
+fn analytic_row(aux: &[&str; 9], v: &Verb) -> [String; 9] {
+    let part = [Number::Singular, Number::Dual, Number::Plural]
+        .map(|n| v.participle(Gender::Masculine, n));
+    std::array::from_fn(|i| format!("{} {}", aux[i], part[i / 3]))
 }
 
 #[cfg(test)]
@@ -363,6 +387,19 @@ mod tests {
 
     fn v(inf: &str) -> Verb {
         Verb::from_infinitive(inf).unwrap()
+    }
+
+    #[test]
+    fn analytic_tenses() {
+        let t = Table::build(&v("delati"));
+        assert_eq!(t.preteklik[0], "sem delal");
+        assert_eq!(t.preteklik[3], "sva delala");
+        assert_eq!(t.preteklik[5], "sta delala");
+        assert_eq!(t.preteklik[8], "so delali");
+        assert_eq!(t.prihodnjik[0], "bom delal");
+        assert_eq!(t.prihodnjik[8], "bodo delali");
+        assert_eq!(t.pogojnik[0], "bi delal");
+        assert_eq!(t.pogojnik[6], "bi delali");
     }
 
     #[test]

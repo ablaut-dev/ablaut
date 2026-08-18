@@ -633,7 +633,56 @@ pub struct Table {
     pub conditional: [String; 6],
     pub subjunctive_present: [String; 6],
     pub subjunctive_imperfect: [String; 6],
+    pub passato_prossimo: [String; 6],
+    pub trapassato_prossimo: [String; 6],
+    pub futuro_anteriore: [String; 6],
+    pub condizionale_passato: [String; 6],
+    pub congiuntivo_passato: [String; 6],
+    pub congiuntivo_trapassato: [String; 6],
 }
+
+/// One auxiliary paradigm for the compound tenses.
+struct Aux {
+    pres: [&'static str; 6],
+    imperf: [&'static str; 6],
+    fut: [&'static str; 6],
+    cond: [&'static str; 6],
+    cong_pres: [&'static str; 6],
+    cong_imp: [&'static str; 6],
+}
+
+const AVERE: Aux = Aux {
+    pres: ["ho", "hai", "ha", "abbiamo", "avete", "hanno"],
+    imperf: ["avevo", "avevi", "aveva", "avevamo", "avevate", "avevano"],
+    fut: ["avrò", "avrai", "avrà", "avremo", "avrete", "avranno"],
+    cond: [
+        "avrei",
+        "avresti",
+        "avrebbe",
+        "avremmo",
+        "avreste",
+        "avrebbero",
+    ],
+    cong_pres: ["abbia", "abbia", "abbia", "abbiamo", "abbiate", "abbiano"],
+    cong_imp: [
+        "avessi", "avessi", "avesse", "avessimo", "aveste", "avessero",
+    ],
+};
+const ESSERE: Aux = Aux {
+    pres: ["sono", "sei", "è", "siamo", "siete", "sono"],
+    imperf: ["ero", "eri", "era", "eravamo", "eravate", "erano"],
+    fut: ["sarò", "sarai", "sarà", "saremo", "sarete", "saranno"],
+    cond: [
+        "sarei",
+        "saresti",
+        "sarebbe",
+        "saremmo",
+        "sareste",
+        "sarebbero",
+    ],
+    cong_pres: ["sia", "sia", "sia", "siamo", "siate", "siano"],
+    cong_imp: ["fossi", "fossi", "fosse", "fossimo", "foste", "fossero"],
+};
 
 const SLOTS: [(Person, Number); 6] = [
     (Person::First, Number::Singular),
@@ -648,9 +697,23 @@ impl Table {
     #[must_use]
     pub fn build(v: &Verb) -> Self {
         let row = |t: SimpleTense| SLOTS.map(|(p, n)| v.conjugate(t, p, n));
+        let aux_name = auxiliary(v.infinitive());
+        // Essere-verbs (and essere/avere duals, shown with essere)
+        // agree the participle in the plural: siamo andati.
+        let essere = aux_name.starts_with("essere");
+        let aux = if essere { &ESSERE } else { &AVERE };
+        let pp = v.past_participle();
+        let pp_pl = if essere && pp.ends_with('o') {
+            format!("{}i", &pp[..pp.len() - 1])
+        } else {
+            pp.clone()
+        };
+        let arow = |forms: &[&'static str; 6]| {
+            std::array::from_fn(|i| format!("{} {}", forms[i], if i < 3 { &pp } else { &pp_pl }))
+        };
         Self {
             infinitive: v.infinitive().to_string(),
-            auxiliary: auxiliary(v.infinitive()).to_string(),
+            auxiliary: aux_name.to_string(),
             gerund: v.gerund(),
             present_participle: v.present_participle(),
             past_participle: v.past_participle(),
@@ -668,6 +731,12 @@ impl Table {
             conditional: row(SimpleTense::Conditional),
             subjunctive_present: row(SimpleTense::SubjunctivePresent),
             subjunctive_imperfect: row(SimpleTense::SubjunctiveImperfect),
+            passato_prossimo: arow(&aux.pres),
+            trapassato_prossimo: arow(&aux.imperf),
+            futuro_anteriore: arow(&aux.fut),
+            condizionale_passato: arow(&aux.cond),
+            congiuntivo_passato: arow(&aux.cong_pres),
+            congiuntivo_trapassato: arow(&aux.cong_imp),
         }
     }
 }
@@ -683,6 +752,24 @@ mod tests {
 
     fn v(inf: &str) -> Verb {
         Verb::from_infinitive(inf).unwrap()
+    }
+
+    #[test]
+    fn compound_tenses() {
+        let t = Table::build(&v("parlare"));
+        assert_eq!(t.passato_prossimo[0], "ho parlato");
+        assert_eq!(t.passato_prossimo[3], "abbiamo parlato");
+        assert_eq!(t.trapassato_prossimo[2], "aveva parlato");
+        assert_eq!(t.futuro_anteriore[5], "avranno parlato");
+        assert_eq!(t.condizionale_passato[1], "avresti parlato");
+        assert_eq!(t.congiuntivo_passato[4], "abbiate parlato");
+        assert_eq!(t.congiuntivo_trapassato[3], "avessimo parlato");
+        // Essere-verbs agree the participle in the plural.
+        let a = Table::build(&v("andare"));
+        assert_eq!(a.auxiliary, "essere");
+        assert_eq!(a.passato_prossimo[0], "sono andato");
+        assert_eq!(a.passato_prossimo[3], "siamo andati");
+        assert_eq!(a.congiuntivo_trapassato[5], "fossero andati");
     }
 
     #[test]

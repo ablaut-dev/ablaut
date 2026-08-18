@@ -210,17 +210,40 @@ pub struct Table {
     pub past_participle: String,
     pub present_participle: String,
     pub third_singular: String,
+    /// Person rows [I, you, he/she/it, we, you, they], including the
+    /// analytic perfects and futures (have run, will have run).
+    pub present_row: [String; 6],
+    pub past_row: [String; 6],
+    pub present_perfect_row: [String; 6],
+    pub past_perfect_row: [String; 6],
+    pub future_row: [String; 6],
+    pub future_perfect_row: [String; 6],
 }
 
 impl Table {
     #[must_use]
     pub fn build(v: &Verb) -> Self {
+        let inf = v.infinitive().to_string();
+        let past = v.form(Slot::Past);
+        let pp = v.form(Slot::PastParticiple);
+        let third = v.form(Slot::ThirdSingular);
+        let uniform = |f: String| -> [String; 6] { std::array::from_fn(|_| f.clone()) };
+        let mut present_row = uniform(inf.clone());
+        present_row[2] = third.clone();
+        let mut present_perfect_row = uniform(format!("have {pp}"));
+        present_perfect_row[2] = format!("has {pp}");
         Self {
-            infinitive: v.infinitive().to_string(),
-            past: v.form(Slot::Past),
-            past_participle: v.form(Slot::PastParticiple),
+            present_row,
+            past_row: uniform(past.clone()),
+            present_perfect_row,
+            past_perfect_row: uniform(format!("had {pp}")),
+            future_row: uniform(format!("will {inf}")),
+            future_perfect_row: uniform(format!("will have {pp}")),
+            infinitive: inf,
+            past,
+            past_participle: pp,
             present_participle: v.form(Slot::PresentParticiple),
-            third_singular: v.form(Slot::ThirdSingular),
+            third_singular: third,
         }
     }
 }
@@ -231,6 +254,19 @@ mod tests {
 
     fn v(inf: &str) -> Verb {
         Verb::from_infinitive(inf).unwrap()
+    }
+
+    #[test]
+    fn analytic_rows() {
+        let t = Table::build(&v("run"));
+        assert_eq!(t.present_row[0], "run");
+        assert_eq!(t.present_row[2], "runs");
+        assert_eq!(t.past_row[4], "ran");
+        assert_eq!(t.present_perfect_row[0], "have run");
+        assert_eq!(t.present_perfect_row[2], "has run");
+        assert_eq!(t.past_perfect_row[1], "had run");
+        assert_eq!(t.future_row[3], "will run");
+        assert_eq!(t.future_perfect_row[5], "will have run");
     }
 
     #[test]
