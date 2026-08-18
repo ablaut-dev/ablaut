@@ -16,10 +16,11 @@ use std::fmt::Write as _;
 use std::fs;
 
 /// CI regression gates (percent). Current `UniMorph` baseline is
-/// 99.16 / 99.92; the gates leave a small margin so noise doesn't flake,
-/// but any real regression fails the build. Raise them as accuracy grows.
-const MIN_COVERED_PCT: f64 = 98.9;
-const MIN_FALLBACK_PCT: f64 = 99.8;
+/// 100.00 / 99.999 (every disagreement is adjudicated in
+/// `docs/deu/adjudications.tsv` except the one filed `managen` imperative
+/// bug, issue #102); the gates sit just below so any real regression fails.
+const MIN_COVERED_PCT: f64 = 99.99;
+const MIN_FALLBACK_PCT: f64 = 99.99;
 
 const CATEGORIES: [&str; 10] = [
     "infinitive",

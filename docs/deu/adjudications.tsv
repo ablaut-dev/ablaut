@@ -106,3 +106,484 @@ umarbeiten	*	both	Separable verb (Duden: arbeitete um, umgearbeitet; dämpfte ab
 abdämpfen	*	both	Separable verb (Duden: arbeitete um, umgearbeitet; dämpfte ab, abgedämpft); gold renders finite cells in verb-final order (umarbeite), our verb-second rendering is equally standard
 aufsaugen	*	both	saugen is both strong and weak (sog auf/saugte auf, aufgesogen/aufgesaugt, Duden); gold lists only the weak set
 verweben	*	both	verweben is both weak and strong (verwebte/verwob, verwebt/verwoben, Duden); gold lacks the weak set
+#
+# Residual sweep (issue #90): the 486 forms left after PR #96. Every row
+# is a corrupt UniMorph gold form (naive suffixation, doubled letters,
+# mangled ge-/zu-, dropped stem) or a legitimate variant/doublet; ablaut's
+# form is the Duden/Wiktionary standard. See PR body for the taxonomy.
+Acht geben	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+Amok laufen	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+Bescheid geben	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+Bescheid sagen	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+Bindfäden regnen	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+Brust schwimmen	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+Feuer fangen	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+Hof halten	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+Rad fahren	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+Recht haben	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+Schluss machen	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+abbeissen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+abbeißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+abblasen	V;IMP;PL;2	ours	Stem ends in -t: gold appends a second -t (haltt, hältt, hieltt) or carries annotation junk; ablaut's contracted plural is standard (Duden)
+abblasen	V;IMP;SG;2	both	blasen imperative blas(e) ab: both the apocopated and -e forms are standard; UniMorph lists only one
+abblasen	V;IND;PL;2;PRS	ours	Stem ends in -t: gold appends a second -t (haltt, hältt, hieltt) or carries annotation junk; ablaut's contracted plural is standard (Duden)
+abblasen	V;IND;PL;2;PST	ours	Stem ends in -t: gold appends a second -t (haltt, hältt, hieltt) or carries annotation junk; ablaut's contracted plural is standard (Duden)
+abblasen	V;IND;SG;2;PRS	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+abblasen	V;IND;SG;3;PRS	ours	3sg present of this stem contracts (sibilant → -t) or umlauts (schlägt, hält); gold appends -t naively (hältt) or omits the umlaut (schlaget). ablaut is Duden-standard
+abblasen	V;SBJV;PL;1;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+abblasen	V;SBJV;PL;2;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+abblasen	V;SBJV;PL;3;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+abblasen	V;SBJV;SG;1;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+abblasen	V;SBJV;SG;2;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+abblasen	V;SBJV;SG;3;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+abeisen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+abfliessen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+abkratzen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+abladen	*	ours	UniMorph lists no zu-infinitive; ablaut forms it regularly (Duden)
+ablassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+ablaßen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+ablesen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+abliegen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+abmessen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+abmeßen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+abreissen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+abreißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+abschiessen	V;IND;SG;2;PRS	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+abschiessen	V;IND;SG;2;PST	ours	2sg preterite of this single-sibilant/-r stem is -est (du priesest, du wiesest); gold's contraction is corrupt (doubled sibilant or dropped -s). ablaut is Duden-standard
+abschießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+abschminken	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+abschwören	*	ours	Konjunktiv II needs the subjunctive stem; gold repeats the plain indicative preterite (schwor-) without umlaut. ablaut's Konj. II is standard (Duden)
+absitzen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+abstossen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+abstoßen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+abstumpfen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+abweisen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+abwerten	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+alleinlassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+alt machen	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+anbeißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+anecken	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+anlassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+anliegen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+anmaßen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+anpreisen	V;IND;SG;2;PRS	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+anpreisen	V;IND;SG;2;PST	ours	2sg preterite of this single-sibilant/-r stem is -est (du priesest, du wiesest); gold's contraction is corrupt (doubled sibilant or dropped -s). ablaut is Duden-standard
+anschiessen	V;IND;SG;2;PRS	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+anschiessen	V;IND;SG;2;PST	ours	2sg preterite of this single-sibilant/-r stem is -est (du priesest, du wiesest); gold's contraction is corrupt (doubled sibilant or dropped -s). ablaut is Duden-standard
+anschießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+anschlagen	V;IMP;SG;2	ours	Strong a→ä / au→äu (and halten) verb: the imperative keeps the stem vowel (trag!, halt(e)!, fall!); gold wrongly umlauts it. ablaut is Duden-standard
+anschlagen	V;IND;SG;2;PRS	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+anschlagen	V;IND;SG;3;PRS	ours	3sg present of this stem contracts (sibilant → -t) or umlauts (schlägt, hält); gold appends -t naively (hältt) or omits the umlaut (schlaget). ablaut is Duden-standard
+anschlagen	V;SBJV;PL;1;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+anschlagen	V;SBJV;PL;2;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+anschlagen	V;SBJV;PL;3;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+anschlagen	V;SBJV;SG;1;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+anschlagen	V;SBJV;SG;2;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+anschlagen	V;SBJV;SG;3;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+anschwitzen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+anschwärzen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+anspitzen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+anstarren	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+anstiften	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+anstossen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+anstoßen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+antragen	*	ours	Strong a→ä / au→äu (and halten) verb: the imperative keeps the stem vowel (trag!, halt(e)!, fall!); gold wrongly umlauts it. ablaut is Duden-standard
+anwachsen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+anweisen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+anzetteln	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+arm machen	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+auf den Keks gehen	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+aufblasen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+aufeinanderstoßen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+auferstehen	*	ours	Separable-prefix verb: gold drops the base-verb stem from the zu-infinitive (aufzustehen for auferstehen); ablaut keeps it (Duden)
+aufessen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+auffressen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+aufkreuzen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+aufladen	*	ours	UniMorph lists no zu-infinitive; ablaut forms it regularly (Duden)
+auflesen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+aufreißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+aufscheuchen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+aufsitzen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+aufstoßen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+aufwachsen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+aufweisen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+aufwerten	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+auserkiesen	V.PTCP;PST	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+auserkiesen	V;IND;SG;2;PST	ours	2sg preterite of this single-sibilant/-r stem is -est (du priesest, du wiesest); gold's contraction is corrupt (doubled sibilant or dropped -s). ablaut is Duden-standard
+auserlesen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+ausfließen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+ausgießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+ausladen	*	ours	UniMorph lists no zu-infinitive; ablaut forms it regularly (Duden)
+auslassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+auslesen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+ausleuchten	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+ausmerzen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+auspusten	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+ausreissen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+ausreißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+ausschlagen	V;IMP;SG;2	ours	Strong a→ä / au→äu (and halten) verb: the imperative keeps the stem vowel (trag!, halt(e)!, fall!); gold wrongly umlauts it. ablaut is Duden-standard
+ausschlagen	V;IND;SG;2;PRS	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+ausschlagen	V;IND;SG;3;PRS	ours	3sg present of this stem contracts (sibilant → -t) or umlauts (schlägt, hält); gold appends -t naively (hältt) or omits the umlaut (schlaget). ablaut is Duden-standard
+ausschlagen	V;SBJV;PL;1;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+ausschlagen	V;SBJV;PL;2;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+ausschlagen	V;SBJV;PL;3;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+ausschlagen	V;SBJV;SG;1;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+ausschlagen	V;SBJV;SG;2;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+ausschlagen	V;SBJV;SG;3;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+ausschütteln	V;IMP;PL;2	ours	Stem ends in -t: gold appends a second -t (haltt, hältt, hieltt) or carries annotation junk; ablaut's contracted plural is standard (Duden)
+ausschütteln	V;IMP;SG;2	ours	-eln verb: the imperative elides to schüttle; gold carries annotation junk '(du)'. ablaut is standard (Duden)
+ausschütteln	V;IND;SG;1;PRS	ours	-eln verb: the 1sg present elides to schüttle; gold gives the uncontracted schüttel. ablaut is standard (Duden)
+ausschütteln	V;SBJV;PL;2;PRS	ours	-eln verb: Konjunktiv I elides/spells as schüttle; gold gives schüttel/schüttelt. ablaut is standard (Duden)
+ausschütteln	V;SBJV;SG;1;PRS	ours	-eln verb: Konjunktiv I elides/spells as schüttle; gold gives schüttel/schüttelt. ablaut is standard (Duden)
+ausschütteln	V;SBJV;SG;2;PRS	ours	-eln verb: Konjunktiv I elides/spells as schüttle; gold gives schüttel/schüttelt. ablaut is standard (Duden)
+ausschütteln	V;SBJV;SG;3;PRS	ours	-eln verb: Konjunktiv I elides/spells as schüttle; gold gives schüttel/schüttelt. ablaut is standard (Duden)
+aussitzen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+ausspucken	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+ausstossen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+ausstoßen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+austragen	*	ours	Strong a→ä / au→äu (and halten) verb: the imperative keeps the stem vowel (trag!, halt(e)!, fall!); gold wrongly umlauts it. ablaut is Duden-standard
+auswachsen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+ausweisen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+beamten	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+beatboxen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+befleißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+begießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+beibehalten	*	ours	Strong a→ä / au→äu (and halten) verb: the imperative keeps the stem vowel (trag!, halt(e)!, fall!); gold wrongly umlauts it. ablaut is Duden-standard
+beiliegen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+beiseitelassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+beissen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+beißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+belassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+belaufen	*	ours	Strong a→ä / au→äu (and halten) verb: the imperative keeps the stem vowel (trag!, halt(e)!, fall!); gold wrongly umlauts it. ablaut is Duden-standard
+benedeien	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+bescheißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+beschiessen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+beschießen	V;IND;SG;2;PST	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+beschießen	V;SBJV;PL;1;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+beschießen	V;SBJV;PL;2;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+beschießen	V;SBJV;PL;3;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+beschießen	V;SBJV;SG;1;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+beschießen	V;SBJV;SG;2;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+beschießen	V;SBJV;SG;3;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+beschlafen	*	ours	Strong a→ä / au→äu (and halten) verb: the imperative keeps the stem vowel (trag!, halt(e)!, fall!); gold wrongly umlauts it. ablaut is Duden-standard
+beschwören	*	both	Konjunktiv II of schwören: both the umlauted schwüre and the Duden-listed schwöre stem are standard; UniMorph gives only one
+besitzen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+bespaßen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+bestoßen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+beteiligen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+beweisen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+beybehalten	*	ours	Strong a→ä / au→äu (and halten) verb: the imperative keeps the stem vowel (trag!, halt(e)!, fall!); gold wrongly umlauts it. ablaut is Duden-standard
+beyssen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+beyßen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+blasen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+boßen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+brachliegen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+bräteln	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+dalassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+daliegen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+danebenschiessen	V;IND;SG;2;PRS	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+danebenschiessen	V;IND;SG;2;PST	ours	2sg preterite of this single-sibilant/-r stem is -est (du priesest, du wiesest); gold's contraction is corrupt (doubled sibilant or dropped -s). ablaut is Duden-standard
+danebenschießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+darlegen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+darniederliegen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+das Blaue vom Himmel versprechen	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+downloaden	*	both	English loan / dual-prefix verb: both zu-infinitive placements are attested; UniMorph lists only one (Duden)
+durch den Kakao ziehen	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+durchessen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+durchficken	V;IND;PL;1;PST	ours	Weak preterite stem already ends in -e (fickte-); gold appends a second -e- (fickteen). ablaut is regular
+durchficken	V;IND;PL;3;PST	ours	Weak preterite stem already ends in -e (fickte-); gold appends a second -e- (fickteen). ablaut is regular
+durchficken	V;SBJV;PL;1;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+durchficken	V;SBJV;PL;2;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+durchficken	V;SBJV;PL;3;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+durchficken	V;SBJV;SG;1;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+durchficken	V;SBJV;SG;2;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+durchficken	V;SBJV;SG;3;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+durchlesen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+durchleuchten	*	both	Doublet participle: the strong -en and weak -t forms (or separable/inseparable dual-prefix readings) are both standard; UniMorph lists only one (Duden)
+durchliegen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+durchmessen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+ehelichen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+einblasen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+einbüßen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+eindrucken	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+einernten	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+einfließen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+einfuchsen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+eingestehen	*	ours	Separable-prefix verb: gold drops the base-verb stem from the zu-infinitive (aufzustehen for auferstehen); ablaut keeps it (Duden)
+eingießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+einhalten	*	ours	Strong a→ä / au→äu (and halten) verb: the imperative keeps the stem vowel (trag!, halt(e)!, fall!); gold wrongly umlauts it. ablaut is Duden-standard
+einladen	*	ours	UniMorph lists no zu-infinitive; ablaut forms it regularly (Duden)
+einlassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+einlesen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+einreißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+einschüchtern	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+einsitzen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+einstoßen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+einweisen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+emportragen	*	ours	Strong a→ä / au→äu (and halten) verb: the imperative keeps the stem vowel (trag!, halt(e)!, fall!); gold wrongly umlauts it. ablaut is Duden-standard
+emporwachsen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+entblößen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+entfließen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+entlassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+entreißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+entsprießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+entwachsen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+entzweireißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+erfolgen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+ergießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+erhöhen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+erlassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+erlesen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+erschiessen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+erschießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+erwachsen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+erweisen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+eternisieren	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+exen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+feilhalten	*	ours	Strong a→ä / au→äu (and halten) verb: the imperative keeps the stem vowel (trag!, halt(e)!, fall!); gold wrongly umlauts it. ablaut is Duden-standard
+fernhalten	V;IMP;PL;2	ours	Stem ends in -t: gold appends a second -t (haltt, hältt, hieltt) or carries annotation junk; ablaut's contracted plural is standard (Duden)
+fernhalten	V;IMP;SG;2	ours	Strong a→ä / au→äu (and halten) verb: the imperative keeps the stem vowel (trag!, halt(e)!, fall!); gold wrongly umlauts it. ablaut is Duden-standard
+fernhalten	V;IND;PL;2;PRS	ours	Stem ends in -t: gold appends a second -t (haltt, hältt, hieltt) or carries annotation junk; ablaut's contracted plural is standard (Duden)
+fernhalten	V;IND;PL;2;PST	ours	Stem ends in -t: gold appends a second -t (haltt, hältt, hieltt) or carries annotation junk; ablaut's contracted plural is standard (Duden)
+fernhalten	V;IND;SG;2;PST	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+fernhalten	V;IND;SG;3;PRS	ours	3sg present of this stem contracts (sibilant → -t) or umlauts (schlägt, hält); gold appends -t naively (hältt) or omits the umlaut (schlaget). ablaut is Duden-standard
+fernliegen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+fertigwerden	*	ours	UniMorph lists no zu-infinitive; ablaut forms it regularly (Duden)
+fleißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+fortbestehen	*	ours	Separable-prefix verb: gold drops the base-verb stem from the zu-infinitive (aufzustehen for auferstehen); ablaut keeps it (Duden)
+freilassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+fremdficken	V;IND;PL;1;PST	ours	Weak preterite stem already ends in -e (fickte-); gold appends a second -e- (fickteen). ablaut is regular
+fremdficken	V;IND;PL;3;PST	ours	Weak preterite stem already ends in -e (fickte-); gold appends a second -e- (fickteen). ablaut is regular
+fremdficken	V;SBJV;PL;1;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+fremdficken	V;SBJV;PL;2;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+fremdficken	V;SBJV;PL;3;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+fremdficken	V;SBJV;SG;1;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+fremdficken	V;SBJV;SG;2;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+fremdficken	V;SBJV;SG;3;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+fressen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+fälschen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+genesen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+geniessen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+genießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+geschäften	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+gesundschrumpfen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+gießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+gleißen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+gutheißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+heissen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+herablassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+heranwachsen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+herausreißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+herausschmeißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+hereinlassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+herumsitzen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+herunterladen	*	ours	UniMorph lists no zu-infinitive; ablaut forms it regularly (Duden)
+herunterlassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+heyßen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+hineininterpretieren	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+hinreißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+hintansetzen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+hinterlassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+hinweisen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+hochladen	*	ours	UniMorph lists no zu-infinitive; ablaut forms it regularly (Duden)
+innewerden	*	ours	UniMorph lists no zu-infinitive; ablaut forms it regularly (Duden)
+instand halten	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+instand setzen	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+kaputtreißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+kennen lernen	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+klapsen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+krank machen	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+krosen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+krösen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+kurz machen	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+laut denken	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+leeressen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+lenzen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+liegen bleiben	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+liegenlassen	V;IND;SG;2;PST	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+lobpreisen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+loslachen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+losreißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+losschießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+matt setzen	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+mehren	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+messen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+meßen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+mitgehen lassen	V;IND;SG;2;PST	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+mitgehen lassen	V;NFIN;LGSPEC01	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+mitreißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+mittragen	*	ours	Strong a→ä / au→äu (and halten) verb: the imperative keeps the stem vowel (trag!, halt(e)!, fall!); gold wrongly umlauts it. ablaut is Duden-standard
+mopsen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+nachfühlen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+nachgießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+nachladen	*	ours	UniMorph lists no zu-infinitive; ablaut forms it regularly (Duden)
+nachlassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+nachlesen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+nachsalzen	*	both	Doublet participle: the strong -en and weak -t forms (or separable/inseparable dual-prefix readings) are both standard; UniMorph lists only one (Duden)
+nachsitzen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+nachtragen	*	ours	Strong a→ä / au→äu (and halten) verb: the imperative keeps the stem vowel (trag!, halt(e)!, fall!); gold wrongly umlauts it. ablaut is Duden-standard
+nachweisen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+naheliegen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+niederknien	V.PTCP;PRS	ours	gold gives the bare infinitive for the present participle; ablaut forms it regularly (Duden: -end)
+niederknien	V;NFIN;LGSPEC01	ours	UniMorph lists no zu-infinitive; ablaut forms it regularly (Duden)
+niederlassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+niederschießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+niederstoßen	V;IMP;SG;2	ours	Strong a→ä / au→äu (and halten) verb: the imperative keeps the stem vowel (trag!, halt(e)!, fall!); gold wrongly umlauts it. ablaut is Duden-standard
+niederstoßen	V;IND;SG;2;PRS	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+niederstoßen	V;IND;SG;2;PST	ours	2sg preterite of this single-sibilant/-r stem is -est (du priesest, du wiesest); gold's contraction is corrupt (doubled sibilant or dropped -s). ablaut is Duden-standard
+offenbaren	*	both	Doublet participle: the strong -en and weak -t forms (or separable/inseparable dual-prefix readings) are both standard; UniMorph lists only one (Duden)
+ohrfeigen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+panschen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+plumpfen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+preisen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+protzen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+querschlagen	V;IMP;SG;2	ours	Strong a→ä / au→äu (and halten) verb: the imperative keeps the stem vowel (trag!, halt(e)!, fall!); gold wrongly umlauts it. ablaut is Duden-standard
+querschlagen	V;IND;SG;2;PRS	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+querschlagen	V;IND;SG;3;PRS	ours	3sg present of this stem contracts (sibilant → -t) or umlauts (schlägt, hält); gold appends -t naively (hältt) or omits the umlaut (schlaget). ablaut is Duden-standard
+querschlagen	V;SBJV;PL;1;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+querschlagen	V;SBJV;PL;2;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+querschlagen	V;SBJV;PL;3;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+querschlagen	V;SBJV;SG;1;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+querschlagen	V;SBJV;SG;2;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+querschlagen	V;SBJV;SG;3;PST	ours	Konjunktiv II: gold builds it by naive suffixation on the wrong stem (schlägee, ficktee, bläse) instead of the ablaut preterite (schlüge, fickte, bliese). ablaut is Duden-standard
+ranlassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+ratschen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+rausschmeißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+recht haben	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+reißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+richtigliegen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+rumsitzen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+saften	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+scheißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+schiefliegen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+schiessen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+schießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+schlapp machen	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+schleißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+schmeißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+schmelzen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+schnalzen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+schneuzen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+schnäuzen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+schrumpfen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+schwören	*	both	Konjunktiv II of schwören: both the umlauted schwüre and the Duden-listed schwöre stem are standard; UniMorph gives only one
+spazieren gehen	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+spendieren	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+sprießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+stark machen	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+stecken bleiben	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+stehen bleiben	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+stillhalten	V;IMP;PL;2	ours	Stem ends in -t: gold appends a second -t (haltt, hältt, hieltt) or carries annotation junk; ablaut's contracted plural is standard (Duden)
+stillhalten	V;IMP;SG;2	ours	Strong a→ä / au→äu (and halten) verb: the imperative keeps the stem vowel (trag!, halt(e)!, fall!); gold wrongly umlauts it. ablaut is Duden-standard
+stillhalten	V;IND;PL;2;PRS	ours	Stem ends in -t: gold appends a second -t (haltt, hältt, hieltt) or carries annotation junk; ablaut's contracted plural is standard (Duden)
+stillhalten	V;IND;PL;2;PST	ours	Stem ends in -t: gold appends a second -t (haltt, hältt, hieltt) or carries annotation junk; ablaut's contracted plural is standard (Duden)
+stillhalten	V;IND;SG;2;PST	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+stillhalten	V;IND;SG;3;PRS	ours	3sg present of this stem contracts (sibilant → -t) or umlauts (schlägt, hält); gold appends -t naively (hältt) or omits the umlaut (schlaget). ablaut is Duden-standard
+stillsitzen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+stossen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+totschießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+tratschen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+triezen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+umfallen	*	ours	Strong a→ä / au→äu (and halten) verb: the imperative keeps the stem vowel (trag!, halt(e)!, fall!); gold wrongly umlauts it. ablaut is Duden-standard
+umfließen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+umhauen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+umreißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+umschmelzen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+umstoßen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+unterlassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+unterliegen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+unterweisen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+uploaden	*	both	English loan / dual-prefix verb: both zu-infinitive placements are attested; UniMorph lists only one (Duden)
+verbeißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+verdrießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+vergelten	*	ours	Strong e→i(e) verb: the imperative raises the stem vowel (vergilt, sieh); gold gives the unraised form (Duden)
+vergießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+verglühen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+vergreisen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+verheißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+verknusen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+verknüpfen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+verlesen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+verlosen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+vermessen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+vermeßen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+versalzen	V.PTCP;PST	both	Doublet participle: the strong -en and weak -t forms (or separable/inseparable dual-prefix readings) are both standard; UniMorph lists only one (Duden)
+versalzen	V;IND;SG;2;PRS	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+verschießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+verschleißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+verschmelzen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+verschwören	*	both	Konjunktiv II of schwören: both the umlauted schwüre and the Duden-listed schwöre stem are standard; UniMorph gives only one
+versenden	*	both	Mixed verb versenden: preterite versandte and versendete are both standard (Duden); UniMorph's 'versandt' is the participle
+verstoßen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+vertippen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+vervollkommnen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+verwachsen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+verweisen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+vollladen	*	ours	UniMorph lists no zu-infinitive; ablaut forms it regularly (Duden)
+vorkehren	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+vorladen	*	ours	UniMorph lists no zu-infinitive; ablaut forms it regularly (Duden)
+vorlesen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+vorsetzen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+vorspuren	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+vorstoßen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+vorweisen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+warmhalten	*	ours	Strong a→ä / au→äu (and halten) verb: the imperative keeps the stem vowel (trag!, halt(e)!, fall!); gold wrongly umlauts it. ablaut is Duden-standard
+weglassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+wegreißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+wegschießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+wegschmeißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+wegtragen	*	ours	Strong a→ä / au→äu (and halten) verb: the imperative keeps the stem vowel (trag!, halt(e)!, fall!); gold wrongly umlauts it. ablaut is Duden-standard
+wegweisen	V;IND;SG;2;PRS	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+wegweisen	V;IND;SG;2;PST	ours	2sg preterite of this single-sibilant/-r stem is -est (du priesest, du wiesest); gold's contraction is corrupt (doubled sibilant or dropped -s). ablaut is Duden-standard
+weisen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+weiterbestehen	*	ours	Separable-prefix verb: gold drops the base-verb stem from the zu-infinitive (aufzustehen for auferstehen); ablaut keeps it (Duden)
+weiteressen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+wiederauferstehen	*	ours	Separable-prefix verb: gold drops the base-verb stem from the zu-infinitive (aufzustehen for auferstehen); ablaut keeps it (Duden)
+wiedersehen	*	ours	Strong e→i(e) verb: the imperative raises the stem vowel (vergilt, sieh); gold gives the unraised form (Duden)
+willfahren	*	both	Doublet participle: the strong -en and weak -t forms (or separable/inseparable dual-prefix readings) are both standard; UniMorph lists only one (Duden)
+willkommen heißen	V;IND;SG;2;PST	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+willkommen heißen	V;NFIN;LGSPEC01	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+zelebrieren	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+zerbeißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zerfließen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zerfressen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zerlesen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zernagen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+zerreden	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+zerreißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zerschmeißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zerschmelzen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zerstoßen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zubeißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zugestehen	*	ours	Separable-prefix verb: gold drops the base-verb stem from the zu-infinitive (aufzustehen for auferstehen); ablaut keeps it (Duden)
+zugrunde richten	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+zulassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zurechtweisen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zurücklassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zurückliegen	*	ours	Weak/strong participle: gold mangles the ge-prefix (doubles the particle, prefixes ge- to an inseparable stem, or truncates the stem); ablaut is regular (Duden)
+zurückschreiben	V;IND;SG;2;PRS	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+zurückschreiben	V;IND;SG;2;PST	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zurückweisen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zusammenfließen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zusammenleben	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+zusammenreißen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zusammenschließen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zusammensetzen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+zusammenstoßen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zuschießen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zuspitzen	*	ours	2sg present of this stem contracts (sibilant -s/-ß/-z → -t; t-stem → -est); gold appends a spurious -st or gives the 3sg form. ablaut is Duden-standard
+zustoßen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zuteilwerden	*	ours	UniMorph lists no zu-infinitive; ablaut forms it regularly (Duden)
+zutragen	*	ours	Strong a→ä / au→äu (and halten) verb: the imperative keeps the stem vowel (trag!, halt(e)!, fall!); gold wrongly umlauts it. ablaut is Duden-standard
+zuweisen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zwangseinweisen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zwischen den Zeilen lesen	V;IND;SG;2;PST	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+zwischen den Zeilen lesen	V;NFIN;LGSPEC01	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+übel nehmen	*	ours	Multi-word predicate: 'zu' is a separate word (Duden); UniMorph glues it onto the verb (zumachen)
+überlassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+überlesen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+übersetzen	*	both	English loan / dual-prefix verb: both zu-infinitive placements are attested; UniMorph lists only one (Duden)
+überspringen	*	both	Doublet participle: the strong -en and weak -t forms (or separable/inseparable dual-prefix readings) are both standard; UniMorph lists only one (Duden)
+überwachsen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+überweisen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
+übriglassen	*	both	Strong sibilant/dental stem: the 2sg preterite ending -est is Duden-standard (du schossest, du wiesest); UniMorph gives only the contracted -t variant
