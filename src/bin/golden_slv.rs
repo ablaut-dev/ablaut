@@ -8,6 +8,10 @@
 //! With two gold files, only slots the oracles agree on are scored
 //! (variant sets unioned); disagreements are the adjudication corpus.
 //! With one file, that file is scored directly (the CI path).
+//!
+//! A third oracle, Apertium slv (`scripts/slv/fetch_apertium.sh` →
+//! `data/slv/apertium.tsv`), covers ~7x kaikki's lemmas; CI gates
+//! the Sloleks ∩ Apertium agreement as a second, denser gold.
 
 use ablaut::harness::{run, Spec};
 use ablaut::slv::{Gender, Number, Person, Verb};
