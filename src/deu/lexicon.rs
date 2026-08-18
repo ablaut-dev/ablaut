@@ -66,6 +66,10 @@ struct Lexicon {
     /// inherit their base's auxiliary by default, which change-of-state
     /// derivations flip (wachen: haben → aufwachen: sein).
     aux: HashMap<&'static str, Auxiliary>,
+    /// Class "w" rows whose imp column is set: weak verbs whose 2sg
+    /// imperative the rule would get wrong. Anglicisms keep the stem's
+    /// final -e (managen → manage, not *manag).
+    weak_imp: HashMap<&'static str, &'static str>,
 }
 
 fn parse(tsv: &'static str) -> Lexicon {
@@ -82,6 +86,9 @@ fn parse(tsv: &'static str) -> Lexicon {
             "p" => LexClass::PreteritePresent,
             "w" => {
                 lex.forced_weak.insert(f[0]);
+                if f[6] != "-" {
+                    lex.weak_imp.insert(f[0], f[6]);
+                }
                 continue;
             }
             "a" => {
@@ -146,6 +153,11 @@ pub fn lookup(infinitive: &str) -> Option<&'static LexEntry> {
 
 pub fn is_forced_weak(infinitive: &str) -> bool {
     lexicon().forced_weak.contains(infinitive)
+}
+
+/// A weak verb's stored 2sg imperative override, if any (managen).
+pub fn weak_imp_override(infinitive: &str) -> Option<&'static str> {
+    lexicon().weak_imp.get(infinitive).copied()
 }
 
 pub fn dual_override(infinitive: &str) -> Option<DualRuling> {

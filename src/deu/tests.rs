@@ -639,6 +639,13 @@ fn dual_prefix_overrides() {
 }
 
 #[test]
+fn weak_imperative_override() {
+    // Anglicisms keep the stem's final -e; native -agen verbs do not.
+    assert_eq!(v("managen").imperative(Number::Singular).unwrap(), "manage");
+    assert_eq!(v("tragen").imperative(Number::Singular).unwrap(), "trag");
+}
+
+#[test]
 fn forced_weak_whole_words() {
     // bereiten is not be+reiten, veranlassen is not veran+lassen.
     assert_eq!(
