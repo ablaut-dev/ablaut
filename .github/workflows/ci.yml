@@ -123,6 +123,17 @@ jobs:
         run: ./scripts/slv/fetch_sloleks.sh
       - name: Slovenian golden harness with regression gate
         run: cargo run --release --bin golden_slv -- data/slv/sloleks.tsv --check
+      - name: Cache Apertium slv
+        id: apertium-slv
+        uses: actions/cache@v5
+        with:
+          path: data/slv/apertium.tsv
+          key: apertium-slv-v1
+      - name: Fetch Apertium slv
+        if: steps.apertium-slv.outputs.cache-hit != 'true'
+        run: ./scripts/slv/fetch_apertium.sh
+      - name: Slovenian Sloleks-Apertium agreement gate
+        run: cargo run --release --bin golden_slv -- data/slv/sloleks.tsv data/slv/apertium.tsv --check
       - name: Cache Vabamorf est
         id: vabamorf
         uses: actions/cache@v5
