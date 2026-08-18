@@ -66,6 +66,7 @@ enum Class {
 }
 
 static CLASSES_TSV: &str = include_str!("../data/ces/classes.tsv");
+static ASPECT_TSV: &str = include_str!("../data/ces/aspect.tsv");
 static VERBS_TSV: &str = include_str!("../data/ces/verbs.tsv");
 
 fn classes() -> &'static HashMap<&'static str, Class> {
@@ -396,12 +397,44 @@ fn soften(stem: &str) -> String {
     stem.to_string()
 }
 
+/// The aspect map mined from the gold data: lemma → (aspect,
+/// counterpart lemmas). Display metadata only; the harness never
+/// reads it.
+fn aspect_map() -> &'static std::collections::HashMap<&'static str, (&'static str, &'static str)> {
+    static MAP: std::sync::OnceLock<
+        std::collections::HashMap<&'static str, (&'static str, &'static str)>,
+    > = std::sync::OnceLock::new();
+    MAP.get_or_init(|| {
+        let mut m = std::collections::HashMap::new();
+        for line in ASPECT_TSV.lines() {
+            if line.is_empty() || line.starts_with('#') {
+                continue;
+            }
+            let mut f = line.split('\t');
+            let (Some(lemma), Some(aspect), Some(partners)) = (f.next(), f.next(), f.next()) else {
+                continue;
+            };
+            let aspect = if aspect == "impf" {
+                "imperfective"
+            } else {
+                "perfective"
+            };
+            m.insert(lemma, (aspect, partners.split(',').next().unwrap_or("")));
+        }
+        m
+    })
+}
+
 /// The full conjugation table of a Czech verb — shared by the
 /// WebAssembly and Python bindings.
 #[cfg_attr(feature = "serde", derive(serde::Serialize))]
 #[cfg_attr(feature = "serde", serde(rename_all = "camelCase"))]
 pub struct Table {
     pub infinitive: String,
+    /// "imperfective" or "perfective", where the lexicon knows it.
+    pub aspect: Option<&'static str>,
+    /// The other half of the aspect pair (dělat → udělat).
+    pub aspect_counterpart: Option<&'static str>,
     pub present: [String; 6],
     /// [2sg, 1pl, 2pl].
     pub imperative: [Option<String>; 3],
@@ -427,6 +460,11 @@ impl Table {
         };
         Self {
             infinitive: v.infinitive().to_string(),
+            aspect: aspect_map().get(v.infinitive()).map(|(a, _)| *a),
+            aspect_counterpart: aspect_map()
+                .get(v.infinitive())
+                .map(|(_, p)| *p)
+                .filter(|p| !p.is_empty()),
             present: [
                 v.present(Person::First, Number::Singular),
                 v.present(Person::Second, Number::Singular),
