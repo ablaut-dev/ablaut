@@ -124,7 +124,7 @@ bedriva	bedriver	bedrev	bedrivit	bedriv	-	-
 bedöma	bedömer	bedömde	bedömt	bedöm	-	-
 befalla	befaller	befallde	befallt	befall	-	-
 befinna	befinner	befann	befunnit	befinn	-	-
-befinnas	befinnes	-	-	-	-	-
+befinnas	befinns	-	-	-	-	-
 befästa	befäster	befäste	befäst	befäst	-	-
 begjuta	begjuter	begöt	begjutit	begjut	-	-
 beglänsa	beglänser	beglänste	beglänst	begläns	-	-
@@ -137,7 +137,7 @@ begå	-	begick	begått	-	begånge	-
 behänga	behänger	behängde	behängt	behäng	-	-
 behålla	behåller	behöll	behållit	behåll	-	-
 behöva	behöver	behövde	behövt	behöv	-	-
-behövas	behöves	-	-	-	-	-
+behövas	behövs	-	-	-	-	-
 bekantgöra	bekantgör	bekantgjorde	bekantgjort	bekantgör	-	-
 beklä	-	beklädde	beklätt	-	-	-
 beknipa	bekniper	beknep	beknipit	beknip	-	-
@@ -211,7 +211,7 @@ bleka	bleker	blekte	blekt	blek	-	-
 bli	-	blev	blivit	-	blive	-
 blottlägga	blottlägger	blottla	blottlagt	blottlägg	-	-
 blottställa	blottställer	blottställde	blottställt	blottställ	-	-
-blygas	blyges	-	-	-	-	-
+blygas	blygs	-	-	-	-	-
 blänga	blänger	blängde	blängt	bläng	-	-
 blänka	blänker	blänkte	blänkt	blänk	-	-
 blåköra	blåkör	blåkörde	blåkört	blåkör	-	-
@@ -277,7 +277,7 @@ diarieföra	diarieför	diarieförde	diariefört	diarieför	-	-
 dimpa	dimper	damp	dumpit	dimp	-	-
 direktsända	direktsänder	direktsände	direktsänt	direktsänd	-	-
 djupfrysa	djupfryser	djupfryste	djupfryst	djupfrys	-	-
-djärvas	djärves	djärvdes	djärvts	-	-	-
+djärvas	djärvs	djärvdes	djärvts	-	-	-
 domfälla	domfäller	domfällde	domfällt	domfäll	-	-
 dra	-	drog	dragit	-	drage	-
 drejvända	drejvänder	drejvände	drejvänt	drejvänd	-	-
@@ -292,7 +292,7 @@ dröja	dröjer	dröjde	dröjt	dröj	-	-
 drömma	drömmer	drömde	drömt	dröm	-	-
 drösa	dröser	-	-	drös	-	-
 duga	duger	-	dugit	dug	-	-
-dväljas	dväljes	-	-	-	-	-
+dväljas	dväljs	-	-	-	-	-
 dyka	dyker	dykte	dykt	dyk	-	-
 dämma	dämmer	dämde	dämt	däm	-	-
 dänga	dänger	dängde	dängt	däng	-	-
@@ -348,7 +348,7 @@ finbränna	finbränner	finbrände	finbränt	finbränn	-	-
 fininställa	fininställer	fininställde	fininställt	fininställ	-	-
 finmala	finmaler	finmalde	finmalt	finmal	-	-
 finna	finner	fann	funnit	finn	-	-
-finnas	finnes	fanns	funnits	-	-	-
+finnas	finns	fanns	funnits	-	-	-
 fisa	fiser	fes	fisit	fis	-	-
 fly	-	flydde	flytt	-	-	-
 flyga	flyger	flög	flugit	flyg	-	-
@@ -359,7 +359,7 @@ flå	-	flådde	flått	-	-	-
 fnysa	fnyser	fnyste	fnyst	fnys	-	-
 fogstryka	fogstryker	fogströk	fogstrukit	fogstryk	-	-
 folkbokföra	folkbokför	folkbokförde	folkbokfört	folkbokför	-	-
-fontänkräkas	fontänkräkes	-	-	-	-	-
+fontänkräkas	fontänkräks	-	-	-	-	-
 formge	-	formgav	formgett	-	formgive	-
 formgjuta	formgjuter	formgöt	formgjutit	formgjut	-	-
 fortbestå	-	fortbestod	fortbestått	-	-	-
@@ -459,7 +459,7 @@ förebygga	förebygger	förebyggde	förebyggt	förebygg	-	-
 förebära	förebär	förebar	föreburit	förebär	-	-
 föredra	-	föredrog	föredragit	-	föredrage	-
 förefalla	förefaller	föreföll	förefallit	förefall	-	-
-förefinnas	förefinnes	-	-	-	-	-
+förefinnas	förefinns	-	-	-	-	-
 förege	-	föregav	föregett	-	föregive	-
 föregripa	föregriper	föregrep	föregripit	föregrip	-	-
 föregå	-	föregick	föregått	-	föregånge	-
@@ -480,7 +480,7 @@ företräda	företräder	företrädde	företrätt	företräd	-	-
 förevara	-	förevar	förevarit	-	-	-
 förfalla	förfaller	förföll	förfallit	förfall	-	-
 förfara	förfar	förfor	förfarit	förfar	-	-
-förfaras	förfares	förfors	förfarits	-	-	-
+förfaras	förfars	förfors	förfarits	-	-	-
 förflyta	förflyter	förflöt	förflutit	förflyt	-	-
 förfrysa	förfryser	förfryste	förfrusit	förfrys	-	-
 förfölja	förföljer	förföljde	förföljt	förfölj	-	-
@@ -498,14 +498,14 @@ förhöja	förhöjer	förhöjde	förhöjt	förhöj	-	-
 förhöra	förhör	förhörde	förhört	förhör	-	-
 förkomma	förkommer	förkom	förkommit	förkom	-	-
 förkrympa	förkrymper	förkrympte	förkrympt	förkrymp	-	-
-förkrympas	förkrympes	-	-	-	-	-
+förkrympas	förkrymps	-	-	-	-	-
 förkväva	förkväver	förkvävde	förkvävt	förkväv	-	-
 förleda	förleder	förledde	förlett	förled	-	-
 förlida	förlider	förled	förlidit	förlid	-	-
 förlika	förliker	förlikte	förlikt	förlik	-	-
-förlikas	förlikes	-	-	-	-	-
+förlikas	förliks	-	-	-	-	-
 förlisa	förliser	förliste	förlist	förlis	-	-
-förljudas	förljudes	-	-	-	-	-
+förljudas	förljuds	-	-	-	-	-
 förlägga	förlägger	förla	förlagt	förlägg	-	-
 förlänga	förlänger	förlängde	förlängt	förläng	-	-
 förlåta	förlåter	förlät	förlåtit	förlåt	-	-
@@ -527,7 +527,7 @@ försjunka	försjunker	försjönk	försjunkit	försjunk	-	-
 förskjuta	förskjuter	försköt	förskjutit	förskjut	-	-
 förskriva	förskriver	förskrev	förskrivit	förskriv	-	-
 förskräcka	förskräcker	förskräckte	förskräckt	förskräck	-	-
-förskräckas	förskräckes	-	-	-	-	-
+förskräckas	förskräcks	-	-	-	-	-
 förskylla	förskyller	förskyllde	förskyllt	förskyll	-	-
 förskära	förskär	förskar	förskurit	förskär	-	-
 förslita	försliter	förslet	förslitit	förslit	-	-
@@ -543,7 +543,7 @@ förstämma	förstämmer	förstämde	förstämt	förstäm	-	-
 förstärka	förstärker	förstärkte	förstärkt	förstärk	-	-
 förstå	-	förstod	förstått	-	-	-
 förstöra	förstör	förstörde	förstört	förstör	-	-
-förstöras	förstöres	-	-	-	-	-
+förstöras	förstörs	-	-	-	-	-
 försvinna	försvinner	försvann	försvunnit	försvinn	-	-
 försvärja	försvär	försvor	försvurit	försvärj	-	-
 försälja	försäljer	försålde	försålt	försälj	-	-
@@ -607,7 +607,7 @@ glida	glider	gled	glidit	glid	-	-
 glisa	gliser	gliste	glist	glis	-	-
 glo	-	glodde	glott	-	-	-
 glädja	glädjer	gladde	glatt	gläd	-	-
-glädjas	glädes	gladdes	glatts	-	-	-
+glädjas	gläds	gladdes	glatts	-	-	-
 glädjemäta	glädjemäter	glädjemätte	glädjemätt	glädjemät	-	-
 gläfsa	gläfser	gläfste	gläfst	gläfs	-	-
 glänsa	glänser	glänste	glänst	gläns	-	-
@@ -705,7 +705,7 @@ höta	höter	hötte	hött	höt	-	-
 hötta	hötter	-	-	hött	-	-
 hövas	höves	-	-	-	-	-
 iaktta	-	iakttog	iakttagit	-	iakttage	-
-idas	ides	iddes	itts	-	-	-
+idas	ids	iddes	itts	-	-	-
 ifrågakomma	ifrågakommer	ifrågakom	ifrågakommit	ifrågakom	-	-
 ifrågasätta	ifrågasätter	ifrågasatte	ifrågasatt	ifrågasätt	-	-
 igenkänna	igenkänner	igenkände	igenkänt	igenkänn	-	-
@@ -739,7 +739,7 @@ inlära	inlär	inlärde	inlärt	inlär	-	-
 inlöpa	inlöper	inlöpte	inlöpt	inlöp	-	-
 inlösa	inlöser	inlöste	inlöst	inlös	-	-
 inmänga	inmänger	inmängde	inmängt	inmäng	-	-
-innebrännas	innebrännes	-	-	-	-	-
+innebrännas	innebränns	-	-	-	-	-
 innebära	innebär	innebar	inneburit	innebär	-	-
 inneha	-	-	innehaft	-	-	-
 innehålla	innehåller	innehöll	innehållit	innehåll	-	-
@@ -803,7 +803,7 @@ kliva	kliver	klev	klivit	kliv	-	-
 klyva	klyver	klöv	kluvit	klyv	-	-
 klä	-	klädde	klätt	-	-	-
 kläcka	kläcker	kläckte	kläckt	kläck	-	-
-kläckas	kläckes	-	-	-	-	-
+kläckas	kläcks	-	-	-	-	-
 klämma	klämmer	klämde	klämt	kläm	-	-
 klänga	klänger	klängde	klängt	kläng	-	-
 klå	-	klådde	klått	-	-	-
@@ -839,11 +839,11 @@ kringströ	-	kringströdde	kringstrött	-	-	-
 krympa	krymper	krympte	krympt	krymp	-	-
 krypa	kryper	kröp	krupit	kryp	-	-
 krypköra	krypkör	krypkörde	krypkört	krypkör	-	-
-kräkas	kräkes	kräktes	kräkts	-	-	-
+kräkas	kräks	kräktes	kräkts	-	-	-
 kränga	kränger	krängde	krängt	kräng	-	-
 kränka	kränker	kränkte	kränkt	kränk	-	-
 kräva	kräver	krävde	krävt	kräv	-	-
-krävas	kräves	-	-	-	-	-
+krävas	krävs	-	-	-	-	-
 kröna	kröner	krönte	krönt	krön	-	-
 kullslå	-	kullslog	kullslagit	-	kullslåge	-
 kulturminnesmärka	kulturminnesmärker	kulturminnesmärkte	kulturminnesmärkt	kulturminnesmärk	-	-
@@ -867,7 +867,7 @@ kyrkskriva	kyrkskriver	kyrkskrev	kyrkskrivit	kyrkskriv	-	-
 kyssa	kysser	kysste	kysst	kyss	-	-
 kyssas	kysses	-	-	-	-	-
 känna	känner	kände	känt	känn	-	-
-kännas	kännes	kändes	känts	-	-	-
+kännas	känns	kändes	känts	-	-	-
 köpa	köper	köpte	köpt	köp	-	-
 köpslå	-	köpslog	köpslagit	-	-	-
 köra	kör	körde	kört	kör	-	-
@@ -882,7 +882,7 @@ lamslå	-	lamslog	lamslagit	-	-	-
 landstiga	landstiger	landsteg	landstigit	landstig	-	-
 landsätta	landsätter	landsatte	landsatt	landsätt	-	-
 le	-	log	lett	-	-	-
-ledas	ledes	-	-	-	-	-
+ledas	leds	-	-	-	-	-
 leja	lejer	lejde	lejt	lej	-	-
 leka	leker	lekte	lekt	lek	-	-
 leva	lever	levde	-	lev	-	-
@@ -909,12 +909,12 @@ läka	läker	läkte	läkt	läk	-	-
 läkarundersöka	läkarundersöker	läkarundersökte	läkarundersökt	läkarundersök	-	-
 lända	länder	lände	länt	länd	-	-
 länga	länger	längde	längt	läng	-	-
-längas	länges	-	-	-	-	-
+längas	längs	-	-	-	-	-
 lär	lär	-	-	-	-	-
 lära	lär	lärde	lärt	lär	-	-
 läsa	läser	läste	läst	läs	-	-
 lågflyga	lågflyger	lågflög	lågflugit	lågflyg	-	-
-långledas	långledes	-	-	-	-	-
+långledas	långleds	-	-	-	-	-
 låsa	låser	låste	låst	lås	-	-
 låta	låter	lät	låtit	låt	-	-
 löpa	löper	lopp	lupit	löp	-	-
@@ -934,7 +934,7 @@ medvetandegöra	medvetandegör	medvetandegjorde	medvetandegjort	medvetandegör	-
 mikrostyra	mikrostyr	mikrostyrde	mikrostyrt	mikrostyr	-	-
 miljömärka	miljömärker	miljömärkte	miljömärkt	miljömärk	-	-
 minna	minner	minde	mint	minn	-	-
-minnas	minnes	mindes	mints	-	-	-
+minnas	minns	mindes	mints	-	-	-
 missbedöma	missbedömer	missbedömde	missbedömt	missbedöm	-	-
 missförstå	-	missförstod	missförstådd	-	-	-
 missklä	-	missklädde	missklätt	-	-	-
@@ -959,7 +959,7 @@ motstå	-	motstod	motstått	-	-	-
 motsäga	motsäger	motsade	motsagt	motsäg	-	-
 motta	-	mottog	mottagit	-	mottage	-
 motväga	motväger	motvägde	motvägt	motväg	-	-
-munhuggas	munhugges	munhöggs	munhuggits	-	-	-
+munhuggas	munhuggs	munhöggs	munhuggits	-	-	-
 mysa	myser	myste	myst	mys	-	-
 mäla	mäler	mälde	mält	mäl	-	-
 mänga	mänger	mängde	mängt	mäng	-	-
@@ -972,7 +972,7 @@ måste	måste	måste	måst	måsta	-	-
 möjliggöra	möjliggör	möjliggjorde	möjliggjort	möjliggör	-	-
 mörklägga	mörklägger	mörkla	mörklagt	mörklägg	-	-
 möta	möter	mötte	mött	möt	-	-
-mötas	mötes	möttes	mötts	-	-	-
+mötas	möts	möttes	mötts	-	-	-
 nagelfara	nagelfar	nagelfor	nagelfarit	nagelfar	-	-
 namnfästa	namnfäster	namnfäste	namnfäst	namnfäst	-	-
 namnge	-	namngav	namngett	-	namngive	-
@@ -1010,7 +1010,7 @@ nysa	nyser	nyste	nusit	nys	-	-
 nyttiggöra	nyttiggör	nyttiggjorde	nyttiggjort	nyttiggör	-	-
 nyvälja	nyväljer	nyvalde	nyvalt	nyvälj	-	-
 nämna	nämner	nämnde	nämnt	nämn	-	-
-nännas	nännes	nändes	nänts	-	-	-
+nännas	nänns	nändes	nänts	-	-	-
 näpsa	näpser	näpste	näpst	näps	-	-
 nära	när	närde	närt	när	-	-
 närsluta	närsluter	närslöt	närslutit	närslut	-	-
@@ -1220,7 +1220,7 @@ skattskriva	skattskriver	skattskrev	skattskrivit	skattskriv	-	-
 skava	skaver	skavde	skavt	skav	-	-
 ske	-	skedde	skett	-	-	-
 skilja	skiljer	skilde	skilt	skilj	-	-
-skiljas	skiljes	-	-	-	-	-
+skiljas	skiljs	-	-	-	-	-
 skina	skiner	sken	skinit	skin	-	-
 skita	skiter	sket	skitit	skit	-	-
 skjuta	skjuter	sköt	skjutit	skjut	-	-
@@ -1266,7 +1266,7 @@ slätstryka	slätstryker	slätströk	slätstrukit	slätstryk	-	-
 slå	-	slog	slagit	-	-	-
 smaksätta	smaksätter	smaksatte	smaksatt	smaksätt	-	-
 smeka	smeker	smekte	smekt	smek	-	-
-smekas	smekes	-	-	-	-	-
+smekas	smeks	-	-	-	-	-
 smida	smider	smidde	smitt	smid	-	-
 smita	smiter	smet	smitit	smit	-	-
 smyga	smyger	smög	smugit	smyg	-	-
@@ -1375,7 +1375,7 @@ svälta	svälter	svalt	svultit	svält	-	-
 svänga	svänger	svängde	svängt	sväng	-	-
 svära	svär	svor	svurit	svär	-	-
 sy	-	sydde	sytt	-	-	-
-synas	synes	syntes	synts	-	-	-
+synas	syns	syntes	synts	-	-	-
 synliggöra	synliggör	synliggjorde	synliggjort	synliggör	-	-
 syrsätta	syrsätter	syrsatte	syrsatt	syrsätt	-	-
 sysselsätta	sysselsätter	sysselsatte	sysselsatt	sysselsätt	-	-
@@ -1497,13 +1497,13 @@ tvångsansluta	tvångsansluter	tvångsanslöt	tvångsanslutit	tvångsanslut	-	-
 tvångsinlösa	tvångsinlöser	tvångsinlöste	tvångsinlöst	tvångsinlös	-	-
 tvångsomhänderta	-	tvångsomhändertog	tvångsomhändertagit	-	tvångsomhändertage	-
 tycka	tycker	tyckte	tyckt	tyck	-	-
-tyckas	tyckes	-	-	-	-	-
+tyckas	tycks	-	-	-	-	-
 tyda	tyder	tydde	tytt	tyd	-	-
 tydliggöra	tydliggör	tydliggjorde	tydliggjort	tydliggör	-	-
 tykännas	tykänns	-	-	-	-	-
 tynga	tynger	tyngde	tyngt	tyng	-	-
 täcka	täcker	täckte	täckt	täck	-	-
-täckas	täckes	-	-	-	-	-
+täckas	täcks	-	-	-	-	-
 tälja	täljer	talde	talt	tälj	-	-
 tämja	tämjer	tämjde	tämjt	tämj	-	-
 tända	tänder	tände	tänt	tänd	-	-
@@ -1514,7 +1514,7 @@ tävlingsskjuta	tävlingsskjuter	tävlingssköt	tävlingsskjutit	tävlingsskjut	
 tåla	tål	tålde	tålt	tål	-	-
 töja	töjer	töjde	töjt	töj	-	-
 tömma	tömmer	tömde	tömt	töm	-	-
-töras	töres	tordes	torts	-	-	-
+töras	törs	tordes	torts	-	-	-
 ugnssteka	ugnssteker	ugnsstekte	ugnsstekt	ugnsstek	-	-
 umbära	umbär	umbar	umburit	umbär	-	-
 umgälla	umgäller	umgällde	umgällt	umgäll	-	-
@@ -1691,7 +1691,7 @@ varsko	-	varskodde	varskott	-	-	-
 vassgöra	vassgör	vassgjorde	vassgjort	vassgör	-	-
 vattendränka	vattendränker	vattendränkte	vattendränkt	vattendränk	-	-
 vederböra	vederbör	-	-	-	-	-
-vederfaras	vederfares	vederfors	vederfarits	-	-	-
+vederfaras	vederfars	vederfors	vederfarits	-	-	-
 vedergälla	vedergäller	vedergällde	vedergällt	vedergäll	-	-
 vederkvicka	vederkvicker	vederkvickte	vederkvickt	vederkvick	-	-
 vederlägga	vederlägger	vederla	vederlagt	vederlägg	-	-
@@ -1731,7 +1731,7 @@ välla	väller	vällde	vällt	väll	-	-
 välsigne	-	-	-	-	välsigne	-
 välva	välver	välvde	välvt	välv	-	-
 vämja	vämjer	vämjde	vämjt	vämj	-	-
-vämjas	vämjes	-	-	-	-	-
+vämjas	vämjs	-	-	-	-	-
 vända	vänder	vände	vänt	vänd	-	-
 vändsteka	vändsteker	vändstekte	vändstekt	vändstek	-	-
 vänja	vänjer	vande	vant	vänj	-	-
@@ -1748,7 +1748,7 @@ växa	växer	växte	vuxit	-	-	-
 vågföra	vågför	vågförde	vågfört	vågför	-	-
 våldföra	våldför	våldförde	våldfört	våldför	-	-
 våldta	-	våldtog	våldtagit	-	våldtage	-
-yvas	yves	yvdes	yvts	-	-	-
+yvas	yvs	yvdes	yvts	-	-	-
 äga	äger	ägde	ägt	äg	-	-
 ändvända	ändvänder	ändvände	ändvänt	ändvänd	-	-
 ärekränka	ärekränker	ärekränkte	ärekränkt	ärekränk	-	-
@@ -1776,7 +1776,7 @@ yvas	yves	yvdes	yvts	-	-	-
 återfalla	återfaller	återföll	återfallit	återfall	-	-
 återfinna	återfinner	återfann	återfunnit	återfinn	-	-
 återfå	-	återfick	återfått	-	-	-
-återfödas	återfödes	-	-	-	-	-
+återfödas	återföds	-	-	-	-	-
 återföra	återför	återförde	återfört	återför	-	-
 återförsluta	återförsluter	återförslöt	återförslutit	återförslut	-	-
 återförsälja	återförsäljer	återförsålde	återförsålt	återförsälj	-	-

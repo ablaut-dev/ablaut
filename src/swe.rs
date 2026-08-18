@@ -334,6 +334,16 @@ mod tests {
     }
 
     #[test]
+    fn deponent_presents_are_modern() {
+        // Issue #84: the archaic -es presents (minnes, finnes) gave way
+        // to the modern -s forms wherever gold attests them.
+        assert_eq!(v("minnas").passive(Slot::Present).unwrap(), "minns");
+        assert_eq!(v("finnas").passive(Slot::Present).unwrap(), "finns");
+        assert_eq!(v("kännas").passive(Slot::Present).unwrap(), "känns");
+        assert_eq!(v("synas").passive(Slot::Present).unwrap(), "syns");
+    }
+
+    #[test]
     fn weak_one_default() {
         let t = v("tala");
         assert_eq!(t.active(Slot::Present).unwrap(), "talar");
