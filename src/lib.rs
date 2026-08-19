@@ -25,6 +25,8 @@ pub mod harness;
 pub mod isl;
 pub mod ita;
 pub mod jpn;
+pub mod kor;
+pub mod nld;
 pub mod por;
 #[cfg(feature = "python")]
 mod python;
@@ -77,10 +79,14 @@ pub enum Lang {
     Isl,
     /// Italian.
     Ita,
-    /// Romanian.
-    Ron,
+    /// Korean.
+    Kor,
     /// Russian.
     Rus,
+    /// Dutch.
+    Nld,
+    /// Romanian.
+    Ron,
     /// Swedish.
     Swe,
     /// Ukrainian.
@@ -109,8 +115,10 @@ impl Lang {
             "ga" | "gle" | "irish" => Some(Self::Gle),
             "is" | "isl" | "ice" | "icelandic" => Some(Self::Isl),
             "it" | "ita" | "italian" => Some(Self::Ita),
-            "ro" | "ron" | "rum" | "romanian" => Some(Self::Ron),
+            "ko" | "kor" | "korean" => Some(Self::Kor),
             "ru" | "rus" | "russian" => Some(Self::Rus),
+            "nl" | "nld" | "dutch" => Some(Self::Nld),
+            "ro" | "ron" | "rum" | "romanian" => Some(Self::Ron),
             "sv" | "swe" | "swedish" => Some(Self::Swe),
             "uk" | "ukr" | "ukrainian" => Some(Self::Ukr),
             "ja" | "jpn" | "japanese" => Some(Self::Jpn),
@@ -138,9 +146,11 @@ pub enum Conjugation {
     Gle(Box<gle::Table>),
     Isl(Box<isl::Table>),
     Ita(Box<ita::Table>),
+    Kor(Box<kor::Table>),
+    Rus(Box<rus::Table>),
+    Nld(Box<nld::Table>),
     Por(Box<por::Table>),
     Ron(Box<ron::Table>),
-    Rus(Box<rus::Table>),
     Slv(Box<slv::Table>),
     Spa(Box<spa::Table>),
     Swe(Box<swe::Table>),
@@ -201,14 +211,20 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         Lang::Ita => Conjugation::Ita(Box::new(ita::Table::build(
             &ita::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
+        Lang::Kor => Conjugation::Kor(Box::new(kor::Table::build(
+            &kor::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Rus => Conjugation::Rus(Box::new(rus::Table::build(
+            &rus::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Nld => Conjugation::Nld(Box::new(nld::Table::build(
+            &nld::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
         Lang::Por => Conjugation::Por(Box::new(por::Table::build(
             &por::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
         Lang::Ron => Conjugation::Ron(Box::new(ron::Table::build(
             &ron::Verb::from_infinitive(infinitive).map_err(err)?,
-        ))),
-        Lang::Rus => Conjugation::Rus(Box::new(rus::Table::build(
-            &rus::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
         Lang::Slv => Conjugation::Slv(Box::new(slv::Table::build(
             &slv::Verb::from_infinitive(infinitive).map_err(err)?,
@@ -245,12 +261,14 @@ mod facade_tests {
             ("glan", Lang::Gle),
             ("kalla", Lang::Isl),
             ("parlare", Lang::Ita),
+            ("먹다", Lang::Kor),
+            ("делать", Lang::Rus),
             ("falar", Lang::Por),
             ("vorbi", Lang::Ron),
-            ("читать", Lang::Rus),
             ("delati", Lang::Slv),
             ("hablar", Lang::Spa),
             ("parlar", Lang::Cat),
+            ("werken", Lang::Nld),
             ("tala", Lang::Swe),
             ("читати", Lang::Ukr),
             ("食べる", Lang::Jpn),

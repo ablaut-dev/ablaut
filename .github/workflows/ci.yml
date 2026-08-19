@@ -79,17 +79,6 @@ jobs:
         run: ./scripts/cat/fetch_freeling.sh
       - name: Catalan golden harness with regression gate
         run: cargo run --release --bin golden_cat -- data/cat/freeling.tsv --check
-      - name: Cache OpenCorpora rus
-        id: opencorpora
-        uses: actions/cache@v5
-        with:
-          path: data/rus/opencorpora.tsv
-          key: opencorpora-rus-v1
-      - name: Fetch OpenCorpora rus
-        if: steps.opencorpora.outputs.cache-hit != 'true'
-        run: ./scripts/rus/fetch_opencorpora.sh
-      - name: Russian golden harness with regression gate
-        run: cargo run --release --bin golden_rus -- data/rus/opencorpora.tsv --check
       - name: Cache MorphoBr por
         id: morphobr
         uses: actions/cache@v5
@@ -276,5 +265,56 @@ jobs:
       # rather than a single full-vocabulary oracle.
       - name: Japanese golden harness with regression gate
         run: cargo run --release --bin golden_jpn -- data/jpn/ipadic.tsv data/jpn/kaikki.tsv --check
+      - name: Cache krdict kor
+        id: krdict
+        uses: actions/cache@v5
+        with:
+          path: data/kor/krdict.tsv
+          key: krdict-kor-v1
+      - name: Fetch krdict kor
+        if: steps.krdict.outputs.cache-hit != 'true'
+        run: ./scripts/kor/fetch_krdict.sh
+      - name: Cache kaikki kor
+        id: kaikki-kor
+        uses: actions/cache@v5
+        with:
+          path: data/kor/kaikki.tsv
+          key: kaikki-kor-v1
+      - name: Fetch kaikki kor
+        if: steps.kaikki-kor.outputs.cache-hit != 'true'
+        run: ./scripts/kor/fetch_kaikki.sh
+      - name: Korean golden harness with regression gate (two-oracle agreement)
+        run: cargo run --release --bin golden_kor -- data/kor/krdict.tsv data/kor/kaikki.tsv --check
+      - name: Cache kaikki nld
+        id: kaikki-nld
+        uses: actions/cache@v5
+        with:
+          path: data/nld/kaikki.tsv
+          key: kaikki-nld-v1
+      - name: Fetch kaikki nld
+        if: steps.kaikki-nld.outputs.cache-hit != 'true'
+        run: ./scripts/nld/fetch_kaikki.sh
+      - name: Cache Apertium nld
+        id: apertium-nld
+        uses: actions/cache@v5
+        with:
+          path: data/nld/apertium.tsv
+          key: apertium-nld-v1
+      - name: Fetch Apertium nld
+        if: steps.apertium-nld.outputs.cache-hit != 'true'
+        run: ./scripts/nld/fetch_apertium.sh
+      - name: Dutch kaikki-Apertium agreement gate
+        run: cargo run --release --bin golden_nld -- data/nld/apertium.tsv data/nld/kaikki.tsv --check
+      - name: Cache OpenCorpora rus
+        id: opencorpora
+        uses: actions/cache@v5
+        with:
+          path: data/rus/opencorpora.tsv
+          key: opencorpora-rus-v1
+      - name: Fetch OpenCorpora rus
+        if: steps.opencorpora.outputs.cache-hit != 'true'
+        run: ./scripts/rus/fetch_opencorpora.sh
+      - name: Russian golden harness with regression gate
+        run: cargo run --release --bin golden_rus -- data/rus/opencorpora.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng

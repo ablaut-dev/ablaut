@@ -3,7 +3,7 @@
 //! Two complementary mechanisms, both built on the forward engine so a
 //! returned analysis is always conjugationally consistent:
 //!
-//! * **Irregular index** (all 15 languages): on first use, every lemma
+//! * **Irregular index** (all 14 languages): on first use, every lemma
 //!   in the language's compiled-in exception lexicon is forward-
 //!   conjugated and every single-word form is indexed as
 //!   `form → (infinitive, slot)`. No new data ships — the index is
@@ -777,14 +777,16 @@ fn ord(lang: Lang) -> usize {
         Lang::Ukr => 15,
         Lang::Isl => 16,
         Lang::Jpn => 17,
-        Lang::Rus => 18,
+        Lang::Kor => 18,
+        Lang::Nld => 19,
+        Lang::Rus => 20,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 19] = [EMPTY; 19];
+    static INDEXES: [OnceLock<Index>; 21] = [EMPTY; 21];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -814,7 +816,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 18] = [EMPTY; 18];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 21] = [EMPTY; 21];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -892,7 +894,6 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
             col1(include_str!("../data/ron/verbs.tsv"), &mut lemmas);
             col1(include_str!("../data/ron/classes.tsv"), &mut lemmas);
         }
-        Lang::Rus => col1(include_str!("../data/rus/verbs.tsv"), &mut lemmas),
         Lang::Swe => col1(include_str!("../data/swe/parts.tsv"), &mut lemmas),
         Lang::Cat => col1(include_str!("../data/cat/verbs.tsv"), &mut lemmas),
         Lang::Ukr => col1(include_str!("../data/ukr/verbs.tsv"), &mut lemmas),
@@ -901,6 +902,9 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         // verb is stored (the class is unknowable from the surface), so the
         // index covers the language outright.
         Lang::Jpn => col1(include_str!("../data/jpn/verbs.tsv"), &mut lemmas),
+        Lang::Kor => col1(include_str!("../data/kor/verbs.tsv"), &mut lemmas),
+        Lang::Nld => col1(include_str!("../data/nld/verbs.tsv"), &mut lemmas),
+        Lang::Rus => col1(include_str!("../data/rus/verbs.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -1078,6 +1082,13 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.subjunctive_present, "subjunctive present", &P6);
             s.row(&t.subjunctive_imperfect, "subjunctive imperfect", &P6);
         }
+        Conjugation::Kor(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.one(&t.intimate, "intimate");
+            s.one(&t.connective_ni, "connective -(으)니");
+            s.one(&t.adnominal_present, "present adnominal");
+            s.one(&t.formal_present, "formal present");
+        }
         Conjugation::Por(t) => {
             s.one(&t.infinitive, "infinitive");
             s.one(&t.gerund, "gerund");
@@ -1144,6 +1155,21 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.subjunctive_present, "subjunctive present", &P6);
             s.row(&t.subjunctive_imperfect, "subjunctive imperfect", &P6);
         }
+        Conjugation::Nld(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.row(&t.present, "present", &P6);
+            s.row(&t.past, "past", &["singular", "plural"]);
+            s.one(&t.imperative, "imperative");
+            s.one(&t.present_participle, "present participle");
+            s.one(&t.past_participle, "past participle");
+        }
+        Conjugation::Rus(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.row(&t.non_past, "non-past", &P6);
+            s.row(&t.past_singular, "past", &["masc sg", "fem sg", "neut sg"]);
+            s.one(&t.past_plural, "past pl");
+            s.row(&t.imperative, "imperative", &["2sg", "2pl"]);
+        }
         Conjugation::Ukr(t) => {
             s.one(&t.infinitive, "infinitive");
             s.row(&t.present, "present", &P6);
@@ -1199,13 +1225,6 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.past, "past", &P6);
             s.row(&t.subjunctive_present, "subjunctive present", &P6);
             s.row(&t.subjunctive_past, "subjunctive past", &P6);
-        }
-        Conjugation::Rus(t) => {
-            s.one(&t.infinitive, "infinitive");
-            s.row(&t.non_past, "non-past", &P6);
-            s.row(&t.past_singular, "past", &["masc sg", "fem sg", "neut sg"]);
-            s.one(&t.past_plural, "past pl");
-            s.row(&t.imperative, "imperative", &["2sg", "2pl"]);
         }
     }
     s.0
@@ -1273,6 +1292,8 @@ mod tests {
         // Japanese is index-only: 書いた → 書く (past), 食べた → 食べる.
         assert!(infs("書いた", Lang::Jpn).contains(&"書く".to_string()));
         assert!(infs("食べた", Lang::Jpn).contains(&"食べる".to_string()));
+        // Korean is index-only: an irregular form reverses via the lexicon.
+        assert!(infs("들어", Lang::Kor).contains(&"듣다".to_string()));
     }
 
     #[test]
