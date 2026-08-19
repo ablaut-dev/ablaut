@@ -22,7 +22,9 @@ pub mod fra;
 pub mod gle;
 #[doc(hidden)]
 pub mod harness;
+pub mod isl;
 pub mod ita;
+pub mod jpn;
 pub mod nld;
 pub mod por;
 #[cfg(feature = "python")]
@@ -71,6 +73,8 @@ pub enum Lang {
     Por,
     /// Irish.
     Gle,
+    /// Icelandic.
+    Isl,
     /// Italian.
     Ita,
     /// Dutch.
@@ -81,6 +85,8 @@ pub enum Lang {
     Swe,
     /// Ukrainian.
     Ukr,
+    /// Japanese.
+    Jpn,
 }
 
 impl Lang {
@@ -101,11 +107,13 @@ impl Lang {
             "es" | "spa" | "spanish" => Some(Self::Spa),
             "pt" | "por" | "portuguese" => Some(Self::Por),
             "ga" | "gle" | "irish" => Some(Self::Gle),
+            "is" | "isl" | "ice" | "icelandic" => Some(Self::Isl),
             "it" | "ita" | "italian" => Some(Self::Ita),
             "nl" | "nld" | "dut" | "dutch" | "nederlands" => Some(Self::Nld),
             "ro" | "ron" | "rum" | "romanian" => Some(Self::Ron),
             "sv" | "swe" | "swedish" => Some(Self::Swe),
             "uk" | "ukr" | "ukrainian" => Some(Self::Ukr),
+            "ja" | "jpn" | "japanese" => Some(Self::Jpn),
             _ => None,
         }
     }
@@ -128,6 +136,7 @@ pub enum Conjugation {
     Fin(Box<fin::Table>),
     Fra(Box<fra::Table>),
     Gle(Box<gle::Table>),
+    Isl(Box<isl::Table>),
     Ita(Box<ita::Table>),
     Nld(Box<nld::Table>),
     Por(Box<por::Table>),
@@ -136,6 +145,7 @@ pub enum Conjugation {
     Spa(Box<spa::Table>),
     Swe(Box<swe::Table>),
     Ukr(Box<ukr::Table>),
+    Jpn(Box<jpn::Table>),
 }
 
 /// Why `conjugate` failed: the input is not a known verb shape in
@@ -185,6 +195,9 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         Lang::Gle => Conjugation::Gle(Box::new(gle::Table::build(
             &gle::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
+        Lang::Isl => Conjugation::Isl(Box::new(isl::Table::build(
+            &isl::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
         Lang::Ita => Conjugation::Ita(Box::new(ita::Table::build(
             &ita::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
@@ -209,6 +222,9 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         Lang::Ukr => Conjugation::Ukr(Box::new(ukr::Table::build(
             &ukr::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
+        Lang::Jpn => Conjugation::Jpn(Box::new(jpn::Table::build(
+            &jpn::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
     })
 }
 
@@ -227,6 +243,7 @@ mod facade_tests {
             ("puhua", Lang::Fin),
             ("parler", Lang::Fra),
             ("glan", Lang::Gle),
+            ("kalla", Lang::Isl),
             ("parlare", Lang::Ita),
             ("werken", Lang::Nld),
             ("falar", Lang::Por),
@@ -236,6 +253,7 @@ mod facade_tests {
             ("parlar", Lang::Cat),
             ("tala", Lang::Swe),
             ("читати", Lang::Ukr),
+            ("食べる", Lang::Jpn),
         ];
         for (verb, lang) in cases {
             assert!(conjugate(verb, lang).is_ok(), "{verb}");

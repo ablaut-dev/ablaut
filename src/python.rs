@@ -192,6 +192,38 @@ impl From<crate::spa::Table> for SpanishConjugation {
     }
 }
 
+/// The full conjugation table of one Dutch verb. The present row is
+/// [ik, jij, hij, wij, jullie, zij]; the past is [singular, plural].
+#[pyclass(get_all, frozen)]
+struct DutchConjugation {
+    infinitive: String,
+    present: Vec<String>,
+    past: Vec<String>,
+    imperative: String,
+    present_participle: String,
+    past_participle: String,
+}
+
+#[pymethods]
+impl DutchConjugation {
+    fn __repr__(&self) -> String {
+        format!("DutchConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::nld::Table> for DutchConjugation {
+    fn from(t: crate::nld::Table) -> Self {
+        DutchConjugation {
+            infinitive: t.infinitive,
+            present: t.present.into(),
+            past: t.past.into(),
+            imperative: t.imperative,
+            present_participle: t.present_participle,
+            past_participle: t.past_participle,
+        }
+    }
+}
+
 /// The full conjugation table of one Catalan verb. Rows are
 /// [jo, tu, ell/ella, nosaltres, vosaltres, ells/elles].
 #[pyclass(get_all, frozen)]
@@ -235,34 +267,40 @@ impl From<crate::cat::Table> for CatalanConjugation {
     }
 }
 
-/// The full conjugation table of one Dutch verb. The present row is
-/// [ik, jij, hij, wij, jullie, zij]; the past is [singular, plural].
+/// The conjugation of one Japanese verb: the katsuyou-kei (活用形) plus
+/// the plain past た-form.
 #[pyclass(get_all, frozen)]
-struct DutchConjugation {
-    infinitive: String,
-    present: Vec<String>,
-    past: Vec<String>,
+struct JapaneseConjugation {
+    /// 終止形 — dictionary form.
+    terminal: String,
+    /// 連用形 — continuative / masu-stem.
+    continuative: String,
+    /// 未然形 — irrealis.
+    irrealis: String,
+    /// 仮定形 — hypothetical.
+    hypothetical: String,
+    /// 命令形 — imperative.
     imperative: String,
-    present_participle: String,
-    past_participle: String,
+    /// Plain past — た/だ-form.
+    past: String,
 }
 
 #[pymethods]
-impl DutchConjugation {
+impl JapaneseConjugation {
     fn __repr__(&self) -> String {
-        format!("DutchConjugation({:?})", self.infinitive)
+        format!("JapaneseConjugation({:?})", self.terminal)
     }
 }
 
-impl From<crate::nld::Table> for DutchConjugation {
-    fn from(t: crate::nld::Table) -> Self {
-        DutchConjugation {
-            infinitive: t.infinitive,
-            present: t.present.into(),
-            past: t.past.into(),
+impl From<crate::jpn::Table> for JapaneseConjugation {
+    fn from(t: crate::jpn::Table) -> Self {
+        JapaneseConjugation {
+            terminal: t.terminal,
+            continuative: t.continuative,
+            irrealis: t.irrealis,
+            hypothetical: t.hypothetical,
             imperative: t.imperative,
-            present_participle: t.present_participle,
-            past_participle: t.past_participle,
+            past: t.past,
         }
     }
 }
@@ -820,6 +858,43 @@ impl From<crate::ukr::Table> for UkrainianConjugation {
     }
 }
 
+/// The synthetic active paradigm of one Icelandic verb. Person rows are
+/// [ég, þú, hann/hún, við, þið, þeir].
+#[pyclass(get_all, frozen)]
+struct IcelandicConjugation {
+    infinitive: String,
+    supine: String,
+    present_participle: String,
+    /// [þú, þið]
+    imperative: Vec<Option<String>>,
+    present: Vec<String>,
+    past: Vec<String>,
+    subjunctive_present: Vec<String>,
+    subjunctive_past: Vec<String>,
+}
+
+#[pymethods]
+impl IcelandicConjugation {
+    fn __repr__(&self) -> String {
+        format!("IcelandicConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::isl::Table> for IcelandicConjugation {
+    fn from(t: crate::isl::Table) -> Self {
+        IcelandicConjugation {
+            infinitive: t.infinitive,
+            supine: t.supine,
+            present_participle: t.present_participle,
+            imperative: t.imperative.into(),
+            present: t.present.into(),
+            past: t.past.into(),
+            subjunctive_present: t.subjunctive_present.into(),
+            subjunctive_past: t.subjunctive_past.into(),
+        }
+    }
+}
+
 /// Conjugate an infinitive: `ablaut.conjugate("aufstehen").present[0]`
 /// → "stehe auf", `ablaut.conjugate("parler", lang="fra").present[0]`
 /// → "parle". Raises ValueError for unknown languages and for strings
@@ -860,6 +935,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
             let v = crate::gle::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
             Ok(IrishConjugation::from(crate::gle::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Isl) => {
+            let v = crate::isl::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(IcelandicConjugation::from(crate::isl::Table::build(&v))
                 .into_pyobject(py)?
                 .into())
         }
@@ -933,6 +1015,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Nld) => {
+            let v = crate::nld::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(DutchConjugation::from(crate::nld::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         Some(crate::Lang::Ukr) => {
             let v = crate::ukr::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
@@ -940,10 +1029,10 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
-        Some(crate::Lang::Nld) => {
-            let v = crate::nld::Verb::from_infinitive(infinitive)
+        Some(crate::Lang::Jpn) => {
+            let v = crate::jpn::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
-            Ok(DutchConjugation::from(crate::nld::Table::build(&v))
+            Ok(JapaneseConjugation::from(crate::jpn::Table::build(&v))
                 .into_pyobject(py)?
                 .into())
         }
@@ -957,6 +1046,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<FrenchConjugation>()?;
     m.add_class::<SpanishConjugation>()?;
     m.add_class::<CatalanConjugation>()?;
+    m.add_class::<DutchConjugation>()?;
     m.add_class::<PortugueseConjugation>()?;
     m.add_class::<RomanianConjugation>()?;
     m.add_class::<EnglishConjugation>()?;
@@ -969,7 +1059,8 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<ItalianConjugation>()?;
     m.add_class::<SwedishConjugation>()?;
     m.add_class::<UkrainianConjugation>()?;
-    m.add_class::<DutchConjugation>()?;
+    m.add_class::<IcelandicConjugation>()?;
+    m.add_class::<JapaneseConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())
 }

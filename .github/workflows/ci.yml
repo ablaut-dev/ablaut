@@ -231,10 +231,38 @@ jobs:
         run: ./scripts/ukr/fetch_kaikki.sh
       - name: Ukrainian golden harness with two-oracle regression gate
         run: cargo run --release --bin golden_ukr -- data/ukr/vesum.tsv data/ukr/kaikki.tsv --check
-      - name: Cache kaikki nld
-        id: kaikki-nld
+      - name: Cache BÍN isl
+        id: bin-isl
         uses: actions/cache@v5
         with:
+          path: data/isl/bin.tsv
+          key: bin-isl-v1
+      - name: Fetch BÍN isl
+        if: steps.bin-isl.outputs.cache-hit != 'true'
+        run: ./scripts/isl/fetch_bin.sh
+      - name: Icelandic golden harness with regression gate
+        run: cargo run --release --bin golden_isl -- data/isl/bin.tsv --check
+      - name: Cache IPADIC jpn
+        id: ipadic
+          path: data/jpn/ipadic.tsv
+          key: ipadic-jpn-v1
+      - name: Fetch IPADIC jpn
+        if: steps.ipadic.outputs.cache-hit != 'true'
+        run: ./scripts/jpn/fetch_ipadic.sh
+      - name: Cache kaikki jpn
+        id: kaikki-jpn
+          path: data/jpn/kaikki.tsv
+          key: kaikki-jpn-v1
+      - name: Fetch kaikki jpn
+        if: steps.kaikki-jpn.outputs.cache-hit != 'true'
+        run: ./scripts/jpn/fetch_kaikki.sh
+      # Japanese is lexicon-bound (the inflection class is not derivable
+      # from the surface), so it is scored on the two-oracle agreement
+      # rather than a single full-vocabulary oracle.
+      - name: Japanese golden harness with regression gate
+        run: cargo run --release --bin golden_jpn -- data/jpn/ipadic.tsv data/jpn/kaikki.tsv --check
+      - name: Cache kaikki nld
+        id: kaikki-nld
           path: data/nld/kaikki.tsv
           key: kaikki-nld-v1
       - name: Fetch kaikki nld
@@ -242,8 +270,6 @@ jobs:
         run: ./scripts/nld/fetch_kaikki.sh
       - name: Cache Apertium nld
         id: apertium-nld
-        uses: actions/cache@v5
-        with:
           path: data/nld/apertium.tsv
           key: apertium-nld-v1
       - name: Fetch Apertium nld
