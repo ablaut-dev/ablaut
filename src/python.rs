@@ -192,6 +192,38 @@ impl From<crate::spa::Table> for SpanishConjugation {
     }
 }
 
+/// The full conjugation table of one Dutch verb. The present row is
+/// [ik, jij, hij, wij, jullie, zij]; the past is [singular, plural].
+#[pyclass(get_all, frozen)]
+struct DutchConjugation {
+    infinitive: String,
+    present: Vec<String>,
+    past: Vec<String>,
+    imperative: String,
+    present_participle: String,
+    past_participle: String,
+}
+
+#[pymethods]
+impl DutchConjugation {
+    fn __repr__(&self) -> String {
+        format!("DutchConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::nld::Table> for DutchConjugation {
+    fn from(t: crate::nld::Table) -> Self {
+        DutchConjugation {
+            infinitive: t.infinitive,
+            present: t.present.into(),
+            past: t.past.into(),
+            imperative: t.imperative,
+            present_participle: t.present_participle,
+            past_participle: t.past_participle,
+        }
+    }
+}
+
 /// The full conjugation table of one Catalan verb. Rows are
 /// [jo, tu, ell/ella, nosaltres, vosaltres, ells/elles].
 #[pyclass(get_all, frozen)]
@@ -1013,6 +1045,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Nld) => {
+            let v = crate::nld::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(DutchConjugation::from(crate::nld::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         Some(crate::Lang::Ukr) => {
             let v = crate::ukr::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
@@ -1044,6 +1083,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<FrenchConjugation>()?;
     m.add_class::<SpanishConjugation>()?;
     m.add_class::<CatalanConjugation>()?;
+    m.add_class::<DutchConjugation>()?;
     m.add_class::<KoreanConjugation>()?;
     m.add_class::<PortugueseConjugation>()?;
     m.add_class::<RomanianConjugation>()?;
