@@ -779,13 +779,14 @@ fn ord(lang: Lang) -> usize {
         Lang::Jpn => 17,
         Lang::Kor => 18,
         Lang::Nld => 19,
+        Lang::Rus => 20,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 20] = [EMPTY; 20];
+    static INDEXES: [OnceLock<Index>; 21] = [EMPTY; 21];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -815,7 +816,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 20] = [EMPTY; 20];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 21] = [EMPTY; 21];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -903,6 +904,7 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Jpn => col1(include_str!("../data/jpn/verbs.tsv"), &mut lemmas),
         Lang::Kor => col1(include_str!("../data/kor/verbs.tsv"), &mut lemmas),
         Lang::Nld => col1(include_str!("../data/nld/verbs.tsv"), &mut lemmas),
+        Lang::Rus => col1(include_str!("../data/rus/verbs.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -1160,6 +1162,13 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.one(&t.imperative, "imperative");
             s.one(&t.present_participle, "present participle");
             s.one(&t.past_participle, "past participle");
+        }
+        Conjugation::Rus(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.row(&t.non_past, "non-past", &P6);
+            s.row(&t.past_singular, "past", &["masc sg", "fem sg", "neut sg"]);
+            s.one(&t.past_plural, "past pl");
+            s.row(&t.imperative, "imperative", &["2sg", "2pl"]);
         }
         Conjugation::Ukr(t) => {
             s.one(&t.infinitive, "infinitive");

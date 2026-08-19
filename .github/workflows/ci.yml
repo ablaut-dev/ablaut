@@ -305,5 +305,16 @@ jobs:
         run: ./scripts/nld/fetch_apertium.sh
       - name: Dutch kaikki-Apertium agreement gate
         run: cargo run --release --bin golden_nld -- data/nld/apertium.tsv data/nld/kaikki.tsv --check
+      - name: Cache OpenCorpora rus
+        id: opencorpora
+        uses: actions/cache@v5
+        with:
+          path: data/rus/opencorpora.tsv
+          key: opencorpora-rus-v1
+      - name: Fetch OpenCorpora rus
+        if: steps.opencorpora.outputs.cache-hit != 'true'
+        run: ./scripts/rus/fetch_opencorpora.sh
+      - name: Russian golden harness with regression gate
+        run: cargo run --release --bin golden_rus -- data/rus/opencorpora.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng
