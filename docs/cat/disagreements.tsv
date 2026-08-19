@@ -1,0 +1,20 @@
+# Oracle-vs-oracle disagreements for Catalan, ruled on so the golden
+# harness can report them as resolved. Resolutions:
+#   variant = both forms are standard (old/new spelling, dialect)
+#   o1      = the first oracle (FreeLing) is right, the second wrong
+#   o2      = the second oracle (kaikki) is right, the first wrong
+#   neither = both wrong; the engine's own form is the standard one
+# lemma	features	resolution	note
+contrafer	V;IND;PST;PFV;SG;3	variant	Diacritic doublet — the 2016 IEC accent reform dropped the mark; both forms are attested
+desfer	V;IND;PST;PFV;SG;3	variant	Diacritic doublet — the 2016 IEC accent reform dropped the mark; both forms are attested
+donar	V;IND;PRS;SG;2	variant	Diacritic doublet — the 2016 IEC accent reform dropped the mark; both forms are attested
+donar	V;IND;PRS;SG;3	variant	Diacritic doublet — the 2016 IEC accent reform dropped the mark; both forms are attested
+estrafer	V;IND;PST;PFV;SG;3	variant	Diacritic doublet — the 2016 IEC accent reform dropped the mark; both forms are attested
+fer	V;IND;PST;PFV;SG;3	variant	Diacritic doublet — the 2016 IEC accent reform dropped the mark; both forms are attested
+rarefer	V;IND;PST;PFV;SG;3	variant	Diacritic doublet — the 2016 IEC accent reform dropped the mark; both forms are attested
+refer	V;IND;PST;PFV;SG;3	variant	Diacritic doublet — the 2016 IEC accent reform dropped the mark; both forms are attested
+revenir	V;IND;PRS;PL;3	variant	Diacritic doublet — the 2016 IEC accent reform dropped the mark; both forms are attested
+revenir	V;IND;PRS;SG;2	variant	Diacritic doublet — the 2016 IEC accent reform dropped the mark; both forms are attested
+satisfer	V;IND;PST;PFV;SG;3	variant	Diacritic doublet — the 2016 IEC accent reform dropped the mark; both forms are attested
+venir	V;IND;PRS;PL;3	variant	Diacritic doublet — the 2016 IEC accent reform dropped the mark; both forms are attested
+venir	V;IND;PRS;SG;2	variant	Diacritic doublet — the 2016 IEC accent reform dropped the mark; both forms are attested
