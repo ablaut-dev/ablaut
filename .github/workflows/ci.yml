@@ -244,6 +244,8 @@ jobs:
         run: cargo run --release --bin golden_isl -- data/isl/bin.tsv --check
       - name: Cache IPADIC jpn
         id: ipadic
+        uses: actions/cache@v5
+        with:
           path: data/jpn/ipadic.tsv
           key: ipadic-jpn-v1
       - name: Fetch IPADIC jpn
@@ -251,6 +253,8 @@ jobs:
         run: ./scripts/jpn/fetch_ipadic.sh
       - name: Cache kaikki jpn
         id: kaikki-jpn
+        uses: actions/cache@v5
+        with:
           path: data/jpn/kaikki.tsv
           key: kaikki-jpn-v1
       - name: Fetch kaikki jpn
@@ -272,6 +276,8 @@ jobs:
         run: ./scripts/kor/fetch_krdict.sh
       - name: Cache kaikki kor
         id: kaikki-kor
+        uses: actions/cache@v5
+        with:
           path: data/kor/kaikki.tsv
           key: kaikki-kor-v1
       - name: Fetch kaikki kor
@@ -281,6 +287,8 @@ jobs:
         run: cargo run --release --bin golden_kor -- data/kor/krdict.tsv data/kor/kaikki.tsv --check
       - name: Cache kaikki nld
         id: kaikki-nld
+        uses: actions/cache@v5
+        with:
           path: data/nld/kaikki.tsv
           key: kaikki-nld-v1
       - name: Fetch kaikki nld
@@ -288,6 +296,8 @@ jobs:
         run: ./scripts/nld/fetch_kaikki.sh
       - name: Cache Apertium nld
         id: apertium-nld
+        uses: actions/cache@v5
+        with:
           path: data/nld/apertium.tsv
           key: apertium-nld-v1
       - name: Fetch Apertium nld
