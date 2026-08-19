@@ -30,6 +30,7 @@ include = [
     "data/ita/classes.tsv",
     "data/ita/strong.tsv",
     "data/ita/verbs.tsv",
+    "data/nld/verbs.tsv",
     "data/por/classes.tsv",
     "data/por/verbs.tsv",
     "data/ron/classes.tsv",

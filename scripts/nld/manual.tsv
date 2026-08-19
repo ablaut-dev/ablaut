@@ -1,0 +1,13 @@
+# Core auxiliaries and modals that Apertium classes outside vblex
+# (vbhaver/vaux/vbmod), so they never enter the two-oracle agreement and
+# cannot be mined. Their paradigms are taken from kaikki.org (the single
+# reliable oracle here) so that these everyday verbs still conjugate.
+# mine_verbs.py appends these rows verbatim.
+# lemma	stem	pres	past_sg	past_pl	pp	imp	prespart
+hebben	heb	heb,hebt,heeft,hebben,hebben,hebben	had	hadden	gehad	heb	hebbend
+zijn	ben	ben,bent,is,zijn,zijn,zijn	was	waren	geweest	wees	zijnd
+kunnen	kan	kan,kunt,kan,kunnen,kunnen,kunnen	kon	konden	gekund	kun	kunnend
+zullen	zal	zal,zult,zal,zullen,zullen,zullen	zou	zouden	-	-	zullend
+mogen	mag	mag,mag,mag,mogen,mogen,mogen	mocht	mochten	gemogen	-	mogend
+willen	wil	wil,wilt,wil,willen,willen,willen	wilde	wilden	gewild	wil	willend
+moeten	moet	moet,moet,moet,moeten,moeten,moeten	moest	moesten	gemoeten	moet	moetend

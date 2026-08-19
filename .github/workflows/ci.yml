@@ -231,5 +231,25 @@ jobs:
         run: ./scripts/ukr/fetch_kaikki.sh
       - name: Ukrainian golden harness with two-oracle regression gate
         run: cargo run --release --bin golden_ukr -- data/ukr/vesum.tsv data/ukr/kaikki.tsv --check
+      - name: Cache kaikki nld
+        id: kaikki-nld
+        uses: actions/cache@v5
+        with:
+          path: data/nld/kaikki.tsv
+          key: kaikki-nld-v1
+      - name: Fetch kaikki nld
+        if: steps.kaikki-nld.outputs.cache-hit != 'true'
+        run: ./scripts/nld/fetch_kaikki.sh
+      - name: Cache Apertium nld
+        id: apertium-nld
+        uses: actions/cache@v5
+        with:
+          path: data/nld/apertium.tsv
+          key: apertium-nld-v1
+      - name: Fetch Apertium nld
+        if: steps.apertium-nld.outputs.cache-hit != 'true'
+        run: ./scripts/nld/fetch_apertium.sh
+      - name: Dutch kaikki-Apertium agreement gate
+        run: cargo run --release --bin golden_nld -- data/nld/apertium.tsv data/nld/kaikki.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng

@@ -775,13 +775,14 @@ fn ord(lang: Lang) -> usize {
         Lang::Swe => 13,
         Lang::Cat => 14,
         Lang::Ukr => 15,
+        Lang::Nld => 16,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 16] = [EMPTY; 16];
+    static INDEXES: [OnceLock<Index>; 17] = [EMPTY; 17];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -811,7 +812,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 16] = [EMPTY; 16];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 17] = [EMPTY; 17];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -892,6 +893,7 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Swe => col1(include_str!("../data/swe/parts.tsv"), &mut lemmas),
         Lang::Cat => col1(include_str!("../data/cat/verbs.tsv"), &mut lemmas),
         Lang::Ukr => col1(include_str!("../data/ukr/verbs.tsv"), &mut lemmas),
+        Lang::Nld => col1(include_str!("../data/nld/verbs.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -1069,6 +1071,14 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.subjunctive_present, "subjunctive present", &P6);
             s.row(&t.subjunctive_imperfect, "subjunctive imperfect", &P6);
         }
+        Conjugation::Nld(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.row(&t.present, "present", &P6);
+            s.row(&t.past, "past", &["singular", "plural"]);
+            s.one(&t.imperative, "imperative");
+            s.one(&t.present_participle, "present participle");
+            s.one(&t.past_participle, "past participle");
+        }
         Conjugation::Por(t) => {
             s.one(&t.infinitive, "infinitive");
             s.one(&t.gerund, "gerund");
@@ -1236,6 +1246,7 @@ mod tests {
         assert!(infs("chuaigh", Lang::Gle).contains(&"téigh".to_string()));
         assert!(infs("mindes", Lang::Swe).contains(&"minnas".to_string()));
         assert!(infs("fui", Lang::Por).contains(&"ser".to_string()));
+        assert!(infs("geschreven", Lang::Nld).contains(&"schrijven".to_string()));
     }
 
     #[test]

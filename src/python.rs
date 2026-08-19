@@ -235,6 +235,38 @@ impl From<crate::cat::Table> for CatalanConjugation {
     }
 }
 
+/// The full conjugation table of one Dutch verb. The present row is
+/// [ik, jij, hij, wij, jullie, zij]; the past is [singular, plural].
+#[pyclass(get_all, frozen)]
+struct DutchConjugation {
+    infinitive: String,
+    present: Vec<String>,
+    past: Vec<String>,
+    imperative: String,
+    present_participle: String,
+    past_participle: String,
+}
+
+#[pymethods]
+impl DutchConjugation {
+    fn __repr__(&self) -> String {
+        format!("DutchConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::nld::Table> for DutchConjugation {
+    fn from(t: crate::nld::Table) -> Self {
+        DutchConjugation {
+            infinitive: t.infinitive,
+            present: t.present.into(),
+            past: t.past.into(),
+            imperative: t.imperative,
+            present_participle: t.present_participle,
+            past_participle: t.past_participle,
+        }
+    }
+}
+
 /// The full conjugation table of one Portuguese verb. Rows are
 /// [eu, tu, ele/ela, nós, vós, eles/elas].
 #[pyclass(get_all, frozen)]
@@ -908,6 +940,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Nld) => {
+            let v = crate::nld::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(DutchConjugation::from(crate::nld::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         None => Err(PyValueError::new_err(format!("unknown language: {lang}"))),
     }
 }
@@ -930,6 +969,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<ItalianConjugation>()?;
     m.add_class::<SwedishConjugation>()?;
     m.add_class::<UkrainianConjugation>()?;
+    m.add_class::<DutchConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())
 }

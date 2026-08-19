@@ -23,6 +23,7 @@ pub mod gle;
 #[doc(hidden)]
 pub mod harness;
 pub mod ita;
+pub mod nld;
 pub mod por;
 #[cfg(feature = "python")]
 mod python;
@@ -72,6 +73,8 @@ pub enum Lang {
     Gle,
     /// Italian.
     Ita,
+    /// Dutch.
+    Nld,
     /// Romanian.
     Ron,
     /// Swedish.
@@ -99,6 +102,7 @@ impl Lang {
             "pt" | "por" | "portuguese" => Some(Self::Por),
             "ga" | "gle" | "irish" => Some(Self::Gle),
             "it" | "ita" | "italian" => Some(Self::Ita),
+            "nl" | "nld" | "dut" | "dutch" | "nederlands" => Some(Self::Nld),
             "ro" | "ron" | "rum" | "romanian" => Some(Self::Ron),
             "sv" | "swe" | "swedish" => Some(Self::Swe),
             "uk" | "ukr" | "ukrainian" => Some(Self::Ukr),
@@ -125,6 +129,7 @@ pub enum Conjugation {
     Fra(Box<fra::Table>),
     Gle(Box<gle::Table>),
     Ita(Box<ita::Table>),
+    Nld(Box<nld::Table>),
     Por(Box<por::Table>),
     Ron(Box<ron::Table>),
     Slv(Box<slv::Table>),
@@ -183,6 +188,9 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         Lang::Ita => Conjugation::Ita(Box::new(ita::Table::build(
             &ita::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
+        Lang::Nld => Conjugation::Nld(Box::new(nld::Table::build(
+            &nld::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
         Lang::Por => Conjugation::Por(Box::new(por::Table::build(
             &por::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
@@ -220,6 +228,7 @@ mod facade_tests {
             ("parler", Lang::Fra),
             ("glan", Lang::Gle),
             ("parlare", Lang::Ita),
+            ("werken", Lang::Nld),
             ("falar", Lang::Por),
             ("vorbi", Lang::Ron),
             ("delati", Lang::Slv),
