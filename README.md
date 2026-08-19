@@ -10,7 +10,6 @@
 <h1 align="center">ablaut</h1>
 
 <p align="center">Fast, correct verb conjugation for 18 languages.</p>
-<p align="center">Fast, correct verb conjugation for 17 languages.</p>
 
 <br>
 
