@@ -61,11 +61,23 @@ pub fn parse_gold(data: &str) -> Gold {
     gold
 }
 
+/// One oracle-vs-oracle disagreement: a slot both oracles cover but with
+/// disjoint variant sets. The two variant sets are recorded so the
+/// resolution log can show what is being ruled between.
+pub struct Split {
+    pub lemma: String,
+    pub features: String,
+    /// The first oracle's forms (`|`-joined, sorted).
+    pub o1: String,
+    /// The second oracle's forms.
+    pub o2: String,
+}
+
 /// Intersect two oracles into agreement gold: slots both cover with
-/// overlapping variant sets, unioned so either oracle's spelling
-/// counts; disjoint slots are the adjudication corpus and dropped.
-fn agree(a: Gold, b: &Gold, carry: &[&str]) -> (Gold, usize) {
-    let mut dropped = 0;
+/// overlapping variant sets, unioned so either oracle's spelling counts.
+/// Disjoint slots are returned separately as the disagreement corpus.
+fn agree(a: Gold, b: &Gold, carry: &[&str]) -> (Gold, Vec<Split>) {
+    let mut splits: Vec<Split> = Vec::new();
     let mut out: Gold = HashMap::new();
     for feature in carry {
         for (lemma, feats) in b {
@@ -76,6 +88,11 @@ fn agree(a: Gold, b: &Gold, carry: &[&str]) -> (Gold, usize) {
             }
         }
     }
+    let join = |set: &HashSet<String>| {
+        let mut v: Vec<&String> = set.iter().collect();
+        v.sort();
+        v.iter().map(|s| s.as_str()).collect::<Vec<_>>().join("|")
+    };
     for (lemma, feats) in a {
         let Some(bfeats) = b.get(&lemma) else {
             continue;
@@ -85,7 +102,12 @@ fn agree(a: Gold, b: &Gold, carry: &[&str]) -> (Gold, usize) {
                 continue;
             };
             if variants.is_disjoint(bvariants) {
-                dropped += 1;
+                splits.push(Split {
+                    lemma: lemma.clone(),
+                    features: features.clone(),
+                    o1: join(&variants),
+                    o2: join(bvariants),
+                });
                 continue;
             }
             variants.extend(bvariants.iter().cloned());
@@ -94,7 +116,26 @@ fn agree(a: Gold, b: &Gold, carry: &[&str]) -> (Gold, usize) {
                 .insert(features, variants);
         }
     }
-    (out, dropped)
+    splits.sort_by(|x, y| x.lemma.cmp(&y.lemma).then(x.features.cmp(&y.features)));
+    (out, splits)
+}
+
+/// The resolution log for oracle-vs-oracle disagreements
+/// (`docs/<lang>/disagreements.tsv`): a `(lemma, features) -> resolution`
+/// map. Resolutions: `variant` (both standard), `o1`/`o2` (one oracle is
+/// right), `neither` (both wrong, the engine's own form stands). A slot
+/// absent from the map is unresolved — the work left to do.
+fn load_disagreements(path: &str) -> HashMap<(String, String), String> {
+    let Ok(data) = fs::read_to_string(path) else {
+        return HashMap::new();
+    };
+    data.lines()
+        .filter(|l| !l.starts_with('#') && !l.trim().is_empty())
+        .filter_map(|l| {
+            let f: Vec<&str> = l.split('\t').collect();
+            (f.len() >= 3).then(|| ((f[0].to_string(), f[1].to_string()), f[2].to_string()))
+        })
+        .collect()
 }
 
 #[derive(Default)]
@@ -111,6 +152,11 @@ struct Scores {
     supported_lemmas: usize,
     total_lemmas: usize,
     adjudicated_hits: usize,
+    /// Distinct feature bundles present in the agreed gold.
+    gold_slots: HashSet<String>,
+    /// Feature bundles the engine produces a form for (generate → Some).
+    /// The gold slots not in here are the paradigm's uncovered tenses.
+    covered_slots: HashSet<String>,
 }
 
 impl Scores {
@@ -153,9 +199,11 @@ fn score<V>(spec: &Spec<V>, gold: &Gold, adjudicated: &HashSet<(String, String)>
         };
         s.supported_lemmas += 1;
         for (features, variants) in feats {
+            s.gold_slots.insert(features.clone());
             let Some(forms) = (spec.generate)(&verb, features) else {
                 continue;
             };
+            s.covered_slots.insert(features.clone());
             let tally = s.by_category.entry((spec.category)(features)).or_default();
             tally.total += 1;
             let ok = forms.iter().any(|f| variants.contains(f))
@@ -251,6 +299,146 @@ fn check_gates<V>(spec: &Spec<V>, s: &Scores) {
     );
 }
 
+/// Bucket the disagreement corpus by its recorded resolution, returning
+/// `(variant, o1, o2, neither, unresolved)`.
+fn resolution_counts(
+    splits: &[Split],
+    resolutions: &HashMap<(String, String), String>,
+) -> [usize; 5] {
+    let mut c = [0usize; 5]; // variant, o1, o2, neither, unresolved
+    for sp in splits {
+        match resolutions
+            .get(&(sp.lemma.clone(), sp.features.clone()))
+            .map(String::as_str)
+        {
+            Some("variant") => c[0] += 1,
+            Some("o1") => c[1] += 1,
+            Some("o2") => c[2] += 1,
+            Some("neither") => c[3] += 1,
+            _ => c[4] += 1,
+        }
+    }
+    c
+}
+
+/// Write the machine-readable stats record (`target/stats_<lang>.json`)
+/// the correctness table is compiled from, and dump the still-unresolved
+/// disagreements to `target/<lang>_disagreements_todo.tsv` so they can be
+/// worked through and moved into `docs/<lang>/disagreements.tsv`.
+fn write_stats<V>(
+    spec: &Spec<V>,
+    paths: &[String],
+    s: &Scores,
+    splits: &[Split],
+    resolutions: &HashMap<(String, String), String>,
+    single_oracle: bool,
+) {
+    let (total, matched) = s.totals();
+    let uncovered: Vec<&String> = {
+        let mut u: Vec<&String> = s.gold_slots.difference(&s.covered_slots).collect();
+        u.sort();
+        u
+    };
+    let [variant, o1, o2, neither, unresolved] = resolution_counts(splits, resolutions);
+    let esc = |v: &str| v.replace('\\', "\\\\").replace('"', "\\\"");
+    let arr = |items: &[String]| {
+        items
+            .iter()
+            .map(|i| format!("\"{}\"", esc(i)))
+            .collect::<Vec<_>>()
+            .join(",")
+    };
+    let oracles: Vec<String> = paths
+        .iter()
+        .map(|p| p.rsplit('/').next().unwrap_or(p).to_string())
+        .collect();
+    let cats: Vec<String> = s
+        .by_category
+        .iter()
+        .map(|(k, t)| format!("\"{k}\":[{},{}]", t.matched, t.total))
+        .collect();
+    let json = format!(
+        concat!(
+            "{{\n",
+            "  \"lang\": \"{lang}\",\n",
+            "  \"oracles\": [{oracles}],\n",
+            "  \"single_oracle\": {single},\n",
+            "  \"lemmas_in_gold\": {lig},\n",
+            "  \"lemmas_supported\": {lsup},\n",
+            "  \"agreed_forms\": {total},\n",
+            "  \"agreed_matched\": {matched},\n",
+            "  \"agreed_pct\": {apct:.4},\n",
+            "  \"adjudicated_hits\": {adj},\n",
+            "  \"by_category\": {{{cats}}},\n",
+            "  \"slot_types\": {slots},\n",
+            "  \"slot_types_covered\": {covered},\n",
+            "  \"uncovered_slots\": [{uncov}],\n",
+            "  \"disagreements\": {disc},\n",
+            "  \"disagreements_resolved\": {resolved},\n",
+            "  \"resolution\": {{\"variant\":{v},\"o1\":{o1},\"o2\":{o2},",
+            "\"neither\":{n},\"unresolved\":{unr}}}\n",
+            "}}\n"
+        ),
+        lang = spec.lang,
+        oracles = arr(&oracles),
+        single = single_oracle,
+        lig = s.total_lemmas,
+        lsup = s.supported_lemmas,
+        total = total,
+        matched = matched,
+        apct = pct(matched, total),
+        adj = s.adjudicated_hits,
+        cats = cats.join(","),
+        slots = s.gold_slots.len(),
+        covered = s.covered_slots.len(),
+        uncov = arr(&uncovered.iter().map(|s| (*s).clone()).collect::<Vec<_>>()),
+        disc = splits.len(),
+        resolved = splits.len() - unresolved,
+        v = variant,
+        o1 = o1,
+        o2 = o2,
+        n = neither,
+        unr = unresolved,
+    );
+    let stats_path = format!("target/stats_{}.json", spec.lang);
+    let _ = fs::create_dir_all("target");
+    fs::write(&stats_path, json).unwrap();
+
+    let mut todo = String::from("# lemma\tfeatures\toracle1\toracle2\n");
+    for sp in splits {
+        if !resolutions.contains_key(&(sp.lemma.clone(), sp.features.clone())) {
+            let _ = writeln!(todo, "{}\t{}\t{}\t{}", sp.lemma, sp.features, sp.o1, sp.o2);
+        }
+    }
+    let _ = fs::write(format!("target/{}_disagreements_todo.tsv", spec.lang), todo);
+
+    if !splits.is_empty() {
+        println!(
+            "\ndisagreements: {} total — {} resolved ({} variant, {} o1, {} o2, {} neither), {} unresolved",
+            splits.len(),
+            splits.len() - unresolved,
+            variant,
+            o1,
+            o2,
+            neither,
+            unresolved
+        );
+    }
+    if !uncovered.is_empty() {
+        println!(
+            "uncovered slot types: {} of {} ({})",
+            uncovered.len(),
+            s.gold_slots.len(),
+            uncovered
+                .iter()
+                .map(|s| s.as_str())
+                .collect::<Vec<_>>()
+                .join(", ")
+        );
+    }
+    println!("stats written to {stats_path}");
+}
+
 /// The whole harness: parse args, load golds, score, report, gate.
 pub fn run<V>(spec: Spec<V>) {
     let args: Vec<String> = std::env::args().skip(1).collect();
@@ -270,13 +458,16 @@ pub fn run<V>(spec: Spec<V>) {
             parse_gold(&data)
         })
         .collect();
+    let single_oracle = golds.len() == 1;
     let first = golds.remove(0);
-    let (gold, dropped) = match golds.pop() {
+    let (gold, splits) = match golds.pop() {
         Some(second) => agree(first, &second, spec.carry_features),
-        None => (first, 0),
+        None => (first, Vec::new()),
     };
     let scores = score(&spec, &gold, &load_adjudications(spec.adjudications));
-    report(&spec, &paths, &scores, dropped);
+    report(&spec, &paths, &scores, splits.len());
+    let resolutions = load_disagreements(&format!("docs/{}/disagreements.tsv", spec.lang));
+    write_stats(&spec, &paths, &scores, &splits, &resolutions, single_oracle);
     if check {
         check_gates(&spec, &scores);
     }
