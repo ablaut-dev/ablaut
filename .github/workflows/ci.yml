@@ -68,6 +68,17 @@ jobs:
         run: ./scripts/spa/fetch_freeling.sh
       - name: Spanish golden harness with regression gate
         run: cargo run --release --bin golden_spa -- data/spa/freeling.tsv --check
+      - name: Cache FreeLing cat
+        id: freeling-cat
+        uses: actions/cache@v5
+        with:
+          path: data/cat/freeling.tsv
+          key: freeling-cat-v1
+      - name: Fetch FreeLing cat
+        if: steps.freeling-cat.outputs.cache-hit != 'true'
+        run: ./scripts/cat/fetch_freeling.sh
+      - name: Catalan golden harness with regression gate
+        run: cargo run --release --bin golden_cat -- data/cat/freeling.tsv --check
       - name: Cache MorphoBr por
         id: morphobr
         uses: actions/cache@v5

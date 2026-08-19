@@ -192,6 +192,49 @@ impl From<crate::spa::Table> for SpanishConjugation {
     }
 }
 
+/// The full conjugation table of one Catalan verb. Rows are
+/// [jo, tu, ell/ella, nosaltres, vosaltres, ells/elles].
+#[pyclass(get_all, frozen)]
+struct CatalanConjugation {
+    infinitive: String,
+    gerund: String,
+    past_participle: String,
+    /// [tu, vostè, nosaltres, vosaltres, vostès]
+    imperative: Vec<Option<String>>,
+    present: Vec<String>,
+    imperfect: Vec<String>,
+    preterite: Vec<String>,
+    future: Vec<String>,
+    conditional: Vec<String>,
+    subjunctive_present: Vec<String>,
+    subjunctive_imperfect: Vec<String>,
+}
+
+#[pymethods]
+impl CatalanConjugation {
+    fn __repr__(&self) -> String {
+        format!("CatalanConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::cat::Table> for CatalanConjugation {
+    fn from(t: crate::cat::Table) -> Self {
+        CatalanConjugation {
+            infinitive: t.infinitive,
+            gerund: t.gerund,
+            past_participle: t.past_participle,
+            imperative: t.imperative.into(),
+            present: t.present.into(),
+            imperfect: t.imperfect.into(),
+            preterite: t.preterite.into(),
+            future: t.future.into(),
+            conditional: t.conditional.into(),
+            subjunctive_present: t.subjunctive_present.into(),
+            subjunctive_imperfect: t.subjunctive_imperfect.into(),
+        }
+    }
+}
+
 /// The full conjugation table of one Portuguese verb. Rows are
 /// [eu, tu, ele/ela, nós, vós, eles/elas].
 #[pyclass(get_all, frozen)]
@@ -821,6 +864,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Cat) => {
+            let v = crate::cat::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(CatalanConjugation::from(crate::cat::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         None => Err(PyValueError::new_err(format!("unknown language: {lang}"))),
     }
 }
@@ -830,6 +880,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<Conjugation>()?;
     m.add_class::<FrenchConjugation>()?;
     m.add_class::<SpanishConjugation>()?;
+    m.add_class::<CatalanConjugation>()?;
     m.add_class::<PortugueseConjugation>()?;
     m.add_class::<RomanianConjugation>()?;
     m.add_class::<EnglishConjugation>()?;

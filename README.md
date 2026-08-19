@@ -33,22 +33,23 @@ still describe every strong verb in the language.
 
 - **Measured correctness.** Every language is validated against two
   independent machine-readable lexicons. Where the two sources agree,
-  ablaut has zero known errors in thirteen of fourteen languages; the
+  ablaut has zero known errors in fourteen of fifteen languages; the
   remaining disagreements are ruled on in published adjudication logs.
   CI re-checks 3.5 million forms on every change.
 - **Generalizes to unseen verbs.** Rule engines with curated exception
   tables, not lookup dumps: novel verbs (*googeln*, *tweeter*)
   conjugate correctly.
 - **Fast and small.** No I/O, no runtime data files, no dependencies in
-  the core crate. A full table takes microseconds; all fourteen
+  the core crate. A full table takes microseconds; all fifteen
   languages fit in one small WebAssembly binary.
 - **Permissively licensed.** MIT OR Apache-2.0. Reference lexicons are
   used at test time only and never shipped.
 
 ## Languages
 
-German, French, Spanish, Portuguese, Italian, Romanian, Swedish,
-English, Danish, Czech, Slovenian, Estonian, Finnish, and Irish.
+German, French, Spanish, Catalan, Portuguese, Italian, Romanian,
+Swedish, English, Danish, Czech, Slovenian, Estonian, Finnish, and
+Irish.
 
 Each language is scored against the slots where its two reference
 lexicons agree; the second column is that score.
@@ -58,6 +59,7 @@ lexicons agree; the second column is that score.
 | 🇩🇪 | German | 194,254 | 99.2% |
 | 🇫🇷 | French | 284,034 | 100.00% |
 | 🇪🇸 | Spanish | 339,200 | 100.00% |
+| 🇦🇩 | Catalan | 187,186 | 100.00% |
 | 🇵🇹 | Portuguese | 373,163 | 100.00% |
 | 🇮🇹 | Italian | 280,143 | 100.00% |
 | 🇷🇴 | Romanian | 225,494 | 100.00% |

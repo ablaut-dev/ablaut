@@ -11,6 +11,7 @@
 //! *wissen*), and three stored suppletives (*sein*, *werden*, *tun*).
 //! Everything irregular lives in `data/deu/verbs.tsv`, compiled in.
 
+pub mod cat;
 pub mod ces;
 pub mod dan;
 pub mod deu;
@@ -46,6 +47,8 @@ pub use reverse::{reverse, ReverseMatch};
 pub enum Lang {
     /// German — the original engine.
     Deu,
+    /// Catalan.
+    Cat,
     /// Czech.
     Ces,
     /// Danish.
@@ -81,6 +84,7 @@ impl Lang {
     pub fn from_code(code: &str) -> Option<Self> {
         match code.to_ascii_lowercase().as_str() {
             "de" | "deu" | "ger" | "german" => Some(Self::Deu),
+            "ca" | "cat" | "catalan" | "català" => Some(Self::Cat),
             "cs" | "ces" | "cze" | "czech" => Some(Self::Ces),
             "da" | "dan" | "danish" => Some(Self::Dan),
             "en" | "eng" | "english" => Some(Self::Eng),
@@ -108,6 +112,7 @@ impl Lang {
 #[non_exhaustive]
 pub enum Conjugation {
     Deu(Box<table::Table>),
+    Cat(Box<cat::Table>),
     Ces(Box<ces::Table>),
     Dan(Box<dan::Table>),
     Eng(Box<eng::Table>),
@@ -145,6 +150,9 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
     Ok(match lang {
         Lang::Deu => Conjugation::Deu(Box::new(table::Table::build(
             &Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Cat => Conjugation::Cat(Box::new(cat::Table::build(
+            &cat::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
         Lang::Ces => Conjugation::Ces(Box::new(ces::Table::build(
             &ces::Verb::from_infinitive(infinitive).map_err(err)?,
@@ -208,6 +216,7 @@ mod facade_tests {
             ("vorbi", Lang::Ron),
             ("delati", Lang::Slv),
             ("hablar", Lang::Spa),
+            ("parlar", Lang::Cat),
             ("tala", Lang::Swe),
         ];
         for (verb, lang) in cases {
