@@ -31,6 +31,7 @@ pub mod ron;
 pub mod slv;
 pub mod spa;
 pub mod swe;
+pub mod ukr;
 #[cfg(feature = "wasm")]
 mod wasm;
 
@@ -75,6 +76,8 @@ pub enum Lang {
     Ron,
     /// Swedish.
     Swe,
+    /// Ukrainian.
+    Ukr,
 }
 
 impl Lang {
@@ -98,6 +101,7 @@ impl Lang {
             "it" | "ita" | "italian" => Some(Self::Ita),
             "ro" | "ron" | "rum" | "romanian" => Some(Self::Ron),
             "sv" | "swe" | "swedish" => Some(Self::Swe),
+            "uk" | "ukr" | "ukrainian" => Some(Self::Ukr),
             _ => None,
         }
     }
@@ -126,6 +130,7 @@ pub enum Conjugation {
     Slv(Box<slv::Table>),
     Spa(Box<spa::Table>),
     Swe(Box<swe::Table>),
+    Ukr(Box<ukr::Table>),
 }
 
 /// Why `conjugate` failed: the input is not a known verb shape in
@@ -193,6 +198,9 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         Lang::Swe => Conjugation::Swe(Box::new(swe::Table::build(
             &swe::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
+        Lang::Ukr => Conjugation::Ukr(Box::new(ukr::Table::build(
+            &ukr::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
     })
 }
 
@@ -218,6 +226,7 @@ mod facade_tests {
             ("hablar", Lang::Spa),
             ("parlar", Lang::Cat),
             ("tala", Lang::Swe),
+            ("читати", Lang::Ukr),
         ];
         for (verb, lang) in cases {
             assert!(conjugate(verb, lang).is_ok(), "{verb}");

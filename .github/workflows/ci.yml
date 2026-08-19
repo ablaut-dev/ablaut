@@ -211,5 +211,25 @@ jobs:
         run: ./scripts/swe/fetch_saldo.sh
       - name: Swedish golden harness with regression gate
         run: cargo run --release --bin golden_swe -- data/swe/saldo.tsv --check
+      - name: Cache VESUM ukr
+        id: vesum-ukr
+        uses: actions/cache@v5
+        with:
+          path: data/ukr/vesum.tsv
+          key: vesum-ukr-v1
+      - name: Fetch VESUM ukr
+        if: steps.vesum-ukr.outputs.cache-hit != 'true'
+        run: ./scripts/ukr/fetch_vesum.sh
+      - name: Cache kaikki ukr
+        id: kaikki-ukr
+        uses: actions/cache@v5
+        with:
+          path: data/ukr/kaikki.tsv
+          key: kaikki-ukr-v1
+      - name: Fetch kaikki ukr
+        if: steps.kaikki-ukr.outputs.cache-hit != 'true'
+        run: ./scripts/ukr/fetch_kaikki.sh
+      - name: Ukrainian golden harness with two-oracle regression gate
+        run: cargo run --release --bin golden_ukr -- data/ukr/vesum.tsv data/ukr/kaikki.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng
