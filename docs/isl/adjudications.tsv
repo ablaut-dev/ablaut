@@ -1,0 +1,14 @@
+# Icelandic adjudications: (lemma, feature, ruling). A ruling of "ours"
+# or "both" counts the engine's output as correct at that slot.
+#
+# These are BÍN structural quirks where the headword lemma is not its own
+# infinitive form: the middle-voice -st deponents list the bare active
+# infinitive as their GM-NH (stríplast → strípla), and blóðprufa cites the
+# ó-spelling variant blóðprófa for its infinitive while keeping the u in
+# the lemma. The engine returns the lemma itself as the infinitive, which
+# is the well-formed citation form, so we rule "ours".
+stríplast	V;NFIN	ours
+atriðast	V;NFIN	ours
+rosknast	V;NFIN	ours
+atvikast	V;NFIN	ours
+blóðprufa	V;NFIN	ours
