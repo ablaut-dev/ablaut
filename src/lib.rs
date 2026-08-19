@@ -30,6 +30,7 @@ pub mod por;
 mod python;
 pub mod reverse;
 pub mod ron;
+pub mod rus;
 pub mod slv;
 pub mod spa;
 pub mod swe;
@@ -78,6 +79,8 @@ pub enum Lang {
     Ita,
     /// Romanian.
     Ron,
+    /// Russian.
+    Rus,
     /// Swedish.
     Swe,
     /// Ukrainian.
@@ -107,6 +110,7 @@ impl Lang {
             "is" | "isl" | "ice" | "icelandic" => Some(Self::Isl),
             "it" | "ita" | "italian" => Some(Self::Ita),
             "ro" | "ron" | "rum" | "romanian" => Some(Self::Ron),
+            "ru" | "rus" | "russian" => Some(Self::Rus),
             "sv" | "swe" | "swedish" => Some(Self::Swe),
             "uk" | "ukr" | "ukrainian" => Some(Self::Ukr),
             "ja" | "jpn" | "japanese" => Some(Self::Jpn),
@@ -136,6 +140,7 @@ pub enum Conjugation {
     Ita(Box<ita::Table>),
     Por(Box<por::Table>),
     Ron(Box<ron::Table>),
+    Rus(Box<rus::Table>),
     Slv(Box<slv::Table>),
     Spa(Box<spa::Table>),
     Swe(Box<swe::Table>),
@@ -202,6 +207,9 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         Lang::Ron => Conjugation::Ron(Box::new(ron::Table::build(
             &ron::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
+        Lang::Rus => Conjugation::Rus(Box::new(rus::Table::build(
+            &rus::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
         Lang::Slv => Conjugation::Slv(Box::new(slv::Table::build(
             &slv::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
@@ -239,6 +247,7 @@ mod facade_tests {
             ("parlare", Lang::Ita),
             ("falar", Lang::Por),
             ("vorbi", Lang::Ron),
+            ("читать", Lang::Rus),
             ("delati", Lang::Slv),
             ("hablar", Lang::Spa),
             ("parlar", Lang::Cat),

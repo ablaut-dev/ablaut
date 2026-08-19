@@ -9,7 +9,7 @@
 
 <h1 align="center">ablaut</h1>
 
-<p align="center">Fast, correct verb conjugation for 18 languages.</p>
+<p align="center">Fast, correct verb conjugation for 19 languages.</p>
 
 <br>
 
@@ -33,21 +33,21 @@ still describe every strong verb in the language.
 
 - **Measured correctness.** Every language is validated against two
   independent machine-readable lexicons. Where the two sources agree,
-  ablaut has zero known errors in seventeen of eighteen languages; the
+  ablaut has zero known errors in seventeen of nineteen languages; the
   remaining disagreements are ruled on in published adjudication logs.
   CI re-checks 3.5 million forms on every change.
 - **Generalizes to unseen verbs.** Rule engines with curated exception
   tables, not lookup dumps: novel verbs (*googeln*, *tweeter*)
   conjugate correctly.
 - **Fast and small.** No I/O, no runtime data files, no dependencies in
-  the core crate. A full table takes microseconds; all eighteen
+  the core crate. A full table takes microseconds; all nineteen
   languages fit in one small WebAssembly binary.
 - **Permissively licensed.** MIT OR Apache-2.0. Reference lexicons are
   used at test time only and never shipped.
 
 ## Languages
 
-German, French, Spanish, Catalan, Portuguese, Italian, Romanian,
+German, French, Spanish, Catalan, Portuguese, Italian, Romanian, Russian,
 Swedish, English, Danish, Czech, Slovenian, Estonian, Finnish, Irish,
 Ukrainian, Icelandic, and Japanese.
 
@@ -63,6 +63,7 @@ lexicons agree; the second column is that score.
 | 🇵🇹 | Portuguese | 373,163 | 100.00% |
 | 🇮🇹 | Italian | 280,143 | 100.00% |
 | 🇷🇴 | Romanian | 225,494 | 100.00% |
+| 🇷🇺 | Russian | 151,942 | 99.98% |
 | 🇸🇪 | Swedish | 39,453 | 100.00% |
 | 🇬🇧 | English | 74,600 | 100.00% |
 | 🇩🇰 | Danish | 20,205 | 100.00% |
@@ -113,7 +114,7 @@ v.conjugate(fra::SimpleTense::Future, fra::Person::First, fra::Number::Singular)
 
 Reverse lookup maps a conjugated form back to its infinitive(s) and
 the slots it fills — fully productive for German, English, French and
-Spanish, irregular-index-backed for all 18 languages:
+Spanish, irregular-index-backed for all 19 languages:
 
 ```rust
 use ablaut::{reverse, Lang};

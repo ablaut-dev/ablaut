@@ -3,7 +3,7 @@
 //! Two complementary mechanisms, both built on the forward engine so a
 //! returned analysis is always conjugationally consistent:
 //!
-//! * **Irregular index** (all 14 languages): on first use, every lemma
+//! * **Irregular index** (all 15 languages): on first use, every lemma
 //!   in the language's compiled-in exception lexicon is forward-
 //!   conjugated and every single-word form is indexed as
 //!   `form → (infinitive, slot)`. No new data ships — the index is
@@ -777,13 +777,14 @@ fn ord(lang: Lang) -> usize {
         Lang::Ukr => 15,
         Lang::Isl => 16,
         Lang::Jpn => 17,
+        Lang::Rus => 18,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 18] = [EMPTY; 18];
+    static INDEXES: [OnceLock<Index>; 19] = [EMPTY; 19];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -891,6 +892,7 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
             col1(include_str!("../data/ron/verbs.tsv"), &mut lemmas);
             col1(include_str!("../data/ron/classes.tsv"), &mut lemmas);
         }
+        Lang::Rus => col1(include_str!("../data/rus/verbs.tsv"), &mut lemmas),
         Lang::Swe => col1(include_str!("../data/swe/parts.tsv"), &mut lemmas),
         Lang::Cat => col1(include_str!("../data/cat/verbs.tsv"), &mut lemmas),
         Lang::Ukr => col1(include_str!("../data/ukr/verbs.tsv"), &mut lemmas),
@@ -1197,6 +1199,13 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.past, "past", &P6);
             s.row(&t.subjunctive_present, "subjunctive present", &P6);
             s.row(&t.subjunctive_past, "subjunctive past", &P6);
+        }
+        Conjugation::Rus(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.row(&t.non_past, "non-past", &P6);
+            s.row(&t.past_singular, "past", &["masc sg", "fem sg", "neut sg"]);
+            s.one(&t.past_plural, "past pl");
+            s.row(&t.imperative, "imperative", &["2sg", "2pl"]);
         }
     }
     s.0

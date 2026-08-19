@@ -273,6 +273,39 @@ impl From<crate::jpn::Table> for JapaneseConjugation {
     }
 }
 
+/// The finite conjugation of one Russian verb. Person rows are
+/// [я, ты, он/она/оно, мы, вы, они].
+#[pyclass(get_all, frozen)]
+struct RussianConjugation {
+    infinitive: String,
+    /// Present (imperfective) or simple future (perfective).
+    non_past: Vec<String>,
+    /// [masc, fem, neut] singular past.
+    past_singular: Vec<String>,
+    past_plural: String,
+    /// [2sg, 2pl].
+    imperative: Vec<String>,
+}
+
+#[pymethods]
+impl RussianConjugation {
+    fn __repr__(&self) -> String {
+        format!("RussianConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::rus::Table> for RussianConjugation {
+    fn from(t: crate::rus::Table) -> Self {
+        RussianConjugation {
+            infinitive: t.infinitive,
+            non_past: t.non_past.into(),
+            past_singular: t.past_singular.into(),
+            past_plural: t.past_plural,
+            imperative: t.imperative.into(),
+        }
+    }
+}
+
 /// The full conjugation table of one Portuguese verb. Rows are
 /// [eu, tu, ele/ela, nós, vós, eles/elas].
 #[pyclass(get_all, frozen)]
@@ -994,6 +1027,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
             let v = crate::jpn::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
             Ok(JapaneseConjugation::from(crate::jpn::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Rus) => {
+            let v = crate::rus::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(RussianConjugation::from(crate::rus::Table::build(&v))
                 .into_pyobject(py)?
                 .into())
         }

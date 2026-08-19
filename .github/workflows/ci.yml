@@ -79,6 +79,17 @@ jobs:
         run: ./scripts/cat/fetch_freeling.sh
       - name: Catalan golden harness with regression gate
         run: cargo run --release --bin golden_cat -- data/cat/freeling.tsv --check
+      - name: Cache OpenCorpora rus
+        id: opencorpora
+        uses: actions/cache@v5
+        with:
+          path: data/rus/opencorpora.tsv
+          key: opencorpora-rus-v1
+      - name: Fetch OpenCorpora rus
+        if: steps.opencorpora.outputs.cache-hit != 'true'
+        run: ./scripts/rus/fetch_opencorpora.sh
+      - name: Russian golden harness with regression gate
+        run: cargo run --release --bin golden_rus -- data/rus/opencorpora.tsv --check
       - name: Cache MorphoBr por
         id: morphobr
         uses: actions/cache@v5
