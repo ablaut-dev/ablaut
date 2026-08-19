@@ -775,14 +775,15 @@ fn ord(lang: Lang) -> usize {
         Lang::Swe => 13,
         Lang::Cat => 14,
         Lang::Ukr => 15,
-        Lang::Jpn => 16,
+        Lang::Isl => 16,
+        Lang::Jpn => 17,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 17] = [EMPTY; 17];
+    static INDEXES: [OnceLock<Index>; 18] = [EMPTY; 18];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -812,7 +813,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 17] = [EMPTY; 17];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 17] = [EMPTY; 18];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -893,6 +894,7 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Swe => col1(include_str!("../data/swe/parts.tsv"), &mut lemmas),
         Lang::Cat => col1(include_str!("../data/cat/verbs.tsv"), &mut lemmas),
         Lang::Ukr => col1(include_str!("../data/ukr/verbs.tsv"), &mut lemmas),
+        Lang::Isl => col1(include_str!("../data/isl/verbs.tsv"), &mut lemmas),
         // The whole Japanese lexicon is the class list: every conjugatable
         // verb is stored (the class is unknowable from the surface), so the
         // index covers the language outright.
@@ -1185,6 +1187,16 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.opt(t.past_passive.as_ref(), "passive past");
             s.opt(t.supine_passive.as_ref(), "passive supine");
             s.opt(t.subjunctive_past.as_ref(), "past subjunctive");
+        }
+        Conjugation::Isl(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.one(&t.supine, "supine");
+            s.one(&t.present_participle, "present participle");
+            s.row_opt(&t.imperative, "imperative", &["þú", "þið"]);
+            s.row(&t.present, "present", &P6);
+            s.row(&t.past, "past", &P6);
+            s.row(&t.subjunctive_present, "subjunctive present", &P6);
+            s.row(&t.subjunctive_past, "subjunctive past", &P6);
         }
     }
     s.0

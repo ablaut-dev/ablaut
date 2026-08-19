@@ -22,6 +22,7 @@ pub mod fra;
 pub mod gle;
 #[doc(hidden)]
 pub mod harness;
+pub mod isl;
 pub mod ita;
 pub mod jpn;
 pub mod por;
@@ -71,6 +72,8 @@ pub enum Lang {
     Por,
     /// Irish.
     Gle,
+    /// Icelandic.
+    Isl,
     /// Italian.
     Ita,
     /// Romanian.
@@ -101,6 +104,7 @@ impl Lang {
             "es" | "spa" | "spanish" => Some(Self::Spa),
             "pt" | "por" | "portuguese" => Some(Self::Por),
             "ga" | "gle" | "irish" => Some(Self::Gle),
+            "is" | "isl" | "ice" | "icelandic" => Some(Self::Isl),
             "it" | "ita" | "italian" => Some(Self::Ita),
             "ro" | "ron" | "rum" | "romanian" => Some(Self::Ron),
             "sv" | "swe" | "swedish" => Some(Self::Swe),
@@ -128,6 +132,7 @@ pub enum Conjugation {
     Fin(Box<fin::Table>),
     Fra(Box<fra::Table>),
     Gle(Box<gle::Table>),
+    Isl(Box<isl::Table>),
     Ita(Box<ita::Table>),
     Por(Box<por::Table>),
     Ron(Box<ron::Table>),
@@ -185,6 +190,9 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         Lang::Gle => Conjugation::Gle(Box::new(gle::Table::build(
             &gle::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
+        Lang::Isl => Conjugation::Isl(Box::new(isl::Table::build(
+            &isl::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
         Lang::Ita => Conjugation::Ita(Box::new(ita::Table::build(
             &ita::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
@@ -227,6 +235,7 @@ mod facade_tests {
             ("puhua", Lang::Fin),
             ("parler", Lang::Fra),
             ("glan", Lang::Gle),
+            ("kalla", Lang::Isl),
             ("parlare", Lang::Ita),
             ("falar", Lang::Por),
             ("vorbi", Lang::Ron),

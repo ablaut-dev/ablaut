@@ -826,6 +826,43 @@ impl From<crate::ukr::Table> for UkrainianConjugation {
     }
 }
 
+/// The synthetic active paradigm of one Icelandic verb. Person rows are
+/// [ég, þú, hann/hún, við, þið, þeir].
+#[pyclass(get_all, frozen)]
+struct IcelandicConjugation {
+    infinitive: String,
+    supine: String,
+    present_participle: String,
+    /// [þú, þið]
+    imperative: Vec<Option<String>>,
+    present: Vec<String>,
+    past: Vec<String>,
+    subjunctive_present: Vec<String>,
+    subjunctive_past: Vec<String>,
+}
+
+#[pymethods]
+impl IcelandicConjugation {
+    fn __repr__(&self) -> String {
+        format!("IcelandicConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::isl::Table> for IcelandicConjugation {
+    fn from(t: crate::isl::Table) -> Self {
+        IcelandicConjugation {
+            infinitive: t.infinitive,
+            supine: t.supine,
+            present_participle: t.present_participle,
+            imperative: t.imperative.into(),
+            present: t.present.into(),
+            past: t.past.into(),
+            subjunctive_present: t.subjunctive_present.into(),
+            subjunctive_past: t.subjunctive_past.into(),
+        }
+    }
+}
+
 /// Conjugate an infinitive: `ablaut.conjugate("aufstehen").present[0]`
 /// → "stehe auf", `ablaut.conjugate("parler", lang="fra").present[0]`
 /// → "parle". Raises ValueError for unknown languages and for strings
@@ -866,6 +903,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
             let v = crate::gle::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
             Ok(IrishConjugation::from(crate::gle::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Isl) => {
+            let v = crate::isl::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(IcelandicConjugation::from(crate::isl::Table::build(&v))
                 .into_pyobject(py)?
                 .into())
         }
@@ -975,6 +1019,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<ItalianConjugation>()?;
     m.add_class::<SwedishConjugation>()?;
     m.add_class::<UkrainianConjugation>()?;
+    m.add_class::<IcelandicConjugation>()?;
     m.add_class::<JapaneseConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())
