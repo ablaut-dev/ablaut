@@ -1,0 +1,362 @@
+{
+  "version": "0.8.0",
+  "languages": [
+    {
+      "name": "Catalan",
+      "code": "cat",
+      "oracles": [
+        "freeling",
+        "kaikki"
+      ],
+      "agreed_matched": 187186,
+      "agreed_forms": 187186,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 50,
+      "slot_types": 50,
+      "disagreements": 110,
+      "disagreements_resolved": 13,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "Czech",
+      "code": "ces",
+      "oracles": [
+        "morfflex",
+        "kaikki"
+      ],
+      "agreed_matched": 107812,
+      "agreed_forms": 107812,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 29,
+      "slot_types": 32,
+      "disagreements": 1397,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "Danish",
+      "code": "dan",
+      "oracles": [
+        "cor-verbs",
+        "kaikki"
+      ],
+      "agreed_matched": 20205,
+      "agreed_forms": 20205,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 9,
+      "slot_types": 9,
+      "disagreements": 165,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "Dutch",
+      "code": "nld",
+      "oracles": [
+        "apertium",
+        "kaikki"
+      ],
+      "agreed_matched": 27836,
+      "agreed_forms": 27836,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 12,
+      "slot_types": 12,
+      "disagreements": 66,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "English",
+      "code": "eng",
+      "oracles": [
+        "agid",
+        "kaikki"
+      ],
+      "agreed_matched": 74600,
+      "agreed_forms": 74600,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 5,
+      "slot_types": 5,
+      "disagreements": 163,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "Estonian",
+      "code": "est",
+      "oracles": [
+        "vabamorf",
+        "kaikki"
+      ],
+      "agreed_matched": 24184,
+      "agreed_forms": 24184,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 41,
+      "slot_types": 41,
+      "disagreements": 77,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "Finnish",
+      "code": "fin",
+      "oracles": [
+        "omorfi",
+        "kaikki"
+      ],
+      "agreed_matched": 406209,
+      "agreed_forms": 406209,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 35,
+      "slot_types": 35,
+      "disagreements": 8201,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "French",
+      "code": "fra",
+      "oracles": [
+        "lefff",
+        "kaikki"
+      ],
+      "agreed_matched": 284034,
+      "agreed_forms": 284034,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 49,
+      "slot_types": 49,
+      "disagreements": 342,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "German",
+      "code": "deu",
+      "oracles": [
+        "unimorph",
+        "kaikki"
+      ],
+      "agreed_matched": 193038,
+      "agreed_forms": 193067,
+      "agreed_pct": 99.985,
+      "slot_types_covered": 30,
+      "slot_types": 30,
+      "disagreements": 2141,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "Icelandic",
+      "code": "isl",
+      "oracles": [
+        "bin",
+        "kaikki"
+      ],
+      "agreed_matched": 5749,
+      "agreed_forms": 5749,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 26,
+      "slot_types": 26,
+      "disagreements": 42,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "Irish",
+      "code": "gle",
+      "oracles": [
+        "bunamo",
+        "kaikki"
+      ],
+      "agreed_matched": 27404,
+      "agreed_forms": 27404,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 25,
+      "slot_types": 25,
+      "disagreements": 488,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "Italian",
+      "code": "ita",
+      "oracles": [
+        "morphit",
+        "kaikki"
+      ],
+      "agreed_matched": 280143,
+      "agreed_forms": 280143,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 49,
+      "slot_types": 49,
+      "disagreements": 1185,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "Japanese",
+      "code": "jpn",
+      "oracles": [
+        "ipadic",
+        "kaikki"
+      ],
+      "agreed_matched": 9421,
+      "agreed_forms": 9421,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 3,
+      "slot_types": 3,
+      "disagreements": 22,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "Korean",
+      "code": "kor",
+      "oracles": [
+        "krdict",
+        "kaikki"
+      ],
+      "agreed_matched": 3576,
+      "agreed_forms": 3576,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 4,
+      "slot_types": 4,
+      "disagreements": 17,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "Portuguese",
+      "code": "por",
+      "oracles": [
+        "morphobr",
+        "kaikki"
+      ],
+      "agreed_matched": 373163,
+      "agreed_forms": 373163,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 70,
+      "slot_types": 70,
+      "disagreements": 191,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "Romanian",
+      "code": "ron",
+      "oracles": [
+        "dexonline",
+        "kaikki"
+      ],
+      "agreed_matched": 225494,
+      "agreed_forms": 225494,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 35,
+      "slot_types": 35,
+      "disagreements": 1977,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "Russian",
+      "code": "rus",
+      "oracles": [
+        "opencorpora",
+        "kaikki"
+      ],
+      "agreed_matched": 151912,
+      "agreed_forms": 151942,
+      "agreed_pct": 99.9803,
+      "slot_types_covered": 19,
+      "slot_types": 19,
+      "disagreements": 273,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "Slovenian",
+      "code": "slv",
+      "oracles": [
+        "sloleks",
+        "kaikki"
+      ],
+      "agreed_matched": 10757,
+      "agreed_forms": 10757,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 25,
+      "slot_types": 25,
+      "disagreements": 226,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "Spanish",
+      "code": "spa",
+      "oracles": [
+        "freeling",
+        "kaikki"
+      ],
+      "agreed_matched": 339200,
+      "agreed_forms": 339200,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 59,
+      "slot_types": 59,
+      "disagreements": 723,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "Swedish",
+      "code": "swe",
+      "oracles": [
+        "saldo",
+        "kaikki"
+      ],
+      "agreed_matched": 39594,
+      "agreed_forms": 39594,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 11,
+      "slot_types": 13,
+      "disagreements": 296,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "Ukrainian",
+      "code": "ukr",
+      "oracles": [
+        "vesum",
+        "kaikki"
+      ],
+      "agreed_matched": 71990,
+      "agreed_forms": 71990,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 14,
+      "slot_types": 14,
+      "disagreements": 329,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    }
+  ]
+}
