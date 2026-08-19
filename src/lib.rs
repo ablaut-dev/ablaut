@@ -25,6 +25,7 @@ pub mod harness;
 pub mod isl;
 pub mod ita;
 pub mod jpn;
+pub mod kor;
 pub mod nld;
 pub mod por;
 #[cfg(feature = "python")]
@@ -77,6 +78,8 @@ pub enum Lang {
     Isl,
     /// Italian.
     Ita,
+    /// Korean.
+    Kor,
     /// Dutch.
     Nld,
     /// Romanian.
@@ -109,7 +112,8 @@ impl Lang {
             "ga" | "gle" | "irish" => Some(Self::Gle),
             "is" | "isl" | "ice" | "icelandic" => Some(Self::Isl),
             "it" | "ita" | "italian" => Some(Self::Ita),
-            "nl" | "nld" | "dut" | "dutch" | "nederlands" => Some(Self::Nld),
+            "ko" | "kor" | "korean" => Some(Self::Kor),
+            "nl" | "nld" | "dutch" => Some(Self::Nld),
             "ro" | "ron" | "rum" | "romanian" => Some(Self::Ron),
             "sv" | "swe" | "swedish" => Some(Self::Swe),
             "uk" | "ukr" | "ukrainian" => Some(Self::Ukr),
@@ -138,6 +142,7 @@ pub enum Conjugation {
     Gle(Box<gle::Table>),
     Isl(Box<isl::Table>),
     Ita(Box<ita::Table>),
+    Kor(Box<kor::Table>),
     Nld(Box<nld::Table>),
     Por(Box<por::Table>),
     Ron(Box<ron::Table>),
@@ -201,6 +206,9 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         Lang::Ita => Conjugation::Ita(Box::new(ita::Table::build(
             &ita::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
+        Lang::Kor => Conjugation::Kor(Box::new(kor::Table::build(
+            &kor::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
         Lang::Nld => Conjugation::Nld(Box::new(nld::Table::build(
             &nld::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
@@ -245,12 +253,13 @@ mod facade_tests {
             ("glan", Lang::Gle),
             ("kalla", Lang::Isl),
             ("parlare", Lang::Ita),
-            ("werken", Lang::Nld),
+            ("먹다", Lang::Kor),
             ("falar", Lang::Por),
             ("vorbi", Lang::Ron),
             ("delati", Lang::Slv),
             ("hablar", Lang::Spa),
             ("parlar", Lang::Cat),
+            ("werken", Lang::Nld),
             ("tala", Lang::Swe),
             ("читати", Lang::Ukr),
             ("食べる", Lang::Jpn),

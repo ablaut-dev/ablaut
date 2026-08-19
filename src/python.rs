@@ -305,6 +305,36 @@ impl From<crate::jpn::Table> for JapaneseConjugation {
     }
 }
 
+/// The four whole-word surface forms of one Korean verb (see
+/// `ablaut::kor`).
+#[pyclass(get_all, frozen)]
+struct KoreanConjugation {
+    infinitive: String,
+    intimate: String,
+    connective_ni: String,
+    adnominal_present: String,
+    formal_present: String,
+}
+
+#[pymethods]
+impl KoreanConjugation {
+    fn __repr__(&self) -> String {
+        format!("KoreanConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::kor::Table> for KoreanConjugation {
+    fn from(t: crate::kor::Table) -> Self {
+        KoreanConjugation {
+            infinitive: t.infinitive,
+            intimate: t.intimate,
+            connective_ni: t.connective_ni,
+            adnominal_present: t.adnominal_present,
+            formal_present: t.formal_present,
+        }
+    }
+}
+
 /// The full conjugation table of one Portuguese verb. Rows are
 /// [eu, tu, ele/ela, nós, vós, eles/elas].
 #[pyclass(get_all, frozen)]
@@ -1036,6 +1066,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Kor) => {
+            let v = crate::kor::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(KoreanConjugation::from(crate::kor::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         None => Err(PyValueError::new_err(format!("unknown language: {lang}"))),
     }
 }
@@ -1047,6 +1084,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<SpanishConjugation>()?;
     m.add_class::<CatalanConjugation>()?;
     m.add_class::<DutchConjugation>()?;
+    m.add_class::<KoreanConjugation>()?;
     m.add_class::<PortugueseConjugation>()?;
     m.add_class::<RomanianConjugation>()?;
     m.add_class::<EnglishConjugation>()?;
