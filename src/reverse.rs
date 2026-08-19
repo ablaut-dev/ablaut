@@ -776,13 +776,14 @@ fn ord(lang: Lang) -> usize {
         Lang::Cat => 14,
         Lang::Ukr => 15,
         Lang::Isl => 16,
+        Lang::Jpn => 17,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 17] = [EMPTY; 17];
+    static INDEXES: [OnceLock<Index>; 18] = [EMPTY; 18];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -812,7 +813,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 17] = [EMPTY; 17];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 18] = [EMPTY; 18];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -894,6 +895,10 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Cat => col1(include_str!("../data/cat/verbs.tsv"), &mut lemmas),
         Lang::Ukr => col1(include_str!("../data/ukr/verbs.tsv"), &mut lemmas),
         Lang::Isl => col1(include_str!("../data/isl/verbs.tsv"), &mut lemmas),
+        // The whole Japanese lexicon is the class list: every conjugatable
+        // verb is stored (the class is unknowable from the surface), so the
+        // index covers the language outright.
+        Lang::Jpn => col1(include_str!("../data/jpn/verbs.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -1163,6 +1168,14 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.subjunctive_imperfect, "subjunctive imperfect", &P6);
             s.row(&t.subjunctive_future, "subjunctive future", &P6);
         }
+        Conjugation::Jpn(t) => {
+            s.one(&t.terminal, "infinitive");
+            s.one(&t.continuative, "continuative");
+            s.one(&t.irrealis, "irrealis");
+            s.one(&t.hypothetical, "hypothetical");
+            s.one(&t.imperative, "imperative");
+            s.one(&t.past, "past");
+        }
         Conjugation::Swe(t) => {
             s.one(&t.infinitive, "infinitive");
             s.opt(t.present.as_ref(), "present");
@@ -1248,6 +1261,9 @@ mod tests {
         assert!(infs("chuaigh", Lang::Gle).contains(&"téigh".to_string()));
         assert!(infs("mindes", Lang::Swe).contains(&"minnas".to_string()));
         assert!(infs("fui", Lang::Por).contains(&"ser".to_string()));
+        // Japanese is index-only: 書いた → 書く (past), 食べた → 食べる.
+        assert!(infs("書いた", Lang::Jpn).contains(&"書く".to_string()));
+        assert!(infs("食べた", Lang::Jpn).contains(&"食べる".to_string()));
     }
 
     #[test]
