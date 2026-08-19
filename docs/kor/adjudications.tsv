@@ -1,0 +1,3 @@
+# Korean adjudications: (lemma, feature, ruling). ruling ∈ {ours, both,
+# theirs}. ours/both count the engine correct on an oracle-disagreement
+# slot. Empty until the golden loop surfaces genuine calls.
