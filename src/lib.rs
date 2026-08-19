@@ -23,6 +23,7 @@ pub mod gle;
 #[doc(hidden)]
 pub mod harness;
 pub mod ita;
+pub mod jpn;
 pub mod por;
 #[cfg(feature = "python")]
 mod python;
@@ -75,6 +76,8 @@ pub enum Lang {
     Ron,
     /// Swedish.
     Swe,
+    /// Japanese.
+    Jpn,
 }
 
 impl Lang {
@@ -98,6 +101,7 @@ impl Lang {
             "it" | "ita" | "italian" => Some(Self::Ita),
             "ro" | "ron" | "rum" | "romanian" => Some(Self::Ron),
             "sv" | "swe" | "swedish" => Some(Self::Swe),
+            "ja" | "jpn" | "japanese" => Some(Self::Jpn),
             _ => None,
         }
     }
@@ -126,6 +130,7 @@ pub enum Conjugation {
     Slv(Box<slv::Table>),
     Spa(Box<spa::Table>),
     Swe(Box<swe::Table>),
+    Jpn(Box<jpn::Table>),
 }
 
 /// Why `conjugate` failed: the input is not a known verb shape in
@@ -193,6 +198,9 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         Lang::Swe => Conjugation::Swe(Box::new(swe::Table::build(
             &swe::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
+        Lang::Jpn => Conjugation::Jpn(Box::new(jpn::Table::build(
+            &jpn::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
     })
 }
 
@@ -218,6 +226,7 @@ mod facade_tests {
             ("hablar", Lang::Spa),
             ("parlar", Lang::Cat),
             ("tala", Lang::Swe),
+            ("食べる", Lang::Jpn),
         ];
         for (verb, lang) in cases {
             assert!(conjugate(verb, lang).is_ok(), "{verb}");

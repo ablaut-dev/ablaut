@@ -235,6 +235,44 @@ impl From<crate::cat::Table> for CatalanConjugation {
     }
 }
 
+/// The conjugation of one Japanese verb: the katsuyou-kei (活用形) plus
+/// the plain past た-form.
+#[pyclass(get_all, frozen)]
+struct JapaneseConjugation {
+    /// 終止形 — dictionary form.
+    terminal: String,
+    /// 連用形 — continuative / masu-stem.
+    continuative: String,
+    /// 未然形 — irrealis.
+    irrealis: String,
+    /// 仮定形 — hypothetical.
+    hypothetical: String,
+    /// 命令形 — imperative.
+    imperative: String,
+    /// Plain past — た/だ-form.
+    past: String,
+}
+
+#[pymethods]
+impl JapaneseConjugation {
+    fn __repr__(&self) -> String {
+        format!("JapaneseConjugation({:?})", self.terminal)
+    }
+}
+
+impl From<crate::jpn::Table> for JapaneseConjugation {
+    fn from(t: crate::jpn::Table) -> Self {
+        JapaneseConjugation {
+            terminal: t.terminal,
+            continuative: t.continuative,
+            irrealis: t.irrealis,
+            hypothetical: t.hypothetical,
+            imperative: t.imperative,
+            past: t.past,
+        }
+    }
+}
+
 /// The full conjugation table of one Portuguese verb. Rows are
 /// [eu, tu, ele/ela, nós, vós, eles/elas].
 #[pyclass(get_all, frozen)]
@@ -871,6 +909,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Jpn) => {
+            let v = crate::jpn::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(JapaneseConjugation::from(crate::jpn::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         None => Err(PyValueError::new_err(format!("unknown language: {lang}"))),
     }
 }
@@ -892,6 +937,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<IrishConjugation>()?;
     m.add_class::<ItalianConjugation>()?;
     m.add_class::<SwedishConjugation>()?;
+    m.add_class::<JapaneseConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())
 }
