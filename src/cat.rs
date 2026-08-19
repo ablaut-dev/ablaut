@@ -266,9 +266,30 @@ impl Person {
 /// The inchoative -ir verbs are the productive majority; a short list of
 /// common pure -ir verbs is the exception (see `PURE_IR`).
 const PURE_IR: [&str; 24] = [
-    "dormir", "morir", "sortir", "collir", "cosir", "cobrir", "obrir", "omplir", "tossir", "pudir",
-    "fugir", "bullir", "grunyir", "escopir", "sentir", "consentir", "pressentir", "mentir",
-    "penedir", "ajupir", "esmunyir", "brunzir", "retenir", "obtenir",
+    "dormir",
+    "morir",
+    "sortir",
+    "collir",
+    "cosir",
+    "cobrir",
+    "obrir",
+    "omplir",
+    "tossir",
+    "pudir",
+    "fugir",
+    "bullir",
+    "grunyir",
+    "escopir",
+    "sentir",
+    "consentir",
+    "pressentir",
+    "mentir",
+    "penedir",
+    "ajupir",
+    "esmunyir",
+    "brunzir",
+    "retenir",
+    "obtenir",
 ];
 
 impl Verb {
@@ -596,11 +617,7 @@ impl Verb {
             .map_or_else(|| voice_feminine(&pp), |f| format!("{}{f}", self.prefix));
         let fem_stem = &fem[..fem.len() - 1];
         if feminine {
-            return if plural {
-                format!("{fem_stem}es")
-            } else {
-                fem
-            };
+            return if plural { format!("{fem_stem}es") } else { fem };
         }
         if !plural {
             return pp;
@@ -733,7 +750,10 @@ mod tests {
         assert_eq!(v("servir").conjugate(Present, P1, SG), "serveixo");
         assert_eq!(v("servir").conjugate(Present, P3, SG), "serveix");
         assert_eq!(v("servir").conjugate(Present, P1, PL), "servim");
-        assert_eq!(v("servir").conjugate(SubjunctivePresent, P1, SG), "serveixi");
+        assert_eq!(
+            v("servir").conjugate(SubjunctivePresent, P1, SG),
+            "serveixi"
+        );
         assert_eq!(v("servir").imperative(P2, SG).unwrap(), "serveix");
     }
 
@@ -764,7 +784,13 @@ mod tests {
     #[test]
     fn irregular_participle_plurals() {
         // Sibilant participles deaccent and take -os / -es.
-        assert_eq!(v("comprendre").past_participle_inflected(false, true), "compresos");
-        assert_eq!(v("comprendre").past_participle_inflected(true, true), "compreses");
+        assert_eq!(
+            v("comprendre").past_participle_inflected(false, true),
+            "compresos"
+        );
+        assert_eq!(
+            v("comprendre").past_participle_inflected(true, true),
+            "compreses"
+        );
     }
 }
