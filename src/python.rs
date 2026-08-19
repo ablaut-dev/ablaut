@@ -796,6 +796,36 @@ impl From<crate::swe::Table> for SwedishConjugation {
     }
 }
 
+/// The conjugation table of one Ukrainian verb. The present row is
+/// [1sg, 2sg, 3sg, 1pl, 2pl, 3pl]; the l-past is [masc sg, fem sg,
+/// neut sg, plural].
+#[pyclass(get_all, frozen)]
+struct UkrainianConjugation {
+    infinitive: String,
+    present: Vec<String>,
+    /// [2sg, 1pl, 2pl]
+    imperative: Vec<Option<String>>,
+    past: Vec<String>,
+}
+
+#[pymethods]
+impl UkrainianConjugation {
+    fn __repr__(&self) -> String {
+        format!("UkrainianConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::ukr::Table> for UkrainianConjugation {
+    fn from(t: crate::ukr::Table) -> Self {
+        UkrainianConjugation {
+            infinitive: t.infinitive,
+            present: t.present.into(),
+            imperative: t.imperative.into(),
+            past: t.past.into(),
+        }
+    }
+}
+
 /// Conjugate an infinitive: `ablaut.conjugate("aufstehen").present[0]`
 /// → "stehe auf", `ablaut.conjugate("parler", lang="fra").present[0]`
 /// → "parle". Raises ValueError for unknown languages and for strings
@@ -909,6 +939,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Ukr) => {
+            let v = crate::ukr::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(UkrainianConjugation::from(crate::ukr::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         Some(crate::Lang::Jpn) => {
             let v = crate::jpn::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
@@ -937,6 +974,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<IrishConjugation>()?;
     m.add_class::<ItalianConjugation>()?;
     m.add_class::<SwedishConjugation>()?;
+    m.add_class::<UkrainianConjugation>()?;
     m.add_class::<JapaneseConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())

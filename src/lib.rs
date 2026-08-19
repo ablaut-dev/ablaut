@@ -32,6 +32,7 @@ pub mod ron;
 pub mod slv;
 pub mod spa;
 pub mod swe;
+pub mod ukr;
 #[cfg(feature = "wasm")]
 mod wasm;
 
@@ -76,6 +77,8 @@ pub enum Lang {
     Ron,
     /// Swedish.
     Swe,
+    /// Ukrainian.
+    Ukr,
     /// Japanese.
     Jpn,
 }
@@ -101,6 +104,7 @@ impl Lang {
             "it" | "ita" | "italian" => Some(Self::Ita),
             "ro" | "ron" | "rum" | "romanian" => Some(Self::Ron),
             "sv" | "swe" | "swedish" => Some(Self::Swe),
+            "uk" | "ukr" | "ukrainian" => Some(Self::Ukr),
             "ja" | "jpn" | "japanese" => Some(Self::Jpn),
             _ => None,
         }
@@ -130,6 +134,7 @@ pub enum Conjugation {
     Slv(Box<slv::Table>),
     Spa(Box<spa::Table>),
     Swe(Box<swe::Table>),
+    Ukr(Box<ukr::Table>),
     Jpn(Box<jpn::Table>),
 }
 
@@ -198,6 +203,9 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         Lang::Swe => Conjugation::Swe(Box::new(swe::Table::build(
             &swe::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
+        Lang::Ukr => Conjugation::Ukr(Box::new(ukr::Table::build(
+            &ukr::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
         Lang::Jpn => Conjugation::Jpn(Box::new(jpn::Table::build(
             &jpn::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
@@ -226,6 +234,7 @@ mod facade_tests {
             ("hablar", Lang::Spa),
             ("parlar", Lang::Cat),
             ("tala", Lang::Swe),
+            ("читати", Lang::Ukr),
             ("食べる", Lang::Jpn),
         ];
         for (verb, lang) in cases {
