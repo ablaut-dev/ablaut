@@ -777,13 +777,14 @@ fn ord(lang: Lang) -> usize {
         Lang::Ukr => 15,
         Lang::Isl => 16,
         Lang::Jpn => 17,
+        Lang::Kor => 18,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 18] = [EMPTY; 18];
+    static INDEXES: [OnceLock<Index>; 19] = [EMPTY; 19];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -813,7 +814,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 18] = [EMPTY; 18];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 19] = [EMPTY; 19];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -899,6 +900,7 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         // verb is stored (the class is unknowable from the surface), so the
         // index covers the language outright.
         Lang::Jpn => col1(include_str!("../data/jpn/verbs.tsv"), &mut lemmas),
+        Lang::Kor => col1(include_str!("../data/kor/verbs.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -1075,6 +1077,13 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.conditional, "conditional", &P6);
             s.row(&t.subjunctive_present, "subjunctive present", &P6);
             s.row(&t.subjunctive_imperfect, "subjunctive imperfect", &P6);
+        }
+        Conjugation::Kor(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.one(&t.intimate, "intimate");
+            s.one(&t.connective_ni, "connective -(으)니");
+            s.one(&t.adnominal_present, "present adnominal");
+            s.one(&t.formal_present, "formal present");
         }
         Conjugation::Por(t) => {
             s.one(&t.infinitive, "infinitive");
@@ -1264,6 +1273,8 @@ mod tests {
         // Japanese is index-only: 書いた → 書く (past), 食べた → 食べる.
         assert!(infs("書いた", Lang::Jpn).contains(&"書く".to_string()));
         assert!(infs("食べた", Lang::Jpn).contains(&"食べる".to_string()));
+        // Korean is index-only: an irregular form reverses via the lexicon.
+        assert!(infs("들어", Lang::Kor).contains(&"듣다".to_string()));
     }
 
     #[test]

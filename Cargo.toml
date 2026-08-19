@@ -3,7 +3,7 @@ name = "ablaut"
 version = "0.7.0"
 edition = "2021"
 rust-version = "1.75"
-description = "Fast, correct verb conjugation for 18 languages, each verified against two independent gold lexicons"
+description = "Fast, correct verb conjugation for 19 languages, each verified against two independent gold lexicons"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/ablaut-dev/ablaut"
 keywords = ["conjugation", "morphology", "nlp", "linguistics", "language"]
@@ -32,6 +32,7 @@ include = [
     "data/ita/strong.tsv",
     "data/ita/verbs.tsv",
     "data/jpn/verbs.tsv",
+    "data/kor/verbs.tsv",
     "data/por/classes.tsv",
     "data/por/verbs.tsv",
     "data/ron/classes.tsv",

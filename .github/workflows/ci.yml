@@ -265,5 +265,25 @@ jobs:
       # rather than a single full-vocabulary oracle.
       - name: Japanese golden harness with regression gate
         run: cargo run --release --bin golden_jpn -- data/jpn/ipadic.tsv data/jpn/kaikki.tsv --check
+      - name: Cache krdict kor
+        id: krdict
+        uses: actions/cache@v5
+        with:
+          path: data/kor/krdict.tsv
+          key: krdict-kor-v1
+      - name: Fetch krdict kor
+        if: steps.krdict.outputs.cache-hit != 'true'
+        run: ./scripts/kor/fetch_krdict.sh
+      - name: Cache kaikki kor
+        id: kaikki-kor
+        uses: actions/cache@v5
+        with:
+          path: data/kor/kaikki.tsv
+          key: kaikki-kor-v1
+      - name: Fetch kaikki kor
+        if: steps.kaikki-kor.outputs.cache-hit != 'true'
+        run: ./scripts/kor/fetch_kaikki.sh
+      - name: Korean golden harness with regression gate (two-oracle agreement)
+        run: cargo run --release --bin golden_kor -- data/kor/krdict.tsv data/kor/kaikki.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng
