@@ -773,6 +773,7 @@ fn ord(lang: Lang) -> usize {
         Lang::Ita => 11,
         Lang::Ron => 12,
         Lang::Swe => 13,
+        Lang::Cat => 14,
     }
 }
 
@@ -888,6 +889,7 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
             col1(include_str!("../data/ron/classes.tsv"), &mut lemmas);
         }
         Lang::Swe => col1(include_str!("../data/swe/parts.tsv"), &mut lemmas),
+        Lang::Cat => col1(include_str!("../data/cat/verbs.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -1113,6 +1115,23 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
                     "neut du", "neut pl",
                 ],
             );
+        }
+        Conjugation::Cat(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.one(&t.gerund, "gerund");
+            s.one(&t.past_participle, "past participle");
+            s.row_opt(
+                &t.imperative,
+                "imperative",
+                &["tu", "vostè", "nosaltres", "vosaltres", "vostès"],
+            );
+            s.row(&t.present, "present", &P6);
+            s.row(&t.imperfect, "imperfect", &P6);
+            s.row(&t.preterite, "preterite", &P6);
+            s.row(&t.future, "future", &P6);
+            s.row(&t.conditional, "conditional", &P6);
+            s.row(&t.subjunctive_present, "subjunctive present", &P6);
+            s.row(&t.subjunctive_imperfect, "subjunctive imperfect", &P6);
         }
         Conjugation::Spa(t) => {
             s.one(&t.infinitive, "infinitive");
