@@ -774,14 +774,15 @@ fn ord(lang: Lang) -> usize {
         Lang::Ron => 12,
         Lang::Swe => 13,
         Lang::Cat => 14,
-        Lang::Isl => 15,
+        Lang::Ukr => 15,
+        Lang::Isl => 16,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 16] = [EMPTY; 16];
+    static INDEXES: [OnceLock<Index>; 17] = [EMPTY; 17];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -811,7 +812,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 16] = [EMPTY; 16];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 17] = [EMPTY; 17];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -891,6 +892,7 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         }
         Lang::Swe => col1(include_str!("../data/swe/parts.tsv"), &mut lemmas),
         Lang::Cat => col1(include_str!("../data/cat/verbs.tsv"), &mut lemmas),
+        Lang::Ukr => col1(include_str!("../data/ukr/verbs.tsv"), &mut lemmas),
         Lang::Isl => col1(include_str!("../data/isl/verbs.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
@@ -1134,6 +1136,12 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.conditional, "conditional", &P6);
             s.row(&t.subjunctive_present, "subjunctive present", &P6);
             s.row(&t.subjunctive_imperfect, "subjunctive imperfect", &P6);
+        }
+        Conjugation::Ukr(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.row(&t.present, "present", &P6);
+            s.row_opt(&t.imperative, "imperative", &["2sg", "1pl", "2pl"]);
+            s.row(&t.past, "past", &["masc sg", "fem sg", "neut sg", "pl"]);
         }
         Conjugation::Spa(t) => {
             s.one(&t.infinitive, "infinitive");

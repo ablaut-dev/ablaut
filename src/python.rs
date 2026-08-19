@@ -758,6 +758,36 @@ impl From<crate::swe::Table> for SwedishConjugation {
     }
 }
 
+/// The conjugation table of one Ukrainian verb. The present row is
+/// [1sg, 2sg, 3sg, 1pl, 2pl, 3pl]; the l-past is [masc sg, fem sg,
+/// neut sg, plural].
+#[pyclass(get_all, frozen)]
+struct UkrainianConjugation {
+    infinitive: String,
+    present: Vec<String>,
+    /// [2sg, 1pl, 2pl]
+    imperative: Vec<Option<String>>,
+    past: Vec<String>,
+}
+
+#[pymethods]
+impl UkrainianConjugation {
+    fn __repr__(&self) -> String {
+        format!("UkrainianConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::ukr::Table> for UkrainianConjugation {
+    fn from(t: crate::ukr::Table) -> Self {
+        UkrainianConjugation {
+            infinitive: t.infinitive,
+            present: t.present.into(),
+            imperative: t.imperative.into(),
+            past: t.past.into(),
+        }
+    }
+}
+
 /// The synthetic active paradigm of one Icelandic verb. Person rows are
 /// [ég, þú, hann/hún, við, þið, þeir].
 #[pyclass(get_all, frozen)]
@@ -915,6 +945,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Ukr) => {
+            let v = crate::ukr::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(UkrainianConjugation::from(crate::ukr::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         None => Err(PyValueError::new_err(format!("unknown language: {lang}"))),
     }
 }
@@ -936,6 +973,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<IrishConjugation>()?;
     m.add_class::<ItalianConjugation>()?;
     m.add_class::<SwedishConjugation>()?;
+    m.add_class::<UkrainianConjugation>()?;
     m.add_class::<IcelandicConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())

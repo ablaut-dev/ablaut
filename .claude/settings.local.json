@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "WebSearch",
+      "WebFetch(domain:kaikki.org)",
+      "WebFetch(domain:www.ortolang.fr)",
+      "WebFetch(domain:redac.univ-tlse2.fr)",
+      "WebFetch(domain:grammalecte.net)",
+      "WebFetch(domain:www.lexique.org)"
+    ]
+  }
+}
