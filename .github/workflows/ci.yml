@@ -211,5 +211,28 @@ jobs:
         run: ./scripts/swe/fetch_saldo.sh
       - name: Swedish golden harness with regression gate
         run: cargo run --release --bin golden_swe -- data/swe/saldo.tsv --check
+      - name: Cache IPADIC jpn
+        id: ipadic
+        uses: actions/cache@v5
+        with:
+          path: data/jpn/ipadic.tsv
+          key: ipadic-jpn-v1
+      - name: Fetch IPADIC jpn
+        if: steps.ipadic.outputs.cache-hit != 'true'
+        run: ./scripts/jpn/fetch_ipadic.sh
+      - name: Cache kaikki jpn
+        id: kaikki-jpn
+        uses: actions/cache@v5
+        with:
+          path: data/jpn/kaikki.tsv
+          key: kaikki-jpn-v1
+      - name: Fetch kaikki jpn
+        if: steps.kaikki-jpn.outputs.cache-hit != 'true'
+        run: ./scripts/jpn/fetch_kaikki.sh
+      # Japanese is lexicon-bound (the inflection class is not derivable
+      # from the surface), so it is scored on the two-oracle agreement
+      # rather than a single full-vocabulary oracle.
+      - name: Japanese golden harness with regression gate
+        run: cargo run --release --bin golden_jpn -- data/jpn/ipadic.tsv data/jpn/kaikki.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng

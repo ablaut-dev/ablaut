@@ -27,7 +27,7 @@ import collections
 import json
 
 KAIKKI = "data/jpn/kaikki-verbs.jsonl"
-IPADIC = "/tmp/ipa/Verb.utf8.csv"  # UTF-8 conversion produced by fetch_ipadic.sh
+IPADIC = "data/jpn/Verb.utf8.csv"  # UTF-8 conversion produced by fetch_ipadic.sh
 OUT = "data/jpn/verbs.tsv"
 
 TYPE_TO_CLASS = {
