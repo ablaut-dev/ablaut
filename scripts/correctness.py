@@ -153,7 +153,31 @@ above is the same feature→form mapping scored through the shared harness
 """
     out = os.path.join(ROOT, "docs/correctness.md")
     open(out, "w", encoding="utf-8").write(md)
-    print(f"wrote {out} ({len(stats)} languages)")
+
+    # Structured export for downstream consumers (e.g. the /trust page).
+    export = {
+        "version": ver,
+        "languages": [
+            {
+                "name": NAMES.get(l, l),
+                "code": l,
+                "oracles": [o.replace(".tsv", "") for o in stats[l]["oracles"]],
+                "agreed_matched": stats[l]["agreed_matched"],
+                "agreed_forms": stats[l]["agreed_forms"],
+                "agreed_pct": round(stats[l]["agreed_pct"], 4),
+                "slot_types_covered": stats[l]["slot_types_covered"],
+                "slot_types": stats[l]["slot_types"],
+                "disagreements": stats[l]["disagreements"],
+                "disagreements_resolved": stats[l]["disagreements_resolved"],
+                "single_oracle": stats[l]["single_oracle"],
+                "tier": tier(stats[l]),
+            }
+            for l in sorted(stats, key=lambda l: NAMES.get(l, l))
+        ],
+    }
+    jout = os.path.join(ROOT, "docs/correctness.json")
+    open(jout, "w", encoding="utf-8").write(json.dumps(export, ensure_ascii=False, indent=2))
+    print(f"wrote {out} and {jout} ({len(stats)} languages)")
 
 
 if __name__ == "__main__":
