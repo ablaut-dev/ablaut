@@ -115,6 +115,11 @@ pub fn conjugate(infinitive: &str, lang: Option<String>) -> Result<JsValue, JsEr
                 .map_err(|e| JsError::new(&e.to_string()))?;
             Ok(serde_wasm_bindgen::to_value(&crate::jpn::Table::build(&v))?)
         }
+        Some(crate::Lang::Hye) => {
+            let v = crate::hye::Verb::from_infinitive(infinitive)
+                .map_err(|e| JsError::new(&e.to_string()))?;
+            Ok(serde_wasm_bindgen::to_value(&crate::hye::Table::build(&v))?)
+        }
         Some(crate::Lang::Kor) => {
             let v = crate::kor::Verb::from_infinitive(infinitive)
                 .map_err(|e| JsError::new(&e.to_string()))?;

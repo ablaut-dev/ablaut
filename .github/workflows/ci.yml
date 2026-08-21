@@ -316,5 +316,25 @@ jobs:
         run: ./scripts/rus/fetch_opencorpora.sh
       - name: Russian golden harness with regression gate
         run: cargo run --release --bin golden_rus -- data/rus/opencorpora.tsv --check
+      - name: Cache UniMorph hye
+        id: unimorph-hye
+        uses: actions/cache@v5
+        with:
+          path: data/hye/unimorph.tsv
+          key: unimorph-hye-v1
+      - name: Fetch UniMorph hye
+        if: steps.unimorph-hye.outputs.cache-hit != 'true'
+        run: ./scripts/hye/fetch_unimorph.sh
+      - name: Cache uniparser hye
+        id: uniparser-hye
+        uses: actions/cache@v5
+        with:
+          path: data/hye/uniparser.tsv
+          key: uniparser-hye-v1
+      - name: Fetch uniparser hye
+        if: steps.uniparser-hye.outputs.cache-hit != 'true'
+        run: ./scripts/hye/fetch_uniparser.sh
+      - name: Armenian UniMorph-uniparser agreement gate
+        run: cargo run --release --bin golden_hye -- data/hye/uniparser.tsv data/hye/unimorph.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng

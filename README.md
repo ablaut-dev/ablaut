@@ -33,14 +33,14 @@ still describe every strong verb in the language.
 
 - **Measured correctness.** Every language is validated against two
   independent machine-readable lexicons. Where the two sources agree,
-  ablaut has zero known errors in nineteen of twenty-one languages; the
+  ablaut has zero known errors in twenty of twenty-two languages; the
   remaining disagreements are ruled on in published adjudication logs.
   CI re-checks 3.5 million forms on every change.
 - **Generalizes to unseen verbs.** Rule engines with curated exception
   tables, not lookup dumps: novel verbs (*googeln*, *tweeter*)
   conjugate correctly.
 - **Fast and small.** No I/O, no runtime data files, no dependencies in
-  the core crate. A full table takes microseconds; all twenty-one
+  the core crate. A full table takes microseconds; all twenty-two
   languages fit in one small WebAssembly binary.
 - **Permissively licensed.** MIT OR Apache-2.0. Reference lexicons are
   used at test time only and never shipped.
@@ -49,7 +49,8 @@ still describe every strong verb in the language.
 
 German, French, Spanish, Catalan, Portuguese, Italian, Romanian,
 Swedish, English, Danish, Czech, Slovenian, Estonian, Finnish, Irish,
-Ukrainian, Icelandic, Japanese, Korean, Dutch, and Russian.
+Ukrainian, Icelandic, Japanese, Korean, Dutch, Russian, and Eastern
+Armenian.
 
 Each language is scored against the slots where its two reference
 lexicons agree; the second column is that score.
@@ -77,6 +78,7 @@ lexicons agree; the second column is that score.
 | 🇰🇷 | Korean | 3,576 | 100.00% |
 | 🇳🇱 | Dutch | 27,836 | 100.00% |
 | 🇷🇺 | Russian | 151,942 | 99.98% |
+| 🇦🇲 | Armenian | 50,521 | 100.00% |
 
 Details per language, including which lexicons are used and every
 adjudicated disagreement, live in `docs/{lang}/`.
@@ -116,7 +118,7 @@ v.conjugate(fra::SimpleTense::Future, fra::Person::First, fra::Number::Singular)
 
 Reverse lookup maps a conjugated form back to its infinitive(s) and
 the slots it fills — fully productive for German, English, French and
-Spanish, irregular-index-backed for all 21 languages:
+Spanish, irregular-index-backed for all 22 languages:
 
 ```rust
 use ablaut::{reverse, Lang};
@@ -170,9 +172,11 @@ Konjunktiv rows, French spelling doublets and reflexive clitics,
 Spanish enclitic imperatives with written stress, Portuguese's personal
 infinitive, Italian's perfect auxiliary, Romanian's synthetic
 pluperfect, the Scandinavian s-passives, Czech gendered participles,
-Slovenian's dual, Estonian and Finnish impersonals and potentials, and
-Irish's initial mutations. [`docs/design.md`](docs/design.md) documents
-the German engine in depth; each other language documents its scope in
+Slovenian's dual, Estonian and Finnish impersonals and potentials,
+Irish's initial mutations, and Armenian's converbs with the fronted
+negative copula (*գրում եմ* / *չեմ գրում*).
+[`docs/design.md`](docs/design.md) documents the German engine in
+depth; each other language documents its scope in
 `docs/{lang}/oracles.md`.
 
 ## How correctness is verified

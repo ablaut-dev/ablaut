@@ -780,13 +780,14 @@ fn ord(lang: Lang) -> usize {
         Lang::Kor => 18,
         Lang::Nld => 19,
         Lang::Rus => 20,
+        Lang::Hye => 21,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 21] = [EMPTY; 21];
+    static INDEXES: [OnceLock<Index>; 22] = [EMPTY; 22];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -905,6 +906,7 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Kor => col1(include_str!("../data/kor/verbs.tsv"), &mut lemmas),
         Lang::Nld => col1(include_str!("../data/nld/verbs.tsv"), &mut lemmas),
         Lang::Rus => col1(include_str!("../data/rus/verbs.tsv"), &mut lemmas),
+        Lang::Hye => col1(include_str!("../data/hye/verbs.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -1081,6 +1083,22 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.conditional, "conditional", &P6);
             s.row(&t.subjunctive_present, "subjunctive present", &P6);
             s.row(&t.subjunctive_imperfect, "subjunctive imperfect", &P6);
+        }
+        Conjugation::Hye(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.one(&t.converb_imperfective, "imperfective converb");
+            s.one(&t.converb_perfective, "perfective converb");
+            s.one(&t.converb_future, "future converb");
+            s.one(&t.converb_simultaneous, "simultaneous converb");
+            s.one(&t.connegative, "connegative");
+            s.one(&t.participle_subject, "subject participle");
+            s.one(&t.participle_resultative, "resultative participle");
+            s.row(&t.aorist, "aorist", &P6);
+            s.row(&t.subjunctive_future, "subjunctive future", &P6);
+            s.row(&t.subjunctive_past, "subjunctive past", &P6);
+            s.row(&t.conditional, "conditional", &P6);
+            s.row(&t.conditional_past, "conditional past", &P6);
+            s.row(&t.imperative, "imperative", &["2sg", "2pl"]);
         }
         Conjugation::Kor(t) => {
             s.one(&t.infinitive, "infinitive");
@@ -1294,6 +1312,9 @@ mod tests {
         assert!(infs("食べた", Lang::Jpn).contains(&"食べる".to_string()));
         // Korean is index-only: an irregular form reverses via the lexicon.
         assert!(infs("들어", Lang::Kor).contains(&"듣다".to_string()));
+        // Armenian: the suppletive aorist stems reverse via the table.
+        assert!(infs("եկա", Lang::Hye).contains(&"գալ".to_string()));
+        assert!(infs("կերել", Lang::Hye).contains(&"ուտել".to_string()));
     }
 
     #[test]

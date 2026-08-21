@@ -305,6 +305,72 @@ impl From<crate::jpn::Table> for JapaneseConjugation {
     }
 }
 
+/// The conjugation of one Eastern Armenian verb (see `ablaut::hye`).
+/// Person rows are [ես, դու, նա, մենք, դուք, նրանք]; the analytic
+/// tenses are spelled out (`գրում եմ`), the imperative is
+/// [singular, plural].
+#[pyclass(get_all, frozen)]
+struct ArmenianConjugation {
+    infinitive: String,
+    present: [String; 6],
+    imperfect: [String; 6],
+    aorist: [String; 6],
+    perfect: [String; 6],
+    pluperfect: [String; 6],
+    future: [String; 6],
+    future_in_past: [String; 6],
+    subjunctive_future: [String; 6],
+    subjunctive_past: [String; 6],
+    conditional: [String; 6],
+    conditional_past: [String; 6],
+    imperative: [String; 2],
+    converb_imperfective: String,
+    converb_perfective: String,
+    converb_future: String,
+    converb_simultaneous: String,
+    connegative: String,
+    participle_subject: String,
+    participle_resultative: String,
+    passive: String,
+    causative: String,
+}
+
+#[pymethods]
+impl ArmenianConjugation {
+    fn __repr__(&self) -> String {
+        format!("ArmenianConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::hye::Table> for ArmenianConjugation {
+    fn from(t: crate::hye::Table) -> Self {
+        ArmenianConjugation {
+            infinitive: t.infinitive,
+            present: t.present,
+            imperfect: t.imperfect,
+            aorist: t.aorist,
+            perfect: t.perfect,
+            pluperfect: t.pluperfect,
+            future: t.future,
+            future_in_past: t.future_in_past,
+            subjunctive_future: t.subjunctive_future,
+            subjunctive_past: t.subjunctive_past,
+            conditional: t.conditional,
+            conditional_past: t.conditional_past,
+            imperative: t.imperative,
+            converb_imperfective: t.converb_imperfective,
+            converb_perfective: t.converb_perfective,
+            converb_future: t.converb_future,
+            converb_simultaneous: t.converb_simultaneous,
+            connegative: t.connegative,
+            participle_subject: t.participle_subject,
+            participle_resultative: t.participle_resultative,
+            passive: t.passive,
+            causative: t.causative,
+        }
+    }
+}
+
 /// The four whole-word surface forms of one Korean verb (see
 /// `ablaut::kor`).
 #[pyclass(get_all, frozen)]
@@ -1106,6 +1172,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Hye) => {
+            let v = crate::hye::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(ArmenianConjugation::from(crate::hye::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         Some(crate::Lang::Kor) => {
             let v = crate::kor::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
@@ -1125,6 +1198,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<CatalanConjugation>()?;
     m.add_class::<RussianConjugation>()?;
     m.add_class::<DutchConjugation>()?;
+    m.add_class::<ArmenianConjugation>()?;
     m.add_class::<KoreanConjugation>()?;
     m.add_class::<PortugueseConjugation>()?;
     m.add_class::<RomanianConjugation>()?;
