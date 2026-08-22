@@ -1299,6 +1299,32 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.perfect, "perfect", &SWA6);
             s.row(&t.subjunctive, "subjunctive", &SWA6);
             s.row(&t.gnomic, "gnomic", &SWA6);
+        Conjugation::Tam(t) => {
+            // Tamil is cited by its root, so no slot is named
+            // "infinitive" (that would retarget the lemma); the -ய
+            // infinitive form is "infinitive form".
+            const P10: [&str; 10] = [
+                "1sg",
+                "1pl",
+                "2sg",
+                "2pl",
+                "3sg m",
+                "3sg f",
+                "3sg hon",
+                "3sg n",
+                "3pl epicene",
+                "3pl n",
+            ];
+            s.row(&t.present, "present", &P10);
+            s.row(&t.past, "past", &P10);
+            s.row(&t.future, "future", &P10);
+            s.one(&t.infinitive, "infinitive form");
+            s.one(&t.adverbial, "adverbial participle");
+            s.one(&t.relative_past, "past participle");
+            s.one(&t.relative_present, "present participle");
+            s.one(&t.relative_future, "future participle");
+            s.one(&t.conditional, "conditional");
+            s.row(&t.imperative, "imperative", &["2sg", "2pl"]);
         }
     }
     s.0

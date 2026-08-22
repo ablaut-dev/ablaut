@@ -40,6 +40,7 @@ pub mod spa;
 pub mod swa;
 pub mod swe;
 pub mod tur;
+pub mod tam;
 pub mod ukr;
 #[cfg(feature = "wasm")]
 mod wasm;
@@ -105,6 +106,8 @@ pub enum Lang {
     Hin,
     /// Swahili.
     Swa,
+    /// Tamil.
+    Tam,
 }
 
 impl Lang {
@@ -138,6 +141,7 @@ impl Lang {
             "tr" | "tur" | "turkish" | "türkçe" => Some(Self::Tur),
             "hi" | "hin" | "hindi" => Some(Self::Hin),
             "sw" | "swa" | "swahili" | "kiswahili" => Some(Self::Swa),
+            "ta" | "tam" | "tamil" => Some(Self::Tam),
             _ => None,
         }
     }
@@ -176,6 +180,7 @@ pub enum Conjugation {
     Tur(Box<tur::Table>),
     Hin(Box<hin::Table>),
     Swa(Box<swa::Table>),
+    Tam(Box<tam::Table>),
 }
 
 /// Why `conjugate` failed: the input is not a known verb shape in
@@ -270,6 +275,8 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
             &hin::Verb::from_infinitive(infinitive).map_err(err)?,
         Lang::Swa => Conjugation::Swa(Box::new(swa::Table::build(
             &swa::Verb::from_infinitive(infinitive).map_err(err)?,
+        Lang::Tam => Conjugation::Tam(Box::new(tam::Table::build(
+            &tam::Verb::from_root(infinitive).map_err(err)?,
         ))),
     })
 }

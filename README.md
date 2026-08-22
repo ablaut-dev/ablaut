@@ -50,7 +50,7 @@ still describe every strong verb in the language.
 German, French, Spanish, Catalan, Portuguese, Italian, Romanian,
 Swedish, English, Danish, Czech, Slovenian, Estonian, Finnish, Irish,
 Ukrainian, Icelandic, Japanese, Korean, Dutch, Russian, Eastern
-Armenian, Turkish, Hindi, and Swahili.
+Armenian, Turkish, Hindi, Swahili, and Tamil.
 
 Each language is scored against the slots where its two reference
 lexicons agree; the second column is that score.
@@ -82,6 +82,7 @@ lexicons agree; the second column is that score.
 | 🇹🇷 | Turkish | 44,156 | 100.00% |
 | 🇮🇳 | Hindi | 48,421 | 100.00% |
 | 🇹🇿 | Swahili | 1,134 | 100.00% |
+| 🇮🇳 | Tamil | 31,829 | 100.00% |
 
 Details per language, including which lexicons are used and every
 adjudicated disagreement, live in `docs/{lang}/`.
@@ -176,8 +177,10 @@ Spanish enclitic imperatives with written stress, Portuguese's personal
 infinitive, Italian's perfect auxiliary, Romanian's synthetic
 pluperfect, the Scandinavian s-passives, Czech gendered participles,
 Slovenian's dual, Estonian and Finnish impersonals and potentials,
-Irish's initial mutations, and Armenian's converbs with the fronted
-negative copula (*գրում եմ* / *չեմ գրում*).
+Irish's initial mutations, Armenian's converbs with the fronted
+negative copula (*գրում եմ* / *չեմ գրում*), and Tamil's tense–PNG
+suffix stacking across its gendered third person (*செய்தான்*,
+*செய்கிறது*, *செய்வார்கள்*).
 [`docs/design.md`](docs/design.md) documents the German engine in
 depth; each other language documents its scope in
 `docs/{lang}/oracles.md`.

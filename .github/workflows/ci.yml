@@ -396,5 +396,27 @@ jobs:
         run: ./scripts/swa/fetch_kaikki.sh
       - name: Swahili swc-kaikki agreement gate
         run: cargo run --release --bin golden_swa -- data/swa/swc.tsv data/swa/kaikki.tsv --check
+      - name: Install foma (ThamizhiMorph FST toolchain for tam)
+        run: sudo apt-get update && sudo apt-get install -y foma-bin
+      - name: Cache kaikki tam
+        id: kaikki-tam
+        uses: actions/cache@v5
+        with:
+          path: data/tam/kaikki.tsv
+          key: kaikki-tam-v1
+      - name: Fetch kaikki tam
+        if: steps.kaikki-tam.outputs.cache-hit != 'true'
+        run: ./scripts/tam/fetch_kaikki.sh
+      - name: Cache ThamizhiMorph tam
+        id: thamizhi-tam
+        uses: actions/cache@v5
+        with:
+          path: data/tam/thamizhi.tsv
+          key: thamizhi-tam-v1
+      - name: Fetch ThamizhiMorph tam
+        if: steps.thamizhi-tam.outputs.cache-hit != 'true'
+        run: ./scripts/tam/fetch_thamizhi.sh
+      - name: Tamil kaikki-ThamizhiMorph agreement gate (two-oracle)
+        run: cargo run --release --bin golden_tam -- data/tam/thamizhi.tsv data/tam/kaikki.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng
