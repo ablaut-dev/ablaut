@@ -172,6 +172,22 @@
       "tier": "Verified·gaps"
     },
     {
+      "name": "Gujarati",
+      "code": "guj",
+      "oracles": [
+        "unimorph"
+      ],
+      "agreed_matched": 2880,
+      "agreed_forms": 2880,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 32,
+      "slot_types": 32,
+      "disagreements": 0,
+      "disagreements_resolved": 0,
+      "single_oracle": true,
+      "tier": "Beta"
+    },
+    {
       "name": "Hindi",
       "code": "hin",
       "oracles": [
@@ -257,6 +273,23 @@
       "tier": "Verified·gaps"
     },
     {
+      "name": "Kannada",
+      "code": "kan",
+      "oracles": [
+        "unimorph",
+        "kaikki"
+      ],
+      "agreed_matched": 411,
+      "agreed_forms": 411,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 14,
+      "slot_types": 14,
+      "disagreements": 5,
+      "disagreements_resolved": 5,
+      "single_oracle": false,
+      "tier": "Verified"
+    },
+    {
       "name": "Korean",
       "code": "kor",
       "oracles": [
@@ -272,6 +305,23 @@
       "disagreements_resolved": 0,
       "single_oracle": false,
       "tier": "Verified·gaps"
+    },
+    {
+      "name": "Persian",
+      "code": "pes",
+      "oracles": [
+        "kaikki",
+        "apertium"
+      ],
+      "agreed_matched": 2683,
+      "agreed_forms": 2683,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 28,
+      "slot_types": 28,
+      "disagreements": 118,
+      "disagreements_resolved": 118,
+      "single_oracle": false,
+      "tier": "Verified"
     },
     {
       "name": "Portuguese",
