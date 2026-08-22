@@ -14,6 +14,7 @@ include = [
     "README.md",
     "LICENSE-*",
     "src/**/*.rs",
+    "data/ben/verbs.tsv",
     "data/cat/verbs.tsv",
     "data/nld/verbs.tsv",
     "data/pes/verbs.tsv",
@@ -40,6 +41,7 @@ include = [
     "data/jpn/verbs.tsv",
     "data/kan/verbs.tsv",
     "data/kor/verbs.tsv",
+    "data/mar/verbs.tsv",
     "data/por/classes.tsv",
     "data/por/verbs.tsv",
     "data/ron/classes.tsv",
@@ -55,6 +57,7 @@ include = [
     "data/tgl/verbs.tsv",
     "data/tur/verbs.tsv",
     "data/ukr/verbs.tsv",
+    "data/urd/verbs.tsv",
 ]
 
 [lib]

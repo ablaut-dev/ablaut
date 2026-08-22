@@ -489,6 +489,46 @@ impl From<crate::hin::Table> for HindiConjugation {
     }
 }
 
+/// The conjugation of one Urdu verb (see `ablaut::urd`). Urdu is
+/// Hindustani in the Perso-Arabic script, so the layout matches
+/// [`HindiConjugation`]: person rows are [1sg, 2sg, 3sg, 1pl, 2pl, 3pl];
+/// participle triples are [masc sg, masc pl, fem]; the imperative is
+/// [intimate (تو), familiar (تم), polite (آپ)]; the synthetic future is
+/// written apart (اتروں گا).
+#[pyclass(get_all, frozen)]
+struct UrduConjugation {
+    infinitive: String,
+    oblique_infinitive: String,
+    imperative: [String; 3],
+    subjunctive: [String; 6],
+    future_masculine: [String; 6],
+    future_feminine: [String; 6],
+    imperfective: [String; 3],
+    perfective: [String; 3],
+}
+
+#[pymethods]
+impl UrduConjugation {
+    fn __repr__(&self) -> String {
+        format!("UrduConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::urd::Table> for UrduConjugation {
+    fn from(t: crate::urd::Table) -> Self {
+        UrduConjugation {
+            infinitive: t.infinitive,
+            oblique_infinitive: t.oblique_infinitive,
+            imperative: t.imperative,
+            subjunctive: t.subjunctive,
+            future_masculine: t.future_masculine,
+            future_feminine: t.future_feminine,
+            imperfective: t.imperfective,
+            perfective: t.perfective,
+        }
+    }
+}
+
 /// The conjugation of one Tagalog verb (see `ablaut::tgl`). Each voice
 /// row is [perfective, imperfective, contemplated]; `patient` holds
 /// empty strings when the root takes no patient voice.
@@ -554,6 +594,99 @@ impl From<crate::guj::Table> for GujaratiConjugation {
             perfective: t.perfective,
             imperfective: t.imperfective,
             present_progressive: t.present_progressive,
+        }
+    }
+}
+
+/// The conjugation of one Bengali verb (see `ablaut::ben`). Every
+/// person row is [আমি, তুই, তুমি, সে, আপনি] — first, second intimate,
+/// second familiar, third ordinary, honorific.
+#[pyclass(get_all, frozen)]
+struct BengaliConjugation {
+    infinitive: String,
+    verbal_infinitive: String,
+    perfective: String,
+    habitual_participle: String,
+    progressive_participle: String,
+    conditional: String,
+    present: [String; 5],
+    past: [String; 5],
+    future: [String; 5],
+    habitual: [String; 5],
+    present_progressive: [String; 5],
+    past_progressive: [String; 5],
+    present_perfect: [String; 5],
+    past_perfect: [String; 5],
+}
+
+#[pymethods]
+impl BengaliConjugation {
+    fn __repr__(&self) -> String {
+        format!("BengaliConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::ben::Table> for BengaliConjugation {
+    fn from(t: crate::ben::Table) -> Self {
+        BengaliConjugation {
+            infinitive: t.infinitive,
+            verbal_infinitive: t.verbal_infinitive,
+            perfective: t.perfective,
+            habitual_participle: t.habitual_participle,
+            progressive_participle: t.progressive_participle,
+            conditional: t.conditional,
+            present: t.present,
+            past: t.past,
+            future: t.future,
+            habitual: t.habitual,
+            present_progressive: t.present_progressive,
+            past_progressive: t.past_progressive,
+            present_perfect: t.present_perfect,
+            past_perfect: t.past_perfect,
+        }
+    }
+}
+
+/// The conjugation of one Marathi verb (see `ablaut::mar`). Person rows
+/// are [1sg, 2sg, 3sg, 1pl, 2pl, 3pl]; the subjunctive row is [masc sg,
+/// fem sg, neut sg, masc pl, fem pl, neut pl]; the imperative is [2sg,
+/// 2pl, 1, 3sg, 3pl].
+#[pyclass(get_all, frozen)]
+struct MarathiConjugation {
+    infinitive: String,
+    completive: String,
+    purposive: String,
+    prospective: String,
+    present_masculine: [String; 6],
+    present_feminine: [String; 6],
+    perfective_masculine: [String; 6],
+    perfective_feminine: [String; 6],
+    subjunctive: [String; 6],
+    future: [String; 6],
+    imperative: [String; 5],
+}
+
+#[pymethods]
+impl MarathiConjugation {
+    fn __repr__(&self) -> String {
+        format!("MarathiConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::mar::Table> for MarathiConjugation {
+    fn from(t: crate::mar::Table) -> Self {
+        MarathiConjugation {
+            infinitive: t.infinitive,
+            completive: t.completive,
+            purposive: t.purposive,
+            prospective: t.prospective,
+            present_masculine: t.present_masculine,
+            present_feminine: t.present_feminine,
+            perfective_masculine: t.perfective_masculine,
+            perfective_feminine: t.perfective_feminine,
+            subjunctive: t.subjunctive,
+            future: t.future,
+            imperative: t.imperative,
         }
     }
 }
@@ -1595,6 +1728,27 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Urd) => {
+            let v = crate::urd::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(UrduConjugation::from(crate::urd::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Ben) => {
+            let v = crate::ben::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(BengaliConjugation::from(crate::ben::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Mar) => {
+            let v = crate::mar::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(MarathiConjugation::from(crate::mar::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         None => Err(PyValueError::new_err(format!("unknown language: {lang}"))),
     }
 }
@@ -1609,6 +1763,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<DutchConjugation>()?;
     m.add_class::<ArmenianConjugation>()?;
     m.add_class::<HindiConjugation>()?;
+    m.add_class::<MarathiConjugation>()?;
     m.add_class::<KoreanConjugation>()?;
     m.add_class::<TurkishConjugation>()?;
     m.add_class::<PortugueseConjugation>()?;
@@ -1632,6 +1787,8 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<PersianConjugation>()?;
     m.add_class::<KannadaConjugation>()?;
     m.add_class::<GujaratiConjugation>()?;
+    m.add_class::<UrduConjugation>()?;
+    m.add_class::<BengaliConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())
 }

@@ -502,5 +502,66 @@ jobs:
       # a separate spot check.
       - name: Gujarati golden harness with regression gate
         run: cargo run --release --bin golden_guj -- data/guj/unimorph.tsv --check
+      - name: Cache kaikki urd
+        id: kaikki-urd
+        uses: actions/cache@v5
+        with:
+          path: data/urd/kaikki.tsv
+          key: kaikki-urd-v1
+      - name: Fetch kaikki urd
+        if: steps.kaikki-urd.outputs.cache-hit != 'true'
+        run: ./scripts/urd/fetch_kaikki.sh
+      - name: Fetch apertium-urd (independent second oracle)
+        run: ./scripts/urd/fetch_apertium.sh
+      # kaikki's ur-conj template emits no person tags, so the two-oracle
+      # gate scores the person-independent core (infinitive, oblique,
+      # participles); the finite paradigm is corroborated by apertium and
+      # UniMorph separately — see docs/urd/oracles.md.
+      - name: Urdu kaikki-apertium agreement gate (two-oracle)
+        run: cargo run --release --bin golden_urd -- data/urd/kaikki.tsv data/urd/apertium.tsv --check
+      - name: Cache UniMorph ben
+        id: unimorph-ben
+        uses: actions/cache@v5
+        with:
+          path: data/ben/unimorph.tsv
+          key: unimorph-ben-v1
+      - name: Fetch UniMorph ben
+        if: steps.unimorph-ben.outputs.cache-hit != 'true'
+        run: ./scripts/ben/fetch_unimorph.sh
+      # Bengali is scored against UniMorph alone: kaikki ben is the same
+      # Wiktionary lineage as UniMorph ben (whose source is Wikipedia),
+      # not an independent agreement partner — see docs/ben/oracles.md.
+      # kaikki is a separate spot check.
+      - name: Bengali golden harness with regression gate
+        run: cargo run --release --bin golden_ben -- data/ben/unimorph.tsv --check
+      - name: Install lttoolbox (apertium-mar oracle)
+        run: sudo apt-get update && sudo apt-get install -y lttoolbox
+      - name: Cache apertium-mar
+        id: apertium-mar
+        uses: actions/cache@v5
+        with:
+          path: data/mar/apertium.tsv
+          key: apertium-mar-v1
+      - name: Fetch apertium-mar (primary oracle)
+        if: steps.apertium-mar.outputs.cache-hit != 'true'
+        run: ./scripts/mar/fetch_apertium.sh
+      - name: Cache kaikki mar
+        id: kaikki-mar
+        uses: actions/cache@v5
+        with:
+          path: data/mar/kaikki.tsv
+          key: kaikki-mar-v1
+      - name: Fetch kaikki mar
+        if: steps.kaikki-mar.outputs.cache-hit != 'true'
+        run: ./scripts/mar/fetch_kaikki.sh
+      # Marathi is scored against apertium-mar, a fully person/gender/
+      # number-tagged hand-built FST (Beta): kaikki mar lost person/number
+      # on its finite cells, so it forms a per-cell agreement loop over the
+      # non-finite forms only and corroborates the finite paradigm at the
+      # set level — see docs/mar/oracles.md.
+      - name: Marathi golden harness with regression gate
+        run: cargo run --release --bin golden_mar -- data/mar/apertium.tsv --check
+      - name: Marathi apertium-kaikki non-finite agreement gate (two-oracle)
+        run: cargo run --release --bin golden_mar -- data/mar/apertium.tsv data/mar/kaikki.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng

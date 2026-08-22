@@ -1,0 +1,6 @@
+# Bengali oracle-vs-oracle disagreements.
+#
+# Bengali ships single-oracle (Beta), scored against UniMorph ben alone
+# (see oracles.md), so there is no two-oracle agreement corpus and this
+# file is empty. Format, when populated: lemma <tab> features <tab>
+# resolution (variant | o1 | o2 | neither).

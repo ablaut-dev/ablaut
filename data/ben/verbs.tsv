@@ -1,0 +1,51 @@
+# Bengali irregular verbs.
+#
+# The rule engine (src/ben.rs) handles the open class off the stem
+# (the citation/verbal-noun form minus its final -আ), plus the fully
+# productive -আনো causatives. This table carries the two closed sets the
+# rule cannot derive:
+#
+#   1. RAISING monosyllabic roots — the mid root vowel এ/ও raises to
+#      ই/উ everywhere except the তুমি/সে/আপনি present and the verbal
+#      noun (ওঠা: উঠি but ওঠে; কেনা: কিনি but কেনে). Whether a mid-vowel
+#      root raises is lexical (কেনা→কিন raises, দেখা→দেখ does not), so
+#      the two grades are stored.
+#   2. VOWEL-final monosyllabic roots (-ওয়া / হ) — খাওয়া, দেওয়া … are
+#      irregular across several stems (present খাই but past খেলাম,
+#      perfect খেয়ে; যাওয়া is suppletive in the past গেলাম / perfect
+#      গিয়ে). Their stems are stored explicitly.
+#
+# A `-` cell falls through to the rule. Columns:
+#   lemma
+#   base        present তুমি/সে/আপনি stem   (default: the plain stem)
+#   high        present আমি/তুই + future    (default: the plain stem)
+#   past_stem   simple past + conditional   (default: high; ল geminates)
+#   hab_stem    past habitual               (default: high)
+#   nfin_stem   -তে infinitive + prog ptcp  (default: high)
+#   perfect     perfective participle (কোরে) (default: front(high)+এ)
+#   prog        progressive base incl. ছ/চ্ছ (default: high+ছ)
+#   present     explicit আমি,তুই,তুমি,সে,আপনি (default: from base/high)
+#
+# lemma	base	high	past_stem	hab_stem	nfin_stem	perfect	prog	present
+# --- raising roots (এ→ই, ও→উ): store the two grades, rest by rule ---
+ওঠা	ওঠ	উঠ	-	-	-	-	-	-
+কেনা	কেন	কিন	-	-	-	-	-	-
+খোঁজা	খোঁজ	খুঁজ	-	-	-	-	-	-
+খোলা	খোল	খুল	-	-	-	-	-	-
+গেলা	গেল	গিল	-	-	-	-	-	-
+চেনা	চেন	চিন	-	-	-	-	-	-
+চোষা	চোষ	চুষ	-	-	-	-	-	-
+ঢোকা	ঢোক	ঢুক	-	-	-	-	-	-
+বোঝা	বোঝ	বুঝ	-	-	-	-	-	-
+লেখা	লেখ	লিখ	-	-	-	-	-	-
+শেখা	শেখ	শিখ	-	-	-	-	-	-
+শোনা	শোন	শুন	-	-	-	-	-	-
+# --- vowel-final roots (-ওয়া / হ): stems stored explicitly ---
+খাওয়া	খা	খা	খে	খে	খে	খেয়ে	খাচ্ছ	খাই,খাস,খাও,খায়,খান
+গাওয়া	গা	গা	গে	গে	গে	গেয়ে	গাচ্ছ	গাই,গাস,গাও,গায়,গান
+চাওয়া	চা	চা	চে	চে	চে	চেয়ে	চাচ্ছ	চাই,চাস,চাও,চায়,চান
+পাওয়া	পা	পা	পে	পে	পে	পেয়ে	পাচ্ছ	পাই,পাস,পাও,পায়,পান
+দেওয়া	দে	দি	দি	দি	দে	দিয়ে	দিচ্ছ	দেই,দিস,দাও,দেয়,দেন
+নেওয়া	নে	নি	নি	নি	নে	নিয়ে	নিচ্ছ	নেই,নিস,নাও,নেয়,নেন
+হওয়া	হ	হ	হ	হ	হ	হয়ে	হচ্ছ	হই,হস,হও,হয়,হন
+যাওয়া	যা	যা	গে	যে	যে	গিয়ে	যাচ্ছ	যাই,যাস,যাও,যায়,যান

@@ -51,7 +51,7 @@ German, French, Spanish, Catalan, Portuguese, Italian, Romanian,
 Swedish, English, Danish, Czech, Slovenian, Estonian, Finnish, Irish,
 Ukrainian, Icelandic, Japanese, Korean, Dutch, Russian, Eastern
 Armenian, Turkish, Hindi, Swahili, Tamil, Telugu, Tagalog, Persian,
-Kannada, and Gujarati.
+Kannada, Gujarati, Urdu, Bengali, and Marathi.
 
 Each language is scored against the slots where its two reference
 lexicons agree; the second column is that score.
@@ -107,6 +107,32 @@ Gujarati tables share the same English-Wiktionary (`gu-conj`) lineage, so
 they are a spot check rather than an independent agreement partner. The
 engine covers the full paradigm at 100% on the 2,880 UniMorph forms
 across 90 lemmas; see [`docs/guj/oracles.md`](docs/guj/oracles.md).
+| 🇮🇳 | Marathi † | 56,551 | 100.00% |
+
+† Marathi is scored per cell against apertium-mar, a hand-built,
+fully person/gender/number-tagged FST (there is no UniMorph Marathi).
+kaikki.org is the independent second oracle, but Wiktextract lost the
+person/number on its finite cells, so it forms a per-cell agreement loop
+over the non-finite forms only (493/493) and corroborates the finite
+paradigm at the set level (98.9%). The engine covers the full paradigm at
+100% on 56,551 forms across 1,304 lemmas; see
+[`docs/mar/oracles.md`](docs/mar/oracles.md).
+| 🇵🇰 | Urdu | 777 | 100.00% |
+
+Urdu reuses the Hindi engine (`src/hin.rs`) and the shared Perso-Arabic
+normalizer, and is scored against two independent oracles — kaikki.org
+and apertium-urd. kaikki's `ur-conj` template emits no person tags, so the
+per-cell agreement gate covers the person-independent core (infinitive,
+oblique, participles) at 777/777; the finite paradigm is corroborated by
+apertium and UniMorph separately. See
+[`docs/urd/oracles.md`](docs/urd/oracles.md).
+| 🇧🇩 | Bengali † | 3,864 | 100.00% |
+
+† Bengali is scored against UniMorph alone: kaikki.org Bengali shares the
+same Wiktionary lineage as UniMorph ben (whose source is Wikipedia), so it
+is a spot check rather than an independent agreement partner. The engine
+covers the full paradigm at 100% on the 3,864 UniMorph forms; see
+[`docs/ben/oracles.md`](docs/ben/oracles.md).
 
 Details per language, including which lexicons are used and every
 adjudicated disagreement, live in `docs/{lang}/`.

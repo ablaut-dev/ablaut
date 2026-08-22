@@ -1,0 +1,20 @@
+# Marathi irregular / suppletive verbs.
+# Columns: lemma  present  perfective  subjunctive  future  imperative  completive  purposive  prospective
+#   present     — present-habitual base (before the agreement ending; regular = stem + त)
+#   perfective  — perfective base       (before the agreement ending; regular = stem + ल)
+#   subjunctive — subjunctive base      (before the agreement ending; regular = stem + ाव)
+#   future      — 6 forms: 1sg,2sg,3sg,1pl,2pl,3pl
+#   imperative  — 5 forms: 2sg,2pl,1,3sg,3pl
+#   completive  — the converb (regular = stem + ून)
+#   purposive   — regular = stem + ायला
+#   prospective — regular = stem + णार
+# A "-" cell falls through to the productive rule.
+करणे	-	केल	-	-	-	-	-	-
+देणे	-	दिल	द्याव	देईन,देशील,देइल,देऊ,द्याल,देतील	दे,दे,देऊ,देओ,देओत	देऊन	द्यायला	-
+घेणे	-	घेतल	घ्याव	घेईन,घेशील,घेइल,घेऊ,घ्याल,घेतील	घे,घे,घेऊ,घेओ,घेओत	घेऊन	घ्यायला	-
+जाणे	-	गेल	जाव	जाईन,जाशील,जाईल,जाऊ,जाल,जातील	जा,जा,जाऊ,जाओ,जाओत	जाऊन	जायला	-
+येणे	-	आल	याव	येईन,येशील,येईल,येऊ,याल,येतील	ये,ये,येऊ,येओ,येओत	येऊन	यायला	-
+होणे	-	झाल	व्हाव	होईन,होशील,होईल,होऊ,होल,होतील	हो,व्हा,होऊ,होवो,होवोत	होऊन	व्हायला	-
+म्हणणे	-	म्हटल	-	-	-	-	-	-
+मिळणे	-	मिळाल	-	-	-	-	-	-
+सांगणे	-	सांगितल	-	-	-	-	-	-
