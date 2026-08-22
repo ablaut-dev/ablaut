@@ -781,13 +781,14 @@ fn ord(lang: Lang) -> usize {
         Lang::Nld => 19,
         Lang::Rus => 20,
         Lang::Hye => 21,
+        Lang::Tam => 22,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 22] = [EMPTY; 22];
+    static INDEXES: [OnceLock<Index>; 23] = [EMPTY; 23];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -817,7 +818,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 21] = [EMPTY; 21];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 23] = [EMPTY; 23];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -907,6 +908,9 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Nld => col1(include_str!("../data/nld/verbs.tsv"), &mut lemmas),
         Lang::Rus => col1(include_str!("../data/rus/verbs.tsv"), &mut lemmas),
         Lang::Hye => col1(include_str!("../data/hye/verbs.tsv"), &mut lemmas),
+        // The whole Tamil lexicon is the stem table: conjugation class is
+        // unknowable from the root, so every conjugatable verb is stored.
+        Lang::Tam => col1(include_str!("../data/tam/verbs.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -1243,6 +1247,33 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.past, "past", &P6);
             s.row(&t.subjunctive_present, "subjunctive present", &P6);
             s.row(&t.subjunctive_past, "subjunctive past", &P6);
+        }
+        Conjugation::Tam(t) => {
+            // Tamil is cited by its root, so no slot is named
+            // "infinitive" (that would retarget the lemma); the -ய
+            // infinitive form is "infinitive form".
+            const P10: [&str; 10] = [
+                "1sg",
+                "1pl",
+                "2sg",
+                "2pl",
+                "3sg m",
+                "3sg f",
+                "3sg hon",
+                "3sg n",
+                "3pl epicene",
+                "3pl n",
+            ];
+            s.row(&t.present, "present", &P10);
+            s.row(&t.past, "past", &P10);
+            s.row(&t.future, "future", &P10);
+            s.one(&t.infinitive, "infinitive form");
+            s.one(&t.adverbial, "adverbial participle");
+            s.one(&t.relative_past, "past participle");
+            s.one(&t.relative_present, "present participle");
+            s.one(&t.relative_future, "future participle");
+            s.one(&t.conditional, "conditional");
+            s.row(&t.imperative, "imperative", &["2sg", "2pl"]);
         }
     }
     s.0

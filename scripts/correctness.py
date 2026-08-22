@@ -32,7 +32,7 @@ NAMES = {
     "dan": "Danish", "ces": "Czech", "slv": "Slovenian", "est": "Estonian",
     "fin": "Finnish", "gle": "Irish", "cat": "Catalan", "ukr": "Ukrainian",
     "isl": "Icelandic", "jpn": "Japanese", "kor": "Korean", "nld": "Dutch",
-    "rus": "Russian", "hye": "Armenian",
+    "rus": "Russian", "hye": "Armenian", "tam": "Tamil",
 }
 
 

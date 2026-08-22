@@ -1,0 +1,9 @@
+# Tamil adjudications: (lemma, features, ruling); ruling in {ours, both, theirs}.
+# ours/both count the engine form as correct. The engine follows kaikki,
+# the literary reference.
+#
+# Two suppletive-stem verbs whose present neuter-plural kaikki spells on
+# the full root (ஆகுகின்றன) while the engine takes the short stem
+# (ஆகின்றன); both are standard literary forms.
+ஆகு	V;PRS;3PLN	both
+நூல்	V;PRS;3PLN	both
