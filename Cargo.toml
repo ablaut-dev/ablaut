@@ -55,6 +55,7 @@ include = [
     "data/tgl/verbs.tsv",
     "data/tur/verbs.tsv",
     "data/ukr/verbs.tsv",
+    "data/urd/verbs.tsv",
 ]
 
 [lib]

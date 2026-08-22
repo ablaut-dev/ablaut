@@ -489,6 +489,46 @@ impl From<crate::hin::Table> for HindiConjugation {
     }
 }
 
+/// The conjugation of one Urdu verb (see `ablaut::urd`). Urdu is
+/// Hindustani in the Perso-Arabic script, so the layout matches
+/// [`HindiConjugation`]: person rows are [1sg, 2sg, 3sg, 1pl, 2pl, 3pl];
+/// participle triples are [masc sg, masc pl, fem]; the imperative is
+/// [intimate (تو), familiar (تم), polite (آپ)]; the synthetic future is
+/// written apart (اتروں گا).
+#[pyclass(get_all, frozen)]
+struct UrduConjugation {
+    infinitive: String,
+    oblique_infinitive: String,
+    imperative: [String; 3],
+    subjunctive: [String; 6],
+    future_masculine: [String; 6],
+    future_feminine: [String; 6],
+    imperfective: [String; 3],
+    perfective: [String; 3],
+}
+
+#[pymethods]
+impl UrduConjugation {
+    fn __repr__(&self) -> String {
+        format!("UrduConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::urd::Table> for UrduConjugation {
+    fn from(t: crate::urd::Table) -> Self {
+        UrduConjugation {
+            infinitive: t.infinitive,
+            oblique_infinitive: t.oblique_infinitive,
+            imperative: t.imperative,
+            subjunctive: t.subjunctive,
+            future_masculine: t.future_masculine,
+            future_feminine: t.future_feminine,
+            imperfective: t.imperfective,
+            perfective: t.perfective,
+        }
+    }
+}
+
 /// The conjugation of one Tagalog verb (see `ablaut::tgl`). Each voice
 /// row is [perfective, imperfective, contemplated]; `patient` holds
 /// empty strings when the root takes no patient voice.
@@ -1595,6 +1635,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Urd) => {
+            let v = crate::urd::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(UrduConjugation::from(crate::urd::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         None => Err(PyValueError::new_err(format!("unknown language: {lang}"))),
     }
 }
@@ -1632,6 +1679,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<PersianConjugation>()?;
     m.add_class::<KannadaConjugation>()?;
     m.add_class::<GujaratiConjugation>()?;
+    m.add_class::<UrduConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())
 }

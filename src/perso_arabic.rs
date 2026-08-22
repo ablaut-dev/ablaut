@@ -23,9 +23,10 @@
 //!   consistent state — stripped, here — lets forms compare equal. The
 //!   zero-width *joiner* `U+200D` is dropped with it.
 //! * **Short-vowel diacritics** (harakat) — fatḥa/kasra/ḍamma, the
-//!   tanwīn, the šadda and sukūn, the superscript alef `U+0670`, and the
-//!   tatwīl/kashida `U+0640` elongation. These are optional pointing;
-//!   corpora rarely agree on them, so they are stripped.
+//!   tanwīn, the šadda and sukūn, the superscript alef `U+0670`, the
+//!   tatwīl/kashida `U+0640` elongation, and the Urdu noon-ghunna
+//!   nasalization mark `U+0658`. These are optional pointing; corpora
+//!   rarely agree on them, so they are stripped.
 //! * **Arabic ↔ Perso-Arabic letter folding** — the Arabic kaf `ك`
 //!   `U+0643` → keheh `ک` `U+06A9`, the Arabic yeh `ي` `U+064A` and alef
 //!   maqṣūra `ى` `U+0649` → farsi yeh `ی` `U+06CC`, the teh marbūṭa `ة`
@@ -93,10 +94,16 @@ pub fn is_joiner(c: char) -> bool {
 
 /// A short-vowel or other combining Arabic diacritic that carries no
 /// distinction in an unvocalized corpus: the harakat `U+064B..=U+0652`,
-/// the superscript alef `U+0670`, and the tatwīl/kashida `U+0640`.
+/// the superscript alef `U+0670`, the tatwīl/kashida `U+0640`, and the
+/// superscript noon-ghunna mark `U+0658` — the optional in-word
+/// nasalization pointing of Urdu (کھان٘سنا/کھانسنا), written by some
+/// lexicons and dropped by others just like the harakat.
 #[must_use]
 pub fn is_diacritic(c: char) -> bool {
-    matches!(c, '\u{064B}'..='\u{0652}' | '\u{0670}' | '\u{0640}')
+    matches!(
+        c,
+        '\u{064B}'..='\u{0652}' | '\u{0670}' | '\u{0640}' | '\u{0658}'
+    )
 }
 
 /// Fold a single Arabic-script character onto its canonical
