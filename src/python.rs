@@ -1245,6 +1245,57 @@ impl From<crate::swa::Table> for SwahiliConjugation {
     }
 }
 
+/// The conjugation of one Persian verb (see `ablaut::pes`). Person rows
+/// are [1sg, 2sg, 3sg, 1pl, 2pl, 3pl] and affirmative; the imperative is
+/// [2sg, 2pl]. Forms are in normalized Perso-Arabic orthography.
+#[pyclass(get_all, frozen)]
+struct PersianConjugation {
+    infinitive: String,
+    aorist: [String; 6],
+    present: [String; 6],
+    subjunctive: [String; 6],
+    past: [String; 6],
+    imperfect: [String; 6],
+    perfect: [String; 6],
+    pluperfect: [String; 6],
+    future: [String; 6],
+    perfect_subjunctive: [String; 6],
+    present_progressive: [String; 6],
+    past_progressive: [String; 6],
+    imperative: [String; 2],
+    past_participle: String,
+    present_participle: String,
+}
+
+#[pymethods]
+impl PersianConjugation {
+    fn __repr__(&self) -> String {
+        format!("PersianConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::pes::Table> for PersianConjugation {
+    fn from(t: crate::pes::Table) -> Self {
+        PersianConjugation {
+            infinitive: t.infinitive,
+            aorist: t.aorist,
+            present: t.present,
+            subjunctive: t.subjunctive,
+            past: t.past,
+            imperfect: t.imperfect,
+            perfect: t.perfect,
+            pluperfect: t.pluperfect,
+            future: t.future,
+            perfect_subjunctive: t.perfect_subjunctive,
+            present_progressive: t.present_progressive,
+            past_progressive: t.past_progressive,
+            imperative: t.imperative,
+            past_participle: t.past_participle,
+            present_participle: t.present_participle,
+        }
+    }
+}
+
 /// Conjugate an infinitive: `ablaut.conjugate("aufstehen").present[0]`
 /// → "stehe auf", `ablaut.conjugate("parler", lang="fra").present[0]`
 /// → "parle". Raises ValueError for unknown languages and for strings
@@ -1449,6 +1500,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Pes) => {
+            let v = crate::pes::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(PersianConjugation::from(crate::pes::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         None => Err(PyValueError::new_err(format!("unknown language: {lang}"))),
     }
 }
@@ -1483,6 +1541,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<TamilConjugation>()?;
     m.add_class::<TeluguConjugation>()?;
     m.add_class::<TagalogConjugation>()?;
+    m.add_class::<PersianConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())
 }
