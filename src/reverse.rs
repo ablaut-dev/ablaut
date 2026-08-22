@@ -3,7 +3,7 @@
 //! Two complementary mechanisms, both built on the forward engine so a
 //! returned analysis is always conjugationally consistent:
 //!
-//! * **Irregular index** (all 14 languages): on first use, every lemma
+//! * **Irregular index** (all languages): on first use, every lemma
 //!   in the language's compiled-in exception lexicon is forward-
 //!   conjugated and every single-word form is indexed as
 //!   `form → (infinitive, slot)`. No new data ships — the index is
