@@ -371,6 +371,44 @@ impl From<crate::hye::Table> for ArmenianConjugation {
     }
 }
 
+/// The conjugation of one Hindi verb (see `ablaut::hin`). Person rows
+/// are [1sg, 2sg, 3sg, 1pl, 2pl, 3pl]; participle triples are
+/// [masc sg, masc pl, fem]; the imperative is
+/// [intimate (तू), familiar (तुम), polite (आप)].
+#[pyclass(get_all, frozen)]
+struct HindiConjugation {
+    infinitive: String,
+    oblique_infinitive: String,
+    imperative: [String; 3],
+    subjunctive: [String; 6],
+    future_masculine: [String; 6],
+    future_feminine: [String; 6],
+    imperfective: [String; 3],
+    perfective: [String; 3],
+}
+
+#[pymethods]
+impl HindiConjugation {
+    fn __repr__(&self) -> String {
+        format!("HindiConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::hin::Table> for HindiConjugation {
+    fn from(t: crate::hin::Table) -> Self {
+        HindiConjugation {
+            infinitive: t.infinitive,
+            oblique_infinitive: t.oblique_infinitive,
+            imperative: t.imperative,
+            subjunctive: t.subjunctive,
+            future_masculine: t.future_masculine,
+            future_feminine: t.future_feminine,
+            imperfective: t.imperfective,
+            perfective: t.perfective,
+        }
+    }
+}
+
 /// The four whole-word surface forms of one Korean verb (see
 /// `ablaut::kor`).
 #[pyclass(get_all, frozen)]
@@ -1186,6 +1224,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Hin) => {
+            let v = crate::hin::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(HindiConjugation::from(crate::hin::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         None => Err(PyValueError::new_err(format!("unknown language: {lang}"))),
     }
 }
@@ -1199,6 +1244,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<RussianConjugation>()?;
     m.add_class::<DutchConjugation>()?;
     m.add_class::<ArmenianConjugation>()?;
+    m.add_class::<HindiConjugation>()?;
     m.add_class::<KoreanConjugation>()?;
     m.add_class::<PortugueseConjugation>()?;
     m.add_class::<RomanianConjugation>()?;

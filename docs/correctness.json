@@ -172,6 +172,23 @@
       "tier": "Verified·gaps"
     },
     {
+      "name": "Hindi",
+      "code": "hin",
+      "oracles": [
+        "kaikki",
+        "unimorph"
+      ],
+      "agreed_matched": 48421,
+      "agreed_forms": 48421,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 205,
+      "slot_types": 205,
+      "disagreements": 3708,
+      "disagreements_resolved": 3708,
+      "single_oracle": false,
+      "tier": "Verified"
+    },
+    {
       "name": "Icelandic",
       "code": "isl",
       "oracles": [

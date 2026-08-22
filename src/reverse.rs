@@ -781,13 +781,14 @@ fn ord(lang: Lang) -> usize {
         Lang::Nld => 19,
         Lang::Rus => 20,
         Lang::Hye => 21,
+        Lang::Hin => 22,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 22] = [EMPTY; 22];
+    static INDEXES: [OnceLock<Index>; 23] = [EMPTY; 23];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -817,7 +818,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 21] = [EMPTY; 21];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 22] = [EMPTY; 22];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -907,6 +908,7 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Nld => col1(include_str!("../data/nld/verbs.tsv"), &mut lemmas),
         Lang::Rus => col1(include_str!("../data/rus/verbs.tsv"), &mut lemmas),
         Lang::Hye => col1(include_str!("../data/hye/verbs.tsv"), &mut lemmas),
+        Lang::Hin => col1(include_str!("../data/hin/verbs.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -1099,6 +1101,28 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.conditional, "conditional", &P6);
             s.row(&t.conditional_past, "conditional past", &P6);
             s.row(&t.imperative, "imperative", &["2sg", "2pl"]);
+        }
+        Conjugation::Hin(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.one(&t.oblique_infinitive, "oblique infinitive");
+            s.row(
+                &t.imperative,
+                "imperative",
+                &["intimate", "familiar", "polite"],
+            );
+            s.row(&t.subjunctive, "subjunctive", &P6);
+            s.row(&t.future_masculine, "future masculine", &P6);
+            s.row(&t.future_feminine, "future feminine", &P6);
+            s.row(
+                &t.imperfective,
+                "imperfective participle",
+                &["masc sg", "masc pl", "fem"],
+            );
+            s.row(
+                &t.perfective,
+                "perfective participle",
+                &["masc sg", "masc pl", "fem"],
+            );
         }
         Conjugation::Kor(t) => {
             s.one(&t.infinitive, "infinitive");
@@ -1315,6 +1339,8 @@ mod tests {
         // Armenian: the suppletive aorist stems reverse via the table.
         assert!(infs("եկա", Lang::Hye).contains(&"գալ".to_string()));
         assert!(infs("կերել", Lang::Hye).contains(&"ուտել".to_string()));
+        // Hindi: the suppletive perfective गया reverses to जाना.
+        assert!(infs("गया", Lang::Hin).contains(&"जाना".to_string()));
     }
 
     #[test]
