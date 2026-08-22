@@ -177,7 +177,54 @@ above is the same feature→form mapping scored through the shared harness
     }
     jout = os.path.join(ROOT, "docs/correctness.json")
     open(jout, "w", encoding="utf-8").write(json.dumps(export, ensure_ascii=False, indent=2))
-    print(f"wrote {out} and {jout} ({len(stats)} languages)")
+
+    hist = write_history(ver, export)
+    print(
+        f"wrote {out}, {jout} and docs/correctness-history.json "
+        f"({len(stats)} languages, {len(hist)} versions)"
+    )
+
+
+def write_history(ver, export):
+    """Append this release's aggregate to docs/correctness-history.json so
+    /accuracy can show progression across versions. Idempotent: re-running
+    for the same version replaces that version's entry. Built from `export`
+    (the same numbers written to correctness.json) so the two never drift.
+    """
+    path = os.path.join(ROOT, "docs/correctness-history.json")
+    try:
+        history = json.load(open(path, encoding="utf-8"))
+    except (FileNotFoundError, ValueError):
+        history = []
+    langs = export["languages"]
+    matched = sum(l["agreed_matched"] for l in langs)
+    agreed = sum(l["agreed_forms"] for l in langs)
+    tiers = {}
+    for l in langs:
+        tiers[l["tier"]] = tiers.get(l["tier"], 0) + 1
+    entry = {
+        "version": ver,
+        "date": date.today().isoformat(),
+        "languages": len(langs),
+        "verified_forms": matched,
+        "agreed_forms": agreed,
+        "agreed_pct": round(100 * matched / agreed, 4) if agreed else 0.0,
+        "tiers": tiers,
+        "per_language": [
+            {
+                "code": l["code"],
+                "name": l["name"],
+                "agreed_pct": l["agreed_pct"],
+                "agreed_matched": l["agreed_matched"],
+                "tier": l["tier"],
+            }
+            for l in langs
+        ],
+    }
+    history = [h for h in history if h.get("version") != ver] + [entry]
+    history.sort(key=lambda h: tuple(int(x) for x in re.findall(r"\d+", h["version"])))
+    open(path, "w", encoding="utf-8").write(json.dumps(history, ensure_ascii=False, indent=2))
+    return history
 
 
 if __name__ == "__main__":
