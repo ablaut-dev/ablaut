@@ -1,5 +1,5 @@
 {
-  "version": "0.9.0",
+  "version": "0.10.0",
   "languages": [
     {
       "name": "Armenian",
@@ -321,6 +321,22 @@
       "disagreements_resolved": 0,
       "single_oracle": false,
       "tier": "Verified·gaps"
+    },
+    {
+      "name": "Marathi",
+      "code": "mar",
+      "oracles": [
+        "apertium"
+      ],
+      "agreed_matched": 56551,
+      "agreed_forms": 56551,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 44,
+      "slot_types": 46,
+      "disagreements": 0,
+      "disagreements_resolved": 0,
+      "single_oracle": true,
+      "tier": "Beta"
     },
     {
       "name": "Persian",
