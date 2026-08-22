@@ -1,0 +1,14 @@
+# Core Urdu irregular verbs, hand-supplied (the suppletive/contracted
+# stems of ہونا, جانا, کرنا, دینا, لینا, پینا … are few and not
+# derivable from the oracle agreement, which covers the participle
+# *forms* but not the stem analysis). Columns match data/urd/verbs.tsv.
+#
+# lemma	pfv(m.sg,m.pl,f)	subj(1sg,2sg,3sg,1pl,2pl,3pl)	imp(intim,famil,polite)
+ہونا	ہوا,ہوئے,ہوئی	ہوں,ہو,ہو,ہوں,ہو,ہوں	ہو,ہوؤ,ہوئیے
+جانا	گیا,گئے,گئی	-	جا,جاؤ,جائیے
+کرنا	کیا,کیے,کی	-	کر,کرو,کیجیے
+دینا	دیا,دیے,دی	دوں,دے,دے,دیں,دو,دیں	دے,دو,دیجیے
+لینا	لیا,لیے,لی	لوں,لے,لے,لیں,لو,لیں	لے,لو,لیجیے
+پینا	پیا,پیے,پی	پیوں,پیے,پیے,پییں,پیو,پییں	پی,پیو,پیجیے
+جینا	جیا,جیے,جی	جیوں,جیے,جیے,جییں,جیو,جییں	جی,جیو,جیجیے
+سینا	سیا,سیے,سی	سیوں,سیے,سیے,سییں,سیو,سییں	سی,سیو,سیجیے

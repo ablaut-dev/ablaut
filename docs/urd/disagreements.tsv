@@ -1,0 +1,15 @@
+# Oracle disagreements for Urdu (kaikki ∩ apertium).
+#
+# The two independent oracles agree on ~99.5% of the shared
+# person-independent slots; the handful below are the residue:
+#  - vowel-stem masc-sg perfective: apertium keeps the ی-glide the
+#    grammar requires (رویا/چھویا), kaikki drops it (روا) → o2;
+#  - a kaikki tabulation defect (doubled نا infinitive) → o2;
+#  - a stray apertium participle mis-form → o1.
+# The engine follows the oracle ruled correct.
+#
+# lemma	features	resolution	o1(kaikki)	o2(apertium)
+رونا	V;V.PTCP;MASC;SG;PFV	o2	روا	رویا
+نبھانا	V;NFIN;LGSPEC1	o2	نبھانانا|نبھانانے	نبھانا
+پینا	V;V.PTCP;MASC;PL;IPFV	o1	پیتے	پیتیں
+چھونا	V;V.PTCP;MASC;SG;PFV	o2	چھوا	چھویا

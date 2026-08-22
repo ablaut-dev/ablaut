@@ -502,5 +502,22 @@ jobs:
       # a separate spot check.
       - name: Gujarati golden harness with regression gate
         run: cargo run --release --bin golden_guj -- data/guj/unimorph.tsv --check
+      - name: Cache kaikki urd
+        id: kaikki-urd
+        uses: actions/cache@v5
+        with:
+          path: data/urd/kaikki.tsv
+          key: kaikki-urd-v1
+      - name: Fetch kaikki urd
+        if: steps.kaikki-urd.outputs.cache-hit != 'true'
+        run: ./scripts/urd/fetch_kaikki.sh
+      - name: Fetch apertium-urd (independent second oracle)
+        run: ./scripts/urd/fetch_apertium.sh
+      # kaikki's ur-conj template emits no person tags, so the two-oracle
+      # gate scores the person-independent core (infinitive, oblique,
+      # participles); the finite paradigm is corroborated by apertium and
+      # UniMorph separately — see docs/urd/oracles.md.
+      - name: Urdu kaikki-apertium agreement gate (two-oracle)
+        run: cargo run --release --bin golden_urd -- data/urd/kaikki.tsv data/urd/apertium.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng

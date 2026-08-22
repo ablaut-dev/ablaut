@@ -790,13 +790,14 @@ fn ord(lang: Lang) -> usize {
         Lang::Pes => 28,
         Lang::Kan => 29,
         Lang::Guj => 30,
+        Lang::Urd => 31,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 31] = [EMPTY; 31];
+    static INDEXES: [OnceLock<Index>; 32] = [EMPTY; 32];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -826,7 +827,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 31] = [EMPTY; 31];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 32] = [EMPTY; 32];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -925,6 +926,7 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Pes => col1(include_str!("../data/pes/verbs.tsv"), &mut lemmas),
         Lang::Kan => col1(include_str!("../data/kan/verbs.tsv"), &mut lemmas),
         Lang::Guj => col1(include_str!("../data/guj/verbs.tsv"), &mut lemmas),
+        Lang::Urd => col1(include_str!("../data/urd/verbs.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -1389,6 +1391,28 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.future, "future", &P10_KAN);
             s.row(&t.imperative, "imperative", &["2sg", "2pl"]);
         }
+        Conjugation::Urd(t) => {
+            // The synthetic future is written apart (اتروں گا) and so is
+            // multi-word; `row`/`one` skip it automatically.
+            s.one(&t.infinitive, "infinitive");
+            s.one(&t.oblique_infinitive, "oblique infinitive");
+            s.row(
+                &t.imperative,
+                "imperative",
+                &["intimate", "familiar", "polite"],
+            );
+            s.row(&t.subjunctive, "subjunctive", &P6);
+            s.row(
+                &t.imperfective,
+                "imperfective participle",
+                &["masc sg", "masc pl", "fem"],
+            );
+            s.row(
+                &t.perfective,
+                "perfective participle",
+                &["masc sg", "masc pl", "fem"],
+            );
+        }
         Conjugation::Guj(t) => {
             s.one(&t.infinitive, "infinitive");
             s.one(&t.verbal_noun, "verbal noun");
@@ -1494,6 +1518,10 @@ mod tests {
         // Gujarati: the suppletive past ગયું reverses to જવું.
         assert!(infs("ગયું", Lang::Guj).contains(&"જવું".to_string()));
         assert!(infs("લીધું", Lang::Guj).contains(&"લેવું".to_string()));
+        // Urdu: the suppletive perfective گیا reverses to جانا, and the
+        // irregular کیا to کرنا.
+        assert!(infs("گیا", Lang::Urd).contains(&"جانا".to_string()));
+        assert!(infs("کیا", Lang::Urd).contains(&"کرنا".to_string()));
     }
 
     #[test]
