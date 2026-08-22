@@ -129,6 +129,10 @@ pub fn conjugate(infinitive: &str, lang: Option<String>) -> Result<JsValue, JsEr
             let v = crate::tur::Verb::from_infinitive(infinitive)
                 .map_err(|e| JsError::new(&e.to_string()))?;
             Ok(serde_wasm_bindgen::to_value(&crate::tur::Table::build(&v))?)
+        Some(crate::Lang::Hin) => {
+            let v = crate::hin::Verb::from_infinitive(infinitive)
+                .map_err(|e| JsError::new(&e.to_string()))?;
+            Ok(serde_wasm_bindgen::to_value(&crate::hin::Table::build(&v))?)
         }
         None => Err(JsError::new(&format!("unknown language: {lang}"))),
     }

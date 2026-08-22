@@ -33,6 +33,8 @@ NAMES = {
     "fin": "Finnish", "gle": "Irish", "cat": "Catalan", "ukr": "Ukrainian",
     "isl": "Icelandic", "jpn": "Japanese", "kor": "Korean", "nld": "Dutch",
     "rus": "Russian", "hye": "Armenian", "tur": "Turkish",
+    "hin": "Hindi", "swa": "Swahili", "tam": "Tamil", "tel": "Telugu",
+    "tgl": "Tagalog",
 }
 
 

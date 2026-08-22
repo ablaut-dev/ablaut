@@ -356,5 +356,25 @@ jobs:
         run: ./scripts/tur/fetch_kaikki.sh
       - name: Turkish kaikki-UniMorph agreement gate
         run: cargo run --release --bin golden_tur -- data/tur/kaikki.tsv data/tur/unimorph.tsv --check
+      - name: Cache kaikki hin
+        id: kaikki-hin
+        uses: actions/cache@v5
+        with:
+          path: data/hin/kaikki.tsv
+          key: kaikki-hin-v1
+      - name: Fetch kaikki hin
+        if: steps.kaikki-hin.outputs.cache-hit != 'true'
+        run: ./scripts/hin/fetch_kaikki.sh
+      - name: Cache UniMorph hin
+        id: unimorph-hin
+        uses: actions/cache@v5
+        with:
+          path: data/hin/unimorph.tsv
+          key: unimorph-hin-v1
+      - name: Fetch UniMorph hin
+        if: steps.unimorph-hin.outputs.cache-hit != 'true'
+        run: ./scripts/hin/fetch_unimorph.sh
+      - name: Hindi kaikki-UniMorph agreement gate
+        run: cargo run --release --bin golden_hin -- data/hin/kaikki.tsv data/hin/unimorph.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng
