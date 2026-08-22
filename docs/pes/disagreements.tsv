@@ -1,0 +1,122 @@
+# lemma	features	resolution	note
+# resolution: variant|o1|o2|neither (see src/harness.rs). All Persian
+# disagreements are variant-level: kaikki and apertium-pes list two
+# attested spellings of the same lexeme (see docs/pes/oracles.md).
+آشامیدن	V;IMP;2;PL	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+آشامیدن	V;IMP;2;SG	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+آشامیدن	V;SBJV;1;PL	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+آشامیدن	V;SBJV;1;SG	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+آشامیدن	V;SBJV;2;PL	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+آشامیدن	V;SBJV;2;SG	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+آشامیدن	V;SBJV;3;PL	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+آشامیدن	V;SBJV;3;SG	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+آمدن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+آمدن	V;IND;PRS;2;PL	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+آمدن	V;IND;PRS;3;PL	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+آمدن	V;IND;PRS;3;SG	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+آمدن	V;SBJV;2;PL	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+افزودن	V;IMP;2;PL	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+افزودن	V;IMP;2;SG	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+افزودن	V;IND;PRS;2;PL	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+افزودن	V;SBJV;1;PL	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+افزودن	V;SBJV;1;SG	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+افزودن	V;SBJV;2;PL	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+افزودن	V;SBJV;2;SG	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+افزودن	V;SBJV;3;PL	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+افزودن	V;SBJV;3;SG	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+افشردن	V;IMP;2;PL	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+افشردن	V;IMP;2;SG	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+افشردن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+افشردن	V;IND;PRS;1;PL	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+افشردن	V;IND;PRS;1;SG	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+افشردن	V;IND;PRS;2;PL	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+افشردن	V;IND;PRS;2;SG	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+افشردن	V;IND;PRS;3;PL	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+افشردن	V;IND;PRS;3;SG	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+افشردن	V;SBJV;1;PL	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+افشردن	V;SBJV;1;SG	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+افشردن	V;SBJV;2;PL	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+افشردن	V;SBJV;2;SG	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+افشردن	V;SBJV;3;PL	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+افشردن	V;SBJV;3;SG	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+انباشتن	V;IMP;2;PL	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+انباشتن	V;IMP;2;SG	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+انباشتن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+انباشتن	V;IND;PRS;1;PL	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+انباشتن	V;IND;PRS;1;SG	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+انباشتن	V;IND;PRS;2;PL	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+انباشتن	V;IND;PRS;2;SG	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+انباشتن	V;IND;PRS;3;PL	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+انباشتن	V;IND;PRS;3;SG	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+انباشتن	V;SBJV;1;PL	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+انباشتن	V;SBJV;1;SG	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+انباشتن	V;SBJV;2;PL	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+انباشتن	V;SBJV;2;SG	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+انباشتن	V;SBJV;3;PL	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+انباشتن	V;SBJV;3;SG	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+اندوختن	V;IMP;2;PL	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+اندوختن	V;IMP;2;SG	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+اندوختن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+اندوختن	V;SBJV;1;PL	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+اندوختن	V;SBJV;1;SG	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+اندوختن	V;SBJV;2;PL	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+اندوختن	V;SBJV;2;SG	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+اندوختن	V;SBJV;3;PL	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+اندوختن	V;SBJV;3;SG	variant	vowel-initial بـ prefix: بآ/بی orthographic allomorph — same form
+بستن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+بیختن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+تاختن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+تپیدن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+خواندن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+خوردن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+دریدن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+راندن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+رسیدن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+رنجیدن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+ریزاندن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+زادن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+زاییدن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+ساختن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+سپردن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+شناختن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+شناساندن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+فرمودن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+فشردن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+فکندن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+مالیدن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+مانستن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+نازیدن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+نشستن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+نهادن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+نهفتن	V;IMP;2;PL	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+نهفتن	V;IMP;2;SG	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+نهفتن	V;IND;PRS;1;PL	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+نهفتن	V;IND;PRS;1;SG	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+نهفتن	V;IND;PRS;2;PL	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+نهفتن	V;IND;PRS;2;SG	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+نهفتن	V;IND;PRS;3;PL	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+نهفتن	V;IND;PRS;3;SG	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+نهفتن	V;SBJV;1;PL	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+نهفتن	V;SBJV;1;SG	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+نهفتن	V;SBJV;2;PL	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+نهفتن	V;SBJV;2;SG	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+نهفتن	V;SBJV;3;PL	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+نهفتن	V;SBJV;3;SG	variant	competing attested present stem (افشار/افشر, انبار/انباز, نهفت/نهنب); engine follows kaikki
+نواختن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+نوشتن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+پالودن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+پراکندن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+پرداختن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+پروردن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+پنداشتن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+پوشاندن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+پیوستن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+کاستن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+کشاندن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+کندن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+گداختن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+گذاشتن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+گذراندن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+گذشتن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+گزاردن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form
+گشتن	V;IND;PRF;3;SG	variant	perfect 3sg: auxiliary written apart (کرده است) vs joined (کردهاست) — same form

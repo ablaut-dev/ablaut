@@ -34,7 +34,8 @@ NAMES = {
     "isl": "Icelandic", "jpn": "Japanese", "kor": "Korean", "nld": "Dutch",
     "rus": "Russian", "hye": "Armenian", "tur": "Turkish",
     "hin": "Hindi", "swa": "Swahili", "tam": "Tamil", "tel": "Telugu",
-    "tgl": "Tagalog",
+    "tgl": "Tagalog", "pes": "Persian", "kan": "Kannada",
+    "guj": "Gujarati",
 }
 
 

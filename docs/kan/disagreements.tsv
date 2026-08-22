@@ -1,0 +1,23 @@
+# Kannada oracle-vs-oracle disagreements (UniMorph = o1, kaikki = o2).
+# Format: lemma <tab> features <tab> resolution <tab> note
+#   o1       — UniMorph is right, kaikki is wrong
+#   o2       — kaikki is right, UniMorph is wrong
+#   variant  — both are standard, free variants
+#   neither  — both wrong; the engine's own form stands
+#
+# These are the slots where the two oracles cover the cell but their
+# forms do not overlap; the harness already excludes them from the
+# scored agreement gold. All five are catalogued and resolved here.
+#
+# ಆಯಿಸು "cause to happen" (causative -ಇಸು): kaikki dropped the -ಇದ-
+# past marker (ಆಯಿಸೆ for "I caused"), which is malformed — a causative
+# past must carry -ಇದ- (ಆಯಿಸಿದೆ). UniMorph has the correct forms; the
+# engine builds them by the regular -ు rule.
+ಆಯಿಸು	V;1;SG;PST	o1	kaikki drops the -ಇದ- past marker (ಆಯಿಸೆ); UniMorph ಆಯಿಸಿದೆ is correct
+ಆಯಿಸು	V;1;PL;PST	o1	kaikki ಆಯಿಸೆವು lacks the past marker; UniMorph ಆಯಿಸಿದೆವು correct
+ಆಯಿಸು	V;2;SG;PST	o1	kaikki ಆಯಿಸಿ/ಆಯಿಸೆ lack the past marker; UniMorph ಆಯಿಸಿದೆ correct
+ಆಯಿಸು	V;2;PL;PST	o1	kaikki ಆಯಿಸಿರಿ lacks the past marker; UniMorph ಆಯಿಸಿದಿರಿ correct
+# ನಡೆ "walk" (root ends in -ೆ): both the bare-root imperative (ನಡೆ) and
+# the euphonic -ಯು imperative (ನಡೆಯು) are standard. The engine emits the
+# bare root, matching kaikki.
+ನಡೆ	V;2;SG;IMP	variant	bare root ನಡೆ (kaikki) and euphonic ನಡೆಯು (UniMorph) are both standard

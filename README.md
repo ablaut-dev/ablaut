@@ -50,7 +50,8 @@ still describe every strong verb in the language.
 German, French, Spanish, Catalan, Portuguese, Italian, Romanian,
 Swedish, English, Danish, Czech, Slovenian, Estonian, Finnish, Irish,
 Ukrainian, Icelandic, Japanese, Korean, Dutch, Russian, Eastern
-Armenian, Turkish, Hindi, Swahili, Tamil, Telugu, and Tagalog.
+Armenian, Turkish, Hindi, Swahili, Tamil, Telugu, Tagalog, Persian,
+Kannada, and Gujarati.
 
 Each language is scored against the slots where its two reference
 lexicons agree; the second column is that score.
@@ -83,6 +84,8 @@ lexicons agree; the second column is that score.
 | 🇮🇳 | Hindi | 48,421 | 100.00% |
 | 🇹🇿 | Swahili | 1,134 | 100.00% |
 | 🇮🇳 | Tamil | 31,829 | 100.00% |
+| 🇮🇷 | Persian | 2,683 | 100.00% |
+| 🇮🇳 | Kannada | 411 | 100.00% |
 | 🇮🇳 | Telugu † | 1,159 | 100.00% |
 
 † Telugu is scored against UniMorph alone. Its intended second oracle,
@@ -97,6 +100,13 @@ a new infixation and reduplication mechanism (see below), and it scores
 is small (138 roots, 469 slots), because the oracles frequently differ
 on *which* voice a root lexicalizes. See
 [`docs/tgl/oracles.md`](docs/tgl/oracles.md) for the honest scope.
+| 🇮🇳 | Gujarati † | 2,880 | 100.00% |
+
+Gujarati is scored against UniMorph alone: the available kaikki.org
+Gujarati tables share the same English-Wiktionary (`gu-conj`) lineage, so
+they are a spot check rather than an independent agreement partner. The
+engine covers the full paradigm at 100% on the 2,880 UniMorph forms
+across 90 lemmas; see [`docs/guj/oracles.md`](docs/guj/oracles.md).
 
 Details per language, including which lexicons are used and every
 adjudicated disagreement, live in `docs/{lang}/`.

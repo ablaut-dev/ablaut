@@ -15,14 +15,14 @@
   {
     "version": "0.9.0",
     "date": "2026-08-22",
-    "languages": 28,
-    "verified_forms": 3041196,
-    "agreed_forms": 3041255,
+    "languages": 31,
+    "verified_forms": 3047170,
+    "agreed_forms": 3047229,
     "agreed_pct": 99.9981,
     "tiers": {
-      "Verified": 3,
+      "Verified": 5,
       "Verified·gaps": 24,
-      "Beta": 1
+      "Beta": 2
     },
     "per_language": [
       {
@@ -96,6 +96,13 @@
         "tier": "Verified·gaps"
       },
       {
+        "code": "guj",
+        "name": "Gujarati",
+        "agreed_pct": 100.0,
+        "agreed_matched": 2880,
+        "tier": "Beta"
+      },
+      {
         "code": "hin",
         "name": "Hindi",
         "agreed_pct": 100.0,
@@ -131,11 +138,25 @@
         "tier": "Verified·gaps"
       },
       {
+        "code": "kan",
+        "name": "Kannada",
+        "agreed_pct": 100.0,
+        "agreed_matched": 411,
+        "tier": "Verified"
+      },
+      {
         "code": "kor",
         "name": "Korean",
         "agreed_pct": 100.0,
         "agreed_matched": 3576,
         "tier": "Verified·gaps"
+      },
+      {
+        "code": "pes",
+        "name": "Persian",
+        "agreed_pct": 100.0,
+        "agreed_matched": 2683,
+        "tier": "Verified"
       },
       {
         "code": "por",
