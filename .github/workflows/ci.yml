@@ -432,6 +432,26 @@ jobs:
       # gate — see docs/tel/oracles.md.
       - name: Telugu golden harness with regression gate
         run: cargo run --release --bin golden_tel -- data/tel/unimorph.tsv --check
+      - name: Cache UniMorph kan
+        id: unimorph-kan
+        uses: actions/cache@v5
+        with:
+          path: data/kan/unimorph.tsv
+          key: unimorph-kan-v1
+      - name: Fetch UniMorph kan
+        if: steps.unimorph-kan.outputs.cache-hit != 'true'
+        run: ./scripts/kan/fetch_unimorph.sh
+      - name: Cache kaikki kan
+        id: kaikki-kan
+        uses: actions/cache@v5
+        with:
+          path: data/kan/kaikki.tsv
+          key: kaikki-kan-v1
+      - name: Fetch kaikki kan
+        if: steps.kaikki-kan.outputs.cache-hit != 'true'
+        run: ./scripts/kan/fetch_kaikki.sh
+      - name: Kannada UniMorph-kaikki agreement gate (two-oracle)
+        run: cargo run --release --bin golden_kan -- data/kan/unimorph.tsv data/kan/kaikki.tsv --check
       - name: Cache UniMorph tgl
         id: unimorph-tgl
         uses: actions/cache@v5
