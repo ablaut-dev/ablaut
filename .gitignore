@@ -10,3 +10,4 @@ __pycache__/
 !/data/*/parts.tsv
 !/data/*/aux.tsv
 .claude/worktrees/
+errors.log

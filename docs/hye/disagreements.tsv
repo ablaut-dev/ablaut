@@ -1,0 +1,190 @@
+# Oracle-vs-oracle disagreements for Armenian, ruled on so the golden
+# harness can report them as resolved. o1 is the uniparser grammar
+# (data/hye/uniparser.tsv), o2 is UniMorph hye (data/hye/unimorph.tsv).
+# Resolutions:
+#   variant = both forms are standard (register, archaism, doublet)
+#   o1 / o2 = that oracle is right, the other is a data error
+#   neither = both wrong
+# The ruling also drives the engine: scripts/hye/mine_verbs.py reads
+# this file, so a slot ruled o1/o2 is mined from that oracle into
+# data/hye/verbs.tsv instead of being left to the rule.
+# lemma	features	ruling	note
+բառնալ	V;CAUS	variant	archaic 'lift': the vocalic aorist բարձա beside the regularized բարձեցի, both on the suppletive stem բարձ-; the engine takes the regularized form
+բառնալ	V;IND;PL;1;NEG;PST	variant	archaic 'lift': the vocalic aorist բարձա beside the regularized բարձեցի, both on the suppletive stem բարձ-; the engine takes the regularized form
+բառնալ	V;IND;PL;1;PST	variant	archaic 'lift': the vocalic aorist բարձա beside the regularized բարձեցի, both on the suppletive stem բարձ-; the engine takes the regularized form
+բառնալ	V;IND;PL;2;NEG;PST	variant	archaic 'lift': the vocalic aorist բարձա beside the regularized բարձեցի, both on the suppletive stem բարձ-; the engine takes the regularized form
+բառնալ	V;IND;PL;2;PST	variant	archaic 'lift': the vocalic aorist բարձա beside the regularized բարձեցի, both on the suppletive stem բարձ-; the engine takes the regularized form
+բառնալ	V;IND;PL;3;NEG;PST	variant	archaic 'lift': the vocalic aorist բարձա beside the regularized բարձեցի, both on the suppletive stem բարձ-; the engine takes the regularized form
+բառնալ	V;IND;PL;3;PST	variant	archaic 'lift': the vocalic aorist բարձա beside the regularized բարձեցի, both on the suppletive stem բարձ-; the engine takes the regularized form
+բառնալ	V;IND;SG;1;NEG;PST	variant	archaic 'lift': the vocalic aorist բարձա beside the regularized բարձեցի, both on the suppletive stem բարձ-; the engine takes the regularized form
+բառնալ	V;IND;SG;1;PST	variant	archaic 'lift': the vocalic aorist բարձա beside the regularized բարձեցի, both on the suppletive stem բարձ-; the engine takes the regularized form
+բառնալ	V;IND;SG;2;NEG;PST	variant	archaic 'lift': the vocalic aorist բարձա beside the regularized բարձեցի, both on the suppletive stem բարձ-; the engine takes the regularized form
+բառնալ	V;IND;SG;2;PST	variant	archaic 'lift': the vocalic aorist բարձա beside the regularized բարձեցի, both on the suppletive stem բարձ-; the engine takes the regularized form
+բառնալ	V;IND;SG;3;NEG;PST	variant	archaic 'lift': the vocalic aorist բարձա beside the regularized բարձեցի, both on the suppletive stem բարձ-; the engine takes the regularized form
+բառնալ	V;IND;SG;3;PST	variant	archaic 'lift': the vocalic aorist բարձա beside the regularized բարձեցի, both on the suppletive stem բարձ-; the engine takes the regularized form
+բուծանել	V.CVB;PFV	variant	archaic -անել verb: the grammar keeps the classical -ար- aorist stem (բուծարի), Wiktionary regularizes (բուծանեցի); the engine takes the regularized form
+բուծանել	V.PTCP;NEG;LGSPEC01	variant	archaic -անել verb: the grammar keeps the classical -ար- aorist stem (բուծարի), Wiktionary regularizes (բուծանեցի); the engine takes the regularized form
+բուծանել	V;IMP;PL;2	variant	archaic -անել verb: the grammar keeps the classical -ար- aorist stem (բուծարի), Wiktionary regularizes (բուծանեցի); the engine takes the regularized form
+բուծանել	V;IMP;SG;2	variant	archaic -անել verb: the grammar keeps the classical -ար- aorist stem (բուծարի), Wiktionary regularizes (բուծանեցի); the engine takes the regularized form
+բուծանել	V;IND;PL;1;NEG;PST	variant	archaic -անել verb: the grammar keeps the classical -ար- aorist stem (բուծարի), Wiktionary regularizes (բուծանեցի); the engine takes the regularized form
+բուծանել	V;IND;PL;1;PST	variant	archaic -անել verb: the grammar keeps the classical -ար- aorist stem (բուծարի), Wiktionary regularizes (բուծանեցի); the engine takes the regularized form
+բուծանել	V;IND;PL;2;NEG;PST	variant	archaic -անել verb: the grammar keeps the classical -ար- aorist stem (բուծարի), Wiktionary regularizes (բուծանեցի); the engine takes the regularized form
+բուծանել	V;IND;PL;2;PST	variant	archaic -անել verb: the grammar keeps the classical -ար- aorist stem (բուծարի), Wiktionary regularizes (բուծանեցի); the engine takes the regularized form
+բուծանել	V;IND;PL;3;NEG;PST	variant	archaic -անել verb: the grammar keeps the classical -ար- aorist stem (բուծարի), Wiktionary regularizes (բուծանեցի); the engine takes the regularized form
+բուծանել	V;IND;PL;3;PST	variant	archaic -անել verb: the grammar keeps the classical -ար- aorist stem (բուծարի), Wiktionary regularizes (բուծանեցի); the engine takes the regularized form
+բուծանել	V;IND;SG;1;NEG;PST	variant	archaic -անել verb: the grammar keeps the classical -ար- aorist stem (բուծարի), Wiktionary regularizes (բուծանեցի); the engine takes the regularized form
+բուծանել	V;IND;SG;1;PST	variant	archaic -անել verb: the grammar keeps the classical -ար- aorist stem (բուծարի), Wiktionary regularizes (բուծանեցի); the engine takes the regularized form
+բուծանել	V;IND;SG;2;NEG;PST	variant	archaic -անել verb: the grammar keeps the classical -ար- aorist stem (բուծարի), Wiktionary regularizes (բուծանեցի); the engine takes the regularized form
+բուծանել	V;IND;SG;2;PST	variant	archaic -անել verb: the grammar keeps the classical -ար- aorist stem (բուծարի), Wiktionary regularizes (բուծանեցի); the engine takes the regularized form
+բուծանել	V;IND;SG;3;NEG;PST	variant	archaic -անել verb: the grammar keeps the classical -ար- aorist stem (բուծարի), Wiktionary regularizes (բուծանեցի); the engine takes the regularized form
+բուծանել	V;IND;SG;3;PST	variant	archaic -անել verb: the grammar keeps the classical -ար- aorist stem (բուծարի), Wiktionary regularizes (բուծանեցի); the engine takes the regularized form
+բուծանել	V;V.PTCP;LGSPEC01	variant	archaic -անել verb: the grammar keeps the classical -ար- aorist stem (բուծարի), Wiktionary regularizes (բուծանեցի); the engine takes the regularized form
+երթալ	V.CVB;PFV	o2	defective colloquial 'go': the perfective stem is suppleted from գնալ (գնացի, գնացել)
+երթալ	V.PTCP;NEG;LGSPEC01	o2	defective colloquial 'go': the perfective stem is suppleted from գնալ (գնացի, գնացել)
+երթալ	V;CAUS	o2	defective colloquial 'go': the perfective stem is suppleted from գնալ (գնացի, գնացել)
+երթալ	V;IMP;PL;2	o2	defective colloquial 'go': the perfective stem is suppleted from գնալ (գնացի, գնացել)
+երթալ	V;IND;PL;1;NEG;PST	o2	defective colloquial 'go': the perfective stem is suppleted from գնալ (գնացի, գնացել)
+երթալ	V;IND;PL;1;PST	o2	defective colloquial 'go': the perfective stem is suppleted from գնալ (գնացի, գնացել)
+երթալ	V;IND;PL;2;NEG;PST	o2	defective colloquial 'go': the perfective stem is suppleted from գնալ (գնացի, գնացել)
+երթալ	V;IND;PL;2;PST	o2	defective colloquial 'go': the perfective stem is suppleted from գնալ (գնացի, գնացել)
+երթալ	V;IND;PL;3;NEG;PST	o2	defective colloquial 'go': the perfective stem is suppleted from գնալ (գնացի, գնացել)
+երթալ	V;IND;PL;3;PST	o2	defective colloquial 'go': the perfective stem is suppleted from գնալ (գնացի, գնացել)
+երթալ	V;IND;SG;1;NEG;PST	o2	defective colloquial 'go': the perfective stem is suppleted from գնալ (գնացի, գնացել)
+երթալ	V;IND;SG;1;PST	o2	defective colloquial 'go': the perfective stem is suppleted from գնալ (գնացի, գնացել)
+երթալ	V;IND;SG;2;NEG;PST	o2	defective colloquial 'go': the perfective stem is suppleted from գնալ (գնացի, գնացել)
+երթալ	V;IND;SG;2;PST	o2	defective colloquial 'go': the perfective stem is suppleted from գնալ (գնացի, գնացել)
+երթալ	V;IND;SG;3;NEG;PST	o2	defective colloquial 'go': the perfective stem is suppleted from գնալ (գնացի, գնացել)
+երթալ	V;IND;SG;3;PST	o2	defective colloquial 'go': the perfective stem is suppleted from գնալ (գնացի, գնացել)
+երթալ	V;V.PTCP;LGSPEC01	o2	defective colloquial 'go': the perfective stem is suppleted from գնալ (գնացի, գնացել)
+երթալ	V;V.PTCP;SUB	o2	defective colloquial 'go': the perfective stem is suppleted from գնալ (գնացի, գնացել)
+երթալ	V;V.PTCP;SUB;NEG	o2	defective colloquial 'go': the perfective stem is suppleted from գնալ (գնացի, գնացել)
+էթալ	V.CVB;PFV	o2	defective colloquial 'go', as երթալ: գնացի, գնացել
+էթալ	V.PTCP;NEG;LGSPEC01	o2	defective colloquial 'go', as երթալ: գնացի, գնացել
+էթալ	V;CAUS	o2	defective colloquial 'go', as երթալ: գնացի, գնացել
+էթալ	V;IMP;PL;2	o2	defective colloquial 'go', as երթալ: գնացի, գնացել
+էթալ	V;IND;PL;1;NEG;PST	o2	defective colloquial 'go', as երթալ: գնացի, գնացել
+էթալ	V;IND;PL;1;PST	o2	defective colloquial 'go', as երթալ: գնացի, գնացել
+էթալ	V;IND;PL;2;NEG;PST	o2	defective colloquial 'go', as երթալ: գնացի, գնացել
+էթալ	V;IND;PL;2;PST	o2	defective colloquial 'go', as երթալ: գնացի, գնացել
+էթալ	V;IND;PL;3;NEG;PST	o2	defective colloquial 'go', as երթալ: գնացի, գնացել
+էթալ	V;IND;PL;3;PST	o2	defective colloquial 'go', as երթալ: գնացի, գնացել
+էթալ	V;IND;SG;1;NEG;PST	o2	defective colloquial 'go', as երթալ: գնացի, գնացել
+էթալ	V;IND;SG;1;PST	o2	defective colloquial 'go', as երթալ: գնացի, գնացել
+էթալ	V;IND;SG;2;NEG;PST	o2	defective colloquial 'go', as երթալ: գնացի, գնացել
+էթալ	V;IND;SG;2;PST	o2	defective colloquial 'go', as երթալ: գնացի, գնացել
+էթալ	V;IND;SG;3;NEG;PST	o2	defective colloquial 'go', as երթալ: գնացի, գնացել
+էթալ	V;IND;SG;3;PST	o2	defective colloquial 'go', as երթալ: գնացի, գնացել
+էթալ	V;V.PTCP;LGSPEC01	o2	defective colloquial 'go', as երթալ: գնացի, գնացել
+էթալ	V;V.PTCP;SUB	o2	defective colloquial 'go', as երթալ: գնացի, գնացել
+էթալ	V;V.PTCP;SUB;NEG	o2	defective colloquial 'go', as երթալ: գնացի, գնացել
+խոպոպանալ	V.CVB;PFV	o2	-անալ inchoative: the productive rule (խոպոպացա, խոպոպացել) that the grammar file does not apply here
+խոպոպանալ	V.PTCP;NEG;LGSPEC01	o2	-անալ inchoative: the productive rule (խոպոպացա, խոպոպացել) that the grammar file does not apply here
+խոպոպանալ	V;CAUS	o2	-անալ inchoative: the productive rule (խոպոպացա, խոպոպացել) that the grammar file does not apply here
+խոպոպանալ	V;IMP;PL;2	o2	-անալ inchoative: the productive rule (խոպոպացա, խոպոպացել) that the grammar file does not apply here
+խոպոպանալ	V;IMP;SG;2	o2	-անալ inchoative: the productive rule (խոպոպացա, խոպոպացել) that the grammar file does not apply here
+խոպոպանալ	V;IND;PL;1;NEG;PST	o2	-անալ inchoative: the productive rule (խոպոպացա, խոպոպացել) that the grammar file does not apply here
+խոպոպանալ	V;IND;PL;1;PST	o2	-անալ inchoative: the productive rule (խոպոպացա, խոպոպացել) that the grammar file does not apply here
+խոպոպանալ	V;IND;PL;2;NEG;PST	o2	-անալ inchoative: the productive rule (խոպոպացա, խոպոպացել) that the grammar file does not apply here
+խոպոպանալ	V;IND;PL;2;PST	o2	-անալ inchoative: the productive rule (խոպոպացա, խոպոպացել) that the grammar file does not apply here
+խոպոպանալ	V;IND;PL;3;NEG;PST	o2	-անալ inchoative: the productive rule (խոպոպացա, խոպոպացել) that the grammar file does not apply here
+խոպոպանալ	V;IND;PL;3;PST	o2	-անալ inchoative: the productive rule (խոպոպացա, խոպոպացել) that the grammar file does not apply here
+խոպոպանալ	V;IND;SG;1;NEG;PST	o2	-անալ inchoative: the productive rule (խոպոպացա, խոպոպացել) that the grammar file does not apply here
+խոպոպանալ	V;IND;SG;1;PST	o2	-անալ inchoative: the productive rule (խոպոպացա, խոպոպացել) that the grammar file does not apply here
+խոպոպանալ	V;IND;SG;2;NEG;PST	o2	-անալ inchoative: the productive rule (խոպոպացա, խոպոպացել) that the grammar file does not apply here
+խոպոպանալ	V;IND;SG;2;PST	o2	-անալ inchoative: the productive rule (խոպոպացա, խոպոպացել) that the grammar file does not apply here
+խոպոպանալ	V;IND;SG;3;NEG;PST	o2	-անալ inchoative: the productive rule (խոպոպացա, խոպոպացել) that the grammar file does not apply here
+խոպոպանալ	V;IND;SG;3;PST	o2	-անալ inchoative: the productive rule (խոպոպացա, խոպոպացել) that the grammar file does not apply here
+խոպոպանալ	V;V.PTCP;LGSPEC01	o2	-անալ inchoative: the productive rule (խոպոպացա, խոպոպացել) that the grammar file does not apply here
+խոպոպանալ	V;V.PTCP;SUB	o2	-անալ inchoative: the productive rule (խոպոպացա, խոպոպացել) that the grammar file does not apply here
+խոպոպանալ	V;V.PTCP;SUB;NEG	o2	-անալ inchoative: the productive rule (խոպոպացա, խոպոպացել) that the grammar file does not apply here
+կալնել	V.CVB;PFV	o2	-նել class: the -ն- drops outside the present (կալա, կալել, կալիր)
+կալնել	V.PTCP;NEG;LGSPEC01	o2	-նել class: the -ն- drops outside the present (կալա, կալել, կալիր)
+կալնել	V;IMP;PL;2	o2	-նել class: the -ն- drops outside the present (կալա, կալել, կալիր)
+կալնել	V;IMP;SG;2	o2	-նել class: the -ն- drops outside the present (կալա, կալել, կալիր)
+կալնել	V;IND;PL;1;NEG;PST	o2	-նել class: the -ն- drops outside the present (կալա, կալել, կալիր)
+կալնել	V;IND;PL;1;PST	o2	-նել class: the -ն- drops outside the present (կալա, կալել, կալիր)
+կալնել	V;IND;PL;2;NEG;PST	o2	-նել class: the -ն- drops outside the present (կալա, կալել, կալիր)
+կալնել	V;IND;PL;2;PST	o2	-նել class: the -ն- drops outside the present (կալա, կալել, կալիր)
+կալնել	V;IND;PL;3;NEG;PST	o2	-նել class: the -ն- drops outside the present (կալա, կալել, կալիր)
+կալնել	V;IND;PL;3;PST	o2	-նել class: the -ն- drops outside the present (կալա, կալել, կալիր)
+կալնել	V;IND;SG;1;NEG;PST	o2	-նել class: the -ն- drops outside the present (կալա, կալել, կալիր)
+կալնել	V;IND;SG;1;PST	o2	-նել class: the -ն- drops outside the present (կալա, կալել, կալիր)
+կալնել	V;IND;SG;2;NEG;PST	o2	-նել class: the -ն- drops outside the present (կալա, կալել, կալիր)
+կալնել	V;IND;SG;2;PST	o2	-նել class: the -ն- drops outside the present (կալա, կալել, կալիր)
+կալնել	V;IND;SG;3;NEG;PST	o2	-նել class: the -ն- drops outside the present (կալա, կալել, կալիր)
+կալնել	V;IND;SG;3;PST	o2	-նել class: the -ն- drops outside the present (կալա, կալել, կալիր)
+կալնել	V;V.PTCP;LGSPEC01	o2	-նել class: the -ն- drops outside the present (կալա, կալել, կալիր)
+համենալ	V.CVB;PFV	o2	-ենալ inchoative: համեցա, համեցել, not the grammar's regularized համենացի
+համենալ	V.PTCP;NEG;LGSPEC01	o2	-ենալ inchoative: համեցա, համեցել, not the grammar's regularized համենացի
+համենալ	V;CAUS	o2	-ենալ inchoative: համեցա, համեցել, not the grammar's regularized համենացի
+համենալ	V;IMP;PL;2	o2	-ենալ inchoative: համեցա, համեցել, not the grammar's regularized համենացի
+համենալ	V;IMP;SG;2	o2	-ենալ inchoative: համեցա, համեցել, not the grammar's regularized համենացի
+համենալ	V;IND;PL;1;NEG;PST	o2	-ենալ inchoative: համեցա, համեցել, not the grammar's regularized համենացի
+համենալ	V;IND;PL;1;PST	o2	-ենալ inchoative: համեցա, համեցել, not the grammar's regularized համենացի
+համենալ	V;IND;PL;2;NEG;PST	o2	-ենալ inchoative: համեցա, համեցել, not the grammar's regularized համենացի
+համենալ	V;IND;PL;2;PST	o2	-ենալ inchoative: համեցա, համեցել, not the grammar's regularized համենացի
+համենալ	V;IND;PL;3;NEG;PST	o2	-ենալ inchoative: համեցա, համեցել, not the grammar's regularized համենացի
+համենալ	V;IND;PL;3;PST	o2	-ենալ inchoative: համեցա, համեցել, not the grammar's regularized համենացի
+համենալ	V;IND;SG;1;NEG;PST	o2	-ենալ inchoative: համեցա, համեցել, not the grammar's regularized համենացի
+համենալ	V;IND;SG;1;PST	o2	-ենալ inchoative: համեցա, համեցել, not the grammar's regularized համենացի
+համենալ	V;IND;SG;2;NEG;PST	o2	-ենալ inchoative: համեցա, համեցել, not the grammar's regularized համենացի
+համենալ	V;IND;SG;2;PST	o2	-ենալ inchoative: համեցա, համեցել, not the grammar's regularized համենացի
+համենալ	V;IND;SG;3;NEG;PST	o2	-ենալ inchoative: համեցա, համեցել, not the grammar's regularized համենացի
+համենալ	V;IND;SG;3;PST	o2	-ենալ inchoative: համեցա, համեցել, not the grammar's regularized համենացի
+համենալ	V;V.PTCP;LGSPEC01	o2	-ենալ inchoative: համեցա, համեցել, not the grammar's regularized համենացի
+համենալ	V;V.PTCP;SUB	o2	-ենալ inchoative: համեցա, համեցել, not the grammar's regularized համենացի
+համենալ	V;V.PTCP;SUB;NEG	o2	-ենալ inchoative: համեցա, համեցել, not the grammar's regularized համենացի
+հեծնել	V.CVB;PFV	o2	-նել class: հեծա, հեծել, հեծիր
+հեծնել	V.PTCP;NEG;LGSPEC01	o2	-նել class: հեծա, հեծել, հեծիր
+հեծնել	V;IMP;PL;2	o2	-նել class: հեծա, հեծել, հեծիր
+հեծնել	V;IMP;SG;2	o2	-նել class: հեծա, հեծել, հեծիր
+հեծնել	V;IND;PL;1;NEG;PST	o2	-նել class: հեծա, հեծել, հեծիր
+հեծնել	V;IND;PL;1;PST	o2	-նել class: հեծա, հեծել, հեծիր
+հեծնել	V;IND;PL;2;NEG;PST	o2	-նել class: հեծա, հեծել, հեծիր
+հեծնել	V;IND;PL;2;PST	o2	-նել class: հեծա, հեծել, հեծիր
+հեծնել	V;IND;PL;3;NEG;PST	o2	-նել class: հեծա, հեծել, հեծիր
+հեծնել	V;IND;PL;3;PST	o2	-նել class: հեծա, հեծել, հեծիր
+հեծնել	V;IND;SG;1;NEG;PST	o2	-նել class: հեծա, հեծել, հեծիր
+հեծնել	V;IND;SG;1;PST	o2	-նել class: հեծա, հեծել, հեծիր
+հեծնել	V;IND;SG;2;NEG;PST	o2	-նել class: հեծա, հեծել, հեծիր
+հեծնել	V;IND;SG;2;PST	o2	-նել class: հեծա, հեծել, հեծիր
+հեծնել	V;IND;SG;3;NEG;PST	o2	-նել class: հեծա, հեծել, հեծիր
+հեծնել	V;IND;SG;3;PST	o2	-նել class: հեծա, հեծել, հեծիր
+հեծնել	V;V.PTCP;LGSPEC01	o2	-նել class: հեծա, հեծել, հեծիր
+պագնել	V.CVB;PFV	o2	-նել class (dialectal 'kiss'): պագա, պագել, պագիր
+պագնել	V.PTCP;NEG;LGSPEC01	o2	-նել class (dialectal 'kiss'): պագա, պագել, պագիր
+պագնել	V;IMP;PL;2	o2	-նել class (dialectal 'kiss'): պագա, պագել, պագիր
+պագնել	V;IMP;SG;2	o2	-նել class (dialectal 'kiss'): պագա, պագել, պագիր
+պագնել	V;IND;PL;1;NEG;PST	o2	-նել class (dialectal 'kiss'): պագա, պագել, պագիր
+պագնել	V;IND;PL;1;PST	o2	-նել class (dialectal 'kiss'): պագա, պագել, պագիր
+պագնել	V;IND;PL;2;NEG;PST	o2	-նել class (dialectal 'kiss'): պագա, պագել, պագիր
+պագնել	V;IND;PL;2;PST	o2	-նել class (dialectal 'kiss'): պագա, պագել, պագիր
+պագնել	V;IND;PL;3;NEG;PST	o2	-նել class (dialectal 'kiss'): պագա, պագել, պագիր
+պագնել	V;IND;PL;3;PST	o2	-նել class (dialectal 'kiss'): պագա, պագել, պագիր
+պագնել	V;IND;SG;1;NEG;PST	o2	-նել class (dialectal 'kiss'): պագա, պագել, պագիր
+պագնել	V;IND;SG;1;PST	o2	-նել class (dialectal 'kiss'): պագա, պագել, պագիր
+պագնել	V;IND;SG;2;NEG;PST	o2	-նել class (dialectal 'kiss'): պագա, պագել, պագիր
+պագնել	V;IND;SG;2;PST	o2	-նել class (dialectal 'kiss'): պագա, պագել, պագիր
+պագնել	V;IND;SG;3;NEG;PST	o2	-նել class (dialectal 'kiss'): պագա, պագել, պագիր
+պագնել	V;IND;SG;3;PST	o2	-նել class (dialectal 'kiss'): պագա, պագել, պագիր
+պագնել	V;V.PTCP;LGSPEC01	o2	-նել class (dialectal 'kiss'): պագա, պագել, պագիր
+վերադառնալ	V;CAUS	o2	the causative of դառնալ is դարձնել, so վերադարձնել
+տենալ	V.CVB;PFV	o2	defective colloquial 'see': the perfective stem is suppleted from տեսնել (տեսա, տեսել)
+տենալ	V.PTCP;NEG;LGSPEC01	o2	defective colloquial 'see': the perfective stem is suppleted from տեսնել (տեսա, տեսել)
+տենալ	V;CAUS	o2	defective colloquial 'see': the perfective stem is suppleted from տեսնել (տեսա, տեսել)
+տենալ	V;IMP;PL;2	o2	defective colloquial 'see': the perfective stem is suppleted from տեսնել (տեսա, տեսել)
+տենալ	V;IND;PL;1;NEG;PST	o2	defective colloquial 'see': the perfective stem is suppleted from տեսնել (տեսա, տեսել)
+տենալ	V;IND;PL;1;PST	o2	defective colloquial 'see': the perfective stem is suppleted from տեսնել (տեսա, տեսել)
+տենալ	V;IND;PL;2;NEG;PST	o2	defective colloquial 'see': the perfective stem is suppleted from տեսնել (տեսա, տեսել)
+տենալ	V;IND;PL;2;PST	o2	defective colloquial 'see': the perfective stem is suppleted from տեսնել (տեսա, տեսել)
+տենալ	V;IND;PL;3;NEG;PST	o2	defective colloquial 'see': the perfective stem is suppleted from տեսնել (տեսա, տեսել)
+տենալ	V;IND;PL;3;PST	o2	defective colloquial 'see': the perfective stem is suppleted from տեսնել (տեսա, տեսել)
+տենալ	V;IND;SG;1;NEG;PST	o2	defective colloquial 'see': the perfective stem is suppleted from տեսնել (տեսա, տեսել)
+տենալ	V;IND;SG;1;PST	o2	defective colloquial 'see': the perfective stem is suppleted from տեսնել (տեսա, տեսել)
+տենալ	V;IND;SG;2;NEG;PST	o2	defective colloquial 'see': the perfective stem is suppleted from տեսնել (տեսա, տեսել)
+տենալ	V;IND;SG;2;PST	o2	defective colloquial 'see': the perfective stem is suppleted from տեսնել (տեսա, տեսել)
+տենալ	V;IND;SG;3;NEG;PST	o2	defective colloquial 'see': the perfective stem is suppleted from տեսնել (տեսա, տեսել)
+տենալ	V;IND;SG;3;PST	o2	defective colloquial 'see': the perfective stem is suppleted from տեսնել (տեսա, տեսել)
+տենալ	V;V.PTCP;LGSPEC01	o2	defective colloquial 'see': the perfective stem is suppleted from տեսնել (տեսա, տեսել)
+տենալ	V;V.PTCP;SUB	o2	defective colloquial 'see': the perfective stem is suppleted from տեսնել (տեսա, տեսել)
+տենալ	V;V.PTCP;SUB;NEG	o2	defective colloquial 'see': the perfective stem is suppleted from տեսնել (տեսա, տեսել)

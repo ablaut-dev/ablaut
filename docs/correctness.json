@@ -2,6 +2,23 @@
   "version": "0.8.0",
   "languages": [
     {
+      "name": "Armenian",
+      "code": "hye",
+      "oracles": [
+        "uniparser",
+        "unimorph"
+      ],
+      "agreed_matched": 50521,
+      "agreed_forms": 50521,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 63,
+      "slot_types": 63,
+      "disagreements": 179,
+      "disagreements_resolved": 179,
+      "single_oracle": false,
+      "tier": "Verified"
+    },
+    {
       "name": "Catalan",
       "code": "cat",
       "oracles": [

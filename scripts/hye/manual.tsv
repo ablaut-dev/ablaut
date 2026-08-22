@@ -1,0 +1,38 @@
+# The core irregular verbs of Eastern Armenian, hand-supplied.
+#
+# UniMorph hye's 898 lemmas are a thin slice of the language and happen
+# to contain none of the everyday verbs (գալ, տալ, ուտել, անել, լինել,
+# …), so these never enter the two-oracle agreement and cannot be mined
+# from it. Each row below is the paradigm the uniparser grammar gives
+# (data/hye/uniparser.tsv), with that grammar's mechanical slips
+# corrected: it derives թողրել/թողրած for թողնել (standard թողել/
+# թողած) and տվր for the imperative of տալ (standard տուր).
+# scripts/hye/armtdp_check.py re-checks every form here against the
+# attested tokens of the UD Armenian-ArmTDP treebank — an independent,
+# hand-annotated corpus — so the corrections are not taken on trust.
+#
+# lemma	ipfv	perf	aor	aorset	imp_sg	imp_pl	sub	pass	caus
+անել	-	ար	արեց	1	արա	արեք	-	-	-
+անցնել	-	անց	անց	2	անցիր	անցեք	-	-	-
+առնել	-	առ	առ	2	առ	առեք	-	-	-
+ասել	-	-	ասաց	1	ասա	ասացեք	-	-	-
+բերել	-	-	-	-	բեր	-	-	-	-
+գալ	գալիս	եկ	եկ	2	արի	եկեք	-	-	-
+գտնել	-	գտ	գտ	2	գտիր	գտեք	-	-	-
+դառնալ	-	դարձ	դարձ	2	դարձիր	դարձեք	-	-	դարձնել
+դնել	-	դր	դրեց	1	դիր	դրեք	-	-	-
+ելնել	-	ել	ել	2	ելիր	ելեք	-	-	-
+թողնել	-	թող	թողեց	1	թող	թողեք	-	-	-
+թռչել	-	թռ	թռ	2	թռիր	թռեք	-	-	թռցնել
+իջնել	-	իջ	իջ	2	իջիր	իջեք	-	-	-
+լալ	լալիս	-	-	-	-	-	-	-	-
+լինել	-	եղ	եղ	2	եղիր	եղեք	-	-	-
+ընկնել	-	ընկ	ընկ	2	ընկիր	ընկեք	-	-	-
+մեռնել	-	մեռ	մեռ	2	մեռիր	մեռեք	-	-	-
+մտնել	-	մտ	մտ	2	մտիր	մտեք	-	-	մտցնել
+ուտել	-	կեր	կեր	2	կեր	կերեք	-	-	-
+տալ	տալիս	տվ	տվեց	1	տուր	տվեք	-	-	-
+տանել	-	տար	տար	2	տար	տարեք	-	-	-
+տեսնել	-	տես	տես	2	տես	տեսեք	-	-	-
+հագնել	-	հագ	հագ	2	հագիր	հագեք	-	-	հագցնել
+հասնել	-	հաս	հաս	2	հասիր	հասեք	-	-	հասցնել
