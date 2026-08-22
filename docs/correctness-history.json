@@ -15,13 +15,27 @@
   {
     "version": "0.9.0",
     "date": "2026-08-22",
-    "languages": 33,
-    "verified_forms": 3051811,
-    "agreed_forms": 3051870,
+    "languages": 28,
+    "verified_forms": 3041196,
+    "agreed_forms": 3041255,
+    "agreed_pct": 99.9981,
+    "tiers": {
+      "Verified": 3,
+      "Verified·gaps": 24,
+      "Beta": 1
+    },
+    "per_language": []
+  },
+  {
+    "version": "0.10.0",
+    "date": "2026-08-22",
+    "languages": 34,
+    "verified_forms": 3108362,
+    "agreed_forms": 3108421,
     "agreed_pct": 99.9981,
     "tiers": {
       "Verified": 6,
-      "Beta": 3,
+      "Beta": 4,
       "Verified·gaps": 24
     },
     "per_language": [
@@ -157,6 +171,13 @@
         "agreed_pct": 100.0,
         "agreed_matched": 3576,
         "tier": "Verified·gaps"
+      },
+      {
+        "code": "mar",
+        "name": "Marathi",
+        "agreed_pct": 100.0,
+        "agreed_matched": 56551,
+        "tier": "Beta"
       },
       {
         "code": "pes",
