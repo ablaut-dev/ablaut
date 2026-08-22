@@ -50,7 +50,7 @@ still describe every strong verb in the language.
 German, French, Spanish, Catalan, Portuguese, Italian, Romanian,
 Swedish, English, Danish, Czech, Slovenian, Estonian, Finnish, Irish,
 Ukrainian, Icelandic, Japanese, Korean, Dutch, Russian, Eastern
-Armenian, Turkish, Hindi, Swahili, Tamil, and Telugu.
+Armenian, Turkish, Hindi, Swahili, Tamil, Telugu, and Tagalog.
 
 Each language is scored against the slots where its two reference
 lexicons agree; the second column is that score.
@@ -89,6 +89,14 @@ lexicons agree; the second column is that score.
 kaikki.org, fills conjugation tables for only ~11 verbs (one shared
 with UniMorph), too few for a two-oracle agreement gate; see
 [`docs/tel/oracles.md`](docs/tel/oracles.md).
+| 🇵🇭 | Tagalog | 469 | 100.00% |
+
+Tagalog is a work in progress: the aspect × voice paradigm is built with
+a new infixation and reduplication mechanism (see below), and it scores
+100% on the slots where its two lexicons agree — but that agreement set
+is small (138 roots, 469 slots), because the oracles frequently differ
+on *which* voice a root lexicalizes. See
+[`docs/tgl/oracles.md`](docs/tgl/oracles.md) for the honest scope.
 
 Details per language, including which lexicons are used and every
 adjudicated disagreement, live in `docs/{lang}/`.

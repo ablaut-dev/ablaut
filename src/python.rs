@@ -473,6 +473,29 @@ impl From<crate::tam::Table> for TamilConjugation {
             relative_future: t.relative_future,
             conditional: t.conditional,
             imperative: t.imperative,
+/// The conjugation of one Tagalog verb (see `ablaut::tgl`). Each voice
+/// row is [perfective, imperfective, contemplated]; `patient` holds
+/// empty strings when the root takes no patient voice.
+#[pyclass(get_all, frozen)]
+struct TagalogConjugation {
+    infinitive: String,
+    actor: [String; 3],
+    patient: [String; 3],
+}
+
+#[pymethods]
+impl TagalogConjugation {
+    fn __repr__(&self) -> String {
+        format!("TagalogConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::tgl::Table> for TagalogConjugation {
+    fn from(t: crate::tgl::Table) -> Self {
+        TagalogConjugation {
+            infinitive: t.infinitive,
+            actor: t.actor,
+            patient: t.patient,
         }
     }
 }
@@ -1388,6 +1411,10 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
             let v = crate::tel::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
             Ok(TeluguConjugation::from(crate::tel::Table::build(&v))
+        Some(crate::Lang::Tgl) => {
+            let v = crate::tgl::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(TagalogConjugation::from(crate::tgl::Table::build(&v))
                 .into_pyobject(py)?
                 .into())
         }
@@ -1424,6 +1451,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<SwahiliConjugation>()?;
     m.add_class::<TamilConjugation>()?;
     m.add_class::<TeluguConjugation>()?;
+    m.add_class::<TagalogConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())
 }

@@ -1329,6 +1329,18 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.present_durative, "present durative", &P8_TEL);
             s.row(&t.future, "future", &P8_TEL);
             s.row(&t.imperative, "imperative", &["2sg", "2pl"]);
+        Conjugation::Tgl(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.row(
+                &t.actor,
+                "actor",
+                &["perfective", "imperfective", "contemplated"],
+            );
+            s.row(
+                &t.patient,
+                "patient",
+                &["perfective", "imperfective", "contemplated"],
+            );
         }
     }
     s.0
