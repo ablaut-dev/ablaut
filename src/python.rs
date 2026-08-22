@@ -516,6 +516,48 @@ impl From<crate::tgl::Table> for TagalogConjugation {
     }
 }
 
+/// The conjugation of one Gujarati verb (see `ablaut::guj`). Person
+/// rows are [1sg, 2sg, 3, 1pl, 2pl] (the third person does not split
+/// singular from plural); participle rows are [masc sg, masc pl, fem,
+/// neut sg, neut pl]; the imperative is [2sg, 2pl, polite sg, polite pl].
+#[pyclass(get_all, frozen)]
+struct GujaratiConjugation {
+    infinitive: String,
+    verbal_noun: String,
+    conjunctive: String,
+    consecutive: String,
+    present: [String; 5],
+    future: [String; 5],
+    imperative: [String; 4],
+    perfective: [String; 5],
+    imperfective: [String; 5],
+    present_progressive: [String; 5],
+}
+
+#[pymethods]
+impl GujaratiConjugation {
+    fn __repr__(&self) -> String {
+        format!("GujaratiConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::guj::Table> for GujaratiConjugation {
+    fn from(t: crate::guj::Table) -> Self {
+        GujaratiConjugation {
+            infinitive: t.infinitive,
+            verbal_noun: t.verbal_noun,
+            conjunctive: t.conjunctive,
+            consecutive: t.consecutive,
+            present: t.present,
+            future: t.future,
+            imperative: t.imperative,
+            perfective: t.perfective,
+            imperfective: t.imperfective,
+            present_progressive: t.present_progressive,
+        }
+    }
+}
+
 /// The four whole-word surface forms of one Korean verb (see
 /// `ablaut::kor`).
 #[pyclass(get_all, frozen)]
@@ -1546,6 +1588,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Guj) => {
+            let v = crate::guj::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(GujaratiConjugation::from(crate::guj::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         None => Err(PyValueError::new_err(format!("unknown language: {lang}"))),
     }
 }
@@ -1582,6 +1631,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<TagalogConjugation>()?;
     m.add_class::<PersianConjugation>()?;
     m.add_class::<KannadaConjugation>()?;
+    m.add_class::<GujaratiConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())
 }

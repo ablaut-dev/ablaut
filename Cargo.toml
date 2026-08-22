@@ -29,6 +29,7 @@ include = [
     "data/fin/verbs.tsv",
     "data/fra/verbs.tsv",
     "data/gle/verbs.tsv",
+    "data/guj/verbs.tsv",
     "data/hin/verbs.tsv",
     "data/hye/verbs.tsv",
     "data/isl/verbs.tsv",

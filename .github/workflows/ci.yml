@@ -487,5 +487,20 @@ jobs:
         run: ./scripts/pes/fetch_apertium.sh
       - name: Persian kaikki-apertium agreement gate (two-oracle)
         run: cargo run --release --bin golden_pes -- data/pes/kaikki.tsv data/pes/apertium.tsv --check
+      - name: Cache UniMorph guj
+        id: unimorph-guj
+        uses: actions/cache@v5
+        with:
+          path: data/guj/unimorph.tsv
+          key: unimorph-guj-v1
+      - name: Fetch UniMorph guj
+        if: steps.unimorph-guj.outputs.cache-hit != 'true'
+        run: ./scripts/guj/fetch_unimorph.sh
+      # Gujarati is scored against UniMorph alone: kaikki guj is the same
+      # English-Wiktionary lineage (the gu-conj template), not an
+      # independent agreement partner — see docs/guj/oracles.md. kaikki is
+      # a separate spot check.
+      - name: Gujarati golden harness with regression gate
+        run: cargo run --release --bin golden_guj -- data/guj/unimorph.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng
