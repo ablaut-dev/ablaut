@@ -28,6 +28,7 @@ include = [
     "data/fin/verbs.tsv",
     "data/fra/verbs.tsv",
     "data/gle/verbs.tsv",
+    "data/hin/verbs.tsv",
     "data/hye/verbs.tsv",
     "data/isl/verbs.tsv",
     "data/ita/auxiliaries.tsv",
@@ -44,7 +45,12 @@ include = [
     "data/slv/verbs.tsv",
     "data/spa/classes.tsv",
     "data/spa/verbs.tsv",
+    "data/swa/verbs.tsv",
     "data/swe/parts.tsv",
+    "data/tam/verbs.tsv",
+    "data/tel/verbs.tsv",
+    "data/tgl/verbs.tsv",
+    "data/tur/verbs.tsv",
     "data/ukr/verbs.tsv",
 ]
 

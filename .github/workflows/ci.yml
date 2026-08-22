@@ -336,5 +336,121 @@ jobs:
         run: ./scripts/hye/fetch_uniparser.sh
       - name: Armenian UniMorph-uniparser agreement gate
         run: cargo run --release --bin golden_hye -- data/hye/uniparser.tsv data/hye/unimorph.tsv --check
+      - name: Cache UniMorph tur
+        id: unimorph-tur
+        uses: actions/cache@v5
+        with:
+          path: data/tur/unimorph.tsv
+          key: unimorph-tur-v1
+      - name: Fetch UniMorph tur
+        if: steps.unimorph-tur.outputs.cache-hit != 'true'
+        run: ./scripts/tur/fetch_unimorph.sh
+      - name: Cache kaikki tur
+        id: kaikki-tur
+        uses: actions/cache@v5
+        with:
+          path: data/tur/kaikki.tsv
+          key: kaikki-tur-v1
+      - name: Fetch kaikki tur
+        if: steps.kaikki-tur.outputs.cache-hit != 'true'
+        run: ./scripts/tur/fetch_kaikki.sh
+      - name: Turkish kaikki-UniMorph agreement gate
+        run: cargo run --release --bin golden_tur -- data/tur/kaikki.tsv data/tur/unimorph.tsv --check
+      - name: Cache kaikki hin
+        id: kaikki-hin
+        uses: actions/cache@v5
+        with:
+          path: data/hin/kaikki.tsv
+          key: kaikki-hin-v1
+      - name: Fetch kaikki hin
+        if: steps.kaikki-hin.outputs.cache-hit != 'true'
+        run: ./scripts/hin/fetch_kaikki.sh
+      - name: Cache UniMorph hin
+        id: unimorph-hin
+        uses: actions/cache@v5
+        with:
+          path: data/hin/unimorph.tsv
+          key: unimorph-hin-v1
+      - name: Fetch UniMorph hin
+        if: steps.unimorph-hin.outputs.cache-hit != 'true'
+        run: ./scripts/hin/fetch_unimorph.sh
+      - name: Hindi kaikki-UniMorph agreement gate
+        run: cargo run --release --bin golden_hin -- data/hin/kaikki.tsv data/hin/unimorph.tsv --check
+      - name: Cache UniMorph swc
+        id: unimorph-swc
+        uses: actions/cache@v5
+        with:
+          path: data/swa/swc.tsv
+          key: unimorph-swc-v1
+      - name: Fetch UniMorph swc
+        if: steps.unimorph-swc.outputs.cache-hit != 'true'
+        run: ./scripts/swa/fetch_unimorph.sh
+      - name: Cache kaikki swa
+        id: kaikki-swa
+        uses: actions/cache@v5
+        with:
+          path: data/swa/kaikki.tsv
+          key: kaikki-swa-v1
+      - name: Fetch kaikki swa
+        if: steps.kaikki-swa.outputs.cache-hit != 'true'
+        run: ./scripts/swa/fetch_kaikki.sh
+      - name: Swahili swc-kaikki agreement gate
+        run: cargo run --release --bin golden_swa -- data/swa/swc.tsv data/swa/kaikki.tsv --check
+      - name: Install foma (ThamizhiMorph FST toolchain for tam)
+        run: sudo apt-get update && sudo apt-get install -y foma-bin
+      - name: Cache kaikki tam
+        id: kaikki-tam
+        uses: actions/cache@v5
+        with:
+          path: data/tam/kaikki.tsv
+          key: kaikki-tam-v1
+      - name: Fetch kaikki tam
+        if: steps.kaikki-tam.outputs.cache-hit != 'true'
+        run: ./scripts/tam/fetch_kaikki.sh
+      - name: Cache ThamizhiMorph tam
+        id: thamizhi-tam
+        uses: actions/cache@v5
+        with:
+          path: data/tam/thamizhi.tsv
+          key: thamizhi-tam-v1
+      - name: Fetch ThamizhiMorph tam
+        if: steps.thamizhi-tam.outputs.cache-hit != 'true'
+        run: ./scripts/tam/fetch_thamizhi.sh
+      - name: Tamil kaikki-ThamizhiMorph agreement gate (two-oracle)
+        run: cargo run --release --bin golden_tam -- data/tam/thamizhi.tsv data/tam/kaikki.tsv --check
+      - name: Cache UniMorph tel
+        id: unimorph-tel
+        uses: actions/cache@v5
+        with:
+          path: data/tel/unimorph.tsv
+          key: unimorph-tel-v1
+      - name: Fetch UniMorph tel
+        if: steps.unimorph-tel.outputs.cache-hit != 'true'
+        run: ./scripts/tel/fetch_unimorph.sh
+      # Telugu is scored against UniMorph alone: kaikki tabulates only a
+      # dozen verbs (one shared with UniMorph), too few for an agreement
+      # gate — see docs/tel/oracles.md.
+      - name: Telugu golden harness with regression gate
+        run: cargo run --release --bin golden_tel -- data/tel/unimorph.tsv --check
+      - name: Cache UniMorph tgl
+        id: unimorph-tgl
+        uses: actions/cache@v5
+        with:
+          path: data/tgl/unimorph.tsv
+          key: unimorph-tgl-v1
+      - name: Fetch UniMorph tgl
+        if: steps.unimorph-tgl.outputs.cache-hit != 'true'
+        run: ./scripts/tgl/fetch_unimorph.sh
+      - name: Cache kaikki tgl
+        id: kaikki-tgl
+        uses: actions/cache@v5
+        with:
+          path: data/tgl/kaikki.tsv
+          key: kaikki-tgl-v1
+      - name: Fetch kaikki tgl
+        if: steps.kaikki-tgl.outputs.cache-hit != 'true'
+        run: ./scripts/tgl/fetch_kaikki.sh
+      - name: Tagalog UniMorph-kaikki agreement gate
+        run: cargo run --release --bin golden_tgl -- data/tgl/kaikki.tsv data/tgl/unimorph.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng

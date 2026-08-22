@@ -781,13 +781,19 @@ fn ord(lang: Lang) -> usize {
         Lang::Nld => 19,
         Lang::Rus => 20,
         Lang::Hye => 21,
+        Lang::Tur => 22,
+        Lang::Hin => 23,
+        Lang::Swa => 24,
+        Lang::Tam => 25,
+        Lang::Tel => 26,
+        Lang::Tgl => 27,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 22] = [EMPTY; 22];
+    static INDEXES: [OnceLock<Index>; 28] = [EMPTY; 28];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -817,7 +823,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 21] = [EMPTY; 21];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 28] = [EMPTY; 28];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -907,6 +913,12 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Nld => col1(include_str!("../data/nld/verbs.tsv"), &mut lemmas),
         Lang::Rus => col1(include_str!("../data/rus/verbs.tsv"), &mut lemmas),
         Lang::Hye => col1(include_str!("../data/hye/verbs.tsv"), &mut lemmas),
+        Lang::Tur => col1(include_str!("../data/tur/verbs.tsv"), &mut lemmas),
+        Lang::Hin => col1(include_str!("../data/hin/verbs.tsv"), &mut lemmas),
+        Lang::Swa => col1(include_str!("../data/swa/verbs.tsv"), &mut lemmas),
+        Lang::Tam => col1(include_str!("../data/tam/verbs.tsv"), &mut lemmas),
+        Lang::Tel => col1(include_str!("../data/tel/verbs.tsv"), &mut lemmas),
+        Lang::Tgl => col1(include_str!("../data/tgl/verbs.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -922,6 +934,18 @@ const P9: [&str; 9] = [
     "1sg", "2sg", "3sg", "1du", "2du", "3du", "1pl", "2pl", "3pl",
 ];
 const P7: [&str; 7] = ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl", "autonomous"];
+const P8_TEL: [&str; 8] = [
+    "1sg",
+    "2sg",
+    "3sg masc",
+    "3sg nonmasc",
+    "1pl",
+    "2pl",
+    "3pl masc",
+    "3pl nonmasc",
+];
+/// Swahili person row: the third person is the class-1/2 animate concord.
+const SWA6: [&str; 6] = ["1sg", "2sg", "cl1", "1pl", "2pl", "cl2"];
 
 struct Slots(Vec<(String, String)>);
 
@@ -1100,6 +1124,28 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.conditional_past, "conditional past", &P6);
             s.row(&t.imperative, "imperative", &["2sg", "2pl"]);
         }
+        Conjugation::Hin(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.one(&t.oblique_infinitive, "oblique infinitive");
+            s.row(
+                &t.imperative,
+                "imperative",
+                &["intimate", "familiar", "polite"],
+            );
+            s.row(&t.subjunctive, "subjunctive", &P6);
+            s.row(&t.future_masculine, "future masculine", &P6);
+            s.row(&t.future_feminine, "future feminine", &P6);
+            s.row(
+                &t.imperfective,
+                "imperfective participle",
+                &["masc sg", "masc pl", "fem"],
+            );
+            s.row(
+                &t.perfective,
+                "perfective participle",
+                &["masc sg", "masc pl", "fem"],
+            );
+        }
         Conjugation::Kor(t) => {
             s.one(&t.infinitive, "infinitive");
             s.one(&t.intimate, "intimate");
@@ -1244,6 +1290,72 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.subjunctive_present, "subjunctive present", &P6);
             s.row(&t.subjunctive_past, "subjunctive past", &P6);
         }
+        Conjugation::Tur(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.row(&t.aorist, "aorist", &P6);
+            s.row(&t.progressive, "progressive", &P6);
+            s.row(&t.future, "future", &P6);
+            s.row(&t.past, "past", &P6);
+            s.row(&t.evidential, "evidential", &P6);
+            s.row(&t.necessitative, "necessitative", &P6);
+            s.row(&t.imperative, "imperative", &["2sg", "2pl"]);
+        }
+        Conjugation::Swa(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.one(&t.habitual, "habitual");
+            s.row(&t.imperative, "imperative", &["singular", "plural"]);
+            s.row(&t.present, "present", &SWA6);
+            s.row(&t.past, "past", &SWA6);
+            s.row(&t.future, "future", &SWA6);
+            s.row(&t.perfect, "perfect", &SWA6);
+            s.row(&t.subjunctive, "subjunctive", &SWA6);
+            s.row(&t.gnomic, "gnomic", &SWA6);
+        }
+        Conjugation::Tam(t) => {
+            // Tamil is cited by its root, so no slot is named
+            // "infinitive" (that would retarget the lemma); the -ய
+            // infinitive form is "infinitive form".
+            const P10: [&str; 10] = [
+                "1sg",
+                "1pl",
+                "2sg",
+                "2pl",
+                "3sg m",
+                "3sg f",
+                "3sg hon",
+                "3sg n",
+                "3pl epicene",
+                "3pl n",
+            ];
+            s.row(&t.present, "present", &P10);
+            s.row(&t.past, "past", &P10);
+            s.row(&t.future, "future", &P10);
+            s.one(&t.infinitive, "infinitive form");
+            s.one(&t.adverbial, "adverbial participle");
+            s.one(&t.relative_past, "past participle");
+            s.one(&t.relative_present, "present participle");
+            s.one(&t.relative_future, "future participle");
+            s.one(&t.conditional, "conditional");
+        }
+        Conjugation::Tel(t) => {
+            s.row(&t.past, "past", &P8_TEL);
+            s.row(&t.present_durative, "present durative", &P8_TEL);
+            s.row(&t.future, "future", &P8_TEL);
+            s.row(&t.imperative, "imperative", &["2sg", "2pl"]);
+        }
+        Conjugation::Tgl(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.row(
+                &t.actor,
+                "actor",
+                &["perfective", "imperfective", "contemplated"],
+            );
+            s.row(
+                &t.patient,
+                "patient",
+                &["perfective", "imperfective", "contemplated"],
+            );
+        }
     }
     s.0
 }
@@ -1315,6 +1427,8 @@ mod tests {
         // Armenian: the suppletive aorist stems reverse via the table.
         assert!(infs("եկա", Lang::Hye).contains(&"գալ".to_string()));
         assert!(infs("կերել", Lang::Hye).contains(&"ուտել".to_string()));
+        // Hindi: the suppletive perfective गया reverses to जाना.
+        assert!(infs("गया", Lang::Hin).contains(&"जाना".to_string()));
     }
 
     #[test]

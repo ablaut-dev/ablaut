@@ -172,6 +172,23 @@
       "tier": "Verified·gaps"
     },
     {
+      "name": "Hindi",
+      "code": "hin",
+      "oracles": [
+        "kaikki",
+        "unimorph"
+      ],
+      "agreed_matched": 48421,
+      "agreed_forms": 48421,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 205,
+      "slot_types": 205,
+      "disagreements": 3708,
+      "disagreements_resolved": 3708,
+      "single_oracle": false,
+      "tier": "Verified"
+    },
+    {
       "name": "Icelandic",
       "code": "isl",
       "oracles": [
@@ -342,6 +359,23 @@
       "tier": "Verified·gaps"
     },
     {
+      "name": "Swahili",
+      "code": "swa",
+      "oracles": [
+        "swc",
+        "kaikki"
+      ],
+      "agreed_matched": 1134,
+      "agreed_forms": 1134,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 26,
+      "slot_types": 26,
+      "disagreements": 36,
+      "disagreements_resolved": 36,
+      "single_oracle": false,
+      "tier": "Verified"
+    },
+    {
       "name": "Swedish",
       "code": "swe",
       "oracles": [
@@ -354,6 +388,73 @@
       "slot_types_covered": 11,
       "slot_types": 13,
       "disagreements": 296,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "Tagalog",
+      "code": "tgl",
+      "oracles": [
+        "kaikki",
+        "unimorph"
+      ],
+      "agreed_matched": 469,
+      "agreed_forms": 469,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 7,
+      "slot_types": 7,
+      "disagreements": 191,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "Tamil",
+      "code": "tam",
+      "oracles": [
+        "thamizhi",
+        "kaikki"
+      ],
+      "agreed_matched": 31829,
+      "agreed_forms": 31829,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 37,
+      "slot_types": 37,
+      "disagreements": 980,
+      "disagreements_resolved": 0,
+      "single_oracle": false,
+      "tier": "Verified·gaps"
+    },
+    {
+      "name": "Telugu",
+      "code": "tel",
+      "oracles": [
+        "unimorph"
+      ],
+      "agreed_matched": 1159,
+      "agreed_forms": 1159,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 24,
+      "slot_types": 24,
+      "disagreements": 0,
+      "disagreements_resolved": 0,
+      "single_oracle": true,
+      "tier": "Beta"
+    },
+    {
+      "name": "Turkish",
+      "code": "tur",
+      "oracles": [
+        "kaikki",
+        "unimorph"
+      ],
+      "agreed_matched": 44156,
+      "agreed_forms": 44156,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 93,
+      "slot_types": 93,
+      "disagreements": 10763,
       "disagreements_resolved": 0,
       "single_oracle": false,
       "tier": "Verified·gaps"

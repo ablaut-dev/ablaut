@@ -1,0 +1,19 @@
+# Hindi irregular verbs.
+#
+# The rule engine (src/hin.rs) handles the open class off the stem; this
+# table carries the verbs whose perfective, subjunctive or imperative is
+# not predictable. Forms are in the normalized orthography the oracle
+# adapters use (anusvara for candrabindu, no optional य-glide, no
+# feminine-plural nasal); a `-` group falls through to the rule.
+#
+# Mined by scripts/hin/mine_verbs.py from scripts/hin/manual.tsv.
+#
+# lemma	pfv(m.sg,m.pl,f)	subj(1sg,2sg,3sg,1pl,2pl,3pl)	imp(intim,famil,polite)
+होना	हुआ,हुए,हुई	होऊं,होए,होए,होएं,होओ,होएं	हो,होओ,होइए
+जाना	गया,गए,गई	-	जा,जाओ,जाइए
+करना	किया,किए,की	-	कर,करो,कीजिए
+देना	दिया,दिए,दी	दूं,दे,दे,दें,दो,दें	दे,दो,दीजिए
+लेना	लिया,लिए,ली	लूं,ले,ले,लें,लो,लें	ले,लो,लीजिए
+पीना	पिया,पिए,पी	पिऊं,पिए,पिए,पिएं,पियो,पिएं	पी,पियो,पीजिए
+जीना	जिया,जिए,जी	जिऊं,जिए,जिए,जिएं,जियो,जिएं	जी,जियो,जीजिए
+सीना	सिया,सिए,सी	सिऊं,सिए,सिए,सिएं,सियो,सिएं	सी,सियो,सीजिए

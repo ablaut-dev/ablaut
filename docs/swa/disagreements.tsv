@@ -1,0 +1,47 @@
+# Swahili oracle-vs-oracle disagreements, resolved.
+#
+# All 36 splits are the UniMorph swc generator making a systematic
+# error the kaikki (Wiktionary) table gets right: it omits the
+# ku-retention monosyllabic verbs (and -enda) keep under the primary
+# TAM markers (tunakufa, tunakwenda), applies it to disyllabic vowel
+# stems that do not take it (kuimba, kukwepa, anaoa), drops the 2pl
+# m- -> mw- glide before a vowel stem (mwone, muumbe), and now and
+# then drops the subject concord outright (kwepe for tukwepe). In
+# every case the engine follows kaikki (resolution o2).
+# lemma	features	resolution	note
+afiki	V;SBJV;2PL	o2	kaikki 'mwafiki' is standard; swc drops the m->mw / keeps a spurious tu->tw glide or drops the concord
+amba	V;SBJV;1PL	o2	kaikki 'tuambe' is standard; swc drops the m->mw / keeps a spurious tu->tw glide or drops the concord
+andaa	V;SBJV;2PL	o2	kaikki 'mwandae' is standard; swc drops the m->mw / keeps a spurious tu->tw glide or drops the concord
+andika	V;SBJV;2PL	o2	kaikki 'mwandike' is standard; swc drops the m->mw / keeps a spurious tu->tw glide or drops the concord
+andikisha	V;SBJV;2PL	o2	kaikki 'mwandikishe' is standard; swc drops the m->mw / keeps a spurious tu->tw glide or drops the concord
+andikiza	V;SBJV;2PL	o2	kaikki 'mwandikize' is standard; swc drops the m->mw / keeps a spurious tu->tw glide or drops the concord
+enda	V;PRS;1PL	o2	kaikki 'tunakwenda' is standard; swc drops the monosyllabic/enda ku-retention (or adds it wrongly)
+enda	V;PRS;2PL	o2	kaikki 'mnakwenda' is standard; swc drops the monosyllabic/enda ku-retention (or adds it wrongly)
+enda	V;PRS;CL2	o2	kaikki 'wanakwenda' is standard; swc drops the monosyllabic/enda ku-retention (or adds it wrongly)
+endesha	V;SBJV;2PL	o2	kaikki 'mwendeshe' is standard; swc drops the m->mw / keeps a spurious tu->tw glide or drops the concord
+eua	V;SBJV;2PL	o2	kaikki 'mweue' is standard; swc drops the m->mw / keeps a spurious tu->tw glide or drops the concord
+fa	V;PRS;1PL	o2	kaikki 'tunakufa' is standard; swc drops the monosyllabic/enda ku-retention (or adds it wrongly)
+fa	V;PRS;2PL	o2	kaikki 'mnakufa' is standard; swc drops the monosyllabic/enda ku-retention (or adds it wrongly)
+fa	V;PRS;CL2	o2	kaikki 'wanakufa' is standard; swc drops the monosyllabic/enda ku-retention (or adds it wrongly)
+imba	V;NFIN	o2	kaikki 'kuimba' is standard; swc drops the ku- infinitive marker / mis-classes the stem
+imba	V;PRS;1SG	o2	kaikki 'naimba|ninaimba' is standard; swc drops the monosyllabic/enda ku-retention (or adds it wrongly)
+imba	V;PRS;2SG	o2	kaikki 'unaimba' is standard; swc drops the monosyllabic/enda ku-retention (or adds it wrongly)
+imba	V;PRS;CL1	o2	kaikki 'anaimba' is standard; swc drops the monosyllabic/enda ku-retention (or adds it wrongly)
+imba	V;SBJV;1PL	o2	kaikki 'tuimbe' is standard; swc drops the m->mw / keeps a spurious tu->tw glide or drops the concord
+ja	V;PRS;1PL	o2	kaikki 'tunakuja' is standard; swc drops the monosyllabic/enda ku-retention (or adds it wrongly)
+ja	V;PRS;2PL	o2	kaikki 'mnakuja' is standard; swc drops the monosyllabic/enda ku-retention (or adds it wrongly)
+ja	V;PRS;CL2	o2	kaikki 'wanakuja' is standard; swc drops the monosyllabic/enda ku-retention (or adds it wrongly)
+kwepa	V;NFIN	o2	kaikki 'kukwepa' is standard; swc drops the ku- infinitive marker / mis-classes the stem
+kwepa	V;SBJV;1PL	o2	kaikki 'tukwepe' is standard; swc drops the m->mw / keeps a spurious tu->tw glide or drops the concord
+kwepa	V;SBJV;2PL	o2	kaikki 'mkwepe' is standard; swc drops the m->mw / keeps a spurious tu->tw glide or drops the concord
+nywa	V;PRS;1PL	o2	kaikki 'tunakunywa' is standard; swc drops the monosyllabic/enda ku-retention (or adds it wrongly)
+nywa	V;PRS;2PL	o2	kaikki 'mnakunywa' is standard; swc drops the monosyllabic/enda ku-retention (or adds it wrongly)
+nywa	V;PRS;CL2	o2	kaikki 'wanakunywa' is standard; swc drops the monosyllabic/enda ku-retention (or adds it wrongly)
+oa	V;PRS;1SG	o2	kaikki 'naoa|ninaoa' is standard; swc drops the monosyllabic/enda ku-retention (or adds it wrongly)
+oa	V;PRS;2SG	o2	kaikki 'unaoa' is standard; swc drops the monosyllabic/enda ku-retention (or adds it wrongly)
+oa	V;PRS;CL1	o2	kaikki 'anaoa' is standard; swc drops the monosyllabic/enda ku-retention (or adds it wrongly)
+oa	V;SBJV;2PL	o2	kaikki 'mwoe' is standard; swc drops the m->mw / keeps a spurious tu->tw glide or drops the concord
+ona	V;SBJV;2PL	o2	kaikki 'mwone' is standard; swc drops the m->mw / keeps a spurious tu->tw glide or drops the concord
+ongea	V;SBJV;2PL	o2	kaikki 'mwongee' is standard; swc drops the m->mw / keeps a spurious tu->tw glide or drops the concord
+ota	V;SBJV;2PL	o2	kaikki 'mwote' is standard; swc drops the m->mw / keeps a spurious tu->tw glide or drops the concord
+umba	V;SBJV;2PL	o2	kaikki 'muumbe' is standard; swc drops the m->mw / keeps a spurious tu->tw glide or drops the concord

@@ -1,0 +1,22 @@
+# Swahili irregular verbs.
+#
+# The productive template in src/swa.rs handles the regular verb (the
+# open class), the monosyllabic ku-retention (detected by a one-vowel
+# stem), the Arabic loans (detected by a non-a final vowel) and the
+# vowel-initial stems (concord coalescence). What is left is stored here:
+# the suppletive -enda/-ja and any stem that breaks the vowel-count rule.
+#
+# Columns (a `-` cell falls through to the rule):
+#   lemma  mono  inf  long_stem  short_stem  subj_stem  imp_sg  imp_pl
+#     mono       1/0 override of the one-vowel ku-retention test
+#     long_stem  post-TAM stem for -na-/-li-/-ta-/-me-/-nge-/-ngali-
+#     short_stem stem for the a-tense/habitual/consecutive/situative
+#     subj_stem  the subjunctive stem
+#
+# -enda "go": ku-retaining despite two vowels (kwenda), suppletive
+#  subjunctive -ende (twende) and imperative (nenda); the a-tense keeps
+#  the bare stem (aenda). -ja "come": regular except its imperative
+#  (njoo/njooni).
+# lemma	mono	inf	long_stem	short_stem	subj_stem	imp_sg	imp_pl
+enda	1	kwenda	kwenda	enda	ende	nenda	nendeni
+ja	-	-	-	-	-	njoo	njooni
