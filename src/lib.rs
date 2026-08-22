@@ -29,6 +29,8 @@ pub mod ita;
 pub mod jpn;
 pub mod kor;
 pub mod nld;
+pub mod perso_arabic;
+pub mod pes;
 pub mod por;
 #[cfg(feature = "python")]
 mod python;
@@ -114,6 +116,8 @@ pub enum Lang {
     Tel,
     /// Tagalog.
     Tgl,
+    /// Persian (Farsi).
+    Pes,
 }
 
 impl Lang {
@@ -150,6 +154,7 @@ impl Lang {
             "ta" | "tam" | "tamil" => Some(Self::Tam),
             "te" | "tel" | "telugu" => Some(Self::Tel),
             "tl" | "tgl" | "tagalog" | "filipino" => Some(Self::Tgl),
+            "fa" | "pes" | "per" | "fas" | "persian" | "farsi" => Some(Self::Pes),
             _ => None,
         }
     }
@@ -191,6 +196,7 @@ pub enum Conjugation {
     Tam(Box<tam::Table>),
     Tel(Box<tel::Table>),
     Tgl(Box<tgl::Table>),
+    Pes(Box<pes::Table>),
 }
 
 /// Why `conjugate` failed: the input is not a known verb shape in
@@ -297,6 +303,9 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         Lang::Tgl => Conjugation::Tgl(Box::new(tgl::Table::build(
             &tgl::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
+        Lang::Pes => Conjugation::Pes(Box::new(pes::Table::build(
+            &pes::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
     })
 }
 
@@ -334,6 +343,7 @@ mod facade_tests {
             ("soma", Lang::Swa),
             ("అమ్ము", Lang::Tel),
             ("sulat", Lang::Tgl),
+            ("کردن", Lang::Pes),
         ];
         for (verb, lang) in cases {
             assert!(conjugate(verb, lang).is_ok(), "{verb}");

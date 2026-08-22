@@ -787,13 +787,14 @@ fn ord(lang: Lang) -> usize {
         Lang::Tam => 25,
         Lang::Tel => 26,
         Lang::Tgl => 27,
+        Lang::Pes => 28,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 28] = [EMPTY; 28];
+    static INDEXES: [OnceLock<Index>; 29] = [EMPTY; 29];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -823,7 +824,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 28] = [EMPTY; 28];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 29] = [EMPTY; 29];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -919,6 +920,7 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Tam => col1(include_str!("../data/tam/verbs.tsv"), &mut lemmas),
         Lang::Tel => col1(include_str!("../data/tel/verbs.tsv"), &mut lemmas),
         Lang::Tgl => col1(include_str!("../data/tgl/verbs.tsv"), &mut lemmas),
+        Lang::Pes => col1(include_str!("../data/pes/verbs.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -1356,6 +1358,20 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
                 &["perfective", "imperfective", "contemplated"],
             );
         }
+        Conjugation::Pes(t) => {
+            // Only the single-word synthetic forms index; the perfect,
+            // pluperfect, future, perfect-subjunctive and progressives
+            // are multi-word and `one` skips them.
+            s.one(&t.infinitive, "infinitive");
+            s.one(&t.past_participle, "past participle");
+            s.one(&t.present_participle, "present participle");
+            s.row(&t.aorist, "aorist", &P6);
+            s.row(&t.present, "present", &P6);
+            s.row(&t.subjunctive, "subjunctive", &P6);
+            s.row(&t.past, "past", &P6);
+            s.row(&t.imperfect, "imperfect", &P6);
+            s.row(&t.imperative, "imperative", &["2sg", "2pl"]);
+        }
     }
     s.0
 }
@@ -1429,6 +1445,10 @@ mod tests {
         assert!(infs("կերել", Lang::Hye).contains(&"ուտել".to_string()));
         // Hindi: the suppletive perfective गया reverses to जाना.
         assert!(infs("गया", Lang::Hin).contains(&"जाना".to_string()));
+        // Persian: the irregular present stem بین reverses دیدن, and the
+        // past رفتم reverses رفتن.
+        assert!(infs("بینم", Lang::Pes).contains(&"دیدن".to_string()));
+        assert!(infs("رفتم", Lang::Pes).contains(&"رفتن".to_string()));
     }
 
     #[test]

@@ -452,5 +452,20 @@ jobs:
         run: ./scripts/tgl/fetch_kaikki.sh
       - name: Tagalog UniMorph-kaikki agreement gate
         run: cargo run --release --bin golden_tgl -- data/tgl/kaikki.tsv data/tgl/unimorph.tsv --check
+      - name: Cache kaikki pes
+        id: kaikki-pes
+        uses: actions/cache@v5
+        with:
+          path: data/pes/kaikki.tsv
+          key: kaikki-pes-v1
+      - name: Fetch kaikki pes
+        if: steps.kaikki-pes.outputs.cache-hit != 'true'
+        run: ./scripts/pes/fetch_kaikki.sh
+      - name: Install lttoolbox (apertium-pes oracle)
+        run: sudo apt-get update && sudo apt-get install -y lttoolbox
+      - name: Fetch apertium-pes (second oracle)
+        run: ./scripts/pes/fetch_apertium.sh
+      - name: Persian kaikki-apertium agreement gate (two-oracle)
+        run: cargo run --release --bin golden_pes -- data/pes/kaikki.tsv data/pes/apertium.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng
