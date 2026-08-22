@@ -27,6 +27,7 @@ pub mod hye;
 pub mod isl;
 pub mod ita;
 pub mod jpn;
+pub mod kan;
 pub mod kor;
 pub mod nld;
 pub mod perso_arabic;
@@ -118,6 +119,8 @@ pub enum Lang {
     Tgl,
     /// Persian (Farsi).
     Pes,
+    /// Kannada.
+    Kan,
 }
 
 impl Lang {
@@ -155,6 +158,7 @@ impl Lang {
             "te" | "tel" | "telugu" => Some(Self::Tel),
             "tl" | "tgl" | "tagalog" | "filipino" => Some(Self::Tgl),
             "fa" | "pes" | "per" | "fas" | "persian" | "farsi" => Some(Self::Pes),
+            "kn" | "kan" | "kannada" => Some(Self::Kan),
             _ => None,
         }
     }
@@ -197,6 +201,7 @@ pub enum Conjugation {
     Tel(Box<tel::Table>),
     Tgl(Box<tgl::Table>),
     Pes(Box<pes::Table>),
+    Kan(Box<kan::Table>),
 }
 
 /// Why `conjugate` failed: the input is not a known verb shape in
@@ -306,6 +311,9 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         Lang::Pes => Conjugation::Pes(Box::new(pes::Table::build(
             &pes::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
+        Lang::Kan => Conjugation::Kan(Box::new(kan::Table::build(
+            &kan::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
     })
 }
 
@@ -344,6 +352,7 @@ mod facade_tests {
             ("అమ్ము", Lang::Tel),
             ("sulat", Lang::Tgl),
             ("کردن", Lang::Pes),
+            ("ಮಾಡು", Lang::Kan),
         ];
         for (verb, lang) in cases {
             assert!(conjugate(verb, lang).is_ok(), "{verb}");

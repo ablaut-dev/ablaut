@@ -1,0 +1,33 @@
+# Kannada irregular verb stems.
+#
+# The productive rules in src/kan.rs build three tense stems off the
+# citation root. For a -ు root, with base = root minus -ు: the past
+# stem is base + -ಇದ- (neuter 3sg base + -ಇತు), the present stem
+# base + -ುತ್ತ-, the future stem base + -ುವ-. A root ending in another
+# vowel inserts the glide -ಯ- before the present/future markers and
+# forms its past on root + -ದ-. What deviates — a suppletive or
+# contracted past stem — is stored here.
+#
+# Columns: a `-` cell falls through to the rule.
+#   lemma  past_stem  past_3sg_neut  prs_stem  fut_stem
+#
+# past_3sg_neut is the full neuter 3rd-singular past form, whose ending
+# is idiosyncratic; a `-` there means build it from the past stem
+# (past_stem + -ಇತు, e.g. ಕೊಟ್ಟ → ಕೊಟ್ಟಿತು).
+#
+# ಆಗು "become", ಹೋಗು "go": the -ಗು contracts away in the past (ಆದ-,
+# ಹೋದ-) and the neuter 3sg is the special ಆಯಿತು / ಹೋಯಿತು.
+ಆಗು	ಆದ	ಆಯಿತು	-	-
+ಹೋಗು	ಹೋದ	ಹೋಯಿತು	-	-
+# ಕೊಡು "give" and its compound: past stem ಕೊಟ್ಟ- (gemination).
+ಕೊಡು	ಕೊಟ್ಟ	-	-	-
+ಎರವಲುಕೊಡು	ಎರವಲುಕೊಟ್ಟ	-	-	-
+# ಕೊಲ್ಲು "kill", ಗೆಲ್ಲು "win": the -ಲ್ಲು past reshapes to a nasal /
+# geminate stem (ಕೊಂದ-, ಗೆದ್ದ-).
+ಕೊಲ್ಲು	ಕೊಂದ	-	-	-
+ಗೆಲ್ಲು	ಗೆದ್ದ	-	-	-
+# ಹೊರಡು "set out": past stem ಹೊರಟ್ಟ- (ಡು → ಟ್ಟ).
+ಹೊರಡು	ಹೊರಟ್ಟ	-	-	-
+# ಮೀ "bathe": suppletive past stem ಮಿಂದ-; present/future are the
+# regular vowel-final glide forms (ಮೀಯುತ್ತ-, ಮೀಯುವ-).
+ಮೀ	ಮಿಂದ	-	-	-

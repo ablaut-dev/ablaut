@@ -788,13 +788,14 @@ fn ord(lang: Lang) -> usize {
         Lang::Tel => 26,
         Lang::Tgl => 27,
         Lang::Pes => 28,
+        Lang::Kan => 29,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 29] = [EMPTY; 29];
+    static INDEXES: [OnceLock<Index>; 30] = [EMPTY; 30];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -824,7 +825,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 29] = [EMPTY; 29];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 30] = [EMPTY; 30];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -921,6 +922,7 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Tel => col1(include_str!("../data/tel/verbs.tsv"), &mut lemmas),
         Lang::Tgl => col1(include_str!("../data/tgl/verbs.tsv"), &mut lemmas),
         Lang::Pes => col1(include_str!("../data/pes/verbs.tsv"), &mut lemmas),
+        Lang::Kan => col1(include_str!("../data/kan/verbs.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -1372,6 +1374,17 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.imperfect, "imperfect", &P6);
             s.row(&t.imperative, "imperative", &["2sg", "2pl"]);
         }
+        Conjugation::Kan(t) => {
+            // Kannada is cited by its root, so no slot is named
+            // "infinitive" (that would retarget the lemma).
+            const P10_KAN: [&str; 10] = [
+                "1sg", "2sg", "3sg m", "3sg f", "3sg n", "1pl", "2pl", "3pl m", "3pl f", "3pl n",
+            ];
+            s.row(&t.past, "past", &P10_KAN);
+            s.row(&t.present, "present", &P10_KAN);
+            s.row(&t.future, "future", &P10_KAN);
+            s.row(&t.imperative, "imperative", &["2sg", "2pl"]);
+        }
     }
     s.0
 }
@@ -1449,6 +1462,8 @@ mod tests {
         // past رفتم reverses رفتن.
         assert!(infs("بینم", Lang::Pes).contains(&"دیدن".to_string()));
         assert!(infs("رفتم", Lang::Pes).contains(&"رفتن".to_string()));
+        // Kannada: the contracted past ಕೊಟ್ಟನು reverses to ಕೊಡು.
+        assert!(infs("ಕೊಟ್ಟನು", Lang::Kan).contains(&"ಕೊಡು".to_string()));
     }
 
     #[test]

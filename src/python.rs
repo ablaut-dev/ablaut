@@ -578,6 +578,38 @@ impl From<crate::tel::Table> for TeluguConjugation {
     }
 }
 
+/// The finite conjugation of one Kannada verb (see `ablaut::kan`).
+/// Every row is [1sg, 2sg, 3sg-masc, 3sg-fem, 3sg-neut, 1pl, 2pl,
+/// 3pl-masc, 3pl-fem, 3pl-neut].
+#[pyclass(get_all, frozen)]
+struct KannadaConjugation {
+    infinitive: String,
+    past: Vec<String>,
+    present: Vec<String>,
+    future: Vec<String>,
+    /// [2sg, 2pl].
+    imperative: Vec<String>,
+}
+
+#[pymethods]
+impl KannadaConjugation {
+    fn __repr__(&self) -> String {
+        format!("KannadaConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::kan::Table> for KannadaConjugation {
+    fn from(t: crate::kan::Table) -> Self {
+        KannadaConjugation {
+            infinitive: t.infinitive,
+            past: t.past.to_vec(),
+            present: t.present.to_vec(),
+            future: t.future.to_vec(),
+            imperative: t.imperative.to_vec(),
+        }
+    }
+}
+
 /// The finite conjugation of one Russian verb. Person rows are
 /// [я, ты, он/она/оно, мы, вы, они].
 #[pyclass(get_all, frozen)]
@@ -1507,6 +1539,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Kan) => {
+            let v = crate::kan::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(KannadaConjugation::from(crate::kan::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         None => Err(PyValueError::new_err(format!("unknown language: {lang}"))),
     }
 }
@@ -1542,6 +1581,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<TeluguConjugation>()?;
     m.add_class::<TagalogConjugation>()?;
     m.add_class::<PersianConjugation>()?;
+    m.add_class::<KannadaConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())
 }
