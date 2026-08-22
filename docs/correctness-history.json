@@ -15,14 +15,14 @@
   {
     "version": "0.9.0",
     "date": "2026-08-22",
-    "languages": 31,
-    "verified_forms": 3047170,
-    "agreed_forms": 3047229,
+    "languages": 33,
+    "verified_forms": 3051811,
+    "agreed_forms": 3051870,
     "agreed_pct": 99.9981,
     "tiers": {
-      "Verified": 5,
-      "Verified·gaps": 24,
-      "Beta": 2
+      "Verified": 6,
+      "Beta": 3,
+      "Verified·gaps": 24
     },
     "per_language": [
       {
@@ -31,6 +31,13 @@
         "agreed_pct": 100.0,
         "agreed_matched": 50521,
         "tier": "Verified"
+      },
+      {
+        "code": "ben",
+        "name": "Bengali",
+        "agreed_pct": 100.0,
+        "agreed_matched": 3864,
+        "tier": "Beta"
       },
       {
         "code": "cat",
@@ -241,6 +248,13 @@
         "agreed_pct": 100.0,
         "agreed_matched": 71990,
         "tier": "Verified·gaps"
+      },
+      {
+        "code": "urd",
+        "name": "Urdu",
+        "agreed_pct": 100.0,
+        "agreed_matched": 777,
+        "tier": "Verified"
       }
     ]
   }

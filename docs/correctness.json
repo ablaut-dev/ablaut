@@ -19,6 +19,22 @@
       "tier": "Verified"
     },
     {
+      "name": "Bengali",
+      "code": "ben",
+      "oracles": [
+        "unimorph"
+      ],
+      "agreed_matched": 3864,
+      "agreed_forms": 3864,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 46,
+      "slot_types": 46,
+      "disagreements": 0,
+      "disagreements_resolved": 0,
+      "single_oracle": true,
+      "tier": "Beta"
+    },
+    {
       "name": "Catalan",
       "code": "cat",
       "oracles": [
@@ -525,6 +541,23 @@
       "disagreements_resolved": 0,
       "single_oracle": false,
       "tier": "Verified·gaps"
+    },
+    {
+      "name": "Urdu",
+      "code": "urd",
+      "oracles": [
+        "kaikki",
+        "apertium"
+      ],
+      "agreed_matched": 777,
+      "agreed_forms": 777,
+      "agreed_pct": 100.0,
+      "slot_types_covered": 10,
+      "slot_types": 10,
+      "disagreements": 4,
+      "disagreements_resolved": 4,
+      "single_oracle": false,
+      "tier": "Verified"
     }
   ]
 }
