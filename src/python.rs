@@ -598,6 +598,55 @@ impl From<crate::guj::Table> for GujaratiConjugation {
     }
 }
 
+/// The conjugation of one Bengali verb (see `ablaut::ben`). Every
+/// person row is [আমি, তুই, তুমি, সে, আপনি] — first, second intimate,
+/// second familiar, third ordinary, honorific.
+#[pyclass(get_all, frozen)]
+struct BengaliConjugation {
+    infinitive: String,
+    verbal_infinitive: String,
+    perfective: String,
+    habitual_participle: String,
+    progressive_participle: String,
+    conditional: String,
+    present: [String; 5],
+    past: [String; 5],
+    future: [String; 5],
+    habitual: [String; 5],
+    present_progressive: [String; 5],
+    past_progressive: [String; 5],
+    present_perfect: [String; 5],
+    past_perfect: [String; 5],
+}
+
+#[pymethods]
+impl BengaliConjugation {
+    fn __repr__(&self) -> String {
+        format!("BengaliConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::ben::Table> for BengaliConjugation {
+    fn from(t: crate::ben::Table) -> Self {
+        BengaliConjugation {
+            infinitive: t.infinitive,
+            verbal_infinitive: t.verbal_infinitive,
+            perfective: t.perfective,
+            habitual_participle: t.habitual_participle,
+            progressive_participle: t.progressive_participle,
+            conditional: t.conditional,
+            present: t.present,
+            past: t.past,
+            future: t.future,
+            habitual: t.habitual,
+            present_progressive: t.present_progressive,
+            past_progressive: t.past_progressive,
+            present_perfect: t.present_perfect,
+            past_perfect: t.past_perfect,
+        }
+    }
+}
+
 /// The four whole-word surface forms of one Korean verb (see
 /// `ablaut::kor`).
 #[pyclass(get_all, frozen)]
@@ -1642,6 +1691,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Ben) => {
+            let v = crate::ben::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(BengaliConjugation::from(crate::ben::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         None => Err(PyValueError::new_err(format!("unknown language: {lang}"))),
     }
 }
@@ -1680,6 +1736,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<KannadaConjugation>()?;
     m.add_class::<GujaratiConjugation>()?;
     m.add_class::<UrduConjugation>()?;
+    m.add_class::<BengaliConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())
 }

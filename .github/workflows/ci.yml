@@ -519,5 +519,20 @@ jobs:
       # UniMorph separately — see docs/urd/oracles.md.
       - name: Urdu kaikki-apertium agreement gate (two-oracle)
         run: cargo run --release --bin golden_urd -- data/urd/kaikki.tsv data/urd/apertium.tsv --check
+      - name: Cache UniMorph ben
+        id: unimorph-ben
+        uses: actions/cache@v5
+        with:
+          path: data/ben/unimorph.tsv
+          key: unimorph-ben-v1
+      - name: Fetch UniMorph ben
+        if: steps.unimorph-ben.outputs.cache-hit != 'true'
+        run: ./scripts/ben/fetch_unimorph.sh
+      # Bengali is scored against UniMorph alone: kaikki ben is the same
+      # Wiktionary lineage as UniMorph ben (whose source is Wikipedia),
+      # not an independent agreement partner — see docs/ben/oracles.md.
+      # kaikki is a separate spot check.
+      - name: Bengali golden harness with regression gate
+        run: cargo run --release --bin golden_ben -- data/ben/unimorph.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng

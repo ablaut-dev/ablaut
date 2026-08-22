@@ -1,0 +1,7 @@
+# Bengali adjudications: slots where UniMorph ben lists a form the
+# engine deliberately does not, and the engine's form is the standard
+# one. Format: lemma <tab> features <tab> ruling ("ours" = our form
+# stands, "both" = both accepted). "*" applies the ruling to every slot
+# of that lemma.
+#
+# (none yet — the engine matches every scored UniMorph form.)
