@@ -934,6 +934,9 @@ const P9: [&str; 9] = [
     "1sg", "2sg", "3sg", "1du", "2du", "3du", "1pl", "2pl", "3pl",
 ];
 const P7: [&str; 7] = ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl", "autonomous"];
+const P8_TEL: [&str; 8] = [
+    "1sg", "2sg", "3sg masc", "3sg nonmasc", "1pl", "2pl", "3pl masc", "3pl nonmasc",
+];
 /// Swahili person row: the third person is the class-1/2 animate concord.
 const SWA6: [&str; 6] = ["1sg", "2sg", "cl1", "1pl", "2pl", "cl2"];
 
@@ -1289,6 +1292,7 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.evidential, "evidential", &P6);
             s.row(&t.necessitative, "necessitative", &P6);
             s.row(&t.imperative, "imperative", &["2sg", "2pl"]);
+        }
         Conjugation::Swa(t) => {
             s.one(&t.infinitive, "infinitive");
             s.one(&t.habitual, "habitual");
@@ -1299,6 +1303,7 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.perfect, "perfect", &SWA6);
             s.row(&t.subjunctive, "subjunctive", &SWA6);
             s.row(&t.gnomic, "gnomic", &SWA6);
+        }
         Conjugation::Tam(t) => {
             // Tamil is cited by its root, so no slot is named
             // "infinitive" (that would retarget the lemma); the -ய
@@ -1324,11 +1329,13 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.one(&t.relative_present, "present participle");
             s.one(&t.relative_future, "future participle");
             s.one(&t.conditional, "conditional");
+        }
         Conjugation::Tel(t) => {
             s.row(&t.past, "past", &P8_TEL);
             s.row(&t.present_durative, "present durative", &P8_TEL);
             s.row(&t.future, "future", &P8_TEL);
             s.row(&t.imperative, "imperative", &["2sg", "2pl"]);
+        }
         Conjugation::Tgl(t) => {
             s.one(&t.infinitive, "infinitive");
             s.row(

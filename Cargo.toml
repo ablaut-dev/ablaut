@@ -47,6 +47,9 @@ include = [
     "data/spa/verbs.tsv",
     "data/swa/verbs.tsv",
     "data/swe/parts.tsv",
+    "data/tam/verbs.tsv",
+    "data/tel/verbs.tsv",
+    "data/tgl/verbs.tsv",
     "data/tur/verbs.tsv",
     "data/ukr/verbs.tsv",
 ]

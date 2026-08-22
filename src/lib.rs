@@ -281,14 +281,19 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         ))),
         Lang::Tur => Conjugation::Tur(Box::new(tur::Table::build(
             &tur::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
         Lang::Hin => Conjugation::Hin(Box::new(hin::Table::build(
             &hin::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
         Lang::Swa => Conjugation::Swa(Box::new(swa::Table::build(
             &swa::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
         Lang::Tam => Conjugation::Tam(Box::new(tam::Table::build(
             &tam::Verb::from_root(infinitive).map_err(err)?,
+        ))),
         Lang::Tel => Conjugation::Tel(Box::new(tel::Table::build(
             &tel::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
         Lang::Tgl => Conjugation::Tgl(Box::new(tgl::Table::build(
             &tgl::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
