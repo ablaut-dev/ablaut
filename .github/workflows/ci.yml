@@ -336,5 +336,25 @@ jobs:
         run: ./scripts/hye/fetch_uniparser.sh
       - name: Armenian UniMorph-uniparser agreement gate
         run: cargo run --release --bin golden_hye -- data/hye/uniparser.tsv data/hye/unimorph.tsv --check
+      - name: Cache UniMorph swc
+        id: unimorph-swc
+        uses: actions/cache@v5
+        with:
+          path: data/swa/swc.tsv
+          key: unimorph-swc-v1
+      - name: Fetch UniMorph swc
+        if: steps.unimorph-swc.outputs.cache-hit != 'true'
+        run: ./scripts/swa/fetch_unimorph.sh
+      - name: Cache kaikki swa
+        id: kaikki-swa
+        uses: actions/cache@v5
+        with:
+          path: data/swa/kaikki.tsv
+          key: kaikki-swa-v1
+      - name: Fetch kaikki swa
+        if: steps.kaikki-swa.outputs.cache-hit != 'true'
+        run: ./scripts/swa/fetch_kaikki.sh
+      - name: Swahili swc-kaikki agreement gate
+        run: cargo run --release --bin golden_swa -- data/swa/swc.tsv data/swa/kaikki.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng

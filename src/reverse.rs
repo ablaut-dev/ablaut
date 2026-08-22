@@ -781,13 +781,14 @@ fn ord(lang: Lang) -> usize {
         Lang::Nld => 19,
         Lang::Rus => 20,
         Lang::Hye => 21,
+        Lang::Swa => 22,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 22] = [EMPTY; 22];
+    static INDEXES: [OnceLock<Index>; 23] = [EMPTY; 23];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -817,7 +818,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 21] = [EMPTY; 21];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 23] = [EMPTY; 23];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -907,6 +908,7 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Nld => col1(include_str!("../data/nld/verbs.tsv"), &mut lemmas),
         Lang::Rus => col1(include_str!("../data/rus/verbs.tsv"), &mut lemmas),
         Lang::Hye => col1(include_str!("../data/hye/verbs.tsv"), &mut lemmas),
+        Lang::Swa => col1(include_str!("../data/swa/verbs.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -922,6 +924,8 @@ const P9: [&str; 9] = [
     "1sg", "2sg", "3sg", "1du", "2du", "3du", "1pl", "2pl", "3pl",
 ];
 const P7: [&str; 7] = ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl", "autonomous"];
+/// Swahili person row: the third person is the class-1/2 animate concord.
+const SWA6: [&str; 6] = ["1sg", "2sg", "cl1", "1pl", "2pl", "cl2"];
 
 struct Slots(Vec<(String, String)>);
 
@@ -1243,6 +1247,17 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.past, "past", &P6);
             s.row(&t.subjunctive_present, "subjunctive present", &P6);
             s.row(&t.subjunctive_past, "subjunctive past", &P6);
+        }
+        Conjugation::Swa(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.one(&t.habitual, "habitual");
+            s.row(&t.imperative, "imperative", &["singular", "plural"]);
+            s.row(&t.present, "present", &SWA6);
+            s.row(&t.past, "past", &SWA6);
+            s.row(&t.future, "future", &SWA6);
+            s.row(&t.perfect, "perfect", &SWA6);
+            s.row(&t.subjunctive, "subjunctive", &SWA6);
+            s.row(&t.gnomic, "gnomic", &SWA6);
         }
     }
     s.0
