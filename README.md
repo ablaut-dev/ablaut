@@ -50,7 +50,7 @@ still describe every strong verb in the language.
 German, French, Spanish, Catalan, Portuguese, Italian, Romanian,
 Swedish, English, Danish, Czech, Slovenian, Estonian, Finnish, Irish,
 Ukrainian, Icelandic, Japanese, Korean, Dutch, Russian, Eastern
-Armenian, Turkish, Hindi, Swahili, and Tamil.
+Armenian, Turkish, Hindi, Swahili, Tamil, and Telugu.
 
 Each language is scored against the slots where its two reference
 lexicons agree; the second column is that score.
@@ -83,6 +83,12 @@ lexicons agree; the second column is that score.
 | 🇮🇳 | Hindi | 48,421 | 100.00% |
 | 🇹🇿 | Swahili | 1,134 | 100.00% |
 | 🇮🇳 | Tamil | 31,829 | 100.00% |
+| 🇮🇳 | Telugu † | 1,159 | 100.00% |
+
+† Telugu is scored against UniMorph alone. Its intended second oracle,
+kaikki.org, fills conjugation tables for only ~11 verbs (one shared
+with UniMorph), too few for a two-oracle agreement gate; see
+[`docs/tel/oracles.md`](docs/tel/oracles.md).
 
 Details per language, including which lexicons are used and every
 adjudicated disagreement, live in `docs/{lang}/`.

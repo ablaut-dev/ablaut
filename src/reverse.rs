@@ -1324,6 +1324,10 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.one(&t.relative_present, "present participle");
             s.one(&t.relative_future, "future participle");
             s.one(&t.conditional, "conditional");
+        Conjugation::Tel(t) => {
+            s.row(&t.past, "past", &P8_TEL);
+            s.row(&t.present_durative, "present durative", &P8_TEL);
+            s.row(&t.future, "future", &P8_TEL);
             s.row(&t.imperative, "imperative", &["2sg", "2pl"]);
         }
     }

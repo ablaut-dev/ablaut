@@ -418,5 +418,19 @@ jobs:
         run: ./scripts/tam/fetch_thamizhi.sh
       - name: Tamil kaikki-ThamizhiMorph agreement gate (two-oracle)
         run: cargo run --release --bin golden_tam -- data/tam/thamizhi.tsv data/tam/kaikki.tsv --check
+      - name: Cache UniMorph tel
+        id: unimorph-tel
+        uses: actions/cache@v5
+        with:
+          path: data/tel/unimorph.tsv
+          key: unimorph-tel-v1
+      - name: Fetch UniMorph tel
+        if: steps.unimorph-tel.outputs.cache-hit != 'true'
+        run: ./scripts/tel/fetch_unimorph.sh
+      # Telugu is scored against UniMorph alone: kaikki tabulates only a
+      # dozen verbs (one shared with UniMorph), too few for an agreement
+      # gate — see docs/tel/oracles.md.
+      - name: Telugu golden harness with regression gate
+        run: cargo run --release --bin golden_tel -- data/tel/unimorph.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng

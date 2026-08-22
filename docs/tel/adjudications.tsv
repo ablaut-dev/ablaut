@@ -1,0 +1,44 @@
+# Telugu adjudications: slots where UniMorph tel mislabels the tense or
+# leaks a non-verb, so the engine's (correct) form is counted right.
+# Format: lemma <tab> features <tab> ruling ("ours" = our form stands).
+# "*" applies the ruling to every slot of that lemma.
+#
+# Each was confirmed by reading the raw UniMorph entry: the listed
+# forms are well-formed Telugu, just filed under the wrong tense.
+#
+# Whole entries whose PST and PRS;DUR/FUT columns are swapped or whose
+# tense labels are uniformly wrong:
+చంపు	*	ours	PST and PRS;DUR labels swapped (చంపుతాను "will kill" tagged PST)
+పట్టు	*	ours	every slot tagged PRS;DUR but holds the past form (పట్టాను)
+తేలు	*	ours	every slot tagged PST but holds the present-durative (తేలుతున్నాను)
+నూరు	*	ours	every slot tagged PST but holds the present-durative (నూరుతున్నాను)
+కట్టు	*	ours	entry corrupted: person slots shifted, noun senses (మంత్రకట్టు) in the 3pl slot
+#
+# Entries whose past is correct but whose present-durative column holds
+# past forms:
+పుట్టు	V;1;SG;PRS;DUR	ours	past form under PRS;DUR
+పుట్టు	V;2;SG;PRS;DUR	ours	past form under PRS;DUR
+పుట్టు	V;3;MASC;SG;PRS;DUR	ours	past form under PRS;DUR
+పుట్టు	V;3;FEM;SG;PRS;DUR	ours	past form under PRS;DUR
+పుట్టు	V;1;PL;PRS;DUR	ours	past form under PRS;DUR
+పుట్టు	V;2;PL;PRS;DUR	ours	past form under PRS;DUR
+పుట్టు	V;3;MASC;PL;PRS;DUR	ours	past form under PRS;DUR
+పుట్టు	V;3;FEM;PL;PRS;DUR	ours	past form under PRS;DUR
+నాటు	V;1;SG;PRS;DUR	ours	past form under PRS;DUR
+నాటు	V;2;SG;PRS;DUR	ours	past form under PRS;DUR
+నాటు	V;3;MASC;SG;PRS;DUR	ours	past form under PRS;DUR
+నాటు	V;3;FEM;SG;PRS;DUR	ours	past form under PRS;DUR
+నాటు	V;1;PL;PRS;DUR	ours	past form under PRS;DUR
+నాటు	V;2;PL;PRS;DUR	ours	past form under PRS;DUR
+నాటు	V;3;MASC;PL;PRS;DUR	ours	past form under PRS;DUR
+నాటు	V;3;FEM;PL;PRS;DUR	ours	past form under PRS;DUR
+#
+# Entry whose past column holds present-durative forms:
+ప్రవహించు	V;1;SG;PST	ours	present-durative form under PST
+ప్రవహించు	V;2;SG;PST	ours	present-durative form under PST
+ప్రవహించు	V;3;MASC;SG;PST	ours	present-durative form under PST
+ప్రవహించు	V;3;FEM;SG;PST	ours	present-durative form under PST
+ప్రవహించు	V;1;PL;PST	ours	present-durative form under PST
+ప్రవహించు	V;2;PL;PST	ours	present-durative form under PST
+ప్రవహించు	V;3;MASC;PL;PST	ours	present-durative form under PST
+ప్రవహించు	V;3;FEM;PL;PST	ours	present-durative form under PST

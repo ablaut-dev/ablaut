@@ -1,0 +1,48 @@
+# Telugu irregular verb stems.
+#
+# The productive rules in src/tel.rs build three tense stems off the
+# citation form (the root, ending in -ు): the past stem, the
+# present-durative stem (root + -తున్న) and the future stem
+# (root + -తా). Three sub-rules cover the regular deviations — the
+# nasal -ను class (కను → కన్న, 3sg-nonmasc కన్నది), the -యు class
+# whose past takes -శ- (చేయు → చేశాను, చేసింది), and the causative
+# -ించు class whose present/future take -స్తు-/-స్తా-. What is left
+# is stored here.
+#
+# Columns: a `-` cell falls through to the rule.
+#   lemma  past_stem  past_3sg_nonmasc  prs_stem  fut_stem  fut_3sg_nonmasc
+#
+# past_3sg_nonmasc / fut_3sg_nonmasc are full forms for the one slot
+# (3rd person singular non-masculine) whose ending is idiosyncratic; a
+# `-` there means build it from the stem by rule.
+#
+# Vowel-syncope pasts: the penultimate -ు- raises to -ి- and the
+# root vowel drops (అరుచు → అరిచ-, కడుగు → కడిగ-). These are lexical,
+# so the past stem is stored.
+అరుచు	అరిచ	-	-	-	-
+కడుగు	కడిగ	-	-	-	-
+గెలుచు	గెలిచ	-	-	-	-
+జరుగు	జరిగ	-	-	-	-
+పెరుగు	పెరిగ	-	-	-	-
+చదువు	చదివ	-	-	-	-
+అడుగు	అడిగ	-	-	-	-
+కలుపు	కలిప	-	-	-	-
+# పోవు "go" → past stem పోయ- (here in the compound మోసపోవు "be deceived").
+మోసపోవు	మోసపోయ	-	-	-	-
+# ఉండు "be, stay": suppletive-ish past stem ఉన్న-, non-masc 3sg ఉన్నది.
+ఉండు	ఉన్న	ఉన్నది	-	-	-
+# పుట్టు "be born": regular past, but the non-masc 3sg keeps the older
+# -ినది spelling alongside the productive -ింది.
+పుట్టు	-	పుట్టినది	-	-	-
+# తిను "eat": past is the regular nasal (తిన్న-, తిన్నది), but the
+# present/future stems geminate to -ంట- (తింటున్న-, తింటా-).
+తిను	-	-	తింటున్న	తింటా	-
+# వెళ్లు "go": present stem degeminates to వెళు-.
+వెళ్లు	-	-	వెళుతున్న	-	-
+# ఆడు "play": future drops the root -ు- (ఆడతాను) and the non-masc 3sg
+# is ఆడతాది rather than the productive ఆడతుంది.
+ఆడు	-	-	-	ఆడతా	ఆడతాది
+# ఇచ్చు "give": present/future contract to ఇస్తు-/ఇస్తా- (ఇస్తాను).
+ఇచ్చు	-	-	ఇస్తున్న	ఇస్తా	-
+# పోవు "go": past stem పోయ-, present/future పోతున్న-/పోతా- (పోతాను).
+పోవు	పోయ	-	పోతున్న	పోతా	-

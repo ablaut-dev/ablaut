@@ -507,6 +507,38 @@ impl From<crate::kor::Table> for KoreanConjugation {
     }
 }
 
+/// The finite conjugation of one Telugu verb (see `ablaut::tel`).
+/// Every row is [1sg, 2sg, 3sg-masc, 3sg-nonmasc, 1pl, 2pl, 3pl-masc,
+/// 3pl-nonmasc].
+#[pyclass(get_all, frozen)]
+struct TeluguConjugation {
+    infinitive: String,
+    past: Vec<String>,
+    present_durative: Vec<String>,
+    future: Vec<String>,
+    /// [2sg, 2pl].
+    imperative: Vec<String>,
+}
+
+#[pymethods]
+impl TeluguConjugation {
+    fn __repr__(&self) -> String {
+        format!("TeluguConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::tel::Table> for TeluguConjugation {
+    fn from(t: crate::tel::Table) -> Self {
+        TeluguConjugation {
+            infinitive: t.infinitive,
+            past: t.past.to_vec(),
+            present_durative: t.present_durative.to_vec(),
+            future: t.future.to_vec(),
+            imperative: t.imperative.to_vec(),
+        }
+    }
+}
+
 /// The finite conjugation of one Russian verb. Person rows are
 /// [я, ты, он/она/оно, мы, вы, они].
 #[pyclass(get_all, frozen)]
@@ -1352,6 +1384,10 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
             let v = crate::tam::Verb::from_root(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
             Ok(TamilConjugation::from(crate::tam::Table::build(&v))
+        Some(crate::Lang::Tel) => {
+            let v = crate::tel::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(TeluguConjugation::from(crate::tel::Table::build(&v))
                 .into_pyobject(py)?
                 .into())
         }
@@ -1387,6 +1423,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<JapaneseConjugation>()?;
     m.add_class::<SwahiliConjugation>()?;
     m.add_class::<TamilConjugation>()?;
+    m.add_class::<TeluguConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())
 }
