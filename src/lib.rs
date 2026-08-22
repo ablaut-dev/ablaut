@@ -20,6 +20,7 @@ pub mod est;
 pub mod fin;
 pub mod fra;
 pub mod gle;
+pub mod guj;
 #[doc(hidden)]
 pub mod harness;
 pub mod hin;
@@ -114,6 +115,8 @@ pub enum Lang {
     Tel,
     /// Tagalog.
     Tgl,
+    /// Gujarati.
+    Guj,
 }
 
 impl Lang {
@@ -150,6 +153,7 @@ impl Lang {
             "ta" | "tam" | "tamil" => Some(Self::Tam),
             "te" | "tel" | "telugu" => Some(Self::Tel),
             "tl" | "tgl" | "tagalog" | "filipino" => Some(Self::Tgl),
+            "gu" | "guj" | "gujarati" | "gujrati" => Some(Self::Guj),
             _ => None,
         }
     }
@@ -191,6 +195,7 @@ pub enum Conjugation {
     Tam(Box<tam::Table>),
     Tel(Box<tel::Table>),
     Tgl(Box<tgl::Table>),
+    Guj(Box<guj::Table>),
 }
 
 /// Why `conjugate` failed: the input is not a known verb shape in
@@ -297,6 +302,9 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         Lang::Tgl => Conjugation::Tgl(Box::new(tgl::Table::build(
             &tgl::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
+        Lang::Guj => Conjugation::Guj(Box::new(guj::Table::build(
+            &guj::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
     })
 }
 
@@ -334,6 +342,7 @@ mod facade_tests {
             ("soma", Lang::Swa),
             ("అమ్ము", Lang::Tel),
             ("sulat", Lang::Tgl),
+            ("કરવું", Lang::Guj),
         ];
         for (verb, lang) in cases {
             assert!(conjugate(verb, lang).is_ok(), "{verb}");

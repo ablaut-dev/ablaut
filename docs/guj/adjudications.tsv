@@ -1,0 +1,9 @@
+# Gujarati adjudications: slots where UniMorph guj mechanically
+# regularizes a suppletive verb, so the engine's (correct) form is
+# counted right. Format: lemma <tab> features <tab> ruling ("ours" = our
+# form stands). "*" applies the ruling to every slot of that lemma.
+#
+# જવું "go" is suppletive (past ગયું, present stem જા-); UniMorph
+# regularizes it off the bare stem જ (જયું, જઉં, જય…). Every cell where
+# the engine's correct form differs is ruled ours.
+જવું	*	ours	suppletive verb regularized by UniMorph (correct: ગયું, જાય, જા…)

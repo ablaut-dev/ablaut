@@ -1,0 +1,27 @@
+# Gujarati irregular verbs.
+#
+# The rule engine (src/guj.rs) handles the open class off the stem
+# (infinitive minus -વું); this table carries the few verbs whose
+# present stem, future or perfective (past) participle is not
+# predictable. A `-` group falls through to the rule; the imperfective
+# participle and the conditional -ત form stay regular for every verb.
+#
+# Columns:
+#   lemma
+#   present     1sg,2sg,3,1pl,2pl
+#   future      1sg,2sg,3,1pl,2pl
+#   perfective  masc.sg,masc.pl,fem,neut.sg,neut.pl
+#   imperative  2sg,2pl,polite.sg,polite.pl
+#   conjunctive (perfective converb)
+#
+# જવું "go" is suppletive in the past (ગયું) and has the present stem
+# જા-; લેવું/દેવું "take/give" have the -ધ- past and the લે-/દે- present;
+# ખાવું "eat" is regular except for the -ધ- past; થવું "become" has the
+# present stem થા- and the past થયું.
+#
+# lemma	present	future	perfective	imperative	conjunctive
+જવું	જાઉં,જાય,જાય,જઈએ,જાઓ	જઈશ,જઈશ,જશે,જઈશું,જશો	ગયો,ગયા,ગઈ,ગયું,ગયાં	જા,જાઓ,જજે,જજો	જઈ
+ખાવું	-	-	ખાધો,ખાધા,ખાધી,ખાધું,ખાધાં	-	-
+થવું	થાઉં,થાય,થાય,થઈએ,થાઓ	થઈશ,થઈશ,થશે,થઈશું,થશો	થયો,થયા,થઈ,થયું,થયાં	થા,થાઓ,થજે,થજો	થઈ
+લેવું	લઉં,લે,લે,લઈએ,લો	લઈશ,લઈશ,લેશે,લઈશું,લેશો	લીધો,લીધા,લીધી,લીધું,લીધાં	લે,લો,લેજે,લેજો	લઈ
+દેવું	દઉં,દે,દે,દઈએ,દો	દઈશ,દઈશ,દેશે,દઈશું,દેશો	દીધો,દીધા,દીધી,દીધું,દીધાં	દે,દો,દેજે,દેજો	દઈ
