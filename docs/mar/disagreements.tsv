@@ -1,0 +1,4 @@
+# Oracle-vs-oracle disagreements and their resolution.
+# lemma	features	resolution	note
+# resolution: variant (both standard) | o1 (apertium) | o2 (kaikki) | neither
+होणे	V;NFIN	o2	apertium truncates the infinitive to होण; kaikki's होणे/होणं is the standard form.

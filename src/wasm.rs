@@ -180,6 +180,11 @@ pub fn conjugate(infinitive: &str, lang: Option<String>) -> Result<JsValue, JsEr
                 .map_err(|e| JsError::new(&e.to_string()))?;
             Ok(serde_wasm_bindgen::to_value(&crate::ben::Table::build(&v))?)
         }
+        Some(crate::Lang::Mar) => {
+            let v = crate::mar::Verb::from_infinitive(infinitive)
+                .map_err(|e| JsError::new(&e.to_string()))?;
+            Ok(serde_wasm_bindgen::to_value(&crate::mar::Table::build(&v))?)
+        }
         None => Err(JsError::new(&format!("unknown language: {lang}"))),
     }
 }
