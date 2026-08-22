@@ -790,13 +790,14 @@ fn ord(lang: Lang) -> usize {
         Lang::Pes => 28,
         Lang::Kan => 29,
         Lang::Guj => 30,
+        Lang::Ben => 31,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 31] = [EMPTY; 31];
+    static INDEXES: [OnceLock<Index>; 32] = [EMPTY; 32];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -826,7 +827,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 31] = [EMPTY; 31];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 32] = [EMPTY; 32];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -925,6 +926,7 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Pes => col1(include_str!("../data/pes/verbs.tsv"), &mut lemmas),
         Lang::Kan => col1(include_str!("../data/kan/verbs.tsv"), &mut lemmas),
         Lang::Guj => col1(include_str!("../data/guj/verbs.tsv"), &mut lemmas),
+        Lang::Ben => col1(include_str!("../data/ben/verbs.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -954,6 +956,8 @@ const P8_TEL: [&str; 8] = [
 const SWA6: [&str; 6] = ["1sg", "2sg", "cl1", "1pl", "2pl", "cl2"];
 /// Gujarati present/future row: the third person does not split sg/pl.
 const P5_GUJ: [&str; 5] = ["1sg", "2sg", "3", "1pl", "2pl"];
+/// Bengali person × honorific row: [আমি, তুই, তুমি, সে, আপনি].
+const BEN5: [&str; 5] = ["1", "2 intimate", "2 familiar", "3", "honorific"];
 
 struct Slots(Vec<(String, String)>);
 
@@ -1389,6 +1393,20 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.future, "future", &P10_KAN);
             s.row(&t.imperative, "imperative", &["2sg", "2pl"]);
         }
+        Conjugation::Ben(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.one(&t.verbal_infinitive, "verbal infinitive");
+            s.one(&t.perfective, "perfective participle");
+            s.one(&t.conditional, "conditional");
+            s.row(&t.present, "present", &BEN5);
+            s.row(&t.past, "past", &BEN5);
+            s.row(&t.future, "future", &BEN5);
+            s.row(&t.habitual, "habitual", &BEN5);
+            s.row(&t.present_progressive, "present progressive", &BEN5);
+            s.row(&t.past_progressive, "past progressive", &BEN5);
+            s.row(&t.present_perfect, "present perfect", &BEN5);
+            s.row(&t.past_perfect, "past perfect", &BEN5);
+        }
         Conjugation::Guj(t) => {
             s.one(&t.infinitive, "infinitive");
             s.one(&t.verbal_noun, "verbal noun");
@@ -1494,6 +1512,10 @@ mod tests {
         // Gujarati: the suppletive past ગયું reverses to જવું.
         assert!(infs("ગયું", Lang::Guj).contains(&"જવું".to_string()));
         assert!(infs("લીધું", Lang::Guj).contains(&"લેવું".to_string()));
+        // Bengali: the suppletive past গেলাম and perfect গিয়ে reverse
+        // to যাওয়া "go"; the raised present কিনি reverses to কেনা.
+        assert!(infs("গেলাম", Lang::Ben).contains(&"যাওয়া".to_string()));
+        assert!(infs("কিনি", Lang::Ben).contains(&"কেনা".to_string()));
     }
 
     #[test]

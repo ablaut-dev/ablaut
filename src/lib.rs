@@ -11,6 +11,7 @@
 //! *wissen*), and three stored suppletives (*sein*, *werden*, *tun*).
 //! Everything irregular lives in `data/deu/verbs.tsv`, compiled in.
 
+pub mod ben;
 pub mod cat;
 pub mod ces;
 pub mod dan;
@@ -124,6 +125,8 @@ pub enum Lang {
     Kan,
     /// Gujarati.
     Guj,
+    /// Bengali.
+    Ben,
 }
 
 impl Lang {
@@ -163,6 +166,7 @@ impl Lang {
             "fa" | "pes" | "per" | "fas" | "persian" | "farsi" => Some(Self::Pes),
             "kn" | "kan" | "kannada" => Some(Self::Kan),
             "gu" | "guj" | "gujarati" | "gujrati" => Some(Self::Guj),
+            "bn" | "ben" | "bengali" | "bangla" => Some(Self::Ben),
             _ => None,
         }
     }
@@ -207,6 +211,7 @@ pub enum Conjugation {
     Pes(Box<pes::Table>),
     Kan(Box<kan::Table>),
     Guj(Box<guj::Table>),
+    Ben(Box<ben::Table>),
 }
 
 /// Why `conjugate` failed: the input is not a known verb shape in
@@ -322,6 +327,9 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         Lang::Guj => Conjugation::Guj(Box::new(guj::Table::build(
             &guj::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
+        Lang::Ben => Conjugation::Ben(Box::new(ben::Table::build(
+            &ben::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
     })
 }
 
@@ -362,6 +370,7 @@ mod facade_tests {
             ("کردن", Lang::Pes),
             ("ಮಾಡು", Lang::Kan),
             ("કરવું", Lang::Guj),
+            ("করা", Lang::Ben),
         ];
         for (verb, lang) in cases {
             assert!(conjugate(verb, lang).is_ok(), "{verb}");
