@@ -502,5 +502,34 @@ jobs:
       # a separate spot check.
       - name: Gujarati golden harness with regression gate
         run: cargo run --release --bin golden_guj -- data/guj/unimorph.tsv --check
+      - name: Install lttoolbox (apertium-mar oracle)
+        run: sudo apt-get update && sudo apt-get install -y lttoolbox
+      - name: Cache apertium-mar
+        id: apertium-mar
+        uses: actions/cache@v5
+        with:
+          path: data/mar/apertium.tsv
+          key: apertium-mar-v1
+      - name: Fetch apertium-mar (primary oracle)
+        if: steps.apertium-mar.outputs.cache-hit != 'true'
+        run: ./scripts/mar/fetch_apertium.sh
+      - name: Cache kaikki mar
+        id: kaikki-mar
+        uses: actions/cache@v5
+        with:
+          path: data/mar/kaikki.tsv
+          key: kaikki-mar-v1
+      - name: Fetch kaikki mar
+        if: steps.kaikki-mar.outputs.cache-hit != 'true'
+        run: ./scripts/mar/fetch_kaikki.sh
+      # Marathi is scored against apertium-mar, a fully person/gender/
+      # number-tagged hand-built FST (Beta): kaikki mar lost person/number
+      # on its finite cells, so it forms a per-cell agreement loop over the
+      # non-finite forms only and corroborates the finite paradigm at the
+      # set level — see docs/mar/oracles.md.
+      - name: Marathi golden harness with regression gate
+        run: cargo run --release --bin golden_mar -- data/mar/apertium.tsv --check
+      - name: Marathi apertium-kaikki non-finite agreement gate (two-oracle)
+        run: cargo run --release --bin golden_mar -- data/mar/apertium.tsv data/mar/kaikki.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng

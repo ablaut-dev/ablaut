@@ -40,6 +40,7 @@ include = [
     "data/jpn/verbs.tsv",
     "data/kan/verbs.tsv",
     "data/kor/verbs.tsv",
+    "data/mar/verbs.tsv",
     "data/por/classes.tsv",
     "data/por/verbs.tsv",
     "data/ron/classes.tsv",

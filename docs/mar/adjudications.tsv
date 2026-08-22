@@ -1,0 +1,3 @@
+# Adjudications: cells where the engine is right and the oracle is wrong.
+# lemma	features	ruling	note
+होणे	V;NFIN	ours	apertium-mar cites the infinitive as होण (a truncation bug); the standard Marathi infinitive is होणे, confirmed by kaikki.
