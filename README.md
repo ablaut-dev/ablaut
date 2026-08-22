@@ -9,7 +9,7 @@
 
 <h1 align="center">ablaut</h1>
 
-<p align="center">Fast, correct verb conjugation for 21 languages.</p>
+<p align="center">Fast, correct verb conjugation for 20+ languages.</p>
 
 <br>
 
