@@ -49,8 +49,8 @@ still describe every strong verb in the language.
 
 German, French, Spanish, Catalan, Portuguese, Italian, Romanian,
 Swedish, English, Danish, Czech, Slovenian, Estonian, Finnish, Irish,
-Ukrainian, Icelandic, Japanese, Korean, Dutch, Russian, and Eastern
-Armenian.
+Ukrainian, Icelandic, Japanese, Korean, Dutch, Russian, Eastern
+Armenian, and Turkish.
 
 Each language is scored against the slots where its two reference
 lexicons agree; the second column is that score.
@@ -79,6 +79,7 @@ lexicons agree; the second column is that score.
 | 🇳🇱 | Dutch | 27,836 | 100.00% |
 | 🇷🇺 | Russian | 151,942 | 99.98% |
 | 🇦🇲 | Armenian | 50,521 | 100.00% |
+| 🇹🇷 | Turkish | 44,156 | 100.00% |
 
 Details per language, including which lexicons are used and every
 adjudicated disagreement, live in `docs/{lang}/`.

@@ -1,0 +1,11 @@
+# Core Turkish irregulars the two oracles' overlap does not attest, so no
+# agreement exists to mine them (gitmek and etmek are absent from UniMorph
+# tur; tatmak and yemek from the shared set). Supplied by hand from the
+# standard grammar; merged by scripts/tur/mine_verbs.py, where a manual
+# row wins over anything mined for the same lemma.
+#
+# lemma	aorist	progressive	future	past	evidential	necessitative	imp_sg	imp_pl
+gitmek	gider	gidiyor	gidecek	gitti	gitmiş	gitmeli	git	gidin
+etmek	eder	ediyor	edecek	etti	etmiş	etmeli	et	edin
+tatmak	tadar	tadıyor	tadacak	tattı	tatmış	tatmalı	tat	tadın
+yemek	yer	yiyor	yiyecek	yedi	yemiş	yemeli	ye	yiyin

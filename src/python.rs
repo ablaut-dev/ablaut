@@ -371,6 +371,43 @@ impl From<crate::hye::Table> for ArmenianConjugation {
     }
 }
 
+/// The conjugation of one Turkish verb (see `ablaut::tur`). Person rows
+/// are [ben, sen, o, biz, siz, onlar]; the imperative is
+/// [2sg, 2pl]. Rows are affirmative.
+#[pyclass(get_all, frozen)]
+struct TurkishConjugation {
+    infinitive: String,
+    aorist: [String; 6],
+    progressive: [String; 6],
+    future: [String; 6],
+    past: [String; 6],
+    evidential: [String; 6],
+    necessitative: [String; 6],
+    imperative: [String; 2],
+}
+
+#[pymethods]
+impl TurkishConjugation {
+    fn __repr__(&self) -> String {
+        format!("TurkishConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::tur::Table> for TurkishConjugation {
+    fn from(t: crate::tur::Table) -> Self {
+        TurkishConjugation {
+            infinitive: t.infinitive,
+            aorist: t.aorist,
+            progressive: t.progressive,
+            future: t.future,
+            past: t.past,
+            evidential: t.evidential,
+            necessitative: t.necessitative,
+            imperative: t.imperative,
+        }
+    }
+}
+
 /// The four whole-word surface forms of one Korean verb (see
 /// `ablaut::kor`).
 #[pyclass(get_all, frozen)]
@@ -1186,6 +1223,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Tur) => {
+            let v = crate::tur::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(TurkishConjugation::from(crate::tur::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         None => Err(PyValueError::new_err(format!("unknown language: {lang}"))),
     }
 }
@@ -1200,6 +1244,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<DutchConjugation>()?;
     m.add_class::<ArmenianConjugation>()?;
     m.add_class::<KoreanConjugation>()?;
+    m.add_class::<TurkishConjugation>()?;
     m.add_class::<PortugueseConjugation>()?;
     m.add_class::<RomanianConjugation>()?;
     m.add_class::<EnglishConjugation>()?;
