@@ -36,6 +36,7 @@ include = [
     "data/ita/strong.tsv",
     "data/ita/verbs.tsv",
     "data/jpn/verbs.tsv",
+    "data/kan/verbs.tsv",
     "data/kor/verbs.tsv",
     "data/por/classes.tsv",
     "data/por/verbs.tsv",
