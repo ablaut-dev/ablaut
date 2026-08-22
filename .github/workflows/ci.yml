@@ -432,6 +432,26 @@ jobs:
       # gate — see docs/tel/oracles.md.
       - name: Telugu golden harness with regression gate
         run: cargo run --release --bin golden_tel -- data/tel/unimorph.tsv --check
+      - name: Cache UniMorph kan
+        id: unimorph-kan
+        uses: actions/cache@v5
+        with:
+          path: data/kan/unimorph.tsv
+          key: unimorph-kan-v1
+      - name: Fetch UniMorph kan
+        if: steps.unimorph-kan.outputs.cache-hit != 'true'
+        run: ./scripts/kan/fetch_unimorph.sh
+      - name: Cache kaikki kan
+        id: kaikki-kan
+        uses: actions/cache@v5
+        with:
+          path: data/kan/kaikki.tsv
+          key: kaikki-kan-v1
+      - name: Fetch kaikki kan
+        if: steps.kaikki-kan.outputs.cache-hit != 'true'
+        run: ./scripts/kan/fetch_kaikki.sh
+      - name: Kannada UniMorph-kaikki agreement gate (two-oracle)
+        run: cargo run --release --bin golden_kan -- data/kan/unimorph.tsv data/kan/kaikki.tsv --check
       - name: Cache UniMorph tgl
         id: unimorph-tgl
         uses: actions/cache@v5
@@ -452,5 +472,35 @@ jobs:
         run: ./scripts/tgl/fetch_kaikki.sh
       - name: Tagalog UniMorph-kaikki agreement gate
         run: cargo run --release --bin golden_tgl -- data/tgl/kaikki.tsv data/tgl/unimorph.tsv --check
+      - name: Cache kaikki pes
+        id: kaikki-pes
+        uses: actions/cache@v5
+        with:
+          path: data/pes/kaikki.tsv
+          key: kaikki-pes-v1
+      - name: Fetch kaikki pes
+        if: steps.kaikki-pes.outputs.cache-hit != 'true'
+        run: ./scripts/pes/fetch_kaikki.sh
+      - name: Install lttoolbox (apertium-pes oracle)
+        run: sudo apt-get update && sudo apt-get install -y lttoolbox
+      - name: Fetch apertium-pes (second oracle)
+        run: ./scripts/pes/fetch_apertium.sh
+      - name: Persian kaikki-apertium agreement gate (two-oracle)
+        run: cargo run --release --bin golden_pes -- data/pes/kaikki.tsv data/pes/apertium.tsv --check
+      - name: Cache UniMorph guj
+        id: unimorph-guj
+        uses: actions/cache@v5
+        with:
+          path: data/guj/unimorph.tsv
+          key: unimorph-guj-v1
+      - name: Fetch UniMorph guj
+        if: steps.unimorph-guj.outputs.cache-hit != 'true'
+        run: ./scripts/guj/fetch_unimorph.sh
+      # Gujarati is scored against UniMorph alone: kaikki guj is the same
+      # English-Wiktionary lineage (the gu-conj template), not an
+      # independent agreement partner — see docs/guj/oracles.md. kaikki is
+      # a separate spot check.
+      - name: Gujarati golden harness with regression gate
+        run: cargo run --release --bin golden_guj -- data/guj/unimorph.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng

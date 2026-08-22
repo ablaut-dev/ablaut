@@ -516,6 +516,48 @@ impl From<crate::tgl::Table> for TagalogConjugation {
     }
 }
 
+/// The conjugation of one Gujarati verb (see `ablaut::guj`). Person
+/// rows are [1sg, 2sg, 3, 1pl, 2pl] (the third person does not split
+/// singular from plural); participle rows are [masc sg, masc pl, fem,
+/// neut sg, neut pl]; the imperative is [2sg, 2pl, polite sg, polite pl].
+#[pyclass(get_all, frozen)]
+struct GujaratiConjugation {
+    infinitive: String,
+    verbal_noun: String,
+    conjunctive: String,
+    consecutive: String,
+    present: [String; 5],
+    future: [String; 5],
+    imperative: [String; 4],
+    perfective: [String; 5],
+    imperfective: [String; 5],
+    present_progressive: [String; 5],
+}
+
+#[pymethods]
+impl GujaratiConjugation {
+    fn __repr__(&self) -> String {
+        format!("GujaratiConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::guj::Table> for GujaratiConjugation {
+    fn from(t: crate::guj::Table) -> Self {
+        GujaratiConjugation {
+            infinitive: t.infinitive,
+            verbal_noun: t.verbal_noun,
+            conjunctive: t.conjunctive,
+            consecutive: t.consecutive,
+            present: t.present,
+            future: t.future,
+            imperative: t.imperative,
+            perfective: t.perfective,
+            imperfective: t.imperfective,
+            present_progressive: t.present_progressive,
+        }
+    }
+}
+
 /// The four whole-word surface forms of one Korean verb (see
 /// `ablaut::kor`).
 #[pyclass(get_all, frozen)]
@@ -572,6 +614,38 @@ impl From<crate::tel::Table> for TeluguConjugation {
             infinitive: t.infinitive,
             past: t.past.to_vec(),
             present_durative: t.present_durative.to_vec(),
+            future: t.future.to_vec(),
+            imperative: t.imperative.to_vec(),
+        }
+    }
+}
+
+/// The finite conjugation of one Kannada verb (see `ablaut::kan`).
+/// Every row is [1sg, 2sg, 3sg-masc, 3sg-fem, 3sg-neut, 1pl, 2pl,
+/// 3pl-masc, 3pl-fem, 3pl-neut].
+#[pyclass(get_all, frozen)]
+struct KannadaConjugation {
+    infinitive: String,
+    past: Vec<String>,
+    present: Vec<String>,
+    future: Vec<String>,
+    /// [2sg, 2pl].
+    imperative: Vec<String>,
+}
+
+#[pymethods]
+impl KannadaConjugation {
+    fn __repr__(&self) -> String {
+        format!("KannadaConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::kan::Table> for KannadaConjugation {
+    fn from(t: crate::kan::Table) -> Self {
+        KannadaConjugation {
+            infinitive: t.infinitive,
+            past: t.past.to_vec(),
+            present: t.present.to_vec(),
             future: t.future.to_vec(),
             imperative: t.imperative.to_vec(),
         }
@@ -1245,6 +1319,57 @@ impl From<crate::swa::Table> for SwahiliConjugation {
     }
 }
 
+/// The conjugation of one Persian verb (see `ablaut::pes`). Person rows
+/// are [1sg, 2sg, 3sg, 1pl, 2pl, 3pl] and affirmative; the imperative is
+/// [2sg, 2pl]. Forms are in normalized Perso-Arabic orthography.
+#[pyclass(get_all, frozen)]
+struct PersianConjugation {
+    infinitive: String,
+    aorist: [String; 6],
+    present: [String; 6],
+    subjunctive: [String; 6],
+    past: [String; 6],
+    imperfect: [String; 6],
+    perfect: [String; 6],
+    pluperfect: [String; 6],
+    future: [String; 6],
+    perfect_subjunctive: [String; 6],
+    present_progressive: [String; 6],
+    past_progressive: [String; 6],
+    imperative: [String; 2],
+    past_participle: String,
+    present_participle: String,
+}
+
+#[pymethods]
+impl PersianConjugation {
+    fn __repr__(&self) -> String {
+        format!("PersianConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::pes::Table> for PersianConjugation {
+    fn from(t: crate::pes::Table) -> Self {
+        PersianConjugation {
+            infinitive: t.infinitive,
+            aorist: t.aorist,
+            present: t.present,
+            subjunctive: t.subjunctive,
+            past: t.past,
+            imperfect: t.imperfect,
+            perfect: t.perfect,
+            pluperfect: t.pluperfect,
+            future: t.future,
+            perfect_subjunctive: t.perfect_subjunctive,
+            present_progressive: t.present_progressive,
+            past_progressive: t.past_progressive,
+            imperative: t.imperative,
+            past_participle: t.past_participle,
+            present_participle: t.present_participle,
+        }
+    }
+}
+
 /// Conjugate an infinitive: `ablaut.conjugate("aufstehen").present[0]`
 /// → "stehe auf", `ablaut.conjugate("parler", lang="fra").present[0]`
 /// → "parle". Raises ValueError for unknown languages and for strings
@@ -1449,6 +1574,27 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Pes) => {
+            let v = crate::pes::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(PersianConjugation::from(crate::pes::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Kan) => {
+            let v = crate::kan::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(KannadaConjugation::from(crate::kan::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Guj) => {
+            let v = crate::guj::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(GujaratiConjugation::from(crate::guj::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         None => Err(PyValueError::new_err(format!("unknown language: {lang}"))),
     }
 }
@@ -1483,6 +1629,9 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<TamilConjugation>()?;
     m.add_class::<TeluguConjugation>()?;
     m.add_class::<TagalogConjugation>()?;
+    m.add_class::<PersianConjugation>()?;
+    m.add_class::<KannadaConjugation>()?;
+    m.add_class::<GujaratiConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())
 }

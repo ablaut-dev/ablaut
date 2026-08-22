@@ -20,6 +20,7 @@ pub mod est;
 pub mod fin;
 pub mod fra;
 pub mod gle;
+pub mod guj;
 #[doc(hidden)]
 pub mod harness;
 pub mod hin;
@@ -27,8 +28,11 @@ pub mod hye;
 pub mod isl;
 pub mod ita;
 pub mod jpn;
+pub mod kan;
 pub mod kor;
 pub mod nld;
+pub mod perso_arabic;
+pub mod pes;
 pub mod por;
 #[cfg(feature = "python")]
 mod python;
@@ -114,6 +118,12 @@ pub enum Lang {
     Tel,
     /// Tagalog.
     Tgl,
+    /// Persian (Farsi).
+    Pes,
+    /// Kannada.
+    Kan,
+    /// Gujarati.
+    Guj,
 }
 
 impl Lang {
@@ -150,6 +160,9 @@ impl Lang {
             "ta" | "tam" | "tamil" => Some(Self::Tam),
             "te" | "tel" | "telugu" => Some(Self::Tel),
             "tl" | "tgl" | "tagalog" | "filipino" => Some(Self::Tgl),
+            "fa" | "pes" | "per" | "fas" | "persian" | "farsi" => Some(Self::Pes),
+            "kn" | "kan" | "kannada" => Some(Self::Kan),
+            "gu" | "guj" | "gujarati" | "gujrati" => Some(Self::Guj),
             _ => None,
         }
     }
@@ -191,6 +204,9 @@ pub enum Conjugation {
     Tam(Box<tam::Table>),
     Tel(Box<tel::Table>),
     Tgl(Box<tgl::Table>),
+    Pes(Box<pes::Table>),
+    Kan(Box<kan::Table>),
+    Guj(Box<guj::Table>),
 }
 
 /// Why `conjugate` failed: the input is not a known verb shape in
@@ -297,6 +313,15 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         Lang::Tgl => Conjugation::Tgl(Box::new(tgl::Table::build(
             &tgl::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
+        Lang::Pes => Conjugation::Pes(Box::new(pes::Table::build(
+            &pes::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Kan => Conjugation::Kan(Box::new(kan::Table::build(
+            &kan::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Guj => Conjugation::Guj(Box::new(guj::Table::build(
+            &guj::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
     })
 }
 
@@ -334,6 +359,9 @@ mod facade_tests {
             ("soma", Lang::Swa),
             ("అమ్ము", Lang::Tel),
             ("sulat", Lang::Tgl),
+            ("کردن", Lang::Pes),
+            ("ಮಾಡು", Lang::Kan),
+            ("કરવું", Lang::Guj),
         ];
         for (verb, lang) in cases {
             assert!(conjugate(verb, lang).is_ok(), "{verb}");
