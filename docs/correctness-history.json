@@ -2,13 +2,14 @@
   {
     "version": "0.8.0",
     "date": "2026-08-22",
-    "languages": 22,
-    "verified_forms": 2914028,
-    "agreed_forms": 2914087,
-    "agreed_pct": 99.998,
+    "languages": 28,
+    "verified_forms": 3041196,
+    "agreed_forms": 3041255,
+    "agreed_pct": 99.9981,
     "tiers": {
-      "Verified": 1,
-      "Verified·gaps": 21
+      "Verified": 3,
+      "Verified·gaps": 24,
+      "Beta": 1
     },
     "per_language": [
       {
@@ -82,6 +83,13 @@
         "tier": "Verified·gaps"
       },
       {
+        "code": "hin",
+        "name": "Hindi",
+        "agreed_pct": 100.0,
+        "agreed_matched": 48421,
+        "tier": "Verified"
+      },
+      {
         "code": "isl",
         "name": "Icelandic",
         "agreed_pct": 100.0,
@@ -152,10 +160,45 @@
         "tier": "Verified·gaps"
       },
       {
+        "code": "swa",
+        "name": "Swahili",
+        "agreed_pct": 100.0,
+        "agreed_matched": 1134,
+        "tier": "Verified"
+      },
+      {
         "code": "swe",
         "name": "Swedish",
         "agreed_pct": 100.0,
         "agreed_matched": 39594,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "tgl",
+        "name": "Tagalog",
+        "agreed_pct": 100.0,
+        "agreed_matched": 469,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "tam",
+        "name": "Tamil",
+        "agreed_pct": 100.0,
+        "agreed_matched": 31829,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "tel",
+        "name": "Telugu",
+        "agreed_pct": 100.0,
+        "agreed_matched": 1159,
+        "tier": "Beta"
+      },
+      {
+        "code": "tur",
+        "name": "Turkish",
+        "agreed_pct": 100.0,
+        "agreed_matched": 44156,
         "tier": "Verified·gaps"
       },
       {
