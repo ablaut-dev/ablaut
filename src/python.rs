@@ -371,6 +371,33 @@ impl From<crate::hye::Table> for ArmenianConjugation {
     }
 }
 
+/// The conjugation of one Tagalog verb (see `ablaut::tgl`). Each voice
+/// row is [perfective, imperfective, contemplated]; `patient` holds
+/// empty strings when the root takes no patient voice.
+#[pyclass(get_all, frozen)]
+struct TagalogConjugation {
+    infinitive: String,
+    actor: [String; 3],
+    patient: [String; 3],
+}
+
+#[pymethods]
+impl TagalogConjugation {
+    fn __repr__(&self) -> String {
+        format!("TagalogConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::tgl::Table> for TagalogConjugation {
+    fn from(t: crate::tgl::Table) -> Self {
+        TagalogConjugation {
+            infinitive: t.infinitive,
+            actor: t.actor,
+            patient: t.patient,
+        }
+    }
+}
+
 /// The four whole-word surface forms of one Korean verb (see
 /// `ablaut::kor`).
 #[pyclass(get_all, frozen)]
@@ -1186,6 +1213,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Tgl) => {
+            let v = crate::tgl::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(TagalogConjugation::from(crate::tgl::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         None => Err(PyValueError::new_err(format!("unknown language: {lang}"))),
     }
 }
@@ -1214,6 +1248,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<UkrainianConjugation>()?;
     m.add_class::<IcelandicConjugation>()?;
     m.add_class::<JapaneseConjugation>()?;
+    m.add_class::<TagalogConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())
 }

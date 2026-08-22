@@ -781,13 +781,14 @@ fn ord(lang: Lang) -> usize {
         Lang::Nld => 19,
         Lang::Rus => 20,
         Lang::Hye => 21,
+        Lang::Tgl => 22,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 22] = [EMPTY; 22];
+    static INDEXES: [OnceLock<Index>; 23] = [EMPTY; 23];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -817,7 +818,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 21] = [EMPTY; 21];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 23] = [EMPTY; 23];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -907,6 +908,10 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Nld => col1(include_str!("../data/nld/verbs.tsv"), &mut lemmas),
         Lang::Rus => col1(include_str!("../data/rus/verbs.tsv"), &mut lemmas),
         Lang::Hye => col1(include_str!("../data/hye/verbs.tsv"), &mut lemmas),
+        // The Tagalog lexicon lists every stored root with its affix
+        // class; the class is unknowable from the surface, so the index
+        // is exactly these roots.
+        Lang::Tgl => col1(include_str!("../data/tgl/verbs.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -1243,6 +1248,19 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.row(&t.past, "past", &P6);
             s.row(&t.subjunctive_present, "subjunctive present", &P6);
             s.row(&t.subjunctive_past, "subjunctive past", &P6);
+        }
+        Conjugation::Tgl(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.row(
+                &t.actor,
+                "actor",
+                &["perfective", "imperfective", "contemplated"],
+            );
+            s.row(
+                &t.patient,
+                "patient",
+                &["perfective", "imperfective", "contemplated"],
+            );
         }
     }
     s.0

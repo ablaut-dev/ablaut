@@ -33,14 +33,14 @@ still describe every strong verb in the language.
 
 - **Measured correctness.** Every language is validated against two
   independent machine-readable lexicons. Where the two sources agree,
-  ablaut has zero known errors in twenty of twenty-two languages; the
+  ablaut has zero known errors in twenty-one of twenty-three languages; the
   remaining disagreements are ruled on in published adjudication logs.
   CI re-checks 3.5 million forms on every change.
 - **Generalizes to unseen verbs.** Rule engines with curated exception
   tables, not lookup dumps: novel verbs (*googeln*, *tweeter*)
   conjugate correctly.
 - **Fast and small.** No I/O, no runtime data files, no dependencies in
-  the core crate. A full table takes microseconds; all twenty-two
+  the core crate. A full table takes microseconds; all twenty-three
   languages fit in one small WebAssembly binary.
 - **Permissively licensed.** MIT OR Apache-2.0. Reference lexicons are
   used at test time only and never shipped.
@@ -49,8 +49,8 @@ still describe every strong verb in the language.
 
 German, French, Spanish, Catalan, Portuguese, Italian, Romanian,
 Swedish, English, Danish, Czech, Slovenian, Estonian, Finnish, Irish,
-Ukrainian, Icelandic, Japanese, Korean, Dutch, Russian, and Eastern
-Armenian.
+Ukrainian, Icelandic, Japanese, Korean, Dutch, Russian, Eastern
+Armenian, and Tagalog.
 
 Each language is scored against the slots where its two reference
 lexicons agree; the second column is that score.
@@ -79,6 +79,14 @@ lexicons agree; the second column is that score.
 | 🇳🇱 | Dutch | 27,836 | 100.00% |
 | 🇷🇺 | Russian | 151,942 | 99.98% |
 | 🇦🇲 | Armenian | 50,521 | 100.00% |
+| 🇵🇭 | Tagalog | 469 | 100.00% |
+
+Tagalog is a work in progress: the aspect × voice paradigm is built with
+a new infixation and reduplication mechanism (see below), and it scores
+100% on the slots where its two lexicons agree — but that agreement set
+is small (138 roots, 469 slots), because the oracles frequently differ
+on *which* voice a root lexicalizes. See
+[`docs/tgl/oracles.md`](docs/tgl/oracles.md) for the honest scope.
 
 Details per language, including which lexicons are used and every
 adjudicated disagreement, live in `docs/{lang}/`.
@@ -118,7 +126,7 @@ v.conjugate(fra::SimpleTense::Future, fra::Person::First, fra::Number::Singular)
 
 Reverse lookup maps a conjugated form back to its infinitive(s) and
 the slots it fills — fully productive for German, English, French and
-Spanish, irregular-index-backed for all 22 languages:
+Spanish, irregular-index-backed for all 23 languages:
 
 ```rust
 use ablaut::{reverse, Lang};

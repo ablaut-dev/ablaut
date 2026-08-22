@@ -336,5 +336,25 @@ jobs:
         run: ./scripts/hye/fetch_uniparser.sh
       - name: Armenian UniMorph-uniparser agreement gate
         run: cargo run --release --bin golden_hye -- data/hye/uniparser.tsv data/hye/unimorph.tsv --check
+      - name: Cache UniMorph tgl
+        id: unimorph-tgl
+        uses: actions/cache@v5
+        with:
+          path: data/tgl/unimorph.tsv
+          key: unimorph-tgl-v1
+      - name: Fetch UniMorph tgl
+        if: steps.unimorph-tgl.outputs.cache-hit != 'true'
+        run: ./scripts/tgl/fetch_unimorph.sh
+      - name: Cache kaikki tgl
+        id: kaikki-tgl
+        uses: actions/cache@v5
+        with:
+          path: data/tgl/kaikki.tsv
+          key: kaikki-tgl-v1
+      - name: Fetch kaikki tgl
+        if: steps.kaikki-tgl.outputs.cache-hit != 'true'
+        run: ./scripts/tgl/fetch_kaikki.sh
+      - name: Tagalog UniMorph-kaikki agreement gate
+        run: cargo run --release --bin golden_tgl -- data/tgl/kaikki.tsv data/tgl/unimorph.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng

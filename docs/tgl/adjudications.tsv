@@ -1,0 +1,3 @@
+# Tagalog adjudications: (lemma, features, ruling) rows counted as
+# correct when ruling is "ours" or "both". Empty for now.
+# lemma	features	ruling
