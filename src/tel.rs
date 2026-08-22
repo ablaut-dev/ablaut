@@ -371,10 +371,7 @@ impl Table {
             past: row(Tense::Past),
             present_durative: row(Tense::PresentDurative),
             future: row(Tense::Future),
-            imperative: [
-                v.imperative(Number::Singular),
-                v.imperative(Number::Plural),
-            ],
+            imperative: [v.imperative(Number::Singular), v.imperative(Number::Plural)],
         }
     }
 }

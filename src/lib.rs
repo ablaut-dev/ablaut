@@ -39,10 +39,10 @@ pub mod slv;
 pub mod spa;
 pub mod swa;
 pub mod swe;
-pub mod tur;
 pub mod tam;
 pub mod tel;
 pub mod tgl;
+pub mod tur;
 pub mod ukr;
 #[cfg(feature = "wasm")]
 mod wasm;

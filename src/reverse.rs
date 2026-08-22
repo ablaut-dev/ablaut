@@ -935,7 +935,14 @@ const P9: [&str; 9] = [
 ];
 const P7: [&str; 7] = ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl", "autonomous"];
 const P8_TEL: [&str; 8] = [
-    "1sg", "2sg", "3sg masc", "3sg nonmasc", "1pl", "2pl", "3pl masc", "3pl nonmasc",
+    "1sg",
+    "2sg",
+    "3sg masc",
+    "3sg nonmasc",
+    "1pl",
+    "2pl",
+    "3pl masc",
+    "3pl nonmasc",
 ];
 /// Swahili person row: the third person is the class-1/2 animate concord.
 const SWA6: [&str; 6] = ["1sg", "2sg", "cl1", "1pl", "2pl", "cl2"];

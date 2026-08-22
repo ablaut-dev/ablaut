@@ -369,7 +369,10 @@ impl Verb {
         let base: String = if polarity == Polarity::Negative {
             format!("{}m", self.stem)
         } else if is_vowel(last_char(&self.stem)) {
-            self.stem.chars().take(self.stem.chars().count() - 1).collect()
+            self.stem
+                .chars()
+                .take(self.stem.chars().count() - 1)
+                .collect()
         } else {
             self.stem.clone()
         };
@@ -405,7 +408,11 @@ impl Verb {
         } else {
             self.stem.clone()
         };
-        let d = if is_voiceless(last_char(&base)) { 't' } else { 'd' };
+        let d = if is_voiceless(last_char(&base)) {
+            't'
+        } else {
+            'd'
+        };
         format!("{base}{d}{}", four(&base))
     }
 
@@ -497,7 +504,11 @@ impl Verb {
         // evidential -mIş; each harmonizes with whatever it attaches to.
         let copula = |base: &str| {
             if past_copula {
-                let d = if is_voiceless(last_char(base)) { 't' } else { 'd' };
+                let d = if is_voiceless(last_char(base)) {
+                    't'
+                } else {
+                    'd'
+                };
                 format!("{d}{}", four(base))
             } else {
                 format!("m{}ş", four(base))
@@ -505,7 +516,11 @@ impl Verb {
         };
         let pred = self.predicative(base_tense, polarity);
         let stacked = format!("{pred}{}", copula(&pred));
-        let mut row = if past_copula { set2(&stacked) } else { set1(&stacked) };
+        let mut row = if past_copula {
+            set2(&stacked)
+        } else {
+            set1(&stacked)
+        };
         // 3pl: -lAr goes on the predicative base, before the copula, and
         // the copula's vowel harmonizes with that -lAr.
         let plural = format!("{pred}l{}r", two(&pred));
@@ -667,7 +682,7 @@ mod tests {
         assert_eq!(g.form(Tense::Future, P1, SG, POS), "geleceğim"); // k→ğ
         assert_eq!(g.form(Tense::Future, P3, SG, POS), "gelecek");
         assert_eq!(g.form(Tense::Necessitative, P1, SG, POS), "gelmeliyim"); // buffer y
-        // Back-harmony verb.
+                                                                             // Back-harmony verb.
         let y = v("yazmak");
         assert_eq!(y.form(Tense::Progressive, P3, SG, POS), "yazıyor");
         assert_eq!(y.form(Tense::Past, P3, SG, POS), "yazdı");

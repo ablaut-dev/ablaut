@@ -121,9 +121,9 @@ fn lexicon() -> &'static HashMap<String, LexEntry> {
             };
             let mut overrides: [Option<String>; 6] = Default::default();
             for (i, slot) in overrides.iter_mut().enumerate() {
-                *slot = c.get(4 + i).and_then(|s| {
-                    (*s != "-" && !s.is_empty()).then(|| (*s).to_string())
-                });
+                *slot = c
+                    .get(4 + i)
+                    .and_then(|s| (*s != "-" && !s.is_empty()).then(|| (*s).to_string()));
             }
             m.insert(
                 c[0].to_string(),
@@ -372,7 +372,11 @@ impl Verb {
             && aspect != Aspect::Contemplated
         {
             let suf = if patient == Patient::An { "an" } else { "" };
-            let base = if aspect == Aspect::Perfective { root } else { &redup };
+            let base = if aspect == Aspect::Perfective {
+                root
+            } else {
+                &redup
+            };
             out.push(format!("ni{base}{suf}"));
         }
         let mut variants = push_variants(form, root);
@@ -414,12 +418,7 @@ impl Table {
     #[must_use]
     pub fn build(v: &Verb) -> Self {
         let row = |focus: Focus| {
-            ASPECTS.map(|a| {
-                v.forms(focus, a)
-                    .into_iter()
-                    .next()
-                    .unwrap_or_default()
-            })
+            ASPECTS.map(|a| v.forms(focus, a).into_iter().next().unwrap_or_default())
         };
         Self {
             infinitive: v.root().to_string(),

@@ -489,7 +489,6 @@ impl From<crate::hin::Table> for HindiConjugation {
     }
 }
 
-
 /// The conjugation of one Tagalog verb (see `ablaut::tgl`). Each voice
 /// row is [perfective, imperfective, contemplated]; `patient` holds
 /// empty strings when the root takes no patient voice.

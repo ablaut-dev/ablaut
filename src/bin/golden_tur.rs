@@ -12,13 +12,7 @@
 use ablaut::harness::{run, Spec};
 use ablaut::tur::{Number, Person, Polarity, Tense, Verb};
 
-const CATEGORIES: [&str; 5] = [
-    "infinitive",
-    "aorist",
-    "tense",
-    "stacked",
-    "imperative",
-];
+const CATEGORIES: [&str; 5] = ["infinitive", "aorist", "tense", "stacked", "imperative"];
 
 fn person(tag: &str) -> Option<Person> {
     match tag {
