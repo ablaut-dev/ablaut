@@ -1,0 +1,170 @@
+[
+  {
+    "version": "0.8.0",
+    "date": "2026-08-22",
+    "languages": 22,
+    "verified_forms": 2914028,
+    "agreed_forms": 2914087,
+    "agreed_pct": 99.998,
+    "tiers": {
+      "Verified": 1,
+      "Verified·gaps": 21
+    },
+    "per_language": [
+      {
+        "code": "hye",
+        "name": "Armenian",
+        "agreed_pct": 100.0,
+        "agreed_matched": 50521,
+        "tier": "Verified"
+      },
+      {
+        "code": "cat",
+        "name": "Catalan",
+        "agreed_pct": 100.0,
+        "agreed_matched": 187186,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "ces",
+        "name": "Czech",
+        "agreed_pct": 100.0,
+        "agreed_matched": 107812,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "dan",
+        "name": "Danish",
+        "agreed_pct": 100.0,
+        "agreed_matched": 20205,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "nld",
+        "name": "Dutch",
+        "agreed_pct": 100.0,
+        "agreed_matched": 27836,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "eng",
+        "name": "English",
+        "agreed_pct": 100.0,
+        "agreed_matched": 74600,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "est",
+        "name": "Estonian",
+        "agreed_pct": 100.0,
+        "agreed_matched": 24184,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "fin",
+        "name": "Finnish",
+        "agreed_pct": 100.0,
+        "agreed_matched": 406209,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "fra",
+        "name": "French",
+        "agreed_pct": 100.0,
+        "agreed_matched": 284034,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "deu",
+        "name": "German",
+        "agreed_pct": 99.985,
+        "agreed_matched": 193038,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "isl",
+        "name": "Icelandic",
+        "agreed_pct": 100.0,
+        "agreed_matched": 5749,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "gle",
+        "name": "Irish",
+        "agreed_pct": 100.0,
+        "agreed_matched": 27404,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "ita",
+        "name": "Italian",
+        "agreed_pct": 100.0,
+        "agreed_matched": 280143,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "jpn",
+        "name": "Japanese",
+        "agreed_pct": 100.0,
+        "agreed_matched": 9421,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "kor",
+        "name": "Korean",
+        "agreed_pct": 100.0,
+        "agreed_matched": 3576,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "por",
+        "name": "Portuguese",
+        "agreed_pct": 100.0,
+        "agreed_matched": 373163,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "ron",
+        "name": "Romanian",
+        "agreed_pct": 100.0,
+        "agreed_matched": 225494,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "rus",
+        "name": "Russian",
+        "agreed_pct": 99.9803,
+        "agreed_matched": 151912,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "slv",
+        "name": "Slovenian",
+        "agreed_pct": 100.0,
+        "agreed_matched": 10757,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "spa",
+        "name": "Spanish",
+        "agreed_pct": 100.0,
+        "agreed_matched": 339200,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "swe",
+        "name": "Swedish",
+        "agreed_pct": 100.0,
+        "agreed_matched": 39594,
+        "tier": "Verified·gaps"
+      },
+      {
+        "code": "ukr",
+        "name": "Ukrainian",
+        "agreed_pct": 100.0,
+        "agreed_matched": 71990,
+        "tier": "Verified·gaps"
+      }
+    ]
+  }
+]
