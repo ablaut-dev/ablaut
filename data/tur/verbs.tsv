@@ -1,0 +1,34 @@
+# Turkish irregular verbs — the stems the productive rules cannot
+# derive.
+#
+# Columns (a `-` falls through to the rule):
+#   lemma  aorist  progressive  future  past  evidential  necessitative  imp_sg  imp_pl
+# The stored cells are 3rd-singular predicative bases; personal
+# endings still derive by rule.
+#
+# Mined from the kaikki ∩ UniMorph agreement for the lemmas the
+# rules miss (empty-table capture, scripts/tur/capture_irregulars.sh).
+# Regenerate: python3 scripts/tur/mine_verbs.py
+#
+# lemma	aorist	progressive	future	past	evidential	necessitative	imp_sg	imp_pl
+almak	alır	alıyor	alacak	aldı	almış	-	al	alın
+azmak	azır	azıyor	azacak	azdı	azmış	-	az	azın
+bilmek	bilir	biliyor	bilecek	bildi	bilmiş	bilmeli	bil	bilin
+bulmak	bulur	buluyor	bulacak	buldu	bulmuş	-	bul	bulun
+demek	der	diyor	diyecek	dedi	demiş	demeli	de	diyin
+durmak	durur	duruyor	duracak	durdu	durmuş	-	dur	durun
+etmek	eder	ediyor	edecek	etti	etmiş	etmeli	et	edin
+gelmek	gelir	geliyor	gelecek	geldi	gelmiş	gelmeli	gel	gelin
+gitmek	gider	gidiyor	gidecek	gitti	gitmiş	gitmeli	git	gidin
+görmek	görür	görüyor	görecek	gördü	görmüş	görmeli	gör	görün
+gütmek	güder	güdüyor	güdecek	güttü	gütmüş	gütmeli	güt	güdün
+kalmak	kalır	kalıyor	kalacak	kaldı	kalmış	-	kal	kalın
+keşfetmek	keşfeder	keşfediyor	keşfedecek	keşfetti	keşfetmiş	keşfetmeli	keşfet	keşfedin
+olmak	olur	oluyor	olacak	oldu	olmuş	-	ol	olun
+sanmak	sanır	sanıyor	sanacak	sandı	sanmış	-	san	sanın
+tatmak	tadar	tadıyor	tadacak	tattı	tatmış	tatmalı	tat	tadın
+varmak	varır	varıyor	varacak	vardı	varmış	-	var	varın
+vermek	verir	veriyor	verecek	verdi	vermiş	vermeli	ver	verin
+vurmak	vurur	vuruyor	vuracak	vurdu	vurmuş	-	vur	vurun
+yemek	yer	yiyor	yiyecek	yedi	yemiş	yemeli	ye	yiyin
+ölmek	ölür	ölüyor	ölecek	öldü	ölmüş	ölmeli	öl	ölün
