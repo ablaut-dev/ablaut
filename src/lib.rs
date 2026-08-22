@@ -37,6 +37,7 @@ pub mod ron;
 pub mod rus;
 pub mod slv;
 pub mod spa;
+pub mod swa;
 pub mod swe;
 pub mod tur;
 pub mod ukr;
@@ -102,6 +103,8 @@ pub enum Lang {
     Tur,
     /// Hindi.
     Hin,
+    /// Swahili.
+    Swa,
 }
 
 impl Lang {
@@ -134,6 +137,7 @@ impl Lang {
             "ja" | "jpn" | "japanese" => Some(Self::Jpn),
             "tr" | "tur" | "turkish" | "türkçe" => Some(Self::Tur),
             "hi" | "hin" | "hindi" => Some(Self::Hin),
+            "sw" | "swa" | "swahili" | "kiswahili" => Some(Self::Swa),
             _ => None,
         }
     }
@@ -171,6 +175,7 @@ pub enum Conjugation {
     Jpn(Box<jpn::Table>),
     Tur(Box<tur::Table>),
     Hin(Box<hin::Table>),
+    Swa(Box<swa::Table>),
 }
 
 /// Why `conjugate` failed: the input is not a known verb shape in
@@ -263,6 +268,8 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
             &tur::Verb::from_infinitive(infinitive).map_err(err)?,
         Lang::Hin => Conjugation::Hin(Box::new(hin::Table::build(
             &hin::Verb::from_infinitive(infinitive).map_err(err)?,
+        Lang::Swa => Conjugation::Swa(Box::new(swa::Table::build(
+            &swa::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
     })
 }
@@ -298,6 +305,7 @@ mod facade_tests {
             ("食べる", Lang::Jpn),
             ("gelmek", Lang::Tur),
             ("उठना", Lang::Hin),
+            ("soma", Lang::Swa),
         ];
         for (verb, lang) in cases {
             assert!(conjugate(verb, lang).is_ok(), "{verb}");

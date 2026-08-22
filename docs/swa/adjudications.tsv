@@ -1,0 +1,3 @@
+# Swahili adjudications: (lemma, features, ruling) where the engine
+# form is judged correct against a mistaken oracle. ruling in {ours,both}.
+# lemma	features	ruling	note

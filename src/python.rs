@@ -1095,6 +1095,50 @@ impl From<crate::isl::Table> for IcelandicConjugation {
     }
 }
 
+/// The person-core conjugation of one Swahili verb. Six-slot rows run
+/// [1sg, 2sg, 3sg (class 1), 1pl, 2pl, 3pl (class 2)]; the full
+/// noun-class matrix is reached through the Rust `swa::Verb::form` API.
+#[pyclass(get_all, frozen)]
+struct SwahiliConjugation {
+    infinitive: String,
+    infinitive_negative: String,
+    /// [singular, plural]
+    imperative: Vec<String>,
+    habitual: String,
+    present: Vec<String>,
+    present_negative: Vec<String>,
+    past: Vec<String>,
+    future: Vec<String>,
+    perfect: Vec<String>,
+    subjunctive: Vec<String>,
+    gnomic: Vec<String>,
+}
+
+#[pymethods]
+impl SwahiliConjugation {
+    fn __repr__(&self) -> String {
+        format!("SwahiliConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::swa::Table> for SwahiliConjugation {
+    fn from(t: crate::swa::Table) -> Self {
+        SwahiliConjugation {
+            infinitive: t.infinitive,
+            infinitive_negative: t.infinitive_negative,
+            imperative: t.imperative.into(),
+            habitual: t.habitual,
+            present: t.present.into(),
+            present_negative: t.present_negative.into(),
+            past: t.past.into(),
+            future: t.future.into(),
+            perfect: t.perfect.into(),
+            subjunctive: t.subjunctive.into(),
+            gnomic: t.gnomic.into(),
+        }
+    }
+}
+
 /// Conjugate an infinitive: `ablaut.conjugate("aufstehen").present[0]`
 /// → "stehe auf", `ablaut.conjugate("parler", lang="fra").present[0]`
 /// → "parle". Raises ValueError for unknown languages and for strings
@@ -1265,6 +1309,10 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
             let v = crate::hin::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
             Ok(HindiConjugation::from(crate::hin::Table::build(&v))
+        Some(crate::Lang::Swa) => {
+            let v = crate::swa::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(SwahiliConjugation::from(crate::swa::Table::build(&v))
                 .into_pyobject(py)?
                 .into())
         }
@@ -1298,6 +1346,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<UkrainianConjugation>()?;
     m.add_class::<IcelandicConjugation>()?;
     m.add_class::<JapaneseConjugation>()?;
+    m.add_class::<SwahiliConjugation>()?;
     m.add_function(wrap_pyfunction!(conjugate, m)?)?;
     Ok(())
 }
