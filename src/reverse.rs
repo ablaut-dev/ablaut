@@ -814,13 +814,14 @@ fn ord(lang: Lang) -> usize {
         Lang::Tat => 52,
         Lang::Ydd => 53,
         Lang::Ara => 54,
+        Lang::Heb => 55,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 55] = [EMPTY; 55];
+    static INDEXES: [OnceLock<Index>; 56] = [EMPTY; 56];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -850,7 +851,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 55] = [EMPTY; 55];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 56] = [EMPTY; 56];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -973,6 +974,7 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Tat => col1(include_str!("../data/tat/parts.tsv"), &mut lemmas),
         Lang::Ydd => col1(include_str!("../data/ydd/parts.tsv"), &mut lemmas),
         Lang::Ara => col1(include_str!("../data/ara/parts.tsv"), &mut lemmas),
+        Lang::Heb => col1(include_str!("../data/heb/parts.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -1797,6 +1799,19 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             {
                 s.opt(f.as_ref(), "form");
             }
+        }
+        Conjugation::Heb(t) => {
+            s.one(&t.lemma, "citation");
+            for f in t
+                .past
+                .iter()
+                .chain(&t.present)
+                .chain(&t.future)
+                .chain(&t.imperative)
+            {
+                s.opt(f.as_ref(), "form");
+            }
+            s.opt(t.infinitive.as_ref(), "infinitive");
         }
     }
     s.0
