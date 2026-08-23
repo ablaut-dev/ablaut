@@ -1178,6 +1178,40 @@ impl From<crate::dan::Table> for DanishConjugation {
     }
 }
 
+/// The full conjugation table of one Norwegian Bokmål verb (single
+/// forms — no person/number agreement).
+#[pyclass(get_all, frozen)]
+struct NorwegianConjugation {
+    infinitive: String,
+    present: Option<String>,
+    past: Option<String>,
+    past_participle: Option<String>,
+    imperative: Option<String>,
+    present_participle: Option<String>,
+    present_passive: Option<String>,
+}
+
+#[pymethods]
+impl NorwegianConjugation {
+    fn __repr__(&self) -> String {
+        format!("NorwegianConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::nob::Table> for NorwegianConjugation {
+    fn from(t: crate::nob::Table) -> Self {
+        NorwegianConjugation {
+            infinitive: t.infinitive,
+            present: t.present,
+            past: t.past,
+            past_participle: t.past_participle,
+            imperative: t.imperative,
+            present_participle: t.present_participle,
+            present_passive: t.present_passive,
+        }
+    }
+}
+
 /// The full conjugation table of one English verb.
 #[pyclass(get_all, frozen)]
 struct EnglishConjugation {
@@ -1627,6 +1661,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Nob) => {
+            let v = crate::nob::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(NorwegianConjugation::from(crate::nob::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         Some(crate::Lang::Eng) => {
             let v = crate::eng::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
@@ -1817,6 +1858,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<RomanianConjugation>()?;
     m.add_class::<EnglishConjugation>()?;
     m.add_class::<DanishConjugation>()?;
+    m.add_class::<NorwegianConjugation>()?;
     m.add_class::<CzechConjugation>()?;
     m.add_class::<SlovenianConjugation>()?;
     m.add_class::<EstonianConjugation>()?;

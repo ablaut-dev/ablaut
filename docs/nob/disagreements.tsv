@@ -1,0 +1,20 @@
+# lemma	features	resolution	note
+# resolution: variant (both standard) | o1 (apertium right) | o2 (UniMorph right) | neither
+# o1 = apertium-nob, o2 = UniMorph nob. These slots are excluded from the
+# agreement gold; the engine's own form stands. Bokmål has many attested
+# strong/weak past doublets, which account for most of these.
+avduke	V;IMP	variant	imperative with/without final -e; both occur
+briste	V;IND;PST	variant	strong brast vs weak brista/bristet, both standard
+date	V;IMP	variant	imperative with/without final -e
+dypfryse	V.PTCP;PST	variant	strong dypfrosset vs weak dypfryst (parallel to fryse)
+dypfryse	V;IND;PST	variant	strong dypfrøs vs weak dypfryste
+gjenvelge	V.PTCP;PST	o2	velge is strong: gjenvalgt is standard, apertium over-regularizes
+gjenvelge	V;IND;PST	o2	strong gjenvalgte is standard
+gomle	V.PTCP;PST	o1	UniMorph cell "gomlet/gomla" is a malformed slash-joined pair
+gomle	V;IND;PST	o1	UniMorph cell "gomlet/gomla" is a malformed slash-joined pair
+kike	V;IND;PST	variant	weak kika/kikte vs dialectal strong keik/kek
+oppvurdere	V.PTCP;PST	o1	UniMorph "oppvuder" is a typo for oppvurdert
+single	V;IMP	variant	imperative with/without final -e
+skvette	V;IND;PST	variant	strong skvatt vs weak skvetta/skvettet, both standard
+slenge	V;IND;PST	variant	strong slang vs weak slengte, both standard
+volde	V;IND;PST	variant	voldt vs voldte, both attested

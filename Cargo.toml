@@ -17,6 +17,7 @@ include = [
     "data/ben/verbs.tsv",
     "data/cat/verbs.tsv",
     "data/nld/verbs.tsv",
+    "data/nob/verbs.tsv",
     "data/pes/verbs.tsv",
     "data/rus/verbs.tsv",
     "data/ces/aspect.tsv",
