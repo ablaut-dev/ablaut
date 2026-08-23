@@ -1468,6 +1468,37 @@ impl From<crate::tuk::Table> for TurkmenConjugation {
     }
 }
 
+/// The conjugation table of one Amharic verb.
+#[pyclass(get_all, frozen)]
+struct AmharicConjugation {
+    lemma: String,
+    perfective: Vec<Option<String>>,
+    perfect: Vec<Option<String>>,
+    imperfective: Vec<Option<String>>,
+    imperfective_nfin: Vec<Option<String>>,
+    jussive: Vec<Option<String>>,
+}
+
+#[pymethods]
+impl AmharicConjugation {
+    fn __repr__(&self) -> String {
+        format!("AmharicConjugation({:?})", self.lemma)
+    }
+}
+
+impl From<crate::amh::Table> for AmharicConjugation {
+    fn from(t: crate::amh::Table) -> Self {
+        AmharicConjugation {
+            lemma: t.lemma,
+            perfective: t.perfective,
+            perfect: t.perfect,
+            imperfective: t.imperfective,
+            imperfective_nfin: t.imperfective_nfin,
+            jussive: t.jussive,
+        }
+    }
+}
+
 /// The conjugation table of one Modern Hebrew verb.
 #[pyclass(get_all, frozen)]
 struct HebrewConjugation {
@@ -2564,6 +2595,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Amh) => {
+            let v = crate::amh::Verb::from_lemma(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(AmharicConjugation::from(crate::amh::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         Some(crate::Lang::Bel) => {
             let v = crate::bel::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
@@ -2670,6 +2708,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<YiddishConjugation>()?;
     m.add_class::<ArabicConjugation>()?;
     m.add_class::<HebrewConjugation>()?;
+    m.add_class::<AmharicConjugation>()?;
     m.add_class::<KoreanConjugation>()?;
     m.add_class::<TurkishConjugation>()?;
     m.add_class::<PortugueseConjugation>()?;
