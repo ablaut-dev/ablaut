@@ -235,6 +235,56 @@ pub fn conjugate(infinitive: &str, lang: Option<String>) -> Result<JsValue, JsEr
                 .map_err(|e| JsError::new(&e.to_string()))?;
             Ok(serde_wasm_bindgen::to_value(&crate::tuk::Table::build(&v))?)
         }
+        Some(crate::Lang::Bel) => {
+            let v = crate::bel::Verb::from_infinitive(infinitive)
+                .map_err(|e| JsError::new(&e.to_string()))?;
+            Ok(serde_wasm_bindgen::to_value(&crate::bel::Table::build(&v))?)
+        }
+        Some(crate::Lang::Cym) => {
+            let v = crate::cym::Verb::from_infinitive(infinitive)
+                .map_err(|e| JsError::new(&e.to_string()))?;
+            Ok(serde_wasm_bindgen::to_value(&crate::cym::Table::build(&v))?)
+        }
+        Some(crate::Lang::Fao) => {
+            let v = crate::fao::Verb::from_infinitive(infinitive)
+                .map_err(|e| JsError::new(&e.to_string()))?;
+            Ok(serde_wasm_bindgen::to_value(&crate::fao::Table::build(&v))?)
+        }
+        Some(crate::Lang::Glg) => {
+            let v = crate::glg::Verb::from_infinitive(infinitive)
+                .map_err(|e| JsError::new(&e.to_string()))?;
+            Ok(serde_wasm_bindgen::to_value(&crate::glg::Table::build(&v))?)
+        }
+        Some(crate::Lang::Kaz) => {
+            let v = crate::kaz::Verb::from_infinitive(infinitive)
+                .map_err(|e| JsError::new(&e.to_string()))?;
+            Ok(serde_wasm_bindgen::to_value(&crate::kaz::Table::build(&v))?)
+        }
+        Some(crate::Lang::Lat) => {
+            let v = crate::lat::Verb::from_infinitive(infinitive)
+                .map_err(|e| JsError::new(&e.to_string()))?;
+            Ok(serde_wasm_bindgen::to_value(&crate::lat::Table::build(&v))?)
+        }
+        Some(crate::Lang::Ltz) => {
+            let v = crate::ltz::Verb::from_infinitive(infinitive)
+                .map_err(|e| JsError::new(&e.to_string()))?;
+            Ok(serde_wasm_bindgen::to_value(&crate::ltz::Table::build(&v))?)
+        }
+        Some(crate::Lang::Oci) => {
+            let v = crate::oci::Verb::from_infinitive(infinitive)
+                .map_err(|e| JsError::new(&e.to_string()))?;
+            Ok(serde_wasm_bindgen::to_value(&crate::oci::Table::build(&v))?)
+        }
+        Some(crate::Lang::Tat) => {
+            let v = crate::tat::Verb::from_infinitive(infinitive)
+                .map_err(|e| JsError::new(&e.to_string()))?;
+            Ok(serde_wasm_bindgen::to_value(&crate::tat::Table::build(&v))?)
+        }
+        Some(crate::Lang::Ydd) => {
+            let v = crate::ydd::Verb::from_infinitive(infinitive)
+                .map_err(|e| JsError::new(&e.to_string()))?;
+            Ok(serde_wasm_bindgen::to_value(&crate::ydd::Table::build(&v))?)
+        }
         None => Err(JsError::new(&format!("unknown language: {lang}"))),
     }
 }

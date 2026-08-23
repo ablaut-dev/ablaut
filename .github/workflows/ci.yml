@@ -744,5 +744,160 @@ jobs:
         run: ./scripts/tuk/fetch_kaikki.sh
       - name: Turkmen golden harness with single-oracle regression gate (Beta)
         run: cargo run --release --bin golden_tuk -- data/tuk/kaikki.tsv --check
+      - name: Cache unimorph bel
+        id: unimorph-bel
+        uses: actions/cache@v5
+        with:
+          path: data/bel/unimorph.tsv
+          key: unimorph-bel-v1
+      - name: Fetch unimorph bel
+        if: steps.unimorph-bel.outputs.cache-hit != 'true'
+        run: ./scripts/bel/fetch_unimorph.sh
+      - name: Cache kaikki bel
+        id: kaikki-bel
+        uses: actions/cache@v5
+        with:
+          path: data/bel/kaikki.tsv
+          key: kaikki-bel-v1
+      - name: Fetch kaikki bel
+        if: steps.kaikki-bel.outputs.cache-hit != 'true'
+        run: ./scripts/bel/fetch_kaikki.sh
+      - name: Belarusian golden harness with two-oracle regression gate
+        run: cargo run --release --bin golden_bel -- data/bel/unimorph.tsv data/bel/kaikki.tsv --check
+      - name: Cache unimorph cym
+        id: unimorph-cym
+        uses: actions/cache@v5
+        with:
+          path: data/cym/unimorph.tsv
+          key: unimorph-cym-v1
+      - name: Fetch unimorph cym
+        if: steps.unimorph-cym.outputs.cache-hit != 'true'
+        run: ./scripts/cym/fetch_unimorph.sh
+      - name: Cache kaikki cym
+        id: kaikki-cym
+        uses: actions/cache@v5
+        with:
+          path: data/cym/kaikki.tsv
+          key: kaikki-cym-v1
+      - name: Fetch kaikki cym
+        if: steps.kaikki-cym.outputs.cache-hit != 'true'
+        run: ./scripts/cym/fetch_kaikki.sh
+      - name: Welsh golden harness with two-oracle regression gate
+        run: cargo run --release --bin golden_cym -- data/cym/unimorph.tsv data/cym/kaikki.tsv --check
+      - name: Cache unimorph oci
+        id: unimorph-oci
+        uses: actions/cache@v5
+        with:
+          path: data/oci/unimorph.tsv
+          key: unimorph-oci-v1
+      - name: Fetch unimorph oci
+        if: steps.unimorph-oci.outputs.cache-hit != 'true'
+        run: ./scripts/oci/fetch_unimorph.sh
+      - name: Cache kaikki oci
+        id: kaikki-oci
+        uses: actions/cache@v5
+        with:
+          path: data/oci/kaikki.tsv
+          key: kaikki-oci-v1
+      - name: Fetch kaikki oci
+        if: steps.kaikki-oci.outputs.cache-hit != 'true'
+        run: ./scripts/oci/fetch_kaikki.sh
+      - name: Occitan golden harness with two-oracle regression gate
+        run: cargo run --release --bin golden_oci -- data/oci/unimorph.tsv data/oci/kaikki.tsv --check
+      - name: Cache unimorph fao
+        id: unimorph-fao
+        uses: actions/cache@v5
+        with:
+          path: data/fao/unimorph.tsv
+          key: unimorph-fao-v1
+      - name: Fetch unimorph fao
+        if: steps.unimorph-fao.outputs.cache-hit != 'true'
+        run: ./scripts/fao/fetch_unimorph.sh
+      - name: Cache kaikki fao
+        id: kaikki-fao
+        uses: actions/cache@v5
+        with:
+          path: data/fao/kaikki.tsv
+          key: kaikki-fao-v1
+      - name: Fetch kaikki fao
+        if: steps.kaikki-fao.outputs.cache-hit != 'true'
+        run: ./scripts/fao/fetch_kaikki.sh
+      - name: Faroese golden harness with two-oracle regression gate
+        run: cargo run --release --bin golden_fao -- data/fao/unimorph.tsv data/fao/kaikki.tsv --check
+      - name: Cache unimorph lat
+        id: unimorph-lat
+        uses: actions/cache@v5
+        with:
+          path: data/lat/unimorph.tsv
+          key: unimorph-lat-v1
+      - name: Fetch unimorph lat
+        if: steps.unimorph-lat.outputs.cache-hit != 'true'
+        run: ./scripts/lat/fetch_unimorph.sh
+      - name: Cache kaikki lat
+        id: kaikki-lat
+        uses: actions/cache@v5
+        with:
+          path: data/lat/kaikki.tsv
+          key: kaikki-lat-v1
+      - name: Fetch kaikki lat
+        if: steps.kaikki-lat.outputs.cache-hit != 'true'
+        run: ./scripts/lat/fetch_kaikki.sh
+      - name: Latin golden harness with two-oracle regression gate
+        run: cargo run --release --bin golden_lat -- data/lat/unimorph.tsv data/lat/kaikki.tsv --check
+      - name: Cache kaikki glg
+        id: kaikki-glg
+        uses: actions/cache@v5
+        with:
+          path: data/glg/kaikki.tsv
+          key: kaikki-glg-v1
+      - name: Fetch kaikki glg
+        if: steps.kaikki-glg.outputs.cache-hit != 'true'
+        run: ./scripts/glg/fetch_kaikki.sh
+      - name: Galician golden harness with single-oracle regression gate (Beta)
+        run: cargo run --release --bin golden_glg -- data/glg/kaikki.tsv --check
+      - name: Cache kaikki tat
+        id: kaikki-tat
+        uses: actions/cache@v5
+        with:
+          path: data/tat/kaikki.tsv
+          key: kaikki-tat-v1
+      - name: Fetch kaikki tat
+        if: steps.kaikki-tat.outputs.cache-hit != 'true'
+        run: ./scripts/tat/fetch_kaikki.sh
+      - name: Tatar golden harness with single-oracle regression gate (Beta)
+        run: cargo run --release --bin golden_tat -- data/tat/kaikki.tsv --check
+      - name: Cache kaikki ltz
+        id: kaikki-ltz
+        uses: actions/cache@v5
+        with:
+          path: data/ltz/kaikki.tsv
+          key: kaikki-ltz-v1
+      - name: Fetch kaikki ltz
+        if: steps.kaikki-ltz.outputs.cache-hit != 'true'
+        run: ./scripts/ltz/fetch_kaikki.sh
+      - name: Luxembourgish golden harness with single-oracle regression gate (Beta)
+        run: cargo run --release --bin golden_ltz -- data/ltz/kaikki.tsv --check
+      - name: Cache kaikki ydd
+        id: kaikki-ydd
+        uses: actions/cache@v5
+        with:
+          path: data/ydd/kaikki.tsv
+          key: kaikki-ydd-v1
+      - name: Fetch kaikki ydd
+        if: steps.kaikki-ydd.outputs.cache-hit != 'true'
+        run: ./scripts/ydd/fetch_kaikki.sh
+      - name: Yiddish golden harness with single-oracle regression gate (Beta)
+        run: cargo run --release --bin golden_ydd -- data/ydd/kaikki.tsv --check
+      - name: Cache kaikki kaz
+        id: kaikki-kaz
+        uses: actions/cache@v5
+        with:
+          path: data/kaz/kaikki.tsv
+          key: kaikki-kaz-v1
+      - name: Fetch kaikki kaz
+        if: steps.kaikki-kaz.outputs.cache-hit != 'true'
+        run: ./scripts/kaz/fetch_kaikki.sh
+      - name: Kazakh golden harness with single-oracle regression gate (Beta)
+        run: cargo run --release --bin golden_kaz -- data/kaz/kaikki.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng

@@ -803,13 +803,23 @@ fn ord(lang: Lang) -> usize {
         Lang::Aze => 41,
         Lang::Uzb => 42,
         Lang::Tuk => 43,
+        Lang::Bel => 44,
+        Lang::Cym => 45,
+        Lang::Fao => 46,
+        Lang::Glg => 47,
+        Lang::Kaz => 48,
+        Lang::Lat => 49,
+        Lang::Ltz => 50,
+        Lang::Oci => 51,
+        Lang::Tat => 52,
+        Lang::Ydd => 53,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 44] = [EMPTY; 44];
+    static INDEXES: [OnceLock<Index>; 54] = [EMPTY; 54];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -839,7 +849,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 44] = [EMPTY; 44];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 54] = [EMPTY; 54];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -951,6 +961,16 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Aze => col1(include_str!("../data/aze/parts.tsv"), &mut lemmas),
         Lang::Uzb => col1(include_str!("../data/uzb/parts.tsv"), &mut lemmas),
         Lang::Tuk => col1(include_str!("../data/tuk/parts.tsv"), &mut lemmas),
+        Lang::Bel => col1(include_str!("../data/bel/parts.tsv"), &mut lemmas),
+        Lang::Cym => col1(include_str!("../data/cym/parts.tsv"), &mut lemmas),
+        Lang::Fao => col1(include_str!("../data/fao/parts.tsv"), &mut lemmas),
+        Lang::Glg => col1(include_str!("../data/glg/parts.tsv"), &mut lemmas),
+        Lang::Kaz => col1(include_str!("../data/kaz/parts.tsv"), &mut lemmas),
+        Lang::Lat => col1(include_str!("../data/lat/parts.tsv"), &mut lemmas),
+        Lang::Ltz => col1(include_str!("../data/ltz/parts.tsv"), &mut lemmas),
+        Lang::Oci => col1(include_str!("../data/oci/parts.tsv"), &mut lemmas),
+        Lang::Tat => col1(include_str!("../data/tat/parts.tsv"), &mut lemmas),
+        Lang::Ydd => col1(include_str!("../data/ydd/parts.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -1630,6 +1650,134 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             {
                 s.opt(f.as_ref(), "finite");
             }
+        }
+        Conjugation::Bel(t) => {
+            s.one(&t.infinitive, "citation");
+            for f in t
+                .present
+                .iter()
+                .chain(&t.future)
+                .chain(&t.past)
+                .chain(&t.imperative)
+            {
+                s.opt(f.as_ref(), "form");
+            }
+        }
+        Conjugation::Cym(t) => {
+            s.one(&t.verbal_noun, "citation");
+            for f in t
+                .present
+                .iter()
+                .chain(&t.imperfect)
+                .chain(&t.preterite)
+                .chain(&t.pluperfect)
+                .chain(&t.subjunctive)
+                .chain(&t.imperative)
+            {
+                s.opt(f.as_ref(), "form");
+            }
+            s.opt(t.participle.as_ref(), "participle");
+        }
+        Conjugation::Fao(t) => {
+            s.one(&t.infinitive, "citation");
+            for f in t.present.iter().chain(&t.past).chain(&t.imperative) {
+                s.opt(f.as_ref(), "form");
+            }
+            s.opt(t.supine.as_ref(), "supine");
+            s.opt(t.present_participle.as_ref(), "present participle");
+            s.opt(t.past_participle.as_ref(), "past participle");
+        }
+        Conjugation::Glg(t) => {
+            s.one(&t.infinitive, "citation");
+            for f in t
+                .participle
+                .iter()
+                .chain(&t.present)
+                .chain(&t.imperfect)
+                .chain(&t.preterite)
+                .chain(&t.pluperfect)
+                .chain(&t.future)
+                .chain(&t.conditional)
+                .chain(&t.present_subjunctive)
+                .chain(&t.imperfect_subjunctive)
+                .chain(&t.future_subjunctive)
+                .chain(&t.personal_infinitive)
+                .chain(&t.imperative)
+            {
+                s.opt(f.as_ref(), "form");
+            }
+            s.opt(t.gerund.as_ref(), "gerund");
+        }
+        Conjugation::Kaz(t) => {
+            s.one(&t.infinitive, "citation");
+            for f in t
+                .aorist
+                .iter()
+                .chain(&t.past)
+                .chain(&t.future)
+                .chain(&t.imperative)
+            {
+                s.opt(f.as_ref(), "form");
+            }
+        }
+        Conjugation::Lat(t) => {
+            s.one(&t.citation, "citation");
+            for f in t
+                .present
+                .iter()
+                .chain(&t.imperfect)
+                .chain(&t.future)
+                .chain(&t.imperative)
+            {
+                s.opt(f.as_ref(), "form");
+            }
+            s.opt(t.infinitive.as_ref(), "infinitive");
+        }
+        Conjugation::Ltz(t) => {
+            s.one(&t.infinitive, "citation");
+            for f in t.present.iter().chain(&t.imperative) {
+                s.opt(f.as_ref(), "form");
+            }
+            s.opt(t.past_participle.as_ref(), "past participle");
+        }
+        Conjugation::Oci(t) => {
+            s.one(&t.infinitive, "citation");
+            for f in t
+                .present
+                .iter()
+                .chain(&t.imperfect)
+                .chain(&t.preterite)
+                .chain(&t.future)
+                .chain(&t.conditional)
+                .chain(&t.present_subjunctive)
+                .chain(&t.imperfect_subjunctive)
+                .chain(&t.imperative)
+            {
+                s.opt(f.as_ref(), "form");
+            }
+            s.opt(t.past_participle.as_ref(), "past participle");
+            s.opt(t.gerund.as_ref(), "gerund");
+        }
+        Conjugation::Tat(t) => {
+            s.one(&t.infinitive, "citation");
+            for f in t
+                .present
+                .iter()
+                .chain(&t.past)
+                .chain(&t.future)
+                .chain(&t.conditional)
+                .chain(&t.imperative)
+            {
+                s.opt(f.as_ref(), "form");
+            }
+        }
+        Conjugation::Ydd(t) => {
+            s.one(&t.infinitive, "citation");
+            for f in t.present.iter().chain(&t.imperative) {
+                s.opt(f.as_ref(), "form");
+            }
+            s.opt(t.present_participle.as_ref(), "present participle");
+            s.opt(t.past_participle.as_ref(), "past participle");
         }
     }
     s.0

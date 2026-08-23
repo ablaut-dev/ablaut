@@ -1468,6 +1468,338 @@ impl From<crate::tuk::Table> for TurkmenConjugation {
     }
 }
 
+/// The conjugation table of one Belarusian verb.
+#[pyclass(get_all, frozen)]
+struct BelarusianConjugation {
+    infinitive: String,
+    present: Vec<Option<String>>,
+    future: Vec<Option<String>>,
+    past: Vec<Option<String>>,
+    imperative: Vec<Option<String>>,
+}
+
+#[pymethods]
+impl BelarusianConjugation {
+    fn __repr__(&self) -> String {
+        format!("BelarusianConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::bel::Table> for BelarusianConjugation {
+    fn from(t: crate::bel::Table) -> Self {
+        BelarusianConjugation {
+            infinitive: t.infinitive,
+            present: t.present,
+            future: t.future,
+            past: t.past,
+            imperative: t.imperative,
+        }
+    }
+}
+
+/// The conjugation table of one Welsh verb.
+#[pyclass(get_all, frozen)]
+struct WelshConjugation {
+    verbal_noun: String,
+    present: Vec<Option<String>>,
+    imperfect: Vec<Option<String>>,
+    preterite: Vec<Option<String>>,
+    pluperfect: Vec<Option<String>>,
+    subjunctive: Vec<Option<String>>,
+    imperative: Vec<Option<String>>,
+    participle: Option<String>,
+}
+
+#[pymethods]
+impl WelshConjugation {
+    fn __repr__(&self) -> String {
+        format!("WelshConjugation({:?})", self.verbal_noun)
+    }
+}
+
+impl From<crate::cym::Table> for WelshConjugation {
+    fn from(t: crate::cym::Table) -> Self {
+        WelshConjugation {
+            verbal_noun: t.verbal_noun,
+            present: t.present,
+            imperfect: t.imperfect,
+            preterite: t.preterite,
+            pluperfect: t.pluperfect,
+            subjunctive: t.subjunctive,
+            imperative: t.imperative,
+            participle: t.participle,
+        }
+    }
+}
+
+/// The conjugation table of one Faroese verb.
+#[pyclass(get_all, frozen)]
+struct FaroeseConjugation {
+    infinitive: String,
+    present: Vec<Option<String>>,
+    past: Vec<Option<String>>,
+    imperative: Vec<Option<String>>,
+    supine: Option<String>,
+    present_participle: Option<String>,
+    past_participle: Option<String>,
+}
+
+#[pymethods]
+impl FaroeseConjugation {
+    fn __repr__(&self) -> String {
+        format!("FaroeseConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::fao::Table> for FaroeseConjugation {
+    fn from(t: crate::fao::Table) -> Self {
+        FaroeseConjugation {
+            infinitive: t.infinitive,
+            present: t.present,
+            past: t.past,
+            imperative: t.imperative,
+            supine: t.supine,
+            present_participle: t.present_participle,
+            past_participle: t.past_participle,
+        }
+    }
+}
+
+/// The conjugation table of one Galician verb.
+#[pyclass(get_all, frozen)]
+struct GalicianConjugation {
+    infinitive: String,
+    gerund: Option<String>,
+    participle: Vec<Option<String>>,
+    present: Vec<Option<String>>,
+    imperfect: Vec<Option<String>>,
+    preterite: Vec<Option<String>>,
+    pluperfect: Vec<Option<String>>,
+    future: Vec<Option<String>>,
+    conditional: Vec<Option<String>>,
+    present_subjunctive: Vec<Option<String>>,
+    imperfect_subjunctive: Vec<Option<String>>,
+    future_subjunctive: Vec<Option<String>>,
+    personal_infinitive: Vec<Option<String>>,
+    imperative: Vec<Option<String>>,
+}
+
+#[pymethods]
+impl GalicianConjugation {
+    fn __repr__(&self) -> String {
+        format!("GalicianConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::glg::Table> for GalicianConjugation {
+    fn from(t: crate::glg::Table) -> Self {
+        GalicianConjugation {
+            infinitive: t.infinitive,
+            gerund: t.gerund,
+            participle: t.participle,
+            present: t.present,
+            imperfect: t.imperfect,
+            preterite: t.preterite,
+            pluperfect: t.pluperfect,
+            future: t.future,
+            conditional: t.conditional,
+            present_subjunctive: t.present_subjunctive,
+            imperfect_subjunctive: t.imperfect_subjunctive,
+            future_subjunctive: t.future_subjunctive,
+            personal_infinitive: t.personal_infinitive,
+            imperative: t.imperative,
+        }
+    }
+}
+
+/// The conjugation table of one Kazakh verb.
+#[pyclass(get_all, frozen)]
+struct KazakhConjugation {
+    infinitive: String,
+    aorist: Vec<Option<String>>,
+    past: Vec<Option<String>>,
+    future: Vec<Option<String>>,
+    imperative: Vec<Option<String>>,
+}
+
+#[pymethods]
+impl KazakhConjugation {
+    fn __repr__(&self) -> String {
+        format!("KazakhConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::kaz::Table> for KazakhConjugation {
+    fn from(t: crate::kaz::Table) -> Self {
+        KazakhConjugation {
+            infinitive: t.infinitive,
+            aorist: t.aorist,
+            past: t.past,
+            future: t.future,
+            imperative: t.imperative,
+        }
+    }
+}
+
+/// The conjugation table of one Latin verb.
+#[pyclass(get_all, frozen)]
+struct LatinConjugation {
+    citation: String,
+    infinitive: Option<String>,
+    present: Vec<Option<String>>,
+    imperfect: Vec<Option<String>>,
+    future: Vec<Option<String>>,
+    imperative: Vec<Option<String>>,
+}
+
+#[pymethods]
+impl LatinConjugation {
+    fn __repr__(&self) -> String {
+        format!("LatinConjugation({:?})", self.citation)
+    }
+}
+
+impl From<crate::lat::Table> for LatinConjugation {
+    fn from(t: crate::lat::Table) -> Self {
+        LatinConjugation {
+            citation: t.citation,
+            infinitive: t.infinitive,
+            present: t.present,
+            imperfect: t.imperfect,
+            future: t.future,
+            imperative: t.imperative,
+        }
+    }
+}
+
+/// The conjugation table of one Luxembourgish verb.
+#[pyclass(get_all, frozen)]
+struct LuxembourgishConjugation {
+    infinitive: String,
+    present: Vec<Option<String>>,
+    imperative: Vec<Option<String>>,
+    past_participle: Option<String>,
+}
+
+#[pymethods]
+impl LuxembourgishConjugation {
+    fn __repr__(&self) -> String {
+        format!("LuxembourgishConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::ltz::Table> for LuxembourgishConjugation {
+    fn from(t: crate::ltz::Table) -> Self {
+        LuxembourgishConjugation {
+            infinitive: t.infinitive,
+            present: t.present,
+            imperative: t.imperative,
+            past_participle: t.past_participle,
+        }
+    }
+}
+
+/// The conjugation table of one Occitan verb.
+#[pyclass(get_all, frozen)]
+struct OccitanConjugation {
+    infinitive: String,
+    present: Vec<Option<String>>,
+    imperfect: Vec<Option<String>>,
+    preterite: Vec<Option<String>>,
+    future: Vec<Option<String>>,
+    conditional: Vec<Option<String>>,
+    present_subjunctive: Vec<Option<String>>,
+    imperfect_subjunctive: Vec<Option<String>>,
+    imperative: Vec<Option<String>>,
+    past_participle: Option<String>,
+    gerund: Option<String>,
+}
+
+#[pymethods]
+impl OccitanConjugation {
+    fn __repr__(&self) -> String {
+        format!("OccitanConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::oci::Table> for OccitanConjugation {
+    fn from(t: crate::oci::Table) -> Self {
+        OccitanConjugation {
+            infinitive: t.infinitive,
+            present: t.present,
+            imperfect: t.imperfect,
+            preterite: t.preterite,
+            future: t.future,
+            conditional: t.conditional,
+            present_subjunctive: t.present_subjunctive,
+            imperfect_subjunctive: t.imperfect_subjunctive,
+            imperative: t.imperative,
+            past_participle: t.past_participle,
+            gerund: t.gerund,
+        }
+    }
+}
+
+/// The conjugation table of one Tatar verb.
+#[pyclass(get_all, frozen)]
+struct TatarConjugation {
+    infinitive: String,
+    present: Vec<Option<String>>,
+    past: Vec<Option<String>>,
+    future: Vec<Option<String>>,
+    conditional: Vec<Option<String>>,
+    imperative: Vec<Option<String>>,
+}
+
+#[pymethods]
+impl TatarConjugation {
+    fn __repr__(&self) -> String {
+        format!("TatarConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::tat::Table> for TatarConjugation {
+    fn from(t: crate::tat::Table) -> Self {
+        TatarConjugation {
+            infinitive: t.infinitive,
+            present: t.present,
+            past: t.past,
+            future: t.future,
+            conditional: t.conditional,
+            imperative: t.imperative,
+        }
+    }
+}
+
+/// The conjugation table of one Yiddish verb.
+#[pyclass(get_all, frozen)]
+struct YiddishConjugation {
+    infinitive: String,
+    present: Vec<Option<String>>,
+    imperative: Vec<Option<String>>,
+    present_participle: Option<String>,
+    past_participle: Option<String>,
+}
+
+#[pymethods]
+impl YiddishConjugation {
+    fn __repr__(&self) -> String {
+        format!("YiddishConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::ydd::Table> for YiddishConjugation {
+    fn from(t: crate::ydd::Table) -> Self {
+        YiddishConjugation {
+            infinitive: t.infinitive,
+            present: t.present,
+            imperative: t.imperative,
+            present_participle: t.present_participle,
+            past_participle: t.past_participle,
+        }
+    }
+}
+
 /// The full conjugation table of one English verb.
 #[pyclass(get_all, frozen)]
 struct EnglishConjugation {
@@ -2148,6 +2480,76 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Bel) => {
+            let v = crate::bel::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(BelarusianConjugation::from(crate::bel::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Cym) => {
+            let v = crate::cym::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(WelshConjugation::from(crate::cym::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Fao) => {
+            let v = crate::fao::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(FaroeseConjugation::from(crate::fao::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Glg) => {
+            let v = crate::glg::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(GalicianConjugation::from(crate::glg::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Kaz) => {
+            let v = crate::kaz::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(KazakhConjugation::from(crate::kaz::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Lat) => {
+            let v = crate::lat::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(LatinConjugation::from(crate::lat::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Ltz) => {
+            let v = crate::ltz::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(LuxembourgishConjugation::from(crate::ltz::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Oci) => {
+            let v = crate::oci::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(OccitanConjugation::from(crate::oci::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Tat) => {
+            let v = crate::tat::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(TatarConjugation::from(crate::tat::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Ydd) => {
+            let v = crate::ydd::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(YiddishConjugation::from(crate::ydd::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         None => Err(PyValueError::new_err(format!("unknown language: {lang}"))),
     }
 }
@@ -2172,6 +2574,16 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<AzerbaijaniConjugation>()?;
     m.add_class::<UzbekConjugation>()?;
     m.add_class::<TurkmenConjugation>()?;
+    m.add_class::<BelarusianConjugation>()?;
+    m.add_class::<WelshConjugation>()?;
+    m.add_class::<FaroeseConjugation>()?;
+    m.add_class::<GalicianConjugation>()?;
+    m.add_class::<KazakhConjugation>()?;
+    m.add_class::<LatinConjugation>()?;
+    m.add_class::<LuxembourgishConjugation>()?;
+    m.add_class::<OccitanConjugation>()?;
+    m.add_class::<TatarConjugation>()?;
+    m.add_class::<YiddishConjugation>()?;
     m.add_class::<KoreanConjugation>()?;
     m.add_class::<TurkishConjugation>()?;
     m.add_class::<PortugueseConjugation>()?;
