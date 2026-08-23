@@ -245,16 +245,16 @@ impl Lang {
             "az" | "aze" | "azj" | "azerbaijani" | "azeri" => Some(Self::Aze),
             "uz" | "uzb" | "uzbek" => Some(Self::Uzb),
             "tk" | "tuk" | "turkmen" => Some(Self::Tuk),
-            "be | bel | belarusian" => Some(Self::Bel),
-            "cy | cym | wel | welsh" => Some(Self::Cym),
-            "fo | fao | faroese" => Some(Self::Fao),
-            "gl | glg | gal | galician" => Some(Self::Glg),
-            "kk | kaz | kazakh" => Some(Self::Kaz),
-            "la | lat | latin" => Some(Self::Lat),
-            "lb | ltz | luxembourgish" => Some(Self::Ltz),
-            "oc | oci | occitan" => Some(Self::Oci),
-            "tt | tat | tatar" => Some(Self::Tat),
-            "yi | ydd | yiddish" => Some(Self::Ydd),
+            "be" | "bel" | "belarusian" => Some(Self::Bel),
+            "cy" | "cym" | "wel" | "welsh" => Some(Self::Cym),
+            "fo" | "fao" | "faroese" => Some(Self::Fao),
+            "gl" | "glg" | "gal" | "galician" => Some(Self::Glg),
+            "kk" | "kaz" | "kazakh" => Some(Self::Kaz),
+            "la" | "lat" | "latin" => Some(Self::Lat),
+            "lb" | "ltz" | "luxembourgish" => Some(Self::Ltz),
+            "oc" | "oci" | "occitan" => Some(Self::Oci),
+            "tt" | "tat" | "tatar" => Some(Self::Tat),
+            "yi" | "ydd" | "yiddish" => Some(Self::Ydd),
             _ => None,
         }
     }
@@ -574,5 +574,28 @@ mod facade_tests {
             assert!(conjugate(verb, lang).is_ok(), "{verb}");
         }
         assert!(conjugate("xyz123", Lang::Fra).is_err());
+    }
+
+    #[test]
+    fn from_code_resolves_iso1_and_iso3() {
+        // Guards against alternation arms accidentally written as a single
+        // string literal ("be | bel | belarusian"), which silently makes the
+        // codes unreachable via wasm/python/MCP while the golden gate stays green.
+        let cases = [
+            ("be", "bel", Lang::Bel),
+            ("cy", "cym", Lang::Cym),
+            ("fo", "fao", Lang::Fao),
+            ("gl", "glg", Lang::Glg),
+            ("kk", "kaz", Lang::Kaz),
+            ("la", "lat", Lang::Lat),
+            ("lb", "ltz", Lang::Ltz),
+            ("oc", "oci", Lang::Oci),
+            ("tt", "tat", Lang::Tat),
+            ("yi", "ydd", Lang::Ydd),
+        ];
+        for (iso1, iso3, lang) in cases {
+            assert_eq!(Lang::from_code(iso1), Some(lang), "iso1 {iso1}");
+            assert_eq!(Lang::from_code(iso3), Some(lang), "iso3 {iso3}");
+        }
     }
 }
