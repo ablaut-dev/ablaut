@@ -13,8 +13,17 @@ use std::sync::OnceLock;
 
 /// The stored cells, in the column order of `data/uzb/parts.tsv`.
 pub const CELLS: [&str; 11] = [
-    "V;PRS;3;SG", "V;PRS;3;PL", "V;PST;3;SG", "V;PST;3;PL", "V;FUT;3;SG", "V;FUT;3;PL",
-    "V;AOR;3;SG", "V;AOR;3;PL", "V;IMP;3;SG", "V;IMP;3;PL", "V;NFIN",
+    "V;PRS;3;SG",
+    "V;PRS;3;PL",
+    "V;PST;3;SG",
+    "V;PST;3;PL",
+    "V;FUT;3;SG",
+    "V;FUT;3;PL",
+    "V;AOR;3;SG",
+    "V;AOR;3;PL",
+    "V;IMP;3;SG",
+    "V;IMP;3;PL",
+    "V;NFIN",
 ];
 
 /// Why a form cannot be produced.

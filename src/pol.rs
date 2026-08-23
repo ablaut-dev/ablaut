@@ -14,11 +14,27 @@ use std::sync::OnceLock;
 
 /// The stored cells, in the column order of `data/pol/parts.tsv`.
 pub const CELLS: [&str; 21] = [
-    "V;PRS;1;SG", "V;PRS;2;SG", "V;PRS;3;SG", "V;PRS;1;PL", "V;PRS;2;PL", "V;PRS;3;PL",
-    "V;FUT;1;SG", "V;FUT;2;SG", "V;FUT;3;SG", "V;FUT;1;PL", "V;FUT;2;PL", "V;FUT;3;PL",
-    "V;PST;3;SG;MASC", "V;PST;3;SG;FEM", "V;PST;3;SG;NEUT",
-    "V;PST;3;PL;MASC;HUM", "V;PST;3;PL",
-    "V;IMP;2;SG", "V;IMP;1;PL", "V;IMP;2;PL", "V;NFIN",
+    "V;PRS;1;SG",
+    "V;PRS;2;SG",
+    "V;PRS;3;SG",
+    "V;PRS;1;PL",
+    "V;PRS;2;PL",
+    "V;PRS;3;PL",
+    "V;FUT;1;SG",
+    "V;FUT;2;SG",
+    "V;FUT;3;SG",
+    "V;FUT;1;PL",
+    "V;FUT;2;PL",
+    "V;FUT;3;PL",
+    "V;PST;3;SG;MASC",
+    "V;PST;3;SG;FEM",
+    "V;PST;3;SG;NEUT",
+    "V;PST;3;PL;MASC;HUM",
+    "V;PST;3;PL",
+    "V;IMP;2;SG",
+    "V;IMP;1;PL",
+    "V;IMP;2;PL",
+    "V;NFIN",
 ];
 
 /// Why a form cannot be produced.
@@ -147,14 +163,27 @@ impl Table {
         Self {
             infinitive: v.citation().to_string(),
             present: many(&[
-                "V;PRS;1;SG", "V;PRS;2;SG", "V;PRS;3;SG", "V;PRS;1;PL", "V;PRS;2;PL", "V;PRS;3;PL",
+                "V;PRS;1;SG",
+                "V;PRS;2;SG",
+                "V;PRS;3;SG",
+                "V;PRS;1;PL",
+                "V;PRS;2;PL",
+                "V;PRS;3;PL",
             ]),
             future: many(&[
-                "V;FUT;1;SG", "V;FUT;2;SG", "V;FUT;3;SG", "V;FUT;1;PL", "V;FUT;2;PL", "V;FUT;3;PL",
+                "V;FUT;1;SG",
+                "V;FUT;2;SG",
+                "V;FUT;3;SG",
+                "V;FUT;1;PL",
+                "V;FUT;2;PL",
+                "V;FUT;3;PL",
             ]),
             past: many(&[
-                "V;PST;3;SG;MASC", "V;PST;3;SG;FEM", "V;PST;3;SG;NEUT",
-                "V;PST;3;PL;MASC;HUM", "V;PST;3;PL",
+                "V;PST;3;SG;MASC",
+                "V;PST;3;SG;FEM",
+                "V;PST;3;SG;NEUT",
+                "V;PST;3;PL;MASC;HUM",
+                "V;PST;3;PL",
             ]),
             imperative: many(&["V;IMP;2;SG", "V;IMP;1;PL", "V;IMP;2;PL"]),
         }

@@ -4,8 +4,8 @@
 //! Usage: cargo run --release --bin golden_tuk [gold.tsv ...] [--check]
 //!        (default: data/tuk/kaikki.tsv)
 
-use ablaut::tuk::Verb;
 use ablaut::harness::{run, Spec};
+use ablaut::tuk::Verb;
 
 const CATEGORIES: [&str; 5] = ["infinitive", "present", "past", "aorist", "imperative"];
 

@@ -8,7 +8,14 @@
 use ablaut::aze::Verb;
 use ablaut::harness::{run, Spec};
 
-const CATEGORIES: [&str; 6] = ["infinitive", "present", "past", "future", "aorist", "imperative"];
+const CATEGORIES: [&str; 6] = [
+    "infinitive",
+    "present",
+    "past",
+    "future",
+    "aorist",
+    "imperative",
+];
 
 fn category(features: &str) -> &'static str {
     if features == "V;NFIN" {

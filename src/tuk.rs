@@ -12,10 +12,27 @@ use std::sync::OnceLock;
 
 /// The stored cells, in the column order of `data/tuk/parts.tsv`.
 pub const CELLS: [&str; 21] = [
-    "V;PRS;1;SG", "V;PRS;2;SG", "V;PRS;3;SG", "V;PRS;1;PL", "V;PRS;2;PL", "V;PRS;3;PL",
-    "V;PST;1;SG", "V;PST;2;SG", "V;PST;3;SG", "V;PST;1;PL", "V;PST;2;PL", "V;PST;3;PL",
-    "V;AOR;1;SG", "V;AOR;2;SG", "V;AOR;3;SG", "V;AOR;1;PL", "V;AOR;2;PL", "V;AOR;3;PL",
-    "V;IMP;2;SG", "V;IMP;2;PL", "V;NFIN",
+    "V;PRS;1;SG",
+    "V;PRS;2;SG",
+    "V;PRS;3;SG",
+    "V;PRS;1;PL",
+    "V;PRS;2;PL",
+    "V;PRS;3;PL",
+    "V;PST;1;SG",
+    "V;PST;2;SG",
+    "V;PST;3;SG",
+    "V;PST;1;PL",
+    "V;PST;2;PL",
+    "V;PST;3;PL",
+    "V;AOR;1;SG",
+    "V;AOR;2;SG",
+    "V;AOR;3;SG",
+    "V;AOR;1;PL",
+    "V;AOR;2;PL",
+    "V;AOR;3;PL",
+    "V;IMP;2;SG",
+    "V;IMP;2;PL",
+    "V;NFIN",
 ];
 
 /// Why a form cannot be produced.
@@ -72,7 +89,11 @@ fn productive(cit: &str, feat: &str) -> Option<String> {
     }
     let n = cit.chars().count();
     let stem: String = cit.chars().take(n - 3).collect();
-    let v = stem.chars().rev().find(|c| VOWELS.contains(*c)).unwrap_or('ä');
+    let v = stem
+        .chars()
+        .rev()
+        .find(|c| VOWELS.contains(*c))
+        .unwrap_or('ä');
     let back = BACK.contains(v);
     let a = if back { 'a' } else { 'ä' };
     let i = if back { 'y' } else { 'i' };
@@ -185,13 +206,28 @@ impl Table {
         Self {
             infinitive: v.citation().to_string(),
             present: many(&[
-                "V;PRS;1;SG", "V;PRS;2;SG", "V;PRS;3;SG", "V;PRS;1;PL", "V;PRS;2;PL", "V;PRS;3;PL",
+                "V;PRS;1;SG",
+                "V;PRS;2;SG",
+                "V;PRS;3;SG",
+                "V;PRS;1;PL",
+                "V;PRS;2;PL",
+                "V;PRS;3;PL",
             ]),
             past: many(&[
-                "V;PST;1;SG", "V;PST;2;SG", "V;PST;3;SG", "V;PST;1;PL", "V;PST;2;PL", "V;PST;3;PL",
+                "V;PST;1;SG",
+                "V;PST;2;SG",
+                "V;PST;3;SG",
+                "V;PST;1;PL",
+                "V;PST;2;PL",
+                "V;PST;3;PL",
             ]),
             aorist: many(&[
-                "V;AOR;1;SG", "V;AOR;2;SG", "V;AOR;3;SG", "V;AOR;1;PL", "V;AOR;2;PL", "V;AOR;3;PL",
+                "V;AOR;1;SG",
+                "V;AOR;2;SG",
+                "V;AOR;3;SG",
+                "V;AOR;1;PL",
+                "V;AOR;2;PL",
+                "V;AOR;3;PL",
             ]),
             imperative: many(&["V;IMP;2;SG", "V;IMP;2;PL"]),
         }

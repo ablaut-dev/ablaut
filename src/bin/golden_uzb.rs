@@ -4,10 +4,17 @@
 //! Usage: cargo run --release --bin golden_uzb [gold.tsv ...] [--check]
 //!        (default: data/uzb/kaikki.tsv)
 
-use ablaut::uzb::Verb;
 use ablaut::harness::{run, Spec};
+use ablaut::uzb::Verb;
 
-const CATEGORIES: [&str; 6] = ["infinitive", "present", "past", "future", "aorist", "imperative"];
+const CATEGORIES: [&str; 6] = [
+    "infinitive",
+    "present",
+    "past",
+    "future",
+    "aorist",
+    "imperative",
+];
 
 fn category(features: &str) -> &'static str {
     if features == "V;NFIN" {

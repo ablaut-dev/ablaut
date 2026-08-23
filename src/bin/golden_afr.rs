@@ -7,13 +7,7 @@
 use ablaut::afr::{Slot, Verb};
 use ablaut::harness::{run, Spec};
 
-const CATEGORIES: [&str; 5] = [
-    "infinitive",
-    "present",
-    "past",
-    "participle",
-    "imperative",
-];
+const CATEGORIES: [&str; 5] = ["infinitive", "present", "past", "participle", "imperative"];
 
 fn slot(features: &str) -> Option<Slot> {
     match features {

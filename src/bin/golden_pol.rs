@@ -4,8 +4,8 @@
 //! Usage: cargo run --release --bin golden_pol [gold.tsv ...] [--check]
 //!        (default: data/pol/unimorph.tsv data/pol/sgjp.tsv)
 
-use ablaut::pol::Verb;
 use ablaut::harness::{run, Spec};
+use ablaut::pol::Verb;
 
 const CATEGORIES: [&str; 5] = ["infinitive", "present", "future", "past", "imperative"];
 

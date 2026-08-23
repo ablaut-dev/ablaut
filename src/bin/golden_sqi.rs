@@ -4,8 +4,8 @@
 //! Usage: cargo run --release --bin golden_sqi [gold.tsv ...] [--check]
 //!        (default: data/sqi/unimorph.tsv data/sqi/kaikki.tsv)
 
-use ablaut::sqi::Verb;
 use ablaut::harness::{run, Spec};
+use ablaut::sqi::Verb;
 
 const CATEGORIES: [&str; 6] = [
     "present",

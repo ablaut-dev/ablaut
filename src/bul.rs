@@ -17,22 +17,45 @@ use std::sync::OnceLock;
 /// The stored cells, in the column order of `data/bul/parts.tsv`. The
 /// definite forms are absent — they are derived from these.
 pub const CELLS: [&str; 39] = [
-    "V;IND;PRS;1;SG", "V;IND;PRS;2;SG", "V;IND;PRS;3;SG",
-    "V;IND;PRS;1;PL", "V;IND;PRS;2;PL", "V;IND;PRS;3;PL",
-    "V;IND;PST;1;SG", "V;IND;PST;2;SG", "V;IND;PST;3;SG",
-    "V;IND;PST;1;PL", "V;IND;PST;2;PL", "V;IND;PST;3;PL",
-    "V;IND;PROG;PST;1;SG", "V;IND;PROG;PST;2;SG", "V;IND;PROG;PST;3;SG",
-    "V;IND;PROG;PST;1;PL", "V;IND;PROG;PST;2;PL", "V;IND;PROG;PST;3;PL",
-    "V;IMP;2;SG", "V;IMP;2;PL", "V.CVB",
-    "V.PTCP;ACT;PST;MASC;SG;INDF", "V.PTCP;ACT;PST;FEM;SG;INDF",
-    "V.PTCP;ACT;PST;NEUT;SG;INDF", "V.PTCP;ACT;PST;PL;INDF",
-    "V.PTCP;ACT;PST;NFH;MASC;SG;INDF", "V.PTCP;ACT;PST;NFH;FEM;SG;INDF",
-    "V.PTCP;ACT;PST;NFH;NEUT;SG;INDF", "V.PTCP;ACT;PST;NFH;PL;INDF",
-    "V.PTCP;ACT;PRS;MASC;SG;INDF", "V.PTCP;ACT;PRS;FEM;SG;INDF",
-    "V.PTCP;ACT;PRS;NEUT;SG;INDF", "V.PTCP;ACT;PRS;PL;INDF",
-    "V.PTCP;PASS;PST;MASC;SG;INDF", "V.PTCP;PASS;PST;FEM;SG;INDF",
-    "V.PTCP;PASS;PST;NEUT;SG;INDF", "V.PTCP;PASS;PST;PL;INDF",
-    "V.MSDR;NEUT;SG;INDF", "V.MSDR;PL;INDF",
+    "V;IND;PRS;1;SG",
+    "V;IND;PRS;2;SG",
+    "V;IND;PRS;3;SG",
+    "V;IND;PRS;1;PL",
+    "V;IND;PRS;2;PL",
+    "V;IND;PRS;3;PL",
+    "V;IND;PST;1;SG",
+    "V;IND;PST;2;SG",
+    "V;IND;PST;3;SG",
+    "V;IND;PST;1;PL",
+    "V;IND;PST;2;PL",
+    "V;IND;PST;3;PL",
+    "V;IND;PROG;PST;1;SG",
+    "V;IND;PROG;PST;2;SG",
+    "V;IND;PROG;PST;3;SG",
+    "V;IND;PROG;PST;1;PL",
+    "V;IND;PROG;PST;2;PL",
+    "V;IND;PROG;PST;3;PL",
+    "V;IMP;2;SG",
+    "V;IMP;2;PL",
+    "V.CVB",
+    "V.PTCP;ACT;PST;MASC;SG;INDF",
+    "V.PTCP;ACT;PST;FEM;SG;INDF",
+    "V.PTCP;ACT;PST;NEUT;SG;INDF",
+    "V.PTCP;ACT;PST;PL;INDF",
+    "V.PTCP;ACT;PST;NFH;MASC;SG;INDF",
+    "V.PTCP;ACT;PST;NFH;FEM;SG;INDF",
+    "V.PTCP;ACT;PST;NFH;NEUT;SG;INDF",
+    "V.PTCP;ACT;PST;NFH;PL;INDF",
+    "V.PTCP;ACT;PRS;MASC;SG;INDF",
+    "V.PTCP;ACT;PRS;FEM;SG;INDF",
+    "V.PTCP;ACT;PRS;NEUT;SG;INDF",
+    "V.PTCP;ACT;PRS;PL;INDF",
+    "V.PTCP;PASS;PST;MASC;SG;INDF",
+    "V.PTCP;PASS;PST;FEM;SG;INDF",
+    "V.PTCP;PASS;PST;NEUT;SG;INDF",
+    "V.PTCP;PASS;PST;PL;INDF",
+    "V.MSDR;NEUT;SG;INDF",
+    "V.MSDR;PL;INDF",
 ];
 
 /// Why a form cannot be produced.
@@ -108,13 +131,27 @@ fn indef_of(feat: &str) -> String {
 /// Add the definite article to an indefinite base for a DEF feature.
 fn article(base: &str, feat: &str) -> Option<String> {
     Some(if feat.contains(";MASC;") {
-        format!("{base}{}", if feat.ends_with("ACC") { "ия" } else { "ият" })
+        format!(
+            "{base}{}",
+            if feat.ends_with("ACC") {
+                "ия"
+            } else {
+                "ият"
+            }
+        )
     } else if feat.contains(";FEM;") {
         format!("{base}та")
     } else if feat.contains(";NEUT;") {
         format!("{base}то")
     } else if feat.contains(";PL;") {
-        format!("{base}{}", if feat.starts_with("V.MSDR") { "та" } else { "те" })
+        format!(
+            "{base}{}",
+            if feat.starts_with("V.MSDR") {
+                "та"
+            } else {
+                "те"
+            }
+        )
     } else {
         return None;
     })
@@ -178,7 +215,11 @@ impl Verb {
                         .replace(";MASC;SG;DEF;ACC", ";PL;INDF"),
                 )?;
                 let stem = pl.strip_suffix('и').unwrap_or(&pl);
-                let suffix = if feature.ends_with("ACC") { "ия" } else { "ият" };
+                let suffix = if feature.ends_with("ACC") {
+                    "ия"
+                } else {
+                    "ият"
+                };
                 return Some(format!("{stem}{suffix}"));
             }
             let base = self.form(&indef_of(feature))?;
@@ -220,29 +261,47 @@ impl Table {
         Self {
             present: v.citation().to_string(),
             present_all: many(&[
-                "V;IND;PRS;1;SG", "V;IND;PRS;2;SG", "V;IND;PRS;3;SG",
-                "V;IND;PRS;1;PL", "V;IND;PRS;2;PL", "V;IND;PRS;3;PL",
+                "V;IND;PRS;1;SG",
+                "V;IND;PRS;2;SG",
+                "V;IND;PRS;3;SG",
+                "V;IND;PRS;1;PL",
+                "V;IND;PRS;2;PL",
+                "V;IND;PRS;3;PL",
             ]),
             aorist: many(&[
-                "V;IND;PST;1;SG", "V;IND;PST;2;SG", "V;IND;PST;3;SG",
-                "V;IND;PST;1;PL", "V;IND;PST;2;PL", "V;IND;PST;3;PL",
+                "V;IND;PST;1;SG",
+                "V;IND;PST;2;SG",
+                "V;IND;PST;3;SG",
+                "V;IND;PST;1;PL",
+                "V;IND;PST;2;PL",
+                "V;IND;PST;3;PL",
             ]),
             imperfect: many(&[
-                "V;IND;PROG;PST;1;SG", "V;IND;PROG;PST;2;SG", "V;IND;PROG;PST;3;SG",
-                "V;IND;PROG;PST;1;PL", "V;IND;PROG;PST;2;PL", "V;IND;PROG;PST;3;PL",
+                "V;IND;PROG;PST;1;SG",
+                "V;IND;PROG;PST;2;SG",
+                "V;IND;PROG;PST;3;SG",
+                "V;IND;PROG;PST;1;PL",
+                "V;IND;PROG;PST;2;PL",
+                "V;IND;PROG;PST;3;PL",
             ]),
             imperative: many(&["V;IMP;2;SG", "V;IMP;2;PL"]),
             past_participle: many(&[
-                "V.PTCP;ACT;PST;MASC;SG;INDF", "V.PTCP;ACT;PST;FEM;SG;INDF",
-                "V.PTCP;ACT;PST;NEUT;SG;INDF", "V.PTCP;ACT;PST;PL;INDF",
+                "V.PTCP;ACT;PST;MASC;SG;INDF",
+                "V.PTCP;ACT;PST;FEM;SG;INDF",
+                "V.PTCP;ACT;PST;NEUT;SG;INDF",
+                "V.PTCP;ACT;PST;PL;INDF",
             ]),
             present_participle: many(&[
-                "V.PTCP;ACT;PRS;MASC;SG;INDF", "V.PTCP;ACT;PRS;FEM;SG;INDF",
-                "V.PTCP;ACT;PRS;NEUT;SG;INDF", "V.PTCP;ACT;PRS;PL;INDF",
+                "V.PTCP;ACT;PRS;MASC;SG;INDF",
+                "V.PTCP;ACT;PRS;FEM;SG;INDF",
+                "V.PTCP;ACT;PRS;NEUT;SG;INDF",
+                "V.PTCP;ACT;PRS;PL;INDF",
             ]),
             passive_participle: many(&[
-                "V.PTCP;PASS;PST;MASC;SG;INDF", "V.PTCP;PASS;PST;FEM;SG;INDF",
-                "V.PTCP;PASS;PST;NEUT;SG;INDF", "V.PTCP;PASS;PST;PL;INDF",
+                "V.PTCP;PASS;PST;MASC;SG;INDF",
+                "V.PTCP;PASS;PST;FEM;SG;INDF",
+                "V.PTCP;PASS;PST;NEUT;SG;INDF",
+                "V.PTCP;PASS;PST;PL;INDF",
             ]),
             verbal_adverb: v.form("V.CVB"),
             verbal_noun: v.form("V.MSDR;NEUT;SG;INDF"),
@@ -272,9 +331,18 @@ mod tests {
     #[test]
     fn definite_article_derived() {
         // Fem / neut / plural definites are the indefinite base + article.
-        assert_eq!(article("играла", "V.PTCP;ACT;PST;FEM;SG;DEF").unwrap(), "игралата");
-        assert_eq!(article("играло", "V.PTCP;ACT;PST;NEUT;SG;DEF").unwrap(), "игралото");
-        assert_eq!(article("играли", "V.PTCP;ACT;PST;PL;DEF").unwrap(), "игралите");
+        assert_eq!(
+            article("играла", "V.PTCP;ACT;PST;FEM;SG;DEF").unwrap(),
+            "игралата"
+        );
+        assert_eq!(
+            article("играло", "V.PTCP;ACT;PST;NEUT;SG;DEF").unwrap(),
+            "игралото"
+        );
+        assert_eq!(
+            article("играли", "V.PTCP;ACT;PST;PL;DEF").unwrap(),
+            "игралите"
+        );
         // The masculine definite is built on the plural stem (yat/ъ), so
         // it is derived in form(), not article() — see the golden gate.
     }

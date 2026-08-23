@@ -11,11 +11,15 @@
 //! *wissen*), and three stored suppletives (*sein*, *werden*, *tun*).
 //! Everything irregular lives in `data/deu/verbs.tsv`, compiled in.
 
+pub mod afr;
+pub mod aze;
 pub mod ben;
+pub mod bul;
 pub mod cat;
 pub mod ces;
 pub mod dan;
 pub mod deu;
+pub mod ell;
 pub mod eng;
 pub mod est;
 pub mod fin;
@@ -33,18 +37,11 @@ pub mod kan;
 pub mod kor;
 pub mod mar;
 pub mod mkd;
-pub mod afr;
-pub mod bul;
-pub mod ell;
-pub mod sqi;
-pub mod pol;
-pub mod aze;
-pub mod uzb;
-pub mod tuk;
 pub mod nld;
 pub mod nob;
 pub mod perso_arabic;
 pub mod pes;
+pub mod pol;
 pub mod por;
 #[cfg(feature = "python")]
 mod python;
@@ -53,14 +50,17 @@ pub mod ron;
 pub mod rus;
 pub mod slv;
 pub mod spa;
+pub mod sqi;
 pub mod swa;
 pub mod swe;
 pub mod tam;
 pub mod tel;
 pub mod tgl;
+pub mod tuk;
 pub mod tur;
 pub mod ukr;
 pub mod urd;
+pub mod uzb;
 #[cfg(feature = "wasm")]
 mod wasm;
 

@@ -15,11 +15,33 @@ use std::sync::OnceLock;
 
 /// The stored cells, in the column order of `data/aze/parts.tsv`.
 pub const CELLS: [&str; 27] = [
-    "V;PRS;1;SG", "V;PRS;2;SG", "V;PRS;3;SG", "V;PRS;1;PL", "V;PRS;2;PL", "V;PRS;3;PL",
-    "V;PST;1;SG", "V;PST;2;SG", "V;PST;3;SG", "V;PST;1;PL", "V;PST;2;PL", "V;PST;3;PL",
-    "V;FUT;1;SG", "V;FUT;2;SG", "V;FUT;3;SG", "V;FUT;1;PL", "V;FUT;2;PL", "V;FUT;3;PL",
-    "V;AOR;1;SG", "V;AOR;2;SG", "V;AOR;3;SG", "V;AOR;1;PL", "V;AOR;2;PL", "V;AOR;3;PL",
-    "V;IMP;2;SG", "V;IMP;2;PL", "V;NFIN",
+    "V;PRS;1;SG",
+    "V;PRS;2;SG",
+    "V;PRS;3;SG",
+    "V;PRS;1;PL",
+    "V;PRS;2;PL",
+    "V;PRS;3;PL",
+    "V;PST;1;SG",
+    "V;PST;2;SG",
+    "V;PST;3;SG",
+    "V;PST;1;PL",
+    "V;PST;2;PL",
+    "V;PST;3;PL",
+    "V;FUT;1;SG",
+    "V;FUT;2;SG",
+    "V;FUT;3;SG",
+    "V;FUT;1;PL",
+    "V;FUT;2;PL",
+    "V;FUT;3;PL",
+    "V;AOR;1;SG",
+    "V;AOR;2;SG",
+    "V;AOR;3;SG",
+    "V;AOR;1;PL",
+    "V;AOR;2;PL",
+    "V;AOR;3;PL",
+    "V;IMP;2;SG",
+    "V;IMP;2;PL",
+    "V;NFIN",
 ];
 
 /// Why a form cannot be produced.
@@ -67,7 +89,11 @@ const VOWELS: &str = "aıoueəiöü";
 
 /// Four-way vowel harmony from a stem: (low A, high I, final K).
 fn harmony(stem: &str) -> (char, char, char) {
-    let v = stem.chars().rev().find(|c| VOWELS.contains(*c)).unwrap_or('ə');
+    let v = stem
+        .chars()
+        .rev()
+        .find(|c| VOWELS.contains(*c))
+        .unwrap_or('ə');
     let back = "aıou".contains(v);
     let round = "ouöü".contains(v);
     let a = if back { 'a' } else { 'ə' };
@@ -219,16 +245,36 @@ impl Table {
         Self {
             infinitive: v.citation().to_string(),
             present: many(&[
-                "V;PRS;1;SG", "V;PRS;2;SG", "V;PRS;3;SG", "V;PRS;1;PL", "V;PRS;2;PL", "V;PRS;3;PL",
+                "V;PRS;1;SG",
+                "V;PRS;2;SG",
+                "V;PRS;3;SG",
+                "V;PRS;1;PL",
+                "V;PRS;2;PL",
+                "V;PRS;3;PL",
             ]),
             past: many(&[
-                "V;PST;1;SG", "V;PST;2;SG", "V;PST;3;SG", "V;PST;1;PL", "V;PST;2;PL", "V;PST;3;PL",
+                "V;PST;1;SG",
+                "V;PST;2;SG",
+                "V;PST;3;SG",
+                "V;PST;1;PL",
+                "V;PST;2;PL",
+                "V;PST;3;PL",
             ]),
             future: many(&[
-                "V;FUT;1;SG", "V;FUT;2;SG", "V;FUT;3;SG", "V;FUT;1;PL", "V;FUT;2;PL", "V;FUT;3;PL",
+                "V;FUT;1;SG",
+                "V;FUT;2;SG",
+                "V;FUT;3;SG",
+                "V;FUT;1;PL",
+                "V;FUT;2;PL",
+                "V;FUT;3;PL",
             ]),
             aorist: many(&[
-                "V;AOR;1;SG", "V;AOR;2;SG", "V;AOR;3;SG", "V;AOR;1;PL", "V;AOR;2;PL", "V;AOR;3;PL",
+                "V;AOR;1;SG",
+                "V;AOR;2;SG",
+                "V;AOR;3;SG",
+                "V;AOR;1;PL",
+                "V;AOR;2;PL",
+                "V;AOR;3;PL",
             ]),
             imperative: many(&["V;IMP;2;SG", "V;IMP;2;PL"]),
         }

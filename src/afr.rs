@@ -228,7 +228,10 @@ mod tests {
     #[test]
     fn mined_exceptions() {
         // Inseparable prefix: no ge-.
-        assert_eq!(v("verstaan").form(Slot::PastParticiple).unwrap(), "verstaan");
+        assert_eq!(
+            v("verstaan").form(Slot::PastParticiple).unwrap(),
+            "verstaan"
+        );
         // Separable prefix: ge- goes inside.
         assert_eq!(v("aankom").form(Slot::PastParticiple).unwrap(), "aangekom");
         // -ende spelling alternation.
