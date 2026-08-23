@@ -1,0 +1,798 @@
+# lemma	features	resolution	note
+# resolution: variant | o1 (apertium-mkd) | o2 (UniMorph mkd) | neither.
+# Bucketed rulings; see docs/mkd/oracles.md for the systematic patterns.
+апси	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+бере	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+благословува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+боледува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+бојкотира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+брани	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+брише	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+брише	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+брои	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+брои	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+брои	V;PRS;1;SG	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+брои	V;PRS;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+бунтува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+важи	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+вдишува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+вежба	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+вели	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+верува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+ветува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+види	V;PST;1;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+види	V;PST;1;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+види	V;PST;2;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+види	V;PST;3;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+вклучува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+владее	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+влегува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+влезе	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+влече	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+влијае	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+вложува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+влошува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+вметнува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+вмешува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+воведува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+води	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+вознемирува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+воодушевува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+воспитува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+воспоставува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+војува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+вперува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+вработува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+врзува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+врти	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+гарантира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+гладува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+гласа	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+гледа	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+грабнува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+гради	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+гребе	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+гребе	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+губи	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+дава	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+движи	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+дели	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+делува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+дефинира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+дејствува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+дискутира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+дише	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+добива	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+добие	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+доближува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+доведува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+доверува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+довршува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+додава	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+доживее	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+доживее	V;PST;1;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+доживее	V;PST;1;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+доживее	V;PST;2;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+доживее	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+доживее	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+доживува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+дозволува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+докажува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+должи	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+доминира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+достигнува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+дојде	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+држи	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+држи	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+дува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+жали	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+жали	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+живее	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+жртвува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+забавува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+забележува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+забранува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+забрзува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+зависи	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+завршува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+загадува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+загрижува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+загрозува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+задава	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+задоволува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+задржува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+закажува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+заклучува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+закопува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+закупува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+залаже	V.PTCP;PST;FEM;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+залаже	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+залаже	V.PTCP;PST;NEUT;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+залаже	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+залаже	V.PTCP;PST;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+залаже	V;PST;1;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+залаже	V;PST;1;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+залаже	V;PST;2;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+залаже	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+залаже	V;PST;3;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+залаже	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+заложува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+заменува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+заминува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+замислува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+замрзнува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+занемарува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+занимава	V.PTCP;PROG;PST;FEM;SG	o1	apertium form is the standard spelling
+занимава	V.PTCP;PROG;PST;MASC;SG	o1	apertium form is the standard spelling
+занимава	V.PTCP;PROG;PST;NEUT;SG	o1	apertium form is the standard spelling
+занимава	V.PTCP;PROG;PST;PL	o1	apertium form is the standard spelling
+заобиколува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+запишува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+заплашува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+запознае	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+запознае	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+заработува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+заразува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+заробува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+заслужува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+зајакне	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+зборува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+зголемува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+зема	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+знае	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+знае	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+знае	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+значи	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+игнорира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+игра	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+иде	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+избегнува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+избие	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+избира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+избувнува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+изведува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+известува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+изгледа	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+издржи	V.PTCP;PST;FEM;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+издржи	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+издржи	V.PTCP;PST;NEUT;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+издржи	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+издржи	V.PTCP;PST;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+издржи	V;PST;1;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+издржи	V;PST;1;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+издржи	V;PST;2;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+издржи	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+издржи	V;PST;3;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+издржи	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+издржува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+изедначува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+изискува	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+изискува	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+излаже	V.PTCP;PST;FEM;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+излаже	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+излаже	V.PTCP;PST;NEUT;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+излаже	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+излаже	V.PTCP;PST;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+излаже	V;PST;1;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+излаже	V;PST;1;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+излаже	V;PST;2;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+излаже	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+излаже	V;PST;3;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+излаже	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+излегува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+излезе	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+изнајде	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+изненадува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+изобличува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+изостава	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+изразува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+изрече	V.PTCP;PROG;PST;FEM;SG	o1	apertium form is the standard spelling
+изрече	V.PTCP;PROG;PST;MASC;SG	o1	apertium form is the standard spelling
+изрече	V.PTCP;PROG;PST;NEUT;SG	o1	apertium form is the standard spelling
+изрече	V.PTCP;PROG;PST;PL	o1	apertium form is the standard spelling
+изрече	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+изрече	V;PROG;PST;1;PL	o1	apertium form is the standard spelling
+изрече	V;PROG;PST;1;SG	o1	apertium form is the standard spelling
+изрече	V;PROG;PST;2;PL	o1	apertium form is the standard spelling
+изрече	V;PROG;PST;2;SG	o1	apertium form is the standard spelling
+изрече	V;PROG;PST;3;PL	o1	apertium form is the standard spelling
+изрече	V;PROG;PST;3;SG	o1	apertium form is the standard spelling
+изјавува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+инвестира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+инсистира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+исклучува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+искоренува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+искористи	V.PTCP;PST;FEM;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+искористи	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+искористи	V.PTCP;PST;NEUT;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+искористи	V.PTCP;PST;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+искористи	V;PST;1;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+искористи	V;PST;1;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+искористи	V;PST;2;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+искористи	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+искористи	V;PST;3;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+искористи	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+испита	V.PTCP;PROG;PST;FEM;SG	o1	apertium form is the standard spelling
+испита	V.PTCP;PROG;PST;MASC;SG	o1	apertium form is the standard spelling
+испита	V.PTCP;PROG;PST;NEUT;SG	o1	apertium form is the standard spelling
+испита	V.PTCP;PROG;PST;PL	o1	apertium form is the standard spelling
+испита	V;IMP;2;PL	o1	apertium form is the standard spelling
+испита	V;IMP;2;SG	o1	apertium form is the standard spelling
+испита	V;PROG;PST;1;PL	o1	apertium form is the standard spelling
+испита	V;PROG;PST;1;SG	o1	apertium form is the standard spelling
+испита	V;PROG;PST;2;PL	o1	apertium form is the standard spelling
+испита	V;PROG;PST;2;SG	o1	apertium form is the standard spelling
+испита	V;PROG;PST;3;PL	o1	apertium form is the standard spelling
+испита	V;PROG;PST;3;SG	o1	apertium form is the standard spelling
+испита	V;PRS;1;PL	o1	apertium form is the standard spelling
+испита	V;PRS;2;PL	o1	apertium form is the standard spelling
+испита	V;PRS;2;SG	o1	apertium form is the standard spelling
+испита	V;PRS;3;PL	o1	apertium form is the standard spelling
+испита	V;PRS;3;SG	o1	apertium form is the standard spelling
+испитува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+исполнува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+исправува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+исправува	V.PTCP;PROG;PST;FEM;SG	o1	apertium form is the standard spelling
+исправува	V.PTCP;PROG;PST;MASC;SG	o1	apertium form is the standard spelling
+исправува	V.PTCP;PROG;PST;NEUT;SG	o1	apertium form is the standard spelling
+исправува	V.PTCP;PROG;PST;PL	o1	apertium form is the standard spelling
+исправува	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+исправува	V;IMP;2;PL	o1	apertium form is the standard spelling
+исправува	V;IMP;2;SG	o1	apertium form is the standard spelling
+исправува	V;PROG;PST;1;PL	o1	apertium form is the standard spelling
+исправува	V;PROG;PST;1;SG	o1	apertium form is the standard spelling
+исправува	V;PROG;PST;2;PL	o1	apertium form is the standard spelling
+исправува	V;PROG;PST;2;SG	o1	apertium form is the standard spelling
+исправува	V;PROG;PST;3;PL	o1	apertium form is the standard spelling
+исправува	V;PROG;PST;3;SG	o1	apertium form is the standard spelling
+исправува	V;PRS;1;PL	o1	apertium form is the standard spelling
+исправува	V;PRS;1;SG	o1	apertium form is the standard spelling
+исправува	V;PRS;2;PL	o1	apertium form is the standard spelling
+исправува	V;PRS;2;SG	o1	apertium form is the standard spelling
+исправува	V;PRS;3;PL	o1	apertium form is the standard spelling
+исправува	V;PRS;3;SG	o1	apertium form is the standard spelling
+испрашува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+истакнува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+истекува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+истече	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+истражува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+истребува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+исчезнува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+кажува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+казнува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+кандидира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+командува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+контролира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+конфискува	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+конфискува	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+копа	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+користи	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+крие	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+крие	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+критикува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+крунисува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+крши	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+лаже	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+лежи	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+лета	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+менува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+мие	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+мие	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+минува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+мисли	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+набројува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+набљудува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+наведе	V.PTCP;PST;FEM;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+наведе	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+наведе	V.PTCP;PST;NEUT;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+наведе	V.PTCP;PST;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+навлезе	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+навредува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+нагласува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+наградува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+надгледува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+надминува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+намалува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+наметнува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+напредува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+напушта	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+наредува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+нарекува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+нарече	V.PTCP;PROG;PST;FEM;SG	o1	apertium form is the standard spelling
+нарече	V.PTCP;PROG;PST;MASC;SG	o1	apertium form is the standard spelling
+нарече	V.PTCP;PROG;PST;NEUT;SG	o1	apertium form is the standard spelling
+нарече	V.PTCP;PROG;PST;PL	o1	apertium form is the standard spelling
+нарече	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+нарече	V;PROG;PST;1;PL	o1	apertium form is the standard spelling
+нарече	V;PROG;PST;1;SG	o1	apertium form is the standard spelling
+нарече	V;PROG;PST;2;PL	o1	apertium form is the standard spelling
+нарече	V;PROG;PST;2;SG	o1	apertium form is the standard spelling
+нарече	V;PROG;PST;3;PL	o1	apertium form is the standard spelling
+нарече	V;PROG;PST;3;SG	o1	apertium form is the standard spelling
+населува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+насобира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+насочува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+настанува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+настапува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+настојува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+најде	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+негира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+негува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+носи	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+нуди	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+обвинува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+обединува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+обезбедува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+обелодени	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+обесхрабрува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+облекува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+обликува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+обновува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+обработува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+образложува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+образува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+објавува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+објаснува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+овозможува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+ограничува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+одбележува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+одбива	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+одбие	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+одбројува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+одгледува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+одговара	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+оддалечува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+оди	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+одложува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+одлучува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+одмрзнува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+однесе	V.PTCP;PST;FEM;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+однесе	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+однесе	V.PTCP;PST;NEUT;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+однесе	V.PTCP;PST;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+одобрува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+одолговлекува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+одразува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+одредува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+одрекува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+одрече	V.PTCP;PROG;PST;FEM;SG	o1	apertium form is the standard spelling
+одрече	V.PTCP;PROG;PST;MASC;SG	o1	apertium form is the standard spelling
+одрече	V.PTCP;PROG;PST;NEUT;SG	o1	apertium form is the standard spelling
+одрече	V.PTCP;PROG;PST;PL	o1	apertium form is the standard spelling
+одрече	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+одрече	V;PROG;PST;1;PL	o1	apertium form is the standard spelling
+одрече	V;PROG;PST;1;SG	o1	apertium form is the standard spelling
+одрече	V;PROG;PST;2;PL	o1	apertium form is the standard spelling
+одрече	V;PROG;PST;2;SG	o1	apertium form is the standard spelling
+одрече	V;PROG;PST;3;PL	o1	apertium form is the standard spelling
+одрече	V;PROG;PST;3;SG	o1	apertium form is the standard spelling
+оздравува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+означува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+олеснува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+оневозможува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+опишува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+опкружува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+опкружува	V.PTCP;PROG;PST;FEM;SG	o1	apertium form is the standard spelling
+опкружува	V.PTCP;PROG;PST;MASC;SG	o1	apertium form is the standard spelling
+опкружува	V.PTCP;PROG;PST;NEUT;SG	o1	apertium form is the standard spelling
+опкружува	V.PTCP;PROG;PST;PL	o1	apertium form is the standard spelling
+опкружува	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+опкружува	V;IMP;2;PL	o1	apertium form is the standard spelling
+опкружува	V;IMP;2;SG	o1	apertium form is the standard spelling
+опкружува	V;PROG;PST;1;PL	o1	apertium form is the standard spelling
+опкружува	V;PROG;PST;1;SG	o1	apertium form is the standard spelling
+опкружува	V;PROG;PST;2;PL	o1	apertium form is the standard spelling
+опкружува	V;PROG;PST;2;SG	o1	apertium form is the standard spelling
+опкружува	V;PROG;PST;3;PL	o1	apertium form is the standard spelling
+опкружува	V;PROG;PST;3;SG	o1	apertium form is the standard spelling
+опкружува	V;PRS;1;PL	o1	apertium form is the standard spelling
+опкружува	V;PRS;1;SG	o1	apertium form is the standard spelling
+опкружува	V;PRS;2;PL	o1	apertium form is the standard spelling
+опкружува	V;PRS;2;SG	o1	apertium form is the standard spelling
+опкружува	V;PRS;3;PL	o1	apertium form is the standard spelling
+опкружува	V;PRS;3;SG	o1	apertium form is the standard spelling
+оправдува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+определува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+освестува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+освојува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+ослободува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+осознае	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+оспорува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+оспособува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+остава	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+останува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+остварува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+осудува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+отвора	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+отежнува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+отиде	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+откажува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+открива	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+открие	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+отстапува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+отстранува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+отфрла	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+охрабрува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+очекува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+патува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+пее	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+пере	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+пие	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+пие	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+пишува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+планира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+плаши	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+плива	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+плука	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+победува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+поверува	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+поверува	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+повлекува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+повлече	V.PTCP;PROG;PST;FEM;SG	o1	apertium form is the standard spelling
+повлече	V.PTCP;PROG;PST;MASC;SG	o1	apertium form is the standard spelling
+повлече	V.PTCP;PROG;PST;NEUT;SG	o1	apertium form is the standard spelling
+повлече	V.PTCP;PROG;PST;PL	o1	apertium form is the standard spelling
+повлече	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+повлече	V;PROG;PST;1;PL	o1	apertium form is the standard spelling
+повлече	V;PROG;PST;1;SG	o1	apertium form is the standard spelling
+повлече	V;PROG;PST;2;PL	o1	apertium form is the standard spelling
+повлече	V;PROG;PST;2;SG	o1	apertium form is the standard spelling
+повлече	V;PROG;PST;3;PL	o1	apertium form is the standard spelling
+повлече	V;PROG;PST;3;SG	o1	apertium form is the standard spelling
+повредува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+поврзува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+повторува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+погубува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+подава	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+подвлекува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+подготвува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+поддржува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+подмладува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+поднесува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+подобрува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+подредува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+подржи	V.PTCP;PST;FEM;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+подржи	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+подржи	V.PTCP;PST;NEUT;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+подржи	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+подржи	V.PTCP;PST;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+подржи	V;PST;1;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+подржи	V;PST;1;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+подржи	V;PST;2;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+подржи	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+подржи	V;PST;3;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+подржи	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+подучува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+поедноставува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+позајмува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+поздравува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+познае	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+покажува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+покачува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+поклопува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+покрива	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+покрие	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+помага	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+помилува	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+помилува	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+понижува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+поништи	V.PTCP;PST;FEM;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+поништи	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+поништи	V.PTCP;PST;NEUT;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+поништи	V.PTCP;PST;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+поништи	V;PST;1;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+поништи	V;PST;1;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+поништи	V;PST;2;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+поништи	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+поништи	V;PST;3;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+поништи	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+поништува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+попречува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+поразува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+посвојува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+поседува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+посее	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+посее	V;PST;1;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+посее	V;PST;1;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+посее	V;PST;2;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+посее	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+посее	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+посетува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+посоветува	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+посоветува	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+поставува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+постои	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+постои	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+постои	V;PRS;1;SG	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+потврдува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+потекнува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+поткопа	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+поткопа	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+потпишува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+потрае	V.PTCP;PST;FEM;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+потрае	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+потрае	V.PTCP;PST;NEUT;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+потрае	V.PTCP;PST;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+потрае	V;PST;1;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+потрае	V;PST;1;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+потрае	V;PST;2;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+потрае	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+потрае	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+потсетува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+поттикнува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+потценува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+починува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+почитува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+почнува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+почувствува	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+почувствува	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+појаснува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+прави	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+празнува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+практикува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+прашува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+преведува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+предава	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+предвиди	V;PST;1;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+предвиди	V;PST;1;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+предвиди	V;PST;2;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+предвиди	V;PST;3;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+предвидува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+предизвикува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+преживее	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+преживее	V;PST;1;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+преживее	V;PST;1;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+преживее	V;PST;2;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+преживее	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+преживее	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+преживува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+презема	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+преиспитува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+прекинува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+прекорува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+прекршува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+преминува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+пренесе	V.PTCP;PST;FEM;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+пренесе	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+пренесе	V.PTCP;PST;NEUT;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+пренесе	V.PTCP;PST;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+пренесува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+препознае	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+препорачува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+прераскажува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+пресече	V.PTCP;PROG;PST;FEM;SG	o1	apertium form is the standard spelling
+пресече	V.PTCP;PROG;PST;MASC;SG	o1	apertium form is the standard spelling
+пресече	V.PTCP;PROG;PST;NEUT;SG	o1	apertium form is the standard spelling
+пресече	V.PTCP;PROG;PST;PL	o1	apertium form is the standard spelling
+пресече	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+пресече	V;PROG;PST;1;PL	o1	apertium form is the standard spelling
+пресече	V;PROG;PST;1;SG	o1	apertium form is the standard spelling
+пресече	V;PROG;PST;2;PL	o1	apertium form is the standard spelling
+пресече	V;PROG;PST;2;SG	o1	apertium form is the standard spelling
+пресече	V;PROG;PST;3;PL	o1	apertium form is the standard spelling
+пресече	V;PROG;PST;3;SG	o1	apertium form is the standard spelling
+пресмета	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+пресмета	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+претпоставува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+претставува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+преувеличува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+приближува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+привлекува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+привлече	V.PTCP;PROG;PST;FEM;SG	o1	apertium form is the standard spelling
+привлече	V.PTCP;PROG;PST;MASC;SG	o1	apertium form is the standard spelling
+привлече	V.PTCP;PROG;PST;NEUT;SG	o1	apertium form is the standard spelling
+привлече	V.PTCP;PROG;PST;PL	o1	apertium form is the standard spelling
+привлече	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+привлече	V;PROG;PST;1;PL	o1	apertium form is the standard spelling
+привлече	V;PROG;PST;1;SG	o1	apertium form is the standard spelling
+привлече	V;PROG;PST;2;PL	o1	apertium form is the standard spelling
+привлече	V;PROG;PST;2;SG	o1	apertium form is the standard spelling
+привлече	V;PROG;PST;3;PL	o1	apertium form is the standard spelling
+привлече	V;PROG;PST;3;SG	o1	apertium form is the standard spelling
+придвижува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+придонесе	V.PTCP;PST;FEM;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+придонесе	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+придонесе	V.PTCP;PST;NEUT;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+придонесе	V.PTCP;PST;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+придонесува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+придржи	V.PTCP;PST;FEM;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+придржи	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+придржи	V.PTCP;PST;NEUT;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+придржи	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+придржи	V.PTCP;PST;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+придржи	V;PST;1;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+придржи	V;PST;1;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+придржи	V;PST;2;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+придржи	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+придржи	V;PST;3;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+придржи	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+придружува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+признава	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+признае	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+признае	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+прикрие	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+прилагодува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+применува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+принудува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+припишува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+присвојува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+пристигнува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+присуствува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+причинува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+пријавува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+прогласува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+продава	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+продлабочува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+продолжува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+произведува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+промени	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+промовира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+пронајде	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+прооди	V.PTCP;PST;FEM;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+прооди	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+прооди	V.PTCP;PST;NEUT;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+прооди	V.PTCP;PST;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+прооди	V;PST;1;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+прооди	V;PST;1;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+прооди	V;PST;2;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+прооди	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+прооди	V;PST;3;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+прооди	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+простува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+протекува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+протестира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+проценува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+прочистува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+работи	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+разбира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+разбранува	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+разбранува	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+развива	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+развие	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+разгледува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+разговара	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+разгорува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+раздвојува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+разделува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+разликува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+разменува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+размислува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+разочарува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+разрешува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+разубавува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+разубедува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+разјаснува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+ракува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+расипува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+раскажува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+раскинува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+располага	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+распределува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+расте	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+расте	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+регулира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+рече	V.PTCP;PROG;PST;FEM;SG	o1	apertium form is the standard spelling
+рече	V.PTCP;PROG;PST;MASC;SG	o1	apertium form is the standard spelling
+рече	V.PTCP;PROG;PST;NEUT;SG	o1	apertium form is the standard spelling
+рече	V.PTCP;PROG;PST;PL	o1	apertium form is the standard spelling
+рече	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+рече	V;PROG;PST;1;PL	o1	apertium form is the standard spelling
+рече	V;PROG;PST;1;SG	o1	apertium form is the standard spelling
+рече	V;PROG;PST;2;PL	o1	apertium form is the standard spelling
+рече	V;PROG;PST;2;SG	o1	apertium form is the standard spelling
+рече	V;PROG;PST;3;PL	o1	apertium form is the standard spelling
+рече	V;PROG;PST;3;SG	o1	apertium form is the standard spelling
+решава	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+ризикува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+сака	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+сведочи	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+седи	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+седи	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+силува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+симнува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+скратува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+скрие	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+следи	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+служи	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+слуша	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+смее	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+смени	V.PTCP;PST;FEM;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+смени	V.PTCP;PST;MASC;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+смени	V.PTCP;PST;NEUT;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+смени	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+смени	V.PTCP;PST;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+смени	V;PST;1;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+смени	V;PST;1;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+смени	V;PST;2;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+смени	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+смени	V;PST;3;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+смени	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+смета	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+смирува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+смрди	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+снабдува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+собира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+советува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+содржи	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+содржи	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+соединува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+создава	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+сонува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+соодветствува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+соопштува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+соочува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+соработува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+составува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+сочинува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+сочува	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+сочува	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+сочувствува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+спасува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+споделува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+споменува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+споредува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+спојува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+спречува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+спроведува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+стеснува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+стои	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+стои	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+стои	V;PRS;1;SG	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+суди	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+сфати	V.PTCP;PST;PASS	variant	passive participle -ан/-ен both attested
+тврди	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+тече	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+толерира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+толкува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+трае	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+тргува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+трие	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+трие	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+троши	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+турка	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+убедува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+убива	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+убие	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+ублажува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+уверува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+удвојува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+удира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+ужива	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+укажува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+укинува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+украсува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+умира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+уништува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+употребува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+управува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+уредува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+усложнува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+усогласува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+успева	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+успее	V;PST;1;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+успее	V;PST;1;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+успее	V;PST;2;PL	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+успее	V;PST;2;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+успее	V;PST;3;SG	o1	aorist / aorist participle — out of engine scope; apertium clean, UniMorph has encoding noise
+утврдува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+уценува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+учествува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+учи	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+финансира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+фокусира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+фрла	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+функционира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+цитира	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+чека	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+чеша	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+чини	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+чита	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+чува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+чувствува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+шие	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+шие	V;PROG;PST;3;PL	o2	j-stem: UniMorph correct (бројам-type), apertium over-regularizes
+шири	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+штити	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+штрајкува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+јавува	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
+јаде	V.CVB	o1	apertium -јќи is the standard converb; UniMorph drops ќ→к
