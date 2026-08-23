@@ -563,5 +563,30 @@ jobs:
         run: cargo run --release --bin golden_mar -- data/mar/apertium.tsv --check
       - name: Marathi apertium-kaikki non-finite agreement gate (two-oracle)
         run: cargo run --release --bin golden_mar -- data/mar/apertium.tsv data/mar/kaikki.tsv --check
+      - name: Install lttoolbox-dev (apertium-nob oracle; provides lt-expand)
+        run: sudo apt-get update && sudo apt-get install -y lttoolbox-dev
+      - name: Cache apertium-nob
+        id: apertium-nob
+        uses: actions/cache@v5
+        with:
+          path: data/nob/apertium.tsv
+          key: apertium-nob-v1
+      - name: Fetch apertium-nob (independent oracle)
+        if: steps.apertium-nob.outputs.cache-hit != 'true'
+        run: ./scripts/nob/fetch_apertium.sh
+      - name: Cache UniMorph nob
+        id: unimorph-nob
+        uses: actions/cache@v5
+        with:
+          path: data/nob/unimorph.tsv
+          key: unimorph-nob-v1
+      - name: Fetch UniMorph nob
+        if: steps.unimorph-nob.outputs.cache-hit != 'true'
+        run: ./scripts/nob/fetch_unimorph.sh
+      # Norwegian Bokmål: two independent oracles — the hand-built
+      # apertium-nob FST and UniMorph nob (Wiktionary lineage). Scored on
+      # the slots where they agree; see docs/nob/oracles.md.
+      - name: Norwegian Bokmål two-oracle agreement gate
+        run: cargo run --release --bin golden_nob -- data/nob/apertium.tsv data/nob/unimorph.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng

@@ -33,6 +33,7 @@ pub mod kan;
 pub mod kor;
 pub mod mar;
 pub mod nld;
+pub mod nob;
 pub mod perso_arabic;
 pub mod pes;
 pub mod por;
@@ -101,6 +102,8 @@ pub enum Lang {
     Rus,
     /// Dutch.
     Nld,
+    /// Norwegian Bokmål.
+    Nob,
     /// Romanian.
     Ron,
     /// Swedish.
@@ -159,6 +162,7 @@ impl Lang {
             "ko" | "kor" | "korean" => Some(Self::Kor),
             "ru" | "rus" | "russian" => Some(Self::Rus),
             "nl" | "nld" | "dutch" => Some(Self::Nld),
+            "nb" | "nob" | "no" | "nor" | "norwegian" | "bokmål" | "bokmal" => Some(Self::Nob),
             "ro" | "ron" | "rum" | "romanian" => Some(Self::Ron),
             "sv" | "swe" | "swedish" => Some(Self::Swe),
             "uk" | "ukr" | "ukrainian" => Some(Self::Ukr),
@@ -203,6 +207,7 @@ pub enum Conjugation {
     Kor(Box<kor::Table>),
     Rus(Box<rus::Table>),
     Nld(Box<nld::Table>),
+    Nob(Box<nob::Table>),
     Por(Box<por::Table>),
     Ron(Box<ron::Table>),
     Slv(Box<slv::Table>),
@@ -288,6 +293,9 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         ))),
         Lang::Nld => Conjugation::Nld(Box::new(nld::Table::build(
             &nld::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Nob => Conjugation::Nob(Box::new(nob::Table::build(
+            &nob::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
         Lang::Por => Conjugation::Por(Box::new(por::Table::build(
             &por::Verb::from_infinitive(infinitive).map_err(err)?,
@@ -375,6 +383,7 @@ mod facade_tests {
             ("hablar", Lang::Spa),
             ("parlar", Lang::Cat),
             ("werken", Lang::Nld),
+            ("kaste", Lang::Nob),
             ("tala", Lang::Swe),
             ("читати", Lang::Ukr),
             ("食べる", Lang::Jpn),
