@@ -36,6 +36,7 @@ NAMES = {
     "hin": "Hindi", "swa": "Swahili", "tam": "Tamil", "tel": "Telugu",
     "tgl": "Tagalog", "pes": "Persian", "kan": "Kannada",
     "guj": "Gujarati", "urd": "Urdu", "ben": "Bengali", "mar": "Marathi",
+    "mkd": "Macedonian",
 }
 
 

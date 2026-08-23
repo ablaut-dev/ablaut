@@ -691,6 +691,45 @@ impl From<crate::mar::Table> for MarathiConjugation {
     }
 }
 
+/// The full conjugation table of one Macedonian verb. No infinitive
+/// (Macedonian has none); the lemma is the 3sg present. Present and
+/// imperfect rows are [1sg…3pl]; the imperfect l-participle is
+/// [masc sg, fem sg, neut sg, pl].
+#[pyclass(get_all, frozen)]
+struct MacedonianConjugation {
+    lemma: String,
+    present: Vec<String>,
+    imperfect: Vec<String>,
+    imperfect_participle: Vec<String>,
+    /// [2sg, 2pl]
+    imperative: Vec<Option<String>>,
+    passive_participle: Option<String>,
+    converb: Option<String>,
+    verbal_noun: Option<String>,
+}
+
+#[pymethods]
+impl MacedonianConjugation {
+    fn __repr__(&self) -> String {
+        format!("MacedonianConjugation({:?})", self.lemma)
+    }
+}
+
+impl From<crate::mkd::Table> for MacedonianConjugation {
+    fn from(t: crate::mkd::Table) -> Self {
+        MacedonianConjugation {
+            lemma: t.lemma,
+            present: t.present.into(),
+            imperfect: t.imperfect.into(),
+            imperfect_participle: t.imperfect_participle.into(),
+            imperative: t.imperative.into(),
+            passive_participle: t.passive_participle,
+            converb: t.converb,
+            verbal_noun: t.verbal_noun,
+        }
+    }
+}
+
 /// The four whole-word surface forms of one Korean verb (see
 /// `ablaut::kor`).
 #[pyclass(get_all, frozen)]
@@ -1749,6 +1788,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Mkd) => {
+            let v = crate::mkd::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(MacedonianConjugation::from(crate::mkd::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         None => Err(PyValueError::new_err(format!("unknown language: {lang}"))),
     }
 }
@@ -1764,6 +1810,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<ArmenianConjugation>()?;
     m.add_class::<HindiConjugation>()?;
     m.add_class::<MarathiConjugation>()?;
+    m.add_class::<MacedonianConjugation>()?;
     m.add_class::<KoreanConjugation>()?;
     m.add_class::<TurkishConjugation>()?;
     m.add_class::<PortugueseConjugation>()?;

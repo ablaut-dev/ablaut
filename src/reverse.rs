@@ -793,13 +793,14 @@ fn ord(lang: Lang) -> usize {
         Lang::Urd => 31,
         Lang::Ben => 32,
         Lang::Mar => 33,
+        Lang::Mkd => 34,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 34] = [EMPTY; 34];
+    static INDEXES: [OnceLock<Index>; 35] = [EMPTY; 35];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -829,7 +830,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 34] = [EMPTY; 34];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 35] = [EMPTY; 35];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -931,6 +932,7 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Urd => col1(include_str!("../data/urd/verbs.tsv"), &mut lemmas),
         Lang::Ben => col1(include_str!("../data/ben/verbs.tsv"), &mut lemmas),
         Lang::Mar => col1(include_str!("../data/mar/verbs.tsv"), &mut lemmas),
+        Lang::Mkd => col1(include_str!("../data/mkd/verbs.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -1478,6 +1480,21 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
                 "imperative",
                 &["2sg", "2pl", "1", "3sg", "3pl"],
             );
+        }
+        Conjugation::Mkd(t) => {
+            s.one(&t.lemma, "present 3sg");
+            s.row(&t.present, "present", &P6);
+            s.row(&t.imperfect, "imperfect", &P6);
+            s.row(
+                &t.imperfect_participle,
+                "imperfect l-participle",
+                &["masc sg", "fem sg", "neut sg", "pl"],
+            );
+            s.opt(t.imperative[0].as_ref(), "imperative 2sg");
+            s.opt(t.imperative[1].as_ref(), "imperative 2pl");
+            s.opt(t.passive_participle.as_ref(), "passive participle");
+            s.opt(t.converb.as_ref(), "converb");
+            s.opt(t.verbal_noun.as_ref(), "verbal noun");
         }
     }
     s.0
