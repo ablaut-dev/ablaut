@@ -1468,6 +1468,37 @@ impl From<crate::tuk::Table> for TurkmenConjugation {
     }
 }
 
+/// The conjugation table of one Modern Hebrew verb.
+#[pyclass(get_all, frozen)]
+struct HebrewConjugation {
+    lemma: String,
+    past: Vec<Option<String>>,
+    present: Vec<Option<String>>,
+    future: Vec<Option<String>>,
+    imperative: Vec<Option<String>>,
+    infinitive: Option<String>,
+}
+
+#[pymethods]
+impl HebrewConjugation {
+    fn __repr__(&self) -> String {
+        format!("HebrewConjugation({:?})", self.lemma)
+    }
+}
+
+impl From<crate::heb::Table> for HebrewConjugation {
+    fn from(t: crate::heb::Table) -> Self {
+        HebrewConjugation {
+            lemma: t.lemma,
+            past: t.past,
+            present: t.present,
+            future: t.future,
+            imperative: t.imperative,
+            infinitive: t.infinitive,
+        }
+    }
+}
+
 /// The conjugation table of one Modern Standard Arabic verb.
 #[pyclass(get_all, frozen)]
 struct ArabicConjugation {
@@ -2526,6 +2557,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Heb) => {
+            let v = crate::heb::Verb::from_lemma(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(HebrewConjugation::from(crate::heb::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         Some(crate::Lang::Bel) => {
             let v = crate::bel::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
@@ -2631,6 +2669,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<TatarConjugation>()?;
     m.add_class::<YiddishConjugation>()?;
     m.add_class::<ArabicConjugation>()?;
+    m.add_class::<HebrewConjugation>()?;
     m.add_class::<KoreanConjugation>()?;
     m.add_class::<TurkishConjugation>()?;
     m.add_class::<PortugueseConjugation>()?;
