@@ -1,0 +1,2 @@
+# Latin adjudications: (lemma, features, ruling) in {ours, oracle, both}.
+# lemma<TAB>features<TAB>ruling  — rulings "ours"/"both" count as correct.

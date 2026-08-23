@@ -13,18 +13,22 @@
 
 pub mod afr;
 pub mod aze;
+pub mod bel;
 pub mod ben;
 pub mod bul;
 pub mod cat;
 pub mod ces;
+pub mod cym;
 pub mod dan;
 pub mod deu;
 pub mod ell;
 pub mod eng;
 pub mod est;
+pub mod fao;
 pub mod fin;
 pub mod fra;
 pub mod gle;
+pub mod glg;
 pub mod guj;
 #[doc(hidden)]
 pub mod harness;
@@ -34,11 +38,15 @@ pub mod isl;
 pub mod ita;
 pub mod jpn;
 pub mod kan;
+pub mod kaz;
 pub mod kor;
+pub mod lat;
+pub mod ltz;
 pub mod mar;
 pub mod mkd;
 pub mod nld;
 pub mod nob;
+pub mod oci;
 pub mod perso_arabic;
 pub mod pes;
 pub mod pol;
@@ -54,6 +62,7 @@ pub mod sqi;
 pub mod swa;
 pub mod swe;
 pub mod tam;
+pub mod tat;
 pub mod tel;
 pub mod tgl;
 pub mod tuk;
@@ -63,6 +72,7 @@ pub mod urd;
 pub mod uzb;
 #[cfg(feature = "wasm")]
 mod wasm;
+pub mod ydd;
 
 // Backwards-compatible root exports: the crate began as a German
 // conjugator and the German API lived at the root.
@@ -163,6 +173,26 @@ pub enum Lang {
     Uzb,
     /// Turkmen.
     Tuk,
+    /// Belarusian.
+    Bel,
+    /// Welsh.
+    Cym,
+    /// Faroese.
+    Fao,
+    /// Galician.
+    Glg,
+    /// Kazakh.
+    Kaz,
+    /// Latin.
+    Lat,
+    /// Luxembourgish.
+    Ltz,
+    /// Occitan.
+    Oci,
+    /// Tatar.
+    Tat,
+    /// Yiddish.
+    Ydd,
 }
 
 impl Lang {
@@ -215,6 +245,16 @@ impl Lang {
             "az" | "aze" | "azj" | "azerbaijani" | "azeri" => Some(Self::Aze),
             "uz" | "uzb" | "uzbek" => Some(Self::Uzb),
             "tk" | "tuk" | "turkmen" => Some(Self::Tuk),
+            "be | bel | belarusian" => Some(Self::Bel),
+            "cy | cym | wel | welsh" => Some(Self::Cym),
+            "fo | fao | faroese" => Some(Self::Fao),
+            "gl | glg | gal | galician" => Some(Self::Glg),
+            "kk | kaz | kazakh" => Some(Self::Kaz),
+            "la | lat | latin" => Some(Self::Lat),
+            "lb | ltz | luxembourgish" => Some(Self::Ltz),
+            "oc | oci | occitan" => Some(Self::Oci),
+            "tt | tat | tatar" => Some(Self::Tat),
+            "yi | ydd | yiddish" => Some(Self::Ydd),
             _ => None,
         }
     }
@@ -272,6 +312,16 @@ pub enum Conjugation {
     Aze(Box<aze::Table>),
     Uzb(Box<uzb::Table>),
     Tuk(Box<tuk::Table>),
+    Bel(Box<bel::Table>),
+    Cym(Box<cym::Table>),
+    Fao(Box<fao::Table>),
+    Glg(Box<glg::Table>),
+    Kaz(Box<kaz::Table>),
+    Lat(Box<lat::Table>),
+    Ltz(Box<ltz::Table>),
+    Oci(Box<oci::Table>),
+    Tat(Box<tat::Table>),
+    Ydd(Box<ydd::Table>),
 }
 
 /// Why `conjugate` failed: the input is not a known verb shape in
@@ -426,6 +476,36 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         Lang::Tuk => Conjugation::Tuk(Box::new(tuk::Table::build(
             &tuk::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
+        Lang::Bel => Conjugation::Bel(Box::new(bel::Table::build(
+            &bel::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Cym => Conjugation::Cym(Box::new(cym::Table::build(
+            &cym::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Fao => Conjugation::Fao(Box::new(fao::Table::build(
+            &fao::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Glg => Conjugation::Glg(Box::new(glg::Table::build(
+            &glg::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Kaz => Conjugation::Kaz(Box::new(kaz::Table::build(
+            &kaz::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Lat => Conjugation::Lat(Box::new(lat::Table::build(
+            &lat::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Ltz => Conjugation::Ltz(Box::new(ltz::Table::build(
+            &ltz::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Oci => Conjugation::Oci(Box::new(oci::Table::build(
+            &oci::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Tat => Conjugation::Tat(Box::new(tat::Table::build(
+            &tat::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Ydd => Conjugation::Ydd(Box::new(ydd::Table::build(
+            &ydd::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
     })
 }
 
@@ -464,6 +544,16 @@ mod facade_tests {
             ("sevmək", Lang::Aze),
             ("ishlamoq", Lang::Uzb),
             ("atmak", Lang::Tuk),
+            ("рабіць", Lang::Bel),
+            ("canu", Lang::Cym),
+            ("kasta", Lang::Fao),
+            ("falar", Lang::Glg),
+            ("алу", Lang::Kaz),
+            ("amō", Lang::Lat),
+            ("schaffen", Lang::Ltz),
+            ("parlar", Lang::Oci),
+            ("язу", Lang::Tat),
+            ("בענטשן", Lang::Ydd),
             ("tala", Lang::Swe),
             ("читати", Lang::Ukr),
             ("食べる", Lang::Jpn),
