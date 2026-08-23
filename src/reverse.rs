@@ -795,13 +795,21 @@ fn ord(lang: Lang) -> usize {
         Lang::Mar => 33,
         Lang::Nob => 34,
         Lang::Mkd => 35,
+        Lang::Afr => 36,
+        Lang::Bul => 37,
+        Lang::Ell => 38,
+        Lang::Sqi => 39,
+        Lang::Pol => 40,
+        Lang::Aze => 41,
+        Lang::Uzb => 42,
+        Lang::Tuk => 43,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 36] = [EMPTY; 36];
+    static INDEXES: [OnceLock<Index>; 44] = [EMPTY; 44];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -831,7 +839,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 36] = [EMPTY; 36];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 44] = [EMPTY; 44];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -935,6 +943,14 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Ben => col1(include_str!("../data/ben/verbs.tsv"), &mut lemmas),
         Lang::Mar => col1(include_str!("../data/mar/verbs.tsv"), &mut lemmas),
         Lang::Mkd => col1(include_str!("../data/mkd/verbs.tsv"), &mut lemmas),
+        Lang::Afr => col1(include_str!("../data/afr/parts.tsv"), &mut lemmas),
+        Lang::Bul => col1(include_str!("../data/bul/parts.tsv"), &mut lemmas),
+        Lang::Ell => col1(include_str!("../data/ell/parts.tsv"), &mut lemmas),
+        Lang::Sqi => col1(include_str!("../data/sqi/parts.tsv"), &mut lemmas),
+        Lang::Pol => col1(include_str!("../data/pol/parts.tsv"), &mut lemmas),
+        Lang::Aze => col1(include_str!("../data/aze/parts.tsv"), &mut lemmas),
+        Lang::Uzb => col1(include_str!("../data/uzb/parts.tsv"), &mut lemmas),
+        Lang::Tuk => col1(include_str!("../data/tuk/parts.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -1506,6 +1522,114 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.opt(t.passive_participle.as_ref(), "passive participle");
             s.opt(t.converb.as_ref(), "converb");
             s.opt(t.verbal_noun.as_ref(), "verbal noun");
+        }
+        Conjugation::Afr(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.opt(t.present.as_ref(), "present");
+            s.opt(t.past.as_ref(), "past");
+            s.opt(t.past_participle.as_ref(), "past participle");
+            s.opt(t.present_participle.as_ref(), "present participle");
+            s.opt(t.imperative.as_ref(), "imperative");
+        }
+        Conjugation::Bul(t) => {
+            s.one(&t.present, "present");
+            for f in &t.present_all {
+                s.opt(f.as_ref(), "present");
+            }
+            for f in &t.aorist {
+                s.opt(f.as_ref(), "aorist");
+            }
+            for f in &t.imperfect {
+                s.opt(f.as_ref(), "imperfect");
+            }
+            for f in &t.imperative {
+                s.opt(f.as_ref(), "imperative");
+            }
+            for f in t
+                .past_participle
+                .iter()
+                .chain(&t.present_participle)
+                .chain(&t.passive_participle)
+            {
+                s.opt(f.as_ref(), "participle");
+            }
+            s.opt(t.verbal_adverb.as_ref(), "verbal adverb");
+            s.opt(t.verbal_noun.as_ref(), "verbal noun");
+        }
+        Conjugation::Ell(t) => {
+            s.one(&t.present, "present");
+            for f in t.present_all.iter().chain(&t.imperfect).chain(&t.aorist) {
+                s.opt(f.as_ref(), "finite");
+            }
+            for f in &t.imperative {
+                s.opt(f.as_ref(), "imperative");
+            }
+            s.opt(t.gerund.as_ref(), "gerund");
+        }
+        Conjugation::Sqi(t) => {
+            s.one(&t.present, "present");
+            for f in t
+                .present_all
+                .iter()
+                .chain(&t.imperfect)
+                .chain(&t.aorist)
+                .chain(&t.admirative)
+            {
+                s.opt(f.as_ref(), "finite");
+            }
+            for f in &t.imperative {
+                s.opt(f.as_ref(), "imperative");
+            }
+            s.opt(t.participle.as_ref(), "participle");
+        }
+        Conjugation::Pol(t) => {
+            s.one(&t.infinitive, "infinitive");
+            for f in t.present.iter().chain(&t.future).chain(&t.past) {
+                s.opt(f.as_ref(), "finite");
+            }
+            for f in &t.imperative {
+                s.opt(f.as_ref(), "imperative");
+            }
+        }
+        Conjugation::Aze(t) => {
+            s.one(&t.infinitive, "infinitive");
+            for f in t
+                .present
+                .iter()
+                .chain(&t.past)
+                .chain(&t.future)
+                .chain(&t.aorist)
+            {
+                s.opt(f.as_ref(), "finite");
+            }
+            for f in &t.imperative {
+                s.opt(f.as_ref(), "imperative");
+            }
+        }
+        Conjugation::Uzb(t) => {
+            s.one(&t.infinitive, "infinitive");
+            for f in t
+                .present
+                .iter()
+                .chain(&t.past)
+                .chain(&t.future)
+                .chain(&t.aorist)
+                .chain(&t.imperative)
+            {
+                s.opt(f.as_ref(), "finite");
+            }
+        }
+        Conjugation::Tuk(t) => {
+            s.one(&t.infinitive, "infinitive");
+            for f in t
+                .present
+                .iter()
+                .chain(&t.past)
+                .chain(&t.aorist)
+                .chain(&t.imperative)
+            {
+                s.opt(f.as_ref(), "finite");
+            }
         }
     }
     s.0

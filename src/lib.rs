@@ -33,6 +33,14 @@ pub mod kan;
 pub mod kor;
 pub mod mar;
 pub mod mkd;
+pub mod afr;
+pub mod bul;
+pub mod ell;
+pub mod sqi;
+pub mod pol;
+pub mod aze;
+pub mod uzb;
+pub mod tuk;
 pub mod nld;
 pub mod nob;
 pub mod perso_arabic;
@@ -139,6 +147,22 @@ pub enum Lang {
     Mar,
     /// Macedonian.
     Mkd,
+    /// Afrikaans.
+    Afr,
+    /// Bulgarian.
+    Bul,
+    /// Modern Greek.
+    Ell,
+    /// Albanian.
+    Sqi,
+    /// Polish.
+    Pol,
+    /// Azerbaijani.
+    Aze,
+    /// Uzbek.
+    Uzb,
+    /// Turkmen.
+    Tuk,
 }
 
 impl Lang {
@@ -183,6 +207,14 @@ impl Lang {
             "bn" | "ben" | "bengali" | "bangla" => Some(Self::Ben),
             "mr" | "mar" | "marathi" | "मराठी" => Some(Self::Mar),
             "mk" | "mkd" | "mac" | "macedonian" | "македонски" => Some(Self::Mkd),
+            "af" | "afr" | "afrikaans" => Some(Self::Afr),
+            "bg" | "bul" | "bulgarian" => Some(Self::Bul),
+            "el" | "ell" | "gre" | "greek" => Some(Self::Ell),
+            "sq" | "sqi" | "alb" | "albanian" => Some(Self::Sqi),
+            "pl" | "pol" | "polish" => Some(Self::Pol),
+            "az" | "aze" | "azj" | "azerbaijani" | "azeri" => Some(Self::Aze),
+            "uz" | "uzb" | "uzbek" => Some(Self::Uzb),
+            "tk" | "tuk" | "turkmen" => Some(Self::Tuk),
             _ => None,
         }
     }
@@ -232,6 +264,14 @@ pub enum Conjugation {
     Ben(Box<ben::Table>),
     Mar(Box<mar::Table>),
     Mkd(Box<mkd::Table>),
+    Afr(Box<afr::Table>),
+    Bul(Box<bul::Table>),
+    Ell(Box<ell::Table>),
+    Sqi(Box<sqi::Table>),
+    Pol(Box<pol::Table>),
+    Aze(Box<aze::Table>),
+    Uzb(Box<uzb::Table>),
+    Tuk(Box<tuk::Table>),
 }
 
 /// Why `conjugate` failed: the input is not a known verb shape in
@@ -362,6 +402,30 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         Lang::Mkd => Conjugation::Mkd(Box::new(mkd::Table::build(
             &mkd::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
+        Lang::Afr => Conjugation::Afr(Box::new(afr::Table::build(
+            &afr::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Bul => Conjugation::Bul(Box::new(bul::Table::build(
+            &bul::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Ell => Conjugation::Ell(Box::new(ell::Table::build(
+            &ell::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Sqi => Conjugation::Sqi(Box::new(sqi::Table::build(
+            &sqi::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Pol => Conjugation::Pol(Box::new(pol::Table::build(
+            &pol::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Aze => Conjugation::Aze(Box::new(aze::Table::build(
+            &aze::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Uzb => Conjugation::Uzb(Box::new(uzb::Table::build(
+            &uzb::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Tuk => Conjugation::Tuk(Box::new(tuk::Table::build(
+            &tuk::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
     })
 }
 
@@ -392,6 +456,14 @@ mod facade_tests {
             ("parlar", Lang::Cat),
             ("werken", Lang::Nld),
             ("kaste", Lang::Nob),
+            ("loop", Lang::Afr),
+            ("гледам", Lang::Bul),
+            ("γράφω", Lang::Ell),
+            ("abdikoj", Lang::Sqi),
+            ("robić", Lang::Pol),
+            ("sevmək", Lang::Aze),
+            ("ishlamoq", Lang::Uzb),
+            ("atmak", Lang::Tuk),
             ("tala", Lang::Swe),
             ("читати", Lang::Ukr),
             ("食べる", Lang::Jpn),

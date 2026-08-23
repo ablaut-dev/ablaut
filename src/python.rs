@@ -1212,6 +1212,262 @@ impl From<crate::nob::Table> for NorwegianConjugation {
     }
 }
 
+/// person/number agreement; the past is periphrastic bar a closed set).
+#[pyclass(get_all, frozen)]
+struct AfrikaansConjugation {
+    infinitive: String,
+    present: Option<String>,
+    past: Option<String>,
+    perfect: Option<String>,
+    past_participle: Option<String>,
+    present_participle: Option<String>,
+    imperative: Option<String>,
+}
+
+#[pymethods]
+impl AfrikaansConjugation {
+    fn __repr__(&self) -> String {
+        format!("AfrikaansConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::afr::Table> for AfrikaansConjugation {
+    fn from(t: crate::afr::Table) -> Self {
+        AfrikaansConjugation {
+            infinitive: t.infinitive,
+            present: t.present,
+            past: t.past,
+            perfect: t.perfect,
+            past_participle: t.past_participle,
+            present_participle: t.present_participle,
+            imperative: t.imperative,
+        }
+    }
+}
+
+/// 2sg/2pl (imperative) and masc/fem/neut/pl indefinite (participles).
+#[pyclass(get_all, frozen)]
+struct BulgarianConjugation {
+    present: String,
+    present_all: Vec<Option<String>>,
+    aorist: Vec<Option<String>>,
+    imperfect: Vec<Option<String>>,
+    imperative: Vec<Option<String>>,
+    past_participle: Vec<Option<String>>,
+    present_participle: Vec<Option<String>>,
+    passive_participle: Vec<Option<String>>,
+    verbal_adverb: Option<String>,
+    verbal_noun: Option<String>,
+}
+
+#[pymethods]
+impl BulgarianConjugation {
+    fn __repr__(&self) -> String {
+        format!("BulgarianConjugation({:?})", self.present)
+    }
+}
+
+impl From<crate::bul::Table> for BulgarianConjugation {
+    fn from(t: crate::bul::Table) -> Self {
+        BulgarianConjugation {
+            present: t.present,
+            present_all: t.present_all,
+            aorist: t.aorist,
+            imperfect: t.imperfect,
+            imperative: t.imperative,
+            past_participle: t.past_participle,
+            present_participle: t.present_participle,
+            passive_participle: t.passive_participle,
+            verbal_adverb: t.verbal_adverb,
+            verbal_noun: t.verbal_noun,
+        }
+    }
+}
+
+/// (present, imperfect, aorist) and 2sg/2pl (imperative).
+#[pyclass(get_all, frozen)]
+struct GreekConjugation {
+    present: String,
+    present_all: Vec<Option<String>>,
+    imperfect: Vec<Option<String>>,
+    aorist: Vec<Option<String>>,
+    imperative: Vec<Option<String>>,
+    gerund: Option<String>,
+}
+
+#[pymethods]
+impl GreekConjugation {
+    fn __repr__(&self) -> String {
+        format!("GreekConjugation({:?})", self.present)
+    }
+}
+
+impl From<crate::ell::Table> for GreekConjugation {
+    fn from(t: crate::ell::Table) -> Self {
+        GreekConjugation {
+            present: t.present,
+            present_all: t.present_all,
+            imperfect: t.imperfect,
+            aorist: t.aorist,
+            imperative: t.imperative,
+            gerund: t.gerund,
+        }
+    }
+}
+
+/// (present, imperfect, aorist, admirative) and 2sg/2pl (imperative).
+#[pyclass(get_all, frozen)]
+struct AlbanianConjugation {
+    present: String,
+    present_all: Vec<Option<String>>,
+    imperfect: Vec<Option<String>>,
+    aorist: Vec<Option<String>>,
+    admirative: Vec<Option<String>>,
+    imperative: Vec<Option<String>>,
+    participle: Option<String>,
+}
+
+#[pymethods]
+impl AlbanianConjugation {
+    fn __repr__(&self) -> String {
+        format!("AlbanianConjugation({:?})", self.present)
+    }
+}
+
+impl From<crate::sqi::Table> for AlbanianConjugation {
+    fn from(t: crate::sqi::Table) -> Self {
+        AlbanianConjugation {
+            present: t.present,
+            present_all: t.present_all,
+            imperfect: t.imperfect,
+            aorist: t.aorist,
+            admirative: t.admirative,
+            imperative: t.imperative,
+            participle: t.participle,
+        }
+    }
+}
+
+/// masc/fem/neut (3sg) then virile/non-virile (3pl); imperative 2sg/1pl/2pl.
+#[pyclass(get_all, frozen)]
+struct PolishConjugation {
+    infinitive: String,
+    present: Vec<Option<String>>,
+    future: Vec<Option<String>>,
+    past: Vec<Option<String>>,
+    imperative: Vec<Option<String>>,
+}
+
+#[pymethods]
+impl PolishConjugation {
+    fn __repr__(&self) -> String {
+        format!("PolishConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::pol::Table> for PolishConjugation {
+    fn from(t: crate::pol::Table) -> Self {
+        PolishConjugation {
+            infinitive: t.infinitive,
+            present: t.present,
+            future: t.future,
+            past: t.past,
+            imperative: t.imperative,
+        }
+    }
+}
+
+/// future, aorist) and 2sg/2pl (imperative).
+#[pyclass(get_all, frozen)]
+struct AzerbaijaniConjugation {
+    infinitive: String,
+    present: Vec<Option<String>>,
+    past: Vec<Option<String>>,
+    future: Vec<Option<String>>,
+    aorist: Vec<Option<String>>,
+    imperative: Vec<Option<String>>,
+}
+
+#[pymethods]
+impl AzerbaijaniConjugation {
+    fn __repr__(&self) -> String {
+        format!("AzerbaijaniConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::aze::Table> for AzerbaijaniConjugation {
+    fn from(t: crate::aze::Table) -> Self {
+        AzerbaijaniConjugation {
+            infinitive: t.infinitive,
+            present: t.present,
+            past: t.past,
+            future: t.future,
+            aorist: t.aorist,
+            imperative: t.imperative,
+        }
+    }
+}
+
+/// infinitive. Each vector field runs 3sg / 3pl.
+#[pyclass(get_all, frozen)]
+struct UzbekConjugation {
+    infinitive: String,
+    present: Vec<Option<String>>,
+    past: Vec<Option<String>>,
+    future: Vec<Option<String>>,
+    aorist: Vec<Option<String>>,
+    imperative: Vec<Option<String>>,
+}
+
+#[pymethods]
+impl UzbekConjugation {
+    fn __repr__(&self) -> String {
+        format!("UzbekConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::uzb::Table> for UzbekConjugation {
+    fn from(t: crate::uzb::Table) -> Self {
+        UzbekConjugation {
+            infinitive: t.infinitive,
+            present: t.present,
+            past: t.past,
+            future: t.future,
+            aorist: t.aorist,
+            imperative: t.imperative,
+        }
+    }
+}
+
+/// aorist) and 2sg/2pl (imperative).
+#[pyclass(get_all, frozen)]
+struct TurkmenConjugation {
+    infinitive: String,
+    present: Vec<Option<String>>,
+    past: Vec<Option<String>>,
+    aorist: Vec<Option<String>>,
+    imperative: Vec<Option<String>>,
+}
+
+#[pymethods]
+impl TurkmenConjugation {
+    fn __repr__(&self) -> String {
+        format!("TurkmenConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::tuk::Table> for TurkmenConjugation {
+    fn from(t: crate::tuk::Table) -> Self {
+        TurkmenConjugation {
+            infinitive: t.infinitive,
+            present: t.present,
+            past: t.past,
+            aorist: t.aorist,
+            imperative: t.imperative,
+        }
+    }
+}
+
 /// The full conjugation table of one English verb.
 #[pyclass(get_all, frozen)]
 struct EnglishConjugation {
@@ -1836,6 +2092,62 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Afr) => {
+            let v = crate::afr::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(AfrikaansConjugation::from(crate::afr::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Bul) => {
+            let v = crate::bul::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(BulgarianConjugation::from(crate::bul::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Ell) => {
+            let v = crate::ell::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(GreekConjugation::from(crate::ell::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Sqi) => {
+            let v = crate::sqi::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(AlbanianConjugation::from(crate::sqi::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Pol) => {
+            let v = crate::pol::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(PolishConjugation::from(crate::pol::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Aze) => {
+            let v = crate::aze::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(AzerbaijaniConjugation::from(crate::aze::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Uzb) => {
+            let v = crate::uzb::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(UzbekConjugation::from(crate::uzb::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Tuk) => {
+            let v = crate::tuk::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(TurkmenConjugation::from(crate::tuk::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         None => Err(PyValueError::new_err(format!("unknown language: {lang}"))),
     }
 }
@@ -1852,6 +2164,14 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<HindiConjugation>()?;
     m.add_class::<MarathiConjugation>()?;
     m.add_class::<MacedonianConjugation>()?;
+    m.add_class::<AfrikaansConjugation>()?;
+    m.add_class::<BulgarianConjugation>()?;
+    m.add_class::<GreekConjugation>()?;
+    m.add_class::<AlbanianConjugation>()?;
+    m.add_class::<PolishConjugation>()?;
+    m.add_class::<AzerbaijaniConjugation>()?;
+    m.add_class::<UzbekConjugation>()?;
+    m.add_class::<TurkmenConjugation>()?;
     m.add_class::<KoreanConjugation>()?;
     m.add_class::<TurkishConjugation>()?;
     m.add_class::<PortugueseConjugation>()?;
