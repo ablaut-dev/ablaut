@@ -939,5 +939,16 @@ jobs:
         run: ./scripts/heb/fetch_kaikki.sh
       - name: Hebrew golden harness with two-oracle regression gate
         run: cargo run --release --bin golden_heb -- data/heb/unimorph.tsv data/heb/kaikki.tsv --check
+      - name: Cache UniMorph amh
+        id: unimorph-amh
+        uses: actions/cache@v5
+        with:
+          path: data/amh/unimorph.tsv
+          key: unimorph-amh-v1
+      - name: Fetch UniMorph amh
+        if: steps.unimorph-amh.outputs.cache-hit != 'true'
+        run: ./scripts/amh/fetch_unimorph.sh
+      - name: Amharic golden harness with single-oracle regression gate (Beta)
+        run: cargo run --release --bin golden_amh -- data/amh/unimorph.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng
