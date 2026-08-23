@@ -12,6 +12,7 @@
 //! Everything irregular lives in `data/deu/verbs.tsv`, compiled in.
 
 pub mod afr;
+pub mod amh;
 pub mod ara;
 pub mod aze;
 pub mod bel;
@@ -199,6 +200,8 @@ pub enum Lang {
     Ara,
     /// Modern Hebrew.
     Heb,
+    /// Amharic.
+    Amh,
 }
 
 impl Lang {
@@ -246,6 +249,7 @@ impl Lang {
             "af" | "afr" | "afrikaans" => Some(Self::Afr),
             "ar" | "ara" | "arabic" => Some(Self::Ara),
             "he" | "heb" | "hebrew" | "עברית" => Some(Self::Heb),
+            "am" | "amh" | "amharic" | "አማርኛ" => Some(Self::Amh),
             "bg" | "bul" | "bulgarian" => Some(Self::Bul),
             "el" | "ell" | "gre" | "greek" => Some(Self::Ell),
             "sq" | "sqi" | "alb" | "albanian" => Some(Self::Sqi),
@@ -334,6 +338,8 @@ pub enum Conjugation {
     Ara(Box<ara::Table>),
     /// Modern Hebrew.
     Heb(Box<heb::Table>),
+    /// Amharic.
+    Amh(Box<amh::Table>),
 }
 
 /// Why `conjugate` failed: the input is not a known verb shape in
@@ -473,6 +479,9 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         Lang::Heb => Conjugation::Heb(Box::new(heb::Table::build(
             &heb::Verb::from_lemma(infinitive).map_err(err)?,
         ))),
+        Lang::Amh => Conjugation::Amh(Box::new(amh::Table::build(
+            &amh::Verb::from_lemma(infinitive).map_err(err)?,
+        ))),
         Lang::Bul => Conjugation::Bul(Box::new(bul::Table::build(
             &bul::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
@@ -574,6 +583,7 @@ mod facade_tests {
             ("בענטשן", Lang::Ydd),
             ("جلس", Lang::Ara),
             ("שמר", Lang::Heb),
+            ("ሄደ", Lang::Amh),
             ("tala", Lang::Swe),
             ("читати", Lang::Ukr),
             ("食べる", Lang::Jpn),
