@@ -919,5 +919,25 @@ jobs:
         run: ./scripts/ara/fetch_kaikki.sh
       - name: Arabic golden harness with two-oracle regression gate
         run: cargo run --release --bin golden_ara -- data/ara/unimorph.tsv data/ara/kaikki.tsv --check
+      - name: Cache UniMorph heb
+        id: unimorph-heb
+        uses: actions/cache@v5
+        with:
+          path: data/heb/unimorph.tsv
+          key: unimorph-heb-v1
+      - name: Fetch UniMorph heb
+        if: steps.unimorph-heb.outputs.cache-hit != 'true'
+        run: ./scripts/heb/fetch_unimorph.sh
+      - name: Cache kaikki heb
+        id: kaikki-heb
+        uses: actions/cache@v5
+        with:
+          path: data/heb/kaikki.tsv
+          key: kaikki-heb-v1
+      - name: Fetch kaikki heb
+        if: steps.kaikki-heb.outputs.cache-hit != 'true'
+        run: ./scripts/heb/fetch_kaikki.sh
+      - name: Hebrew golden harness with two-oracle regression gate
+        run: cargo run --release --bin golden_heb -- data/heb/unimorph.tsv data/heb/kaikki.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng
