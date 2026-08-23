@@ -102,13 +102,10 @@ fn overrides(cit: &str) -> Option<HashMap<&'static str, &'static str>> {
 /// The a-conjugation present, or None if the citation is not -ам/-ям.
 fn present_a(cit: &str, feat: &str) -> Option<String> {
     let pn = feat.strip_prefix("V;IND;PRS;")?;
-    let (s, j) = if let Some(stem) = cit.strip_suffix("ам") {
-        (stem, "а")
-    } else if let Some(stem) = cit.strip_suffix("ям") {
-        (stem, "я")
-    } else {
-        return None;
-    };
+    let (s, j) = cit
+        .strip_suffix("ам")
+        .map(|stem| (stem, "а"))
+        .or_else(|| cit.strip_suffix("ям").map(|stem| (stem, "я")))?;
     let end = match pn {
         "1;SG" => format!("{j}м"),
         "2;SG" => format!("{j}ш"),
