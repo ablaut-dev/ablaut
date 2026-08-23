@@ -793,13 +793,14 @@ fn ord(lang: Lang) -> usize {
         Lang::Urd => 31,
         Lang::Ben => 32,
         Lang::Mar => 33,
+        Lang::Nob => 34,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 34] = [EMPTY; 34];
+    static INDEXES: [OnceLock<Index>; 35] = [EMPTY; 35];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -829,7 +830,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 34] = [EMPTY; 34];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 35] = [EMPTY; 35];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -917,6 +918,7 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Jpn => col1(include_str!("../data/jpn/verbs.tsv"), &mut lemmas),
         Lang::Kor => col1(include_str!("../data/kor/verbs.tsv"), &mut lemmas),
         Lang::Nld => col1(include_str!("../data/nld/verbs.tsv"), &mut lemmas),
+        Lang::Nob => col1(include_str!("../data/nob/verbs.tsv"), &mut lemmas),
         Lang::Rus => col1(include_str!("../data/rus/verbs.tsv"), &mut lemmas),
         Lang::Hye => col1(include_str!("../data/hye/verbs.tsv"), &mut lemmas),
         Lang::Tur => col1(include_str!("../data/tur/verbs.tsv"), &mut lemmas),
@@ -1242,6 +1244,15 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             s.one(&t.imperative, "imperative");
             s.one(&t.present_participle, "present participle");
             s.one(&t.past_participle, "past participle");
+        }
+        Conjugation::Nob(t) => {
+            s.one(&t.infinitive, "infinitive");
+            s.opt(t.present.as_ref(), "present");
+            s.opt(t.past.as_ref(), "past");
+            s.opt(t.past_participle.as_ref(), "past participle");
+            s.opt(t.imperative.as_ref(), "imperative");
+            s.opt(t.present_participle.as_ref(), "present participle");
+            s.opt(t.present_passive.as_ref(), "passive present");
         }
         Conjugation::Rus(t) => {
             s.one(&t.infinitive, "infinitive");
