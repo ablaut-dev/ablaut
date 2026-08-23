@@ -1468,6 +1468,45 @@ impl From<crate::tuk::Table> for TurkmenConjugation {
     }
 }
 
+/// The conjugation table of one Modern Standard Arabic verb.
+#[pyclass(get_all, frozen)]
+struct ArabicConjugation {
+    lemma: String,
+    perfect: Vec<Option<String>>,
+    imperfect: Vec<Option<String>>,
+    subjunctive: Vec<Option<String>>,
+    jussive: Vec<Option<String>>,
+    imperative: Vec<Option<String>>,
+    perfect_passive: Vec<Option<String>>,
+    imperfect_passive: Vec<Option<String>>,
+    subjunctive_passive: Vec<Option<String>>,
+    jussive_passive: Vec<Option<String>>,
+}
+
+#[pymethods]
+impl ArabicConjugation {
+    fn __repr__(&self) -> String {
+        format!("ArabicConjugation({:?})", self.lemma)
+    }
+}
+
+impl From<crate::ara::Table> for ArabicConjugation {
+    fn from(t: crate::ara::Table) -> Self {
+        ArabicConjugation {
+            lemma: t.lemma,
+            perfect: t.perfect,
+            imperfect: t.imperfect,
+            subjunctive: t.subjunctive,
+            jussive: t.jussive,
+            imperative: t.imperative,
+            perfect_passive: t.perfect_passive,
+            imperfect_passive: t.imperfect_passive,
+            subjunctive_passive: t.subjunctive_passive,
+            jussive_passive: t.jussive_passive,
+        }
+    }
+}
+
 /// The conjugation table of one Belarusian verb.
 #[pyclass(get_all, frozen)]
 struct BelarusianConjugation {
@@ -2480,6 +2519,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Ara) => {
+            let v = crate::ara::Verb::from_lemma(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(ArabicConjugation::from(crate::ara::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         Some(crate::Lang::Bel) => {
             let v = crate::bel::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
@@ -2584,6 +2630,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<OccitanConjugation>()?;
     m.add_class::<TatarConjugation>()?;
     m.add_class::<YiddishConjugation>()?;
+    m.add_class::<ArabicConjugation>()?;
     m.add_class::<KoreanConjugation>()?;
     m.add_class::<TurkishConjugation>()?;
     m.add_class::<PortugueseConjugation>()?;

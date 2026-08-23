@@ -62,6 +62,8 @@ include = [
     "data/oci/parts.tsv",
     "data/tat/parts.tsv",
     "data/ydd/parts.tsv",
+    "data/ara/parts.tsv",
+    "data/ara/overrides.tsv",
     "data/por/classes.tsv",
     "data/por/verbs.tsv",
     "data/ron/classes.tsv",

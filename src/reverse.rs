@@ -813,13 +813,14 @@ fn ord(lang: Lang) -> usize {
         Lang::Oci => 51,
         Lang::Tat => 52,
         Lang::Ydd => 53,
+        Lang::Ara => 54,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 54] = [EMPTY; 54];
+    static INDEXES: [OnceLock<Index>; 55] = [EMPTY; 55];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -849,7 +850,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 54] = [EMPTY; 54];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 55] = [EMPTY; 55];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -971,6 +972,7 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Oci => col1(include_str!("../data/oci/parts.tsv"), &mut lemmas),
         Lang::Tat => col1(include_str!("../data/tat/parts.tsv"), &mut lemmas),
         Lang::Ydd => col1(include_str!("../data/ydd/parts.tsv"), &mut lemmas),
+        Lang::Ara => col1(include_str!("../data/ara/parts.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -1778,6 +1780,23 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
             }
             s.opt(t.present_participle.as_ref(), "present participle");
             s.opt(t.past_participle.as_ref(), "past participle");
+        }
+        Conjugation::Ara(t) => {
+            s.one(&t.lemma, "citation");
+            for f in t
+                .perfect
+                .iter()
+                .chain(&t.imperfect)
+                .chain(&t.subjunctive)
+                .chain(&t.jussive)
+                .chain(&t.imperative)
+                .chain(&t.perfect_passive)
+                .chain(&t.imperfect_passive)
+                .chain(&t.subjunctive_passive)
+                .chain(&t.jussive_passive)
+            {
+                s.opt(f.as_ref(), "form");
+            }
         }
     }
     s.0
