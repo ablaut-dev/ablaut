@@ -1,0 +1,57 @@
+name: "⚠️ Wrong form"
+description: Report a conjugated form that is incorrect or missing.
+title: "[wrong form] <language> — <verb>"
+labels: ["wrong-form"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for catching this. ablaut only ships forms verified against two
+        independent lexicons, so a wrong form is a real bug we want to fix — and
+        native-speaker reports are the fastest way to find them. See how accuracy
+        is measured: https://www.ablaut.dev/accuracy
+  - type: input
+    id: language
+    attributes:
+      label: Language
+      description: Name or ISO code (e.g. Welsh / cy, Arabic / ar).
+      placeholder: Welsh (cy)
+    validations:
+      required: true
+  - type: input
+    id: verb
+    attributes:
+      label: Verb (citation form)
+      description: The lemma you looked up.
+      placeholder: canu
+    validations:
+      required: true
+  - type: input
+    id: cell
+    attributes:
+      label: Which cell
+      description: Tense / person / number / gender etc. — however you'd name it.
+      placeholder: present, 3rd person singular
+    validations:
+      required: true
+  - type: input
+    id: shown
+    attributes:
+      label: What ablaut shows
+      placeholder: cân
+    validations:
+      required: true
+  - type: input
+    id: expected
+    attributes:
+      label: What it should be
+      placeholder: cana
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source (optional)
+      description: A grammar, dictionary, or "I'm a native speaker" — anything that helps us adjudicate.
+    validations:
+      required: false
