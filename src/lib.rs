@@ -77,6 +77,7 @@ pub mod uzb;
 #[cfg(feature = "wasm")]
 mod wasm;
 pub mod ydd;
+pub mod zul;
 
 // Backwards-compatible root exports: the crate began as a German
 // conjugator and the German API lived at the root.
@@ -205,6 +206,8 @@ pub enum Lang {
     Amh,
     /// Indonesian.
     Ind,
+    /// Zulu.
+    Zul,
 }
 
 impl Lang {
@@ -254,6 +257,7 @@ impl Lang {
             "he" | "heb" | "hebrew" | "עברית" => Some(Self::Heb),
             "am" | "amh" | "amharic" | "አማርኛ" => Some(Self::Amh),
             "id" | "ind" | "indonesian" | "bahasa" => Some(Self::Ind),
+            "zu" | "zul" | "zulu" | "isizulu" => Some(Self::Zul),
             "bg" | "bul" | "bulgarian" => Some(Self::Bul),
             "el" | "ell" | "gre" | "greek" => Some(Self::Ell),
             "sq" | "sqi" | "alb" | "albanian" => Some(Self::Sqi),
@@ -346,6 +350,8 @@ pub enum Conjugation {
     Amh(Box<amh::Table>),
     /// Indonesian.
     Ind(Box<ind::Table>),
+    /// Zulu.
+    Zul(Box<zul::Table>),
 }
 
 /// Why `conjugate` failed: the input is not a known verb shape in
@@ -491,6 +497,9 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         Lang::Ind => Conjugation::Ind(Box::new(ind::Table::build(
             &ind::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
+        Lang::Zul => Conjugation::Zul(Box::new(zul::Table::build(
+            &zul::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
         Lang::Bul => Conjugation::Bul(Box::new(bul::Table::build(
             &bul::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
@@ -594,6 +603,7 @@ mod facade_tests {
             ("שמר", Lang::Heb),
             ("ሄደ", Lang::Amh),
             ("tulis", Lang::Ind),
+            ("hamba", Lang::Zul),
             ("tala", Lang::Swe),
             ("читати", Lang::Ukr),
             ("食べる", Lang::Jpn),

@@ -37,7 +37,7 @@ NAMES = {
     "hin": "Hindi", "swa": "Swahili", "tam": "Tamil", "tel": "Telugu",
     "tgl": "Tagalog", "pes": "Persian", "kan": "Kannada",
     "guj": "Gujarati", "urd": "Urdu", "ben": "Bengali", "mar": "Marathi",
-    "mkd": "Macedonian", "afr": "Afrikaans", "bul": "Bulgarian", "ell": "Greek", "sqi": "Albanian", "pol": "Polish", "aze": "Azerbaijani", "uzb": "Uzbek", "tuk": "Turkmen", "bel": "Belarusian", "cym": "Welsh", "fao": "Faroese", "glg": "Galician", "kaz": "Kazakh", "lat": "Latin", "ltz": "Luxembourgish", "oci": "Occitan", "tat": "Tatar", "ydd": "Yiddish", "ara": "Arabic", "heb": "Hebrew", "amh": "Amharic", "ind": "Indonesian",
+    "mkd": "Macedonian", "afr": "Afrikaans", "bul": "Bulgarian", "ell": "Greek", "sqi": "Albanian", "pol": "Polish", "aze": "Azerbaijani", "uzb": "Uzbek", "tuk": "Turkmen", "bel": "Belarusian", "cym": "Welsh", "fao": "Faroese", "glg": "Galician", "kaz": "Kazakh", "lat": "Latin", "ltz": "Luxembourgish", "oci": "Occitan", "tat": "Tatar", "ydd": "Yiddish", "ara": "Arabic", "heb": "Hebrew", "amh": "Amharic", "ind": "Indonesian", "zul": "Zulu",
 }
 
 

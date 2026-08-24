@@ -961,5 +961,25 @@ jobs:
         run: ./scripts/ind/fetch_unimorph.sh
       - name: Indonesian golden harness with single-oracle regression gate (Beta)
         run: cargo run --release --bin golden_ind -- data/ind/unimorph.tsv --check
+      - name: Cache UniMorph zul
+        id: unimorph-zul
+        uses: actions/cache@v5
+        with:
+          path: data/zul/unimorph.tsv
+          key: unimorph-zul-v1
+      - name: Fetch UniMorph zul
+        if: steps.unimorph-zul.outputs.cache-hit != 'true'
+        run: ./scripts/zul/fetch_unimorph.sh
+      - name: Cache kaikki zul
+        id: kaikki-zul
+        uses: actions/cache@v5
+        with:
+          path: data/zul/kaikki.tsv
+          key: kaikki-zul-v1
+      - name: Fetch kaikki zul
+        if: steps.kaikki-zul.outputs.cache-hit != 'true'
+        run: ./scripts/zul/fetch_kaikki.sh
+      - name: Zulu golden harness with two-oracle regression gate
+        run: cargo run --release --bin golden_zul -- data/zul/unimorph.tsv data/zul/kaikki.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng
