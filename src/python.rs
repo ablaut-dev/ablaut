@@ -1468,6 +1468,70 @@ impl From<crate::tuk::Table> for TurkmenConjugation {
     }
 }
 
+/// The conjugation table of one Zulu verb.
+#[pyclass(get_all, frozen)]
+struct ZuluConjugation {
+    infinitive: String,
+    imperative: Vec<String>,
+    present: Vec<String>,
+    present_long: Vec<String>,
+    future: Vec<String>,
+    recent_past: Vec<String>,
+    remote_past: Vec<String>,
+    subjunctive: Vec<String>,
+    participle: Vec<String>,
+}
+
+#[pymethods]
+impl ZuluConjugation {
+    fn __repr__(&self) -> String {
+        format!("ZuluConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::zul::Table> for ZuluConjugation {
+    fn from(t: crate::zul::Table) -> Self {
+        ZuluConjugation {
+            infinitive: t.infinitive,
+            imperative: t.imperative.to_vec(),
+            present: t.present.to_vec(),
+            present_long: t.present_long.to_vec(),
+            future: t.future.to_vec(),
+            recent_past: t.recent_past.to_vec(),
+            remote_past: t.remote_past.to_vec(),
+            subjunctive: t.subjunctive.to_vec(),
+            participle: t.participle.to_vec(),
+        }
+    }
+}
+
+/// The conjugation table of one Indonesian verb.
+#[pyclass(get_all, frozen)]
+struct IndonesianConjugation {
+    root: String,
+    active: Vec<Option<String>>,
+    passive: Vec<Option<String>>,
+    derived: Vec<Option<String>>,
+}
+
+#[pymethods]
+impl IndonesianConjugation {
+    fn __repr__(&self) -> String {
+        format!("IndonesianConjugation({:?})", self.root)
+    }
+}
+
+impl From<crate::ind::Table> for IndonesianConjugation {
+    fn from(t: crate::ind::Table) -> Self {
+        IndonesianConjugation {
+            root: t.root,
+            active: t.active,
+            passive: t.passive,
+            derived: t.derived,
+        }
+    }
+}
+
 /// The conjugation table of one Amharic verb.
 #[pyclass(get_all, frozen)]
 struct AmharicConjugation {
@@ -2602,6 +2666,20 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Ind) => {
+            let v = crate::ind::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(IndonesianConjugation::from(crate::ind::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Zul) => {
+            let v = crate::zul::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(ZuluConjugation::from(crate::zul::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         Some(crate::Lang::Bel) => {
             let v = crate::bel::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
@@ -2709,6 +2787,8 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<ArabicConjugation>()?;
     m.add_class::<HebrewConjugation>()?;
     m.add_class::<AmharicConjugation>()?;
+    m.add_class::<IndonesianConjugation>()?;
+    m.add_class::<ZuluConjugation>()?;
     m.add_class::<KoreanConjugation>()?;
     m.add_class::<TurkishConjugation>()?;
     m.add_class::<PortugueseConjugation>()?;

@@ -1,0 +1,17 @@
+# Zulu principal parts: lemma ⇥ conjugation-root ⇥ mono ⇥ vowel_initial
+#
+# The productive template in src/zul.rs derives the whole paradigm from
+# the bare stem (the UniMorph/kaikki lemma) by rule: the conjugation root
+# is the lemma, monosyllabicity is one-vowel, vowel-initial is a
+# vowel-first stem. A row overrides those defaults ("-" = derive). Only
+# the residue that the rules cannot reach is listed here.
+#
+# The i-augment verbs (iza "come", ima "stand", imba "dig", izwa "hear/
+# feel") carry a citation i- that drops in the conjugation (ukuza, ukuma,
+# ukumba, ukuzwa; ngaza, ngama), so their real roots are the augmentless
+# stems. iza/ima are then monosyllabic.
+lemma	root	mono	vowel_initial
+iza	za	1	0
+ima	ma	1	0
+imba	mba	0	0
+izwa	zwa	1	0
