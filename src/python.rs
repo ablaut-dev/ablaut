@@ -1468,6 +1468,33 @@ impl From<crate::tuk::Table> for TurkmenConjugation {
     }
 }
 
+/// The conjugation table of one Indonesian verb.
+#[pyclass(get_all, frozen)]
+struct IndonesianConjugation {
+    root: String,
+    active: Vec<Option<String>>,
+    passive: Vec<Option<String>>,
+    derived: Vec<Option<String>>,
+}
+
+#[pymethods]
+impl IndonesianConjugation {
+    fn __repr__(&self) -> String {
+        format!("IndonesianConjugation({:?})", self.root)
+    }
+}
+
+impl From<crate::ind::Table> for IndonesianConjugation {
+    fn from(t: crate::ind::Table) -> Self {
+        IndonesianConjugation {
+            root: t.root,
+            active: t.active,
+            passive: t.passive,
+            derived: t.derived,
+        }
+    }
+}
+
 /// The conjugation table of one Amharic verb.
 #[pyclass(get_all, frozen)]
 struct AmharicConjugation {
@@ -2602,6 +2629,13 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Ind) => {
+            let v = crate::ind::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(IndonesianConjugation::from(crate::ind::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         Some(crate::Lang::Bel) => {
             let v = crate::bel::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
@@ -2709,6 +2743,7 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<ArabicConjugation>()?;
     m.add_class::<HebrewConjugation>()?;
     m.add_class::<AmharicConjugation>()?;
+    m.add_class::<IndonesianConjugation>()?;
     m.add_class::<KoreanConjugation>()?;
     m.add_class::<TurkishConjugation>()?;
     m.add_class::<PortugueseConjugation>()?;

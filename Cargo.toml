@@ -68,6 +68,8 @@ include = [
     "data/heb/overrides.tsv",
     "data/amh/parts.tsv",
     "data/amh/overrides.tsv",
+    "data/ind/parts.tsv",
+    "data/ind/overrides.tsv",
     "data/por/classes.tsv",
     "data/por/verbs.tsv",
     "data/ron/classes.tsv",

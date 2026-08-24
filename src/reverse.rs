@@ -816,13 +816,14 @@ fn ord(lang: Lang) -> usize {
         Lang::Ara => 54,
         Lang::Heb => 55,
         Lang::Amh => 56,
+        Lang::Ind => 57,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 57] = [EMPTY; 57];
+    static INDEXES: [OnceLock<Index>; 58] = [EMPTY; 58];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -852,7 +853,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 57] = [EMPTY; 57];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 58] = [EMPTY; 58];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -977,6 +978,7 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Ara => col1(include_str!("../data/ara/parts.tsv"), &mut lemmas),
         Lang::Heb => col1(include_str!("../data/heb/parts.tsv"), &mut lemmas),
         Lang::Amh => col1(include_str!("../data/amh/parts.tsv"), &mut lemmas),
+        Lang::Ind => col1(include_str!("../data/ind/parts.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -1825,6 +1827,12 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
                 .chain(&t.imperfective_nfin)
                 .chain(&t.jussive)
             {
+                s.opt(f.as_ref(), "form");
+            }
+        }
+        Conjugation::Ind(t) => {
+            s.one(&t.root, "citation");
+            for f in t.active.iter().chain(&t.passive).chain(&t.derived) {
                 s.opt(f.as_ref(), "form");
             }
         }
