@@ -981,5 +981,51 @@ jobs:
         run: ./scripts/zul/fetch_kaikki.sh
       - name: Zulu golden harness with two-oracle regression gate
         run: cargo run --release --bin golden_zul -- data/zul/unimorph.tsv data/zul/kaikki.tsv --check
+      - name: Cache kaikki epo
+        id: kaikki-epo
+        uses: actions/cache@v5
+        with:
+          path: data/epo/kaikki.tsv
+          key: kaikki-epo-v1
+      - name: Fetch kaikki epo
+        if: steps.kaikki-epo.outputs.cache-hit != 'true'
+        run: ./scripts/epo/fetch_kaikki.sh
+      - name: Esperanto golden harness with single-oracle regression gate (Beta)
+        run: cargo run --release --bin golden_epo -- data/epo/kaikki.tsv --check
+      - name: Cache kaikki gla
+        id: kaikki-gla
+        uses: actions/cache@v5
+        with:
+          path: data/gla/kaikki.tsv
+          key: kaikki-gla-v1
+      - name: Fetch kaikki gla
+        if: steps.kaikki-gla.outputs.cache-hit != 'true'
+        run: ./scripts/gla/fetch_kaikki.sh
+      - name: Scottish Gaelic golden harness with single-oracle regression gate (Beta)
+        run: cargo run --release --bin golden_gla -- data/gla/kaikki.tsv --check
+      - name: Cache kaikki grn
+        id: kaikki-grn
+        uses: actions/cache@v5
+        with:
+          path: data/grn/kaikki-raw.jsonl
+          key: kaikki-grn-v1
+      - name: Fetch kaikki grn
+        if: steps.kaikki-grn.outputs.cache-hit != 'true'
+        run: ./scripts/grn/fetch_kaikki.sh
+      - name: Build grn gold
+        run: python3 scripts/grn/build.py
+      - name: Guaraní golden harness with single-oracle regression gate (Beta)
+        run: cargo run --release --bin golden_grn -- data/grn/kaikki.tsv --check
+      - name: Cache kaikki haw
+        id: kaikki-haw
+        uses: actions/cache@v5
+        with:
+          path: data/haw/kaikki.tsv
+          key: kaikki-haw-v1
+      - name: Fetch kaikki haw
+        if: steps.kaikki-haw.outputs.cache-hit != 'true'
+        run: ./scripts/haw/fetch_kaikki.sh
+      - name: Hawaiian golden harness with single-oracle regression gate (Beta)
+        run: cargo run --release --bin golden_haw -- data/haw/kaikki.tsv --check
       - name: Reverse-lookup gate (fra, spa, eng; deu needs the kaikki dump)
         run: cargo run --release --bin reverse_gate -- --check --langs fra,spa,eng

@@ -1,0 +1,21 @@
+# Guarani per-cell overrides: lemma ⇥ features ⇥ form.
+# Consulted before the productive rules in src/grn.rs.
+# soro (nasoral) forms its coactive causative with the nasal-mutated
+# stem mo+ndoro (s→nd), not the regular mbo+soro. It is the only
+# nasoral verb attested, so this nasal mutation is listed, not ruled.
+soro	V;COACTIVE;HORTATIVE;1PL.EXCL	toromondoro
+soro	V;COACTIVE;HORTATIVE;1PL.INCL	tañamondoro
+soro	V;COACTIVE;HORTATIVE;1SG	tamondoro
+soro	V;COACTIVE;HORTATIVE;2PL	tapemondoro
+soro	V;COACTIVE;HORTATIVE;2SG	teremondoro
+soro	V;COACTIVE;HORTATIVE;3PL	tomondoro
+soro	V;COACTIVE;HORTATIVE;3SG	tomondoro
+soro	V;COACTIVE;IMPERATIVE;2PL	pemondoro
+soro	V;COACTIVE;IMPERATIVE;2SG	emondoro
+soro	V;COACTIVE;INDICATIVE;1PL.EXCL	romondoro
+soro	V;COACTIVE;INDICATIVE;1PL.INCL	ñamondoro
+soro	V;COACTIVE;INDICATIVE;1SG	amondoro
+soro	V;COACTIVE;INDICATIVE;2PL	pemondoro
+soro	V;COACTIVE;INDICATIVE;2SG	remondoro
+soro	V;COACTIVE;INDICATIVE;3PL	omondoro
+soro	V;COACTIVE;INDICATIVE;3SG	omondoro

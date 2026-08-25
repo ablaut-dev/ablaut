@@ -1,0 +1,5 @@
+# Esperanto is perfectly regular: no irregular verbs, no principal
+# parts to mine. This file exists only so the reverse-index include
+# (src/reverse.rs) and Cargo package include resolve. Column 1 (lemma)
+# is intentionally empty.
+# lemma
