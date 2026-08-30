@@ -1,0 +1,24 @@
+# Hawaiian derivational overrides: lemma ⇥ feature ⇥ form.
+# Lexicalised forms the productive rules in src/haw.rs do not
+# predict — causative+reduplication fusions, prefix-triggered
+# vowel lengthening, ʻokina/long-vowel edge cases. Mined by
+# scripts/haw/mine_overrides.py from the kaikki oracle.
+hele	V;CAUS	hoʻohelehele
+hoʻi	V;CAUS	hoʻihoʻi
+hoʻokolo	V;CAUS	hoʻokolohua
+hoʻokolo	V;CAUS	hoʻokolokolo
+hoʻoluli	V;CAUS	hoʻoluliluli
+kāhili	V;CAUS	hoʻokahili
+lōʻihi	V;CAUS	hoʻoloʻihi
+mahele	V;CAUS	hoʻomāhele
+malū	V;CAUS	hoʻomālū
+pio	V;CAUS	hoʻopiopio
+pono	V;CAUS	hoʻoponopono
+ā	V;CAUS	hōʻā
+ʻaʻā	V;CAUS	hoʻaʻā
+ʻāhewa	V;CAUS	hoʻāhewa
+ʻēʻē	V;CAUS	hoʻēʻē
+ʻō	V;CAUS	hoʻō
+ʻōiwi	V;CAUS	hoʻōiwi
+ʻōlapa	V;CAUS	hoʻōlapa
+ʻōnaha	V;CAUS	hoʻōnaha

@@ -9,5 +9,6 @@ Cargo.lock
 __pycache__/
 !/data/*/parts.tsv
 !/data/*/aux.tsv
+!/data/*/overrides.tsv
 .claude/worktrees/
 errors.log

@@ -1,0 +1,7 @@
+# Suppletive / irregular overrides that the mined principal parts
+# cannot express. Columns:
+#   lemma  past  future  vn  ptcp  fut-dep  pst-dep  cond-stem
+# "-" = keep the mined/derived value. cond-stem, when set, replaces the
+# lemma as the base for the derived relative future, conditional and
+# imperative forms (thoir → bheir-/thug-).
+thoir	-	-	-	-	-	-	beir
