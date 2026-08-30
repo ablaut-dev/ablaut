@@ -225,6 +225,26 @@ pub fn conjugate(infinitive: &str, lang: Option<String>) -> Result<JsValue, JsEr
                 .map_err(|e| JsError::new(&e.to_string()))?;
             Ok(serde_wasm_bindgen::to_value(&crate::zul::Table::build(&v))?)
         }
+        Some(crate::Lang::Epo) => {
+            let v = crate::epo::Verb::from_infinitive(infinitive)
+                .map_err(|e| JsError::new(&e.to_string()))?;
+            Ok(serde_wasm_bindgen::to_value(&crate::epo::Table::build(&v))?)
+        }
+        Some(crate::Lang::Gla) => {
+            let v = crate::gla::Verb::from_infinitive(infinitive)
+                .map_err(|e| JsError::new(&e.to_string()))?;
+            Ok(serde_wasm_bindgen::to_value(&crate::gla::Table::build(&v))?)
+        }
+        Some(crate::Lang::Grn) => {
+            let v = crate::grn::Verb::from_lemma(infinitive)
+                .map_err(|e| JsError::new(&e.to_string()))?;
+            Ok(serde_wasm_bindgen::to_value(&crate::grn::Table::build(&v))?)
+        }
+        Some(crate::Lang::Haw) => {
+            let v = crate::haw::Verb::from_infinitive(infinitive)
+                .map_err(|e| JsError::new(&e.to_string()))?;
+            Ok(serde_wasm_bindgen::to_value(&crate::haw::Table::build(&v))?)
+        }
         Some(crate::Lang::Bul) => {
             let v = crate::bul::Verb::from_infinitive(infinitive)
                 .map_err(|e| JsError::new(&e.to_string()))?;

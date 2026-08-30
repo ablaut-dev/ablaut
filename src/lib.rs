@@ -25,15 +25,19 @@ pub mod dan;
 pub mod deu;
 pub mod ell;
 pub mod eng;
+pub mod epo;
 pub mod est;
 pub mod fao;
 pub mod fin;
 pub mod fra;
+pub mod gla;
 pub mod gle;
 pub mod glg;
+pub mod grn;
 pub mod guj;
 #[doc(hidden)]
 pub mod harness;
+pub mod haw;
 pub mod heb;
 pub mod hin;
 pub mod hye;
@@ -208,6 +212,14 @@ pub enum Lang {
     Ind,
     /// Zulu.
     Zul,
+    /// Esperanto.
+    Epo,
+    /// Scottish Gaelic.
+    Gla,
+    /// Paraguayan Guaraní.
+    Grn,
+    /// Hawaiian.
+    Haw,
 }
 
 impl Lang {
@@ -258,6 +270,10 @@ impl Lang {
             "am" | "amh" | "amharic" | "አማርኛ" => Some(Self::Amh),
             "id" | "ind" | "indonesian" | "bahasa" => Some(Self::Ind),
             "zu" | "zul" | "zulu" | "isizulu" => Some(Self::Zul),
+            "eo" | "epo" | "esperanto" => Some(Self::Epo),
+            "gd" | "gla" | "gaelic" | "scottish gaelic" => Some(Self::Gla),
+            "gn" | "grn" | "gug" | "guarani" | "guaraní" => Some(Self::Grn),
+            "haw" | "hawaiian" | "ʻōlelo hawaiʻi" | "olelo hawaii" => Some(Self::Haw),
             "bg" | "bul" | "bulgarian" => Some(Self::Bul),
             "el" | "ell" | "gre" | "greek" => Some(Self::Ell),
             "sq" | "sqi" | "alb" | "albanian" => Some(Self::Sqi),
@@ -352,6 +368,14 @@ pub enum Conjugation {
     Ind(Box<ind::Table>),
     /// Zulu.
     Zul(Box<zul::Table>),
+    /// Esperanto.
+    Epo(Box<epo::Table>),
+    /// Scottish Gaelic.
+    Gla(Box<gla::Table>),
+    /// Paraguayan Guaraní.
+    Grn(Box<grn::Table>),
+    /// Hawaiian.
+    Haw(Box<haw::Table>),
 }
 
 /// Why `conjugate` failed: the input is not a known verb shape in
@@ -500,6 +524,18 @@ pub fn conjugate(infinitive: &str, lang: Lang) -> Result<Conjugation, ConjugateE
         Lang::Zul => Conjugation::Zul(Box::new(zul::Table::build(
             &zul::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
+        Lang::Epo => Conjugation::Epo(Box::new(epo::Table::build(
+            &epo::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Gla => Conjugation::Gla(Box::new(gla::Table::build(
+            &gla::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
+        Lang::Grn => Conjugation::Grn(Box::new(grn::Table::build(
+            &grn::Verb::from_lemma(infinitive).map_err(err)?,
+        ))),
+        Lang::Haw => Conjugation::Haw(Box::new(haw::Table::build(
+            &haw::Verb::from_infinitive(infinitive).map_err(err)?,
+        ))),
         Lang::Bul => Conjugation::Bul(Box::new(bul::Table::build(
             &bul::Verb::from_infinitive(infinitive).map_err(err)?,
         ))),
@@ -604,6 +640,10 @@ mod facade_tests {
             ("ሄደ", Lang::Amh),
             ("tulis", Lang::Ind),
             ("hamba", Lang::Zul),
+            ("ami", Lang::Epo),
+            ("cuir", Lang::Gla),
+            ("jehu", Lang::Grn),
+            ("hana", Lang::Haw),
             ("tala", Lang::Swe),
             ("читати", Lang::Ukr),
             ("食べる", Lang::Jpn),

@@ -1505,6 +1505,147 @@ impl From<crate::zul::Table> for ZuluConjugation {
     }
 }
 
+/// The conjugation table of one Hawaiian verb (derivational: causative,
+/// reduplicated and passive stems).
+#[pyclass(get_all, frozen)]
+struct HawaiianConjugation {
+    stem: String,
+    causative: Option<String>,
+    reduplicated: Option<String>,
+    passive: Option<String>,
+}
+
+#[pymethods]
+impl HawaiianConjugation {
+    fn __repr__(&self) -> String {
+        format!("HawaiianConjugation({:?})", self.stem)
+    }
+}
+
+impl From<crate::haw::Table> for HawaiianConjugation {
+    fn from(t: crate::haw::Table) -> Self {
+        HawaiianConjugation {
+            stem: t.stem,
+            causative: t.causative,
+            reduplicated: t.reduplicated,
+            passive: t.passive,
+        }
+    }
+}
+
+/// The conjugation table of one Esperanto verb.
+#[pyclass(get_all, frozen)]
+struct EsperantoConjugation {
+    infinitive: String,
+    present: String,
+    past: String,
+    future: String,
+    conditional: String,
+    volitive: String,
+    active_present: Vec<String>,
+    active_past: Vec<String>,
+    active_future: Vec<String>,
+    passive_present: Vec<String>,
+    passive_past: Vec<String>,
+    passive_future: Vec<String>,
+}
+
+#[pymethods]
+impl EsperantoConjugation {
+    fn __repr__(&self) -> String {
+        format!("EsperantoConjugation({:?})", self.infinitive)
+    }
+}
+
+impl From<crate::epo::Table> for EsperantoConjugation {
+    fn from(t: crate::epo::Table) -> Self {
+        EsperantoConjugation {
+            infinitive: t.infinitive,
+            present: t.present,
+            past: t.past,
+            future: t.future,
+            conditional: t.conditional,
+            volitive: t.volitive,
+            active_present: t.active_present,
+            active_past: t.active_past,
+            active_future: t.active_future,
+            passive_present: t.passive_present,
+            passive_past: t.passive_past,
+            passive_future: t.passive_future,
+        }
+    }
+}
+
+/// The full conjugation table of one Scottish Gaelic verb. Rows run
+/// [1sg, 2sg, 3sg, 1pl, 2pl, 3pl, impersonal]; None marks slots that
+/// do not exist (the persons filled analytically with pronouns).
+#[pyclass(get_all, frozen)]
+struct ScottishGaelicConjugation {
+    lemma: String,
+    verbal_noun: String,
+    verbal_adjective: String,
+    past: Vec<Option<String>>,
+    future: Vec<Option<String>>,
+    relative_future: Vec<Option<String>>,
+    conditional: Vec<Option<String>>,
+    imperative: Vec<Option<String>>,
+}
+
+#[pymethods]
+impl ScottishGaelicConjugation {
+    fn __repr__(&self) -> String {
+        format!("ScottishGaelicConjugation({:?})", self.lemma)
+    }
+}
+
+impl From<crate::gla::Table> for ScottishGaelicConjugation {
+    fn from(t: crate::gla::Table) -> Self {
+        ScottishGaelicConjugation {
+            lemma: t.lemma,
+            verbal_noun: t.verbal_noun,
+            verbal_adjective: t.verbal_adjective,
+            past: t.past.into(),
+            future: t.future.into(),
+            relative_future: t.relative_future.into(),
+            conditional: t.conditional.into(),
+            imperative: t.imperative.into(),
+        }
+    }
+}
+
+/// The conjugation table of one Guaraní verb.
+#[pyclass(get_all, frozen)]
+struct GuaraniConjugation {
+    indicative: Vec<String>,
+    hortative: Vec<String>,
+    imperative: Vec<String>,
+    passive: Vec<String>,
+    reciprocal: Vec<String>,
+    coactive: Vec<String>,
+    objective: Vec<String>,
+}
+
+#[pymethods]
+impl GuaraniConjugation {
+    fn __repr__(&self) -> String {
+        format!("GuaraniConjugation({:?})", self.indicative)
+    }
+}
+
+impl From<crate::grn::Table> for GuaraniConjugation {
+    fn from(t: crate::grn::Table) -> Self {
+        GuaraniConjugation {
+            indicative: t.indicative.to_vec(),
+            hortative: t.hortative.to_vec(),
+            imperative: t.imperative.to_vec(),
+            passive: t.passive.to_vec(),
+            reciprocal: t.reciprocal.to_vec(),
+            coactive: t.coactive.to_vec(),
+            objective: t.objective.to_vec(),
+        }
+    }
+}
+
 /// The conjugation table of one Indonesian verb.
 #[pyclass(get_all, frozen)]
 struct IndonesianConjugation {
@@ -2680,6 +2821,36 @@ fn conjugate(py: Python<'_>, infinitive: &str, lang: &str) -> PyResult<PyObject>
                 .into_pyobject(py)?
                 .into())
         }
+        Some(crate::Lang::Epo) => {
+            let v = crate::epo::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(EsperantoConjugation::from(crate::epo::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Gla) => {
+            let v = crate::gla::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(
+                ScottishGaelicConjugation::from(crate::gla::Table::build(&v))
+                    .into_pyobject(py)?
+                    .into(),
+            )
+        }
+        Some(crate::Lang::Grn) => {
+            let v = crate::grn::Verb::from_lemma(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(GuaraniConjugation::from(crate::grn::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
+        Some(crate::Lang::Haw) => {
+            let v = crate::haw::Verb::from_infinitive(infinitive)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
+            Ok(HawaiianConjugation::from(crate::haw::Table::build(&v))
+                .into_pyobject(py)?
+                .into())
+        }
         Some(crate::Lang::Bel) => {
             let v = crate::bel::Verb::from_infinitive(infinitive)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
@@ -2789,6 +2960,10 @@ fn ablaut(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<AmharicConjugation>()?;
     m.add_class::<IndonesianConjugation>()?;
     m.add_class::<ZuluConjugation>()?;
+    m.add_class::<HawaiianConjugation>()?;
+    m.add_class::<EsperantoConjugation>()?;
+    m.add_class::<ScottishGaelicConjugation>()?;
+    m.add_class::<GuaraniConjugation>()?;
     m.add_class::<KoreanConjugation>()?;
     m.add_class::<TurkishConjugation>()?;
     m.add_class::<PortugueseConjugation>()?;

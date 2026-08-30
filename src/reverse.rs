@@ -362,6 +362,7 @@ fn forms_for(lemma: &str, lang: Lang) -> Option<Vec<(String, String)>> {
         Lang::Fra => fra_forms(lemma),
         Lang::Spa => spa_forms(lemma),
         Lang::Gle => gle_forms(lemma),
+        Lang::Gla => gla_forms(lemma),
         Lang::Deu => deu_forms(lemma),
         _ => conjugate(lemma, lang).ok().map(|t| enumerate(&t)),
     }
@@ -546,6 +547,42 @@ fn gle_forms(lemma: &str) -> Option<Vec<(String, String)>> {
                 } else {
                     f
                 };
+                s.one(&f, &format!("{name}{l}"));
+            }
+        }
+    }
+    Some(s.0)
+}
+
+fn gla_forms(lemma: &str) -> Option<Vec<(String, String)>> {
+    use crate::gla::{Slot, Tense, Verb};
+    let v = Verb::from_infinitive(lemma).ok()?;
+    let mut s = Slots(Vec::new());
+    s.one(v.infinitive(), "infinitive");
+    s.one(&v.verbal_noun(), "verbal noun");
+    s.one(&v.verbal_adjective(), "verbal adjective");
+    // The past and conditional lenite in the written standard
+    // (glan → ghlan). Mirrors gla::Table::row.
+    for (t, name) in [
+        (Tense::Past, "past"),
+        (Tense::Future, "future"),
+        (Tense::RelativeFuture, "relative future"),
+        (Tense::Conditional, "conditional"),
+        (Tense::Imperative, "imperative"),
+    ] {
+        let mutate = matches!(t, Tense::Past | Tense::Conditional);
+        for (slot, l) in [
+            (Slot::Independent, ""),
+            (Slot::Dependent, " dependent"),
+            (Slot::FirstSingular, " 1sg"),
+            (Slot::SecondSingular, " 2sg"),
+            (Slot::FirstPlural, " 1pl"),
+            (Slot::SecondPlural, " 2pl"),
+            (Slot::Third, " 3"),
+            (Slot::Impersonal, " impersonal"),
+        ] {
+            if let Some(f) = v.form(t, slot) {
+                let f = if mutate { Verb::lenite(&f) } else { f };
                 s.one(&f, &format!("{name}{l}"));
             }
         }
@@ -818,13 +855,17 @@ fn ord(lang: Lang) -> usize {
         Lang::Amh => 56,
         Lang::Ind => 57,
         Lang::Zul => 58,
+        Lang::Epo => 59,
+        Lang::Gla => 60,
+        Lang::Grn => 61,
+        Lang::Haw => 62,
     }
 }
 
 fn index(lang: Lang) -> &'static Index {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<Index> = OnceLock::new();
-    static INDEXES: [OnceLock<Index>; 59] = [EMPTY; 59];
+    static INDEXES: [OnceLock<Index>; 63] = [EMPTY; 63];
     INDEXES[ord(lang)].get_or_init(|| build_index(lang))
 }
 
@@ -854,7 +895,7 @@ fn build_index(lang: Lang) -> Index {
 fn is_lexicon_lemma(cand: &str, lang: Lang) -> bool {
     #[allow(clippy::declare_interior_mutable_const)]
     const EMPTY: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
-    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 59] = [EMPTY; 59];
+    static SETS: [OnceLock<std::collections::HashSet<&'static str>>; 63] = [EMPTY; 63];
     SETS[ord(lang)]
         .get_or_init(|| lexicon_lemmas(lang).into_iter().collect())
         .contains(cand)
@@ -981,6 +1022,10 @@ fn lexicon_lemmas(lang: Lang) -> Vec<&'static str> {
         Lang::Amh => col1(include_str!("../data/amh/parts.tsv"), &mut lemmas),
         Lang::Ind => col1(include_str!("../data/ind/parts.tsv"), &mut lemmas),
         Lang::Zul => col1(include_str!("../data/zul/parts.tsv"), &mut lemmas),
+        Lang::Epo => col1(include_str!("../data/epo/parts.tsv"), &mut lemmas),
+        Lang::Gla => col1(include_str!("../data/gla/verbs.tsv"), &mut lemmas),
+        Lang::Grn => col1(include_str!("../data/grn/parts.tsv"), &mut lemmas),
+        Lang::Haw => col1(include_str!("../data/haw/parts.tsv"), &mut lemmas),
     }
     lemmas.sort_unstable();
     lemmas.dedup();
@@ -1852,6 +1897,49 @@ fn enumerate(c: &Conjugation) -> Vec<(String, String)> {
                 .chain(&t.participle)
             {
                 s.opt(Some(f), "form");
+            }
+        }
+        Conjugation::Epo(t) => {
+            s.one(&t.infinitive, "citation");
+            for f in [&t.present, &t.past, &t.future, &t.conditional, &t.volitive] {
+                s.one(f, "form");
+            }
+            for f in t
+                .active_present
+                .iter()
+                .chain(&t.active_past)
+                .chain(&t.active_future)
+                .chain(&t.passive_present)
+                .chain(&t.passive_past)
+                .chain(&t.passive_future)
+            {
+                s.opt(Some(f), "form");
+            }
+        }
+        Conjugation::Gla(t) => {
+            s.one(&t.lemma, "infinitive");
+            s.one(&t.verbal_noun, "verbal noun");
+            s.one(&t.verbal_adjective, "verbal adjective");
+            s.row_opt(&t.past, "past", &P7);
+            s.row_opt(&t.future, "future", &P7);
+            s.row_opt(&t.relative_future, "relative future", &P7);
+            s.row_opt(&t.conditional, "conditional", &P7);
+            s.row_opt(&t.imperative, "imperative", &P7);
+        }
+        Conjugation::Grn(t) => {
+            let p7 = ["1sg", "2sg", "3sg", "1pl incl", "1pl excl", "2pl", "3pl"];
+            s.row(&t.indicative, "indicative", &p7);
+            s.row(&t.hortative, "hortative", &p7);
+            s.row(&t.imperative, "imperative", &p7);
+            s.row(&t.passive, "passive", &p7);
+            s.row(&t.reciprocal, "reciprocal", &p7);
+            s.row(&t.coactive, "coactive", &p7);
+            s.row(&t.objective, "objective", &p7);
+        }
+        Conjugation::Haw(t) => {
+            s.one(&t.stem, "citation");
+            for f in [&t.causative, &t.reduplicated, &t.passive] {
+                s.opt(f.as_ref(), "form");
             }
         }
     }
