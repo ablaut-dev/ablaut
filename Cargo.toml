@@ -1,6 +1,6 @@
 [package]
 name = "ablaut"
-version = "0.10.0"
+version = "0.11.0"
 edition = "2021"
 rust-version = "1.75"
 description = "Fast, correct verb conjugation for 20+ languages, each verified against two independent gold lexicons"
